@@ -4,11 +4,11 @@
 class ChiliTimer
 {
 public:
-	ChiliTimer();
+	ChiliTimer()noexcept;
 	//give time last time call mark
-	float Mark();
+	float Mark() noexcept;
 	//give  duration between now -> mark()
-	float Peek() const;
+	float Peek() const noexcept;
 private:
 	std::chrono::steady_clock::time_point last;
 };
