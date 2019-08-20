@@ -1,5 +1,5 @@
-#include "Window.h"
-#include <sstream>
+#include "App.h"
+
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -8,25 +8,7 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		Window wnd(800, 300, "Game Engine");
-
-		MSG msg;
-		BOOL gResult;
-		while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
-		{
-			// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-			
-		}
-
-		// check if GetMessage call itself borked
-		if (gResult == -1)
-		{
-			throw CHWND_LAST_EXCEPT();
-		}
-		// wParam here is the value passed to PostQuitMessage
-		return msg.wParam;
+		return App{}.Go();
 	}
 	catch (const ChiliException& e)
 	{
