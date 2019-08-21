@@ -22,4 +22,5 @@ int App::Go()
 
 void App::DoFrame()
 {
+	wnd.Gfx().EndFrame();
 }
