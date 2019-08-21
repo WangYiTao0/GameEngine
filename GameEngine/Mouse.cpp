@@ -39,6 +39,9 @@ std::optional<Mouse::Event> Mouse::Read() noexcept
 		buffer.pop();
 		return e;
 	}
+	/*else
+	{retrun Mouse::Event()  
+	optional */
 	return {};
 }
 
