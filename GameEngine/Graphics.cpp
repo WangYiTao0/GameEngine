@@ -1,4 +1,4 @@
-#include "Graphics.h"
+﻿#include "Graphics.h"
 #include "dxerr.h"
 #include <sstream>
 #include <d3dcompiler.h>
@@ -117,6 +117,7 @@ void Graphics::DrawTestTriangle(float angle,float x,float y)
 		{
 			float x;
 			float y;
+			float z;
 		}pos;
 		struct
 		{
@@ -126,17 +127,28 @@ void Graphics::DrawTestTriangle(float angle,float x,float y)
 			unsigned char a;
 		}color;
 	};
+
+	// ******************
+	// 
+	//    5________ 6
+	//    /|      /|
+	//   /_|_____/ |
+	//  1|4|_ _ 2|_|7
+	//   | /     | /
+	//   |/______|/
+	//  0       3
+
 	// create vertex buffer (1 2d triangle at center of screen)
 	Vertex vertices[] =
 	{
-		{  0.0f, 0.5f, 255,0,0,0 },
-		{  0.5f,-0.5f, 0,255,0,0  },
-		{ -0.5f,-0.5f, 0,0,255,0 },
-
-		{ -0.3f, 0.3f, 0,255,0,0  },
-		{  0.3f, 0.3f, 0,255,0,0  },
-		{  0.0f,-0.8f, 255,0,0,0 },
-
+		{ -1.0f, -1.0f,-1.0f, 255,0,0,0 },
+		{ -1.0f,  1.0f,-1.0f, 0,255,0,0  },
+		{  1.0f,  1.0f,-1.0f, 0,0,255,0 },
+		{  1.0f, -1.0f,-1.0f, 255,255,0,0},
+		{ -1.0f, -1.0f, 1.0f, 255,0,255,0 },
+		{ -1.0f,  1.0f, 1.0f, 0,255,255,0 },
+		{  1.0f,  1.0f, 1.0f, 0,0,0,0 },
+		{  1.0f, -1.0f, 1.0f, 255,255,255,0 },
 	};
 
 	vertices[0].color.g = 255;
@@ -152,14 +164,24 @@ void Graphics::DrawTestTriangle(float angle,float x,float y)
 	D3D11_SUBRESOURCE_DATA vsd = {};
 	vsd.pSysMem = vertices;
 	GFX_THROW_INFO(pDevice->CreateBuffer(&vbd, &vsd, &pVertexBufffer));
-
+	// ******************
+	// 
+	//    5________ 6
+	//    /|      /|
+	//   /_|_____/ |
+	//  1|4|_ _ 2|_|7
+	//   | /     | /
+	//   |/______|/
+	//  0       3
 	//create index buffer
 	const unsigned short indices[] =
 	{
-		0,1,2,
-		0,2,3,
-		0,4,1,
-		2,1,5,
+		0,1,2,  2,3,0,
+		3,2,6,  6,7,3,
+		7,6,5,  5,4,7,
+		4,5,1,  1,0,4,
+		1,5,6,  6,2,1,
+		4,0,3,  3,7,4,
 	};
 	wrl::ComPtr<ID3D11Buffer> pIndexBuffer;
 	D3D11_BUFFER_DESC ibd = {};
@@ -186,8 +208,9 @@ void Graphics::DrawTestTriangle(float angle,float x,float y)
 		{
 			dx::XMMatrixTranspose(
 				dx::XMMatrixRotationZ(angle) *
-				dx::XMMatrixScaling(3.0f / 4.0f,1.0f,1.0f) *
-				dx::XMMatrixTranslation(x,y,0.0f)
+				dx::XMMatrixRotationX(angle) *
+				dx::XMMatrixTranslation(x,y,4.0f) *
+				dx::XMMatrixPerspectiveFovLH(1.0f,3.0f / 4.0f,0.5f,10.0f)
 			)
 		}
 	};
@@ -235,11 +258,11 @@ void Graphics::DrawTestTriangle(float angle,float x,float y)
 	wrl::ComPtr<ID3D11InputLayout> pInputLayout;
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
-		{ "Position",0,DXGI_FORMAT_R32G32_FLOAT,   0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
+		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,   0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
 	
 		/*  DXGI_FORMAT_R8G8B8A8_UNORM,  change in vertices shader
 			DXGI_FORMAT_R8G8B8A8_UINT,*/
-		{ "Color",	 0,DXGI_FORMAT_R8G8B8A8_UNORM,0,8u,D3D11_INPUT_PER_VERTEX_DATA,0},
+		{ "Color",	 0,DXGI_FORMAT_R8G8B8A8_UNORM,0,12u,D3D11_INPUT_PER_VERTEX_DATA,0},
 	};
 
 	GFX_THROW_INFO(pDevice->CreateInputLayout(
