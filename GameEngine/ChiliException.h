@@ -17,5 +17,5 @@ private:
 protected:
 	//what() is declared const, we need make whatbuffer
 	//mutable in order to set it from within what
-	mutable std::string whatbuffer;
+	mutable std::string whatBuffer;
 };

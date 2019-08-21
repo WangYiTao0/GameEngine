@@ -12,8 +12,8 @@ const char* ChiliException::what() const noexcept
 	std::ostringstream oss;
 	oss << GetType() << std::endl
 		<< GetOriginString();
-	whatbuffer = oss.str();
-	return whatbuffer.c_str();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
 }
 
 const char* ChiliException::GetType() const noexcept
