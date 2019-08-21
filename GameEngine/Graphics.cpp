@@ -47,7 +47,7 @@ Graphics::Graphics(HWND hWnd)
 	HRESULT hr;
 
 	// create device and front/back buffers, and swap chain and rendering context
-	GFX_THROW_INFO( D3D11CreateDeviceAndSwapChain(
+	GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
@@ -56,7 +56,7 @@ Graphics::Graphics(HWND hWnd)
 		0,
 		D3D11_SDK_VERSION,
 		&sd,
-		&pSwap,
+		&pSwap, //& = pSwap.ReleaseAndGetAddressOf();
 		&pDevice,
 		nullptr,
 		&pContext
