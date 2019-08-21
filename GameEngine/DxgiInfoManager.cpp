@@ -30,15 +30,7 @@ DxgiInfoManager::DxgiInfoManager()
 	}
 
 	HRESULT hr;
-	GFX_THROW_NOINFO(DxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), reinterpret_cast<void**>(&pDxgiInfoQueue)));
-}
-
-DxgiInfoManager::~DxgiInfoManager()
-{
-	if (pDxgiInfoQueue != nullptr)
-	{
-		pDxgiInfoQueue->Release();
-	}
+	GFX_THROW_NOINFO(DxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), &pDxgiInfoQueue));
 }
 
 void DxgiInfoManager::Set() noexcept
@@ -55,7 +47,7 @@ std::vector<std::string> DxgiInfoManager::GetMessages() const
 	for (auto i = next; i < end; i++)
 	{
 		HRESULT hr;
-		SIZE_T messageLength;
+		SIZE_T messageLength = 0;
 		// get the size of message i in bytes
 		GFX_THROW_NOINFO(pDxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, nullptr, &messageLength));
 		// allocate memory for message
