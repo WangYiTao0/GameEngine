@@ -119,6 +119,11 @@ Graphics::Graphics(HWND hWnd)
 
 }
 
+Graphics::~Graphics()
+{
+	ImGui_ImplDX11_Shutdown();
+}
+
 void Graphics::EndFrame()
 {
 	// imgui frame end
@@ -145,7 +150,6 @@ void Graphics::EndFrame()
 			throw GFX_EXCEPT(hr);
 		}
 	}
-	pSwap->Present(1u, 0u);
 }
 
 void Graphics::BeginFrame(float red, float green, float blue) noexcept
