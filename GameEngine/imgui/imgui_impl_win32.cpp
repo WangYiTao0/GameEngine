@@ -182,6 +182,7 @@ void    ImGui_ImplWin32_NewFrame()
         ImGui_ImplWin32_UpdateMouseCursor();
     }
 
+
 }
 
 // Allow compilation with old Windows SDK. MinGW doesn't have default _WIN32_WINNT/WINVER versions.
