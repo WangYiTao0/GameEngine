@@ -30,15 +30,15 @@ public:
 			//bottomleft
 			const auto bottomLeft = dx::XMVectorSet(-side_x, -side_y, 0.0f, 0.0f);
 
-			for (int y = 0; y < nVertices_y; y++)
+			for (int y = 0,i=0; y < nVertices_y; y++)
 			{
 				const float y_pos = float(y) * divisionSize_y;
-				for (int x = 0; x < nVertices_x; x++)
+				for (int x = 0; x < nVertices_x; x++,i++)
 				{
-					const float x_pos = float(x) * divisionSize_x;
+
 					const auto v = dx::XMVectorAdd(
 						bottomLeft,
-						dx::XMVectorSet(x_pos, y_pos, 0.0f, 0.0f);
+						dx::XMVectorSet(float(x) * divisionSize_x, y_pos, 0.0f, 0.0f)
 					);
 					dx::XMStoreFloat3(&vertices[i].pos, v);
 				}
@@ -47,14 +47,15 @@ public:
 
 		std::vector<unsigned short> indices;
 		//increase new cap
-		indices.reserve(sq(division_x * divisions_y) * 6);
+		indices.reserve(sq(divisions_x * divisions_y) * 6);
 
 		{
 			//lambda []()
-			const auto vxy2i = [nVertices_x](size_t x, size_t y);
+			const auto vxy2i = [nVertices_x](size_t x, size_t y)
 			{
-				return (unsigned short)(y * nVertices_x * x);
-			}
+				return (unsigned short)(y * nVertices_x + x);
+			};
+
 			for (size_t y = 0; y < divisions_y; y++)
 			{
 				for (size_t x = 0; x < divisions_x; x++)
@@ -76,6 +77,6 @@ public:
 	template<class V>
 	static IndexedTriangleList<V> Make()
 	{
-		return MakeTesselated(V)(1, 1);
+		return MakeTesselated<V>( 1,1 );
 	}
 };
