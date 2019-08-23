@@ -78,7 +78,8 @@ App::App()
 	std::generate_n(std::back_inserter(drawables), nDrawables, f);
 
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
-	wnd.Gfx().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
+
+
 }
 
 int App::Go()
@@ -105,6 +106,7 @@ void App::DoFrame()
 
 
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
+	wnd.Gfx().SetCamera(cam.GetMatrix());
 	for (auto& d : drawables)
 	{
 		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
@@ -117,9 +119,12 @@ void App::DoFrame()
 	{
 		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
 		ImGui::Text("  %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING");
+		ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING (hold spacebar to pause)");
 	}
 	ImGui::End();
+
+	// imgui window to control camera
+	cam.SpawnControlWindow();
 
 	// present
 	wnd.Gfx().EndFrame();
