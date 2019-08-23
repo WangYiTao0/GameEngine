@@ -17,7 +17,7 @@ GDIPlusManager gdipm;
 
 App::App()
 	:
-	wnd(800,600,"Game Engine" )
+	wnd(800, 600, "Game Engine")
 {
 	class Factory
 	{
@@ -78,6 +78,7 @@ App::App()
 	std::generate_n(std::back_inserter(drawables), nDrawables, f);
 
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 }
 
 int App::Go()
@@ -110,14 +111,13 @@ void App::DoFrame()
 		d->Draw(wnd.Gfx());
 	}
 
-	static char buffer[1024];
 
 	// imgui window to control simulation speed
 	if (ImGui::Begin("Simulation Speed"))
 	{
 		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::InputText("Butts", buffer, sizeof(buffer));
+		ImGui::Text("  %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING");
 	}
 	ImGui::End();
 
