@@ -53,24 +53,40 @@ Window::Window(int width, int height, const char* name)
 	height(height)
 {
 	// calculate window size based on desired client region size
-	RECT wr;
-	wr.left = 100;
-	wr.right = width + wr.left;
-	wr.top = 100;
-	wr.bottom = height + wr.top;
-	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0)
+	RECT window_rect = { 0,0,width, height };
+
+	DWORD window_style = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+
+	if (AdjustWindowRect(&window_rect, window_style, FALSE) == 0)
 	{
 		throw CHWND_LAST_EXCEPT();
 	}
+
+	int window_width = window_rect.right - window_rect.left;
+	int window_height = window_rect.bottom - window_rect.top;
+
+	int desktop_width = GetSystemMetrics(SM_CXSCREEN);
+	int desktop_height = GetSystemMetrics(SM_CYSCREEN);
+
+	using  std::max;
+	int window_x = std::max((desktop_width - window_width) / 2, 0);
+	int window_y = std::max((desktop_height - window_height) / 2, 0);
+
+
 	// create window & get hWnd
 	hWnd = CreateWindow(
 		WindowClass::GetName(), name,
-		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-		CW_USEDEFAULT, CW_USEDEFAULT, 
-		wr.right - wr.left, 
-		wr.bottom - wr.top,
+		window_style,
+		window_x,		  
+		window_y,			
+		window_width,		
+		window_height,		
 		nullptr, nullptr, WindowClass::GetInstance(), this
 	);
+
+	
+
+
 	// check for error
 	if (hWnd == nullptr)
 	{
