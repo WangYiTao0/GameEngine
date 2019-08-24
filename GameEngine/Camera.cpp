@@ -26,9 +26,9 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::SliderAngle("Theta", &theta, -180.0f, 180.0f);
 		ImGui::SliderAngle("Phi", &phi, -89.0f, 89.0f);
 		ImGui::Text("Orientation");
-		ImGui::SliderAngle("Roll", &roll, -180.0f, 180.0f);
-		ImGui::SliderAngle("Pitch", &pitch, -180.0f, 180.0f);
-		ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
+		ImGui::SliderAngle("Roll Z", &roll, -180.0f, 180.0f);
+		ImGui::SliderAngle("Pitch X", &pitch, -180.0f, 180.0f);
+		ImGui::SliderAngle("Yaw Y", &yaw, -180.0f, 180.0f);
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
