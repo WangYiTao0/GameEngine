@@ -226,6 +226,7 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Melon.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PointLight.h" />
