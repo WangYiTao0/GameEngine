@@ -170,6 +170,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AssTest.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -211,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="AssTest.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableBase.h" />
     <ClInclude Include="Box.h" />
@@ -262,6 +264,7 @@
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCbuf.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsThrowMacros.h" />
