@@ -33,19 +33,19 @@ private:
 class Node
 {
 	friend class Model;
-	friend class ModelWindow;
 public:
-	Node(const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noxnd;
+	Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noxnd;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
-
+	int GetId() const noexcept;
+	void ShowTree(Node*& pSelectedNode) const noexcept;
 private:
 	//only model  can add child to node
 	void AddChild(std::unique_ptr<Node> pChild) noxnd;
-	void ShowTree(int& nodeIndex, std::optional<int>& selectedIndex, Node*& pSelectedNode) const noexcept;
 
 private:
 	std::string name;
+	int id;
 	std::vector<std::unique_ptr<Node>> childPtrs;
 	std::vector<Mesh*> meshPtrs;
 	//transform from load file
@@ -65,7 +65,7 @@ private:
 	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh);
 	//analize
 	// take reference node struct from assimp
-	std::unique_ptr<Node> ParseNode(const aiNode& node)noexcept;
+	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node)noexcept;
 
 private:
 	//Link structor
