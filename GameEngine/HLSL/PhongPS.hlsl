@@ -27,13 +27,17 @@ cbuffer LightCBuf :register (b0)
 
 cbuffer ObjectCBuf:register(b1)
 {
-    float3 materialColor;
     float specularIntensity;
     float specularPower;
+    float padding[2];
 };
 
+Texture2D tex;
 
-float4 main(float3 worldPos : Position, float3 normal : Normal) : SV_Target
+SamplerState splr;
+
+
+float4 main(float3 worldPos : Position, float3 normal : Normal, float2 tc : Texcoord) : SV_Target
 {
     //fragment to light vector data
     const float3 vToL = lightPos - worldPos;
@@ -42,8 +46,7 @@ float4 main(float3 worldPos : Position, float3 normal : Normal) : SV_Target
 	// attenuation
     const float att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL));
 	// diffuse intensity
-    const float3 diffuse = diffuseColor * diffuseIntensity * att *
-    max(0.0f, dot(dirToL, normal));
+    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, normal));
     // final color
     /*
     float saturate( float v)
@@ -66,7 +69,7 @@ float4 main(float3 worldPos : Position, float3 normal : Normal) : SV_Target
     )), specularPower);
 	
 
-    return float4(saturate((diffuse + ambient + specular) * materialColor), 1.0f);
+    return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(splr,tc);
 
 
 }

@@ -28,6 +28,6 @@ private:
 	Camera cam;
 	PointLight light;
 
-	Model nano{ wnd.Gfx(),"Models\\nano_hierarchy.gltf" };
+	Model nano{ wnd.Gfx(),"Models\\nano_textured\\nanosuit.obj" };
 
 };
