@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include <vector>
 #include <DirectXMath.h>
 #include <type_traits>
@@ -26,7 +26,6 @@ namespace hw3dexp
 			Float4Color,
 			BGRAColor,
 		};
-
 		class Element
 		{
 		public:
@@ -118,8 +117,6 @@ namespace hw3dexp
 	{
 		friend class VertexBuffer;
 	public:
-		//vbuf[2].pos = {};
-		//vbuf[2].attr<Pos3D>() = {};
 		template<VertexLayout::ElementType Type>
 		auto& Attr() noexcept(!IS_DEBUG)
 		{
@@ -163,8 +160,6 @@ namespace hw3dexp
 		template<typename T>
 		void SetAttributeByIndex(size_t i, T&& val) noexcept(!IS_DEBUG)
 		{
-			//Universal Reference
-			//Perfect forwarding
 			using namespace DirectX;
 			const auto& element = layout.ResolveByIndex(i);
 			auto pAttribute = pData + element.GetOffset();
@@ -204,13 +199,8 @@ namespace hw3dexp
 			assert(pData != nullptr);
 		}
 	private:
-		//Universal Reference
-		// enables parameter pack setting of multiple parameters by element index
-		//template recursion
-		// T&&... args  could be one thing could be multiple thing
-		// First&& first, Rest&& ...rest        Recursion
 		template<typename First, typename ...Rest>
-
+		// enables parameter pack setting of multiple parameters by element index
 		void SetAttributeByIndex(size_t i, First&& first, Rest&& ... rest) noexcept(!IS_DEBUG)
 		{
 			SetAttributeByIndex(i, std::forward<First>(first));
@@ -220,7 +210,6 @@ namespace hw3dexp
 		template<typename Dest, typename Src>
 		void SetAttribute(char* pAttribute, Src&& val) noexcept(!IS_DEBUG)
 		{
-			//des source
 			if constexpr (std::is_assignable<Dest, Src>::value)
 			{
 				*reinterpret_cast<Dest*>(pAttribute) = val;
@@ -234,7 +223,6 @@ namespace hw3dexp
 		char* pData = nullptr;
 		const VertexLayout& layout;
 	};
-
 
 	class ConstVertex
 	{
@@ -267,11 +255,11 @@ namespace hw3dexp
 		{
 			return layout;
 		}
-		size_t Size() const noexcept(!IS_DEBUG)// number of vertices
+		size_t Size() const noexcept(!IS_DEBUG)
 		{
 			return buffer.size() / layout.Size();
 		}
-		size_t SizeBytes() const noexcept(!IS_DEBUG) // size of bytes;
+		size_t SizeBytes() const noexcept(!IS_DEBUG)
 		{
 			return buffer.size();
 		}
@@ -297,7 +285,6 @@ namespace hw3dexp
 			assert(i < Size());
 			return Vertex{ buffer.data() + layout.Size() * i,layout };
 		}
-
 		ConstVertex Back() const noexcept(!IS_DEBUG)
 		{
 			return const_cast<VertexBuffer*>(this)->Back();
@@ -310,7 +297,6 @@ namespace hw3dexp
 		{
 			return const_cast<VertexBuffer&>(*this)[i];
 		}
-
 	private:
 		std::vector<char> buffer;
 		VertexLayout layout;
