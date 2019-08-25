@@ -27,8 +27,9 @@ AssTest::AssTest(Graphics& gfx, std::mt19937& rng,
 		//};
 		using hw3dexp::VertexLayout;
 		hw3dexp::VertexBuffer vbuf(
-			std::move(VertexLayout{}.Append<VertexLayout::Position3D>()
-				.Append<VertexLayout::Normal>()
+			std::move(VertexLayout{}
+				.Append(VertexLayout::Position3D)
+				.Append(VertexLayout::Normal)
 			));
 
 		Assimp::Importer imp;
@@ -72,13 +73,7 @@ AssTest::AssTest(Graphics& gfx, std::mt19937& rng,
 
 		AddStaticBind(std::make_unique<PixelShader>(gfx, L"HLSL\\PhongPS.cso"));
 
-		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-		{
-			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		};
-		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
-
+		AddStaticBind(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 		struct PSMaterialConstant
