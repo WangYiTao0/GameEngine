@@ -68,8 +68,8 @@ float4 main(float3 worldPos : Position, float3 normal : Normal, float2 tc : Texc
              dot(normalize(-r),normalize(worldPos)
     )), specularPower);
 	
-
-    return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(splr,tc);
-
-
+    //diffuse * tex.diffuse  specular * tex.specular 
+    return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f);
+    
+    //return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(splr,tc);
 }

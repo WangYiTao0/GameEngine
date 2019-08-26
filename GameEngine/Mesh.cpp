@@ -285,15 +285,29 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 
 	//bind  vertexbuffer  indexBuffer  VertexShader  PixelShader  InputLayout constant buffer
 	std::vector<std::unique_ptr<Bind::Bindable>> bindablePtrs;
-
+	
+	bool hasSpecularMap = false;
+	float shininess = 35.0f;
 	//not every mesh have material   = -1
 	if (mesh.mMaterialIndex >= 0)
 	{
-		using namespace std::string_literals;
 		auto& material = *pMaterials[mesh.mMaterialIndex];
+		using namespace std::string_literals;
+		const auto base = "Models\\nano_textured\\"s;
 		aiString texFileName;
 		material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName);
-		bindablePtrs.push_back(std::make_unique<Bind::Texture>(gfx, Surface::FromFile("Models\\nano_textured\\"s + texFileName.C_Str())));
+		bindablePtrs.push_back(std::make_unique<Bind::Texture>(gfx, Surface::FromFile(base + texFileName.C_Str())));
+	
+		//not every mesh have specular texture
+		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
+		{
+			bindablePtrs.push_back(std::make_unique<Bind::Texture>(gfx, Surface::FromFile(base + texFileName.C_Str()), 1));
+			hasSpecularMap = true;
+		}
+		else
+		{
+			material.Get(AI_MATKEY_SHININESS, shininess);
+		}
 		bindablePtrs.push_back(std::make_unique<Bind::Sampler>(gfx));
 	}
 
@@ -309,14 +323,21 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 
 	bindablePtrs.push_back(std::make_unique<Bind::InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
-	struct PSMaterialConstant
+	if (hasSpecularMap)
 	{
-		float specularIntensity = 0.6f;
-		float specularPower = 30.0f;
-		float padding[2] = {};
-	} pmc;
-	bindablePtrs.push_back(std::make_unique<Bind::PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u));
-
+		bindablePtrs.push_back(std::make_unique<Bind::PixelShader>(gfx, L"HLSL\\PhongPSSpecMap.cso"));
+	}
+	else
+	{
+		struct PSMaterialConstant
+		{
+			float specularIntensity = 1.6f;
+			float specularPower;
+			float padding[2] = {};
+		} pmc;
+		pmc.specularPower = shininess;
+		bindablePtrs.push_back(std::make_unique<Bind::PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u));
+	}
 	//move binable into mesh
 	//return unique point to mesh
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
