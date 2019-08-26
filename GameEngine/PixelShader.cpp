@@ -24,7 +24,7 @@ namespace Bind
 
 	}
 
-	std::shared_ptr<Bindable> PixelShader::Resolve(Graphics& gfx, const std::string& path)
+	std::shared_ptr<PixelShader> PixelShader::Resolve(Graphics& gfx, const std::string& path)
 	{
 		return Codex::Resolve<PixelShader>(gfx, path);
 	}

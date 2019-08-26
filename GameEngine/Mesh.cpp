@@ -309,8 +309,8 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 	bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
 	auto pvs = VertexShader::Resolve(gfx, "HLSL\\PhongVS.cso");
-	//auto pvsbc = pvs->GetBytecode();
-	auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
+	auto pvsbc = pvs->GetBytecode();
+	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	bindablePtrs.push_back(std::move(pvs));
 
 	//bindablePtrs.push_back(PixelShader::Resolve(gfx, "HLSL\\PhongPS.cso"));
