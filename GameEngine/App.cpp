@@ -49,6 +49,7 @@ void App::DoFrame()
 
 
 	nano.Draw(wnd.Gfx());
+	nano2.Draw(wnd.Gfx());
 	light.Draw(wnd.Gfx());
 
 	while (const auto e = wnd.kbd.ReadKey())
@@ -118,7 +119,8 @@ void App::DoFrame()
 	cam.SpawnControlWindow();
 	light.SpawnControlWindow();
 	ShowImguiDemoWindow();
-	nano.ShowWindow();
+	nano.ShowWindow("Model 1");
+	nano2.ShowWindow("Model 2");
 
 
 	// present
