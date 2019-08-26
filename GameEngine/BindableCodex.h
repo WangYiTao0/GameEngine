@@ -1,5 +1,8 @@
 #pragma once
+
 #include "Bindable.h"
+#include "BindableCodex.h"
+#include <type_traits>
 #include <memory>
 #include <unordered_map>
 
@@ -8,30 +11,28 @@ namespace Bind
 	class Codex
 	{
 	public:
-		static std::shared_ptr<Bindable> Resolve(const std::string& key) noxnd
+		template<class T, typename...Params>
+		static std::shared_ptr<Bindable> Resolve(Graphics& gfx, Params&& ...p) noxnd
 		{
-			return Get().Resolve_(key);
-		}
-		static void Store(std::shared_ptr<Bindable> bind)
-		{
-			Get().Store_(std::move(bind));
+			static_assert(std::is_base_of<Bindable, T>::value, "Can only resolve classes derived from Bindable");
+			return Get().Resolve_<T>(gfx, std::forward<Params>(p)...);
 		}
 	private:
-		std::shared_ptr<Bindable> Resolve_(const std::string& key)noxnd
+		template<class T, typename...Params>
+		std::shared_ptr<Bindable> Resolve_(Graphics& gfx, Params&& ...p) noxnd
 		{
-			auto i = binds.find(key);
+			const auto key = T::GenerateUID(std::forward<Params>(p)...);
+			const auto i = binds.find(key);
 			if (i == binds.end())
 			{
-				return {};
+				auto bind = std::make_shared<T>(gfx, std::forward<Params>(p)...);
+				binds[key] = bind;
+				return bind;
 			}
 			else
 			{
 				return i->second;
 			}
-		}
-		void Store_(std::shared_ptr<Bindable>bind)
-		{
-			binds[bind->GetUID()] = std::move(bind);
 		}
 		static Codex& Get()
 		{
@@ -40,6 +41,5 @@ namespace Bind
 		}
 	private:
 		std::unordered_map<std::string, std::shared_ptr<Bindable>> binds;
-
 	};
 }

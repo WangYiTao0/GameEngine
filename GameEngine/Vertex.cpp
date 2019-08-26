@@ -1,18 +1,56 @@
 #include "Vertex.h"
+
 namespace Dvtx
 {
+	// VertexLayout
+	const VertexLayout::Element& VertexLayout::ResolveByIndex(size_t i) const noxnd
+	{
+		return elements[i];
+	}
+	VertexLayout& VertexLayout::Append(ElementType type) noxnd
+	{
+		elements.emplace_back(type, Size());
+		return *this;
+	}
+	size_t VertexLayout::Size() const noxnd
+	{
+		return elements.empty() ? 0u : elements.back().GetOffsetAfter();
+	}
+	size_t VertexLayout::GetElementCount() const noexcept
+	{
+		return elements.size();
+	}
+	std::vector<D3D11_INPUT_ELEMENT_DESC> VertexLayout::GetD3DLayout() const noxnd
+	{
+		std::vector<D3D11_INPUT_ELEMENT_DESC> desc;
+		desc.reserve(GetElementCount());
+		for (const auto& e : elements)
+		{
+			desc.push_back(e.GetDesc());
+		}
+		return desc;
+	}
+	std::string VertexLayout::GetCode() const noxnd
+	{
+		std::string code;
+		for (const auto& e : elements)
+		{
+			code += e.GetCode();
+		}
+		return code;
+	}
+
+
 	// VertexLayout::Element
 	VertexLayout::Element::Element(ElementType type, size_t offset)
 		:
 		type(type),
 		offset(offset)
 	{}
-
 	size_t VertexLayout::Element::GetOffsetAfter() const noxnd
 	{
 		return offset + Size();
 	}
-
 	size_t VertexLayout::Element::GetOffset() const
 	{
 		return offset;
@@ -21,10 +59,8 @@ namespace Dvtx
 	{
 		return SizeOf(type);
 	}
-
 	constexpr size_t VertexLayout::Element::SizeOf(ElementType type) noxnd
 	{
-		using namespace DirectX;
 		switch (type)
 		{
 		case Position2D:
@@ -45,12 +81,32 @@ namespace Dvtx
 		assert("Invalid element type" && false);
 		return 0u;
 	}
-
 	VertexLayout::ElementType VertexLayout::Element::GetType() const noexcept
 	{
 		return type;
 	}
-
+	const char* Dvtx::VertexLayout::Element::GetCode() const noexcept
+	{
+		switch (type)
+		{
+		case Position2D:
+			return Map<Position2D>::code;
+		case Position3D:
+			return Map<Position3D>::code;
+		case Texture2D:
+			return Map<Texture2D>::code;
+		case Normal:
+			return Map<Normal>::code;
+		case Float3Color:
+			return Map<Float3Color>::code;
+		case Float4Color:
+			return Map<Float4Color>::code;
+		case BGRAColor:
+			return Map<BGRAColor>::code;
+		}
+		assert("Invalid element type" && false);
+		return "Invalid";
+	}
 	D3D11_INPUT_ELEMENT_DESC VertexLayout::Element::GetDesc() const noxnd
 	{
 		switch (type)
@@ -75,40 +131,6 @@ namespace Dvtx
 	}
 
 
-	// VertexLayout
-
-	const VertexLayout::Element& VertexLayout::ResolveByIndex(size_t i) const noxnd
-	{
-		return elements[i];
-	}
-
-	VertexLayout& VertexLayout::Append(ElementType type) noxnd
-	{
-		elements.emplace_back(type, Size());
-		return *this;
-	}
-
-	size_t VertexLayout::Size() const noxnd
-	{
-		return elements.empty() ? 0u : elements.back().GetOffsetAfter();
-	}
-
-	size_t VertexLayout::GetElementCount() const noexcept
-	{
-		return elements.size();
-	}
-
-	std::vector<D3D11_INPUT_ELEMENT_DESC> VertexLayout::GetD3DLayout() const noxnd
-	{
-		std::vector<D3D11_INPUT_ELEMENT_DESC> desc;
-		desc.reserve(GetElementCount());
-		for (const auto& e : elements)
-		{
-			desc.push_back(e.GetDesc());
-		}
-		return desc;
-	}
-
 	// Vertex
 	Vertex::Vertex(char* pData, const VertexLayout& layout) noxnd
 		:
@@ -117,8 +139,7 @@ namespace Dvtx
 	{
 		assert(pData != nullptr);
 	}
-
-	ConstVertex::ConstVertex(const Vertex& v)noxnd
+	ConstVertex::ConstVertex(const Vertex& v) noxnd
 		:
 	vertex(v)
 	{}
@@ -127,7 +148,7 @@ namespace Dvtx
 	// VertexBuffer
 	VertexBuffer::VertexBuffer(VertexLayout layout) noxnd
 		:
-		layout(std::move(layout))
+	layout(std::move(layout))
 	{}
 	const char* VertexBuffer::GetData() const noxnd
 	{
@@ -137,31 +158,29 @@ namespace Dvtx
 	{
 		return layout;
 	}
-	size_t VertexBuffer::VertexBuffer::Size() const noxnd// number of vertices
+	size_t VertexBuffer::Size() const noxnd
 	{
 		return buffer.size() / layout.Size();
 	}
-	size_t VertexBuffer::SizeBytes() const noxnd // size of bytes;
+	size_t VertexBuffer::SizeBytes() const noxnd
 	{
 		return buffer.size();
 	}
-		Vertex VertexBuffer::Back() noxnd
+	Vertex VertexBuffer::Back() noxnd
 	{
-		assert( buffer.size() != 0u );
+		assert(buffer.size() != 0u);
 		return Vertex{ buffer.data() + buffer.size() - layout.Size(),layout };
 	}
 	Vertex VertexBuffer::Front() noxnd
 	{
-		assert( buffer.size() != 0u );
+		assert(buffer.size() != 0u);
 		return Vertex{ buffer.data(),layout };
 	}
-	Vertex VertexBuffer::operator[]( size_t i ) noxnd
+	Vertex VertexBuffer::operator[](size_t i) noxnd
 	{
-		assert( i < Size() );
+		assert(i < Size());
 		return Vertex{ buffer.data() + layout.Size() * i,layout };
 	}
-
-	//ConstVertex
 	ConstVertex VertexBuffer::Back() const noxnd
 	{
 		return const_cast<VertexBuffer*>(this)->Back();
@@ -170,10 +189,8 @@ namespace Dvtx
 	{
 		return const_cast<VertexBuffer*>(this)->Front();
 	}
-	ConstVertex VertexBuffer::operator[]( size_t i ) const noxnd
+	ConstVertex VertexBuffer::operator[](size_t i) const noxnd
 	{
 		return const_cast<VertexBuffer&>(*this)[i];
 	}
-
 }
-
