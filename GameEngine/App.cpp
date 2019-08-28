@@ -124,7 +124,7 @@ void App::DoFrame()
 	ShowImguiDemoWindow();
 	nano.ShowWindow("Model 1");
 	nano2.ShowWindow("Model 2");
-
+	plane.SpawnControlWindow(wnd.Gfx());
 
 	// present
 	wnd.Gfx().EndFrame();
