@@ -22,8 +22,8 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	AddBind(PixelShader::Resolve(gfx, "HLSL\\PhongPS.cso"));
 	struct  PSMaterialConstant
 	{
-		float specularIntensity = 0.0f;
-		float specularPower = 45.0f;
+		float specularIntensity = 0.1f;
+		float specularPower = 20.0f;
 		float padding[2];
 	}pmc;
 
