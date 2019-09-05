@@ -18,8 +18,14 @@ App::App()
 	:
 	wnd(width, height, "Game Engine"),
 	light(wnd.Gfx()),
-	plane(wnd.Gfx(),3.0f)
+	plane(wnd.Gfx(),3.0f),
+	bs1(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 10),
+	bs2(DirectX::XMFLOAT3(21.0f, 0.0f, 0.0f), 10)
 {
+	IntersectData  bs1Ibs2 = bs1.IntersectBoundingSphere(bs2);
+	bs1Ibs2.GetDistance();
+	bs1Ibs2.GetDoesIntersect();
+
 	plane.SetPos({ 1.0f,17.0f,-1.0f });
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }
