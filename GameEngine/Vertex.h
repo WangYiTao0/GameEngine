@@ -218,9 +218,10 @@ namespace Dvtx
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer(VertexLayout layout) noxnd;
+		VertexBuffer(VertexLayout layout,size_t size = 0u) noxnd;
 		const char* GetData() const noxnd;
 		const VertexLayout& GetLayout() const noexcept;
+		void Resize(size_t newSize) noxnd;
 		size_t Size() const noxnd;// number of vertices
 		size_t SizeBytes() const noxnd; // size of bytes;
 		template<typename ...Params>

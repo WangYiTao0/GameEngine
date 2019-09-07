@@ -19,9 +19,13 @@ App::App()
 	wnd(width, height, "Game Engine"),
 	light(wnd.Gfx()),
 	plane(wnd.Gfx(),3.0f),
+	cube(wnd.Gfx(),4.0f),
 	bs1(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 10),
 	bs2(DirectX::XMFLOAT3(21.0f, 0.0f, 0.0f), 10)
 {
+	plane.SetPos({ -5.0f,17.0f,-1.0f });
+	cube.SetPos({ 3.0f,14.0f,-2.0f });
+
 	IntersectData  bs1Ibs2 = bs1.IntersectBoundingSphere(bs2);
 	bs1Ibs2.GetDistance();
 	bs1Ibs2.GetDoesIntersect();
@@ -60,6 +64,7 @@ void App::DoFrame()
 	nano2.Draw(wnd.Gfx());
 	light.Draw(wnd.Gfx());
 	plane.Draw(wnd.Gfx());
+	cube.Draw(wnd.Gfx());
 
 	while (const auto e = wnd.kbd.ReadKey())
 	{
@@ -131,6 +136,7 @@ void App::DoFrame()
 	nano.ShowWindow("Model 1");
 	nano2.ShowWindow("Model 2");
 	plane.SpawnControlWindow(wnd.Gfx());
+	cube.SpawnControlWindow(wnd.Gfx());
 
 	// present
 	wnd.Gfx().EndFrame();
