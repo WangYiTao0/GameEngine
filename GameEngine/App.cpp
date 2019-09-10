@@ -5,8 +5,9 @@
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
-
-
+#include "ModelScene.h"
+#include "GeometryScene.h"
+#include <sstream>
 
 namespace dx = DirectX;
 
@@ -18,20 +19,17 @@ App::App()
 	:
 	wnd(width, height, "Game Engine"),
 	light(wnd.Gfx()),
-	plane(wnd.Gfx(),3.0f),
-	cube(wnd.Gfx(),4.0f),
+
 	bs1(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 10),
 	bs2(DirectX::XMFLOAT3(21.0f, 0.0f, 0.0f), 10)
 {
-	plane.SetPos({ -5.0f,17.0f,-1.0f });
-	cube.SetPos({ 3.0f,14.0f,-2.0f });
 
-	IntersectData  bs1Ibs2 = bs1.IntersectBoundingSphere(bs2);
-	bs1Ibs2.GetDistance();
-	bs1Ibs2.GetDoesIntersect();
-
-	plane.SetPos({ 1.0f,17.0f,-1.0f });
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+
+	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
+	curScene = scenes.begin();
+	OutoutSceneName();
 }
 
 int App::Go()
@@ -52,20 +50,8 @@ App::~App()
 {
 }
 
-void App::DoFrame()
+void App::HandleInput(float dt)
 {
-	const auto dt = timer.Mark()* speed_factor;
-	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
-	wnd.Gfx().SetCamera(cam.GetMatrix());
-	light.Bind(wnd.Gfx(),cam.GetMatrix());
-
-
-	nano.Draw(wnd.Gfx());
-	nano2.Draw(wnd.Gfx());
-	light.Draw(wnd.Gfx());
-	plane.Draw(wnd.Gfx());
-	cube.Draw(wnd.Gfx());
-
 	while (const auto e = wnd.kbd.ReadKey())
 	{
 		if (!e->IsPress())
@@ -73,8 +59,18 @@ void App::DoFrame()
 			continue;
 		}
 
+		// cycle through scenes when tab is pressed
+		//if (e->GetCode() == VK_TAB && e->IsPress())
+		//{
+		//	CycleScenes();
+		//}
+
 		switch (e->GetCode())
 		{
+		case VK_TAB:
+			CycleScenes();
+			break;
+
 		case VK_ESCAPE:
 			if (wnd.CursorEnabled())
 			{
@@ -128,15 +124,44 @@ void App::DoFrame()
 			cam.Rotate((float)delta->x, (float)delta->y);
 		}
 	}
+}
+
+void App::update(float dt)
+{
+	// update scene
+	(*curScene)->Update(wnd.kbd, wnd.mouse, dt);
+}
+
+void App::Draw()
+{	
+	
+	light.Draw(wnd.Gfx());
+	// draw scene
+
+
+	(*curScene)->Draw(wnd.Gfx());	
+	
 
 	// imgui windows
 	cam.SpawnControlWindow();
 	light.SpawnControlWindow();
 	ShowImguiDemoWindow();
-	nano.ShowWindow("Model 1");
-	nano2.ShowWindow("Model 2");
-	plane.SpawnControlWindow(wnd.Gfx());
-	cube.SpawnControlWindow(wnd.Gfx());
+
+
+}
+
+void App::DoFrame()
+{
+	const auto dt = timer.Mark()* speed_factor;
+	
+	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
+
+	wnd.Gfx().SetCamera(cam.GetMatrix());
+	light.Bind(wnd.Gfx(),cam.GetMatrix());
+
+	HandleInput(dt);
+	update(dt);
+	Draw();
 
 	// present
 	wnd.Gfx().EndFrame();
@@ -148,6 +173,26 @@ void App::ShowImguiDemoWindow()
 	{
 		ImGui::ShowDemoWindow(&showDemoWindow);
 	}
+}
+
+void App::OutoutSceneName() const
+{
+	std::stringstream ss;
+	const std::string SceneName((*curScene)->GetName().size() + 4, '*');
+
+	ss << SceneName << std::endl
+		<< "* " << (*curScene)->GetName() << " *" << std::endl
+		<< SceneName << std::endl;
+	OutputDebugStringA(ss.str().c_str());
+}
+
+void App::CycleScenes()
+{
+	if (++curScene == scenes.end())
+	{
+		curScene = scenes.begin();
+	}
+	OutoutSceneName();
 }
 
 

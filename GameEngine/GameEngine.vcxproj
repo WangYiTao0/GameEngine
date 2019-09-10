@@ -180,6 +180,7 @@
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DxgiInfoManager.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
+    <ClCompile Include="GeometryScene.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ModelScene.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PixelShader.cpp" />
@@ -233,8 +235,10 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgiInfoManager.h" />
     <ClInclude Include="GDIPlusManager.h" />
+    <ClInclude Include="GeometryScene.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
+    <ClInclude Include="ModelScene.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -258,6 +262,7 @@
     <ClInclude Include="Prism.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sampler.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Surface.h" />
