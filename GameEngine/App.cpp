@@ -18,12 +18,10 @@ GDIPlusManager gdipm;
 App::App()
 	:
 	wnd(width, height, "Game Engine"),
-	light(wnd.Gfx()),
-
-	bs1(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 10),
-	bs2(DirectX::XMFLOAT3(21.0f, 0.0f, 0.0f), 10)
+	pointLight(wnd.Gfx()),
+	directionLight(wnd.Gfx())
 {
-
+	LightType = PointLightType;
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 
 	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
@@ -86,6 +84,12 @@ void App::HandleInput(float dt)
 		case VK_F1:
 			showDemoWindow = true;
 			break;
+		case VK_NUMPAD0:
+			LightType = DirectionLightType;
+			break;
+		case VK_NUMPAD1:
+			LightType = PointLightType;
+			break;
 		}
 	}
 
@@ -135,16 +139,15 @@ void App::update(float dt)
 void App::Draw()
 {	
 	
-	light.Draw(wnd.Gfx());
+
 	// draw scene
 
 
 	(*curScene)->Draw();	
 	
-
 	// imgui windows
 	cam.SpawnControlWindow();
-	light.SpawnControlWindow();
+
 	ShowImguiDemoWindow();
 
 
@@ -157,7 +160,33 @@ void App::DoFrame()
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 
 	wnd.Gfx().SetCamera(cam.GetMatrix());
-	light.Bind(wnd.Gfx(),cam.GetMatrix());
+
+	switch (LightType)
+	{
+	case App::DirectionLightType:	
+		{
+			directionLight.Bind(wnd.Gfx());
+			directionLight.Draw(wnd.Gfx());
+			directionLight.SpawnControlWindow();
+			break;
+		}
+	case App::PointLightType:	
+		{
+			pointLight.Bind(wnd.Gfx(), cam.GetMatrix());
+			pointLight.Draw(wnd.Gfx());
+			pointLight.SpawnControlWindow();
+			break;
+		}
+	case App::SpotLightType:
+		break;
+	case App::MaxType:
+		break;
+	default:
+		break;
+	}
+
+
+
 
 	HandleInput(dt);
 	update(dt);

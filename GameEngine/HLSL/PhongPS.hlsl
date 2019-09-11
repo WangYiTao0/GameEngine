@@ -14,7 +14,7 @@ light Pos
 */ 
 
 
-cbuffer LightCBuf :register (b0)
+cbuffer PointLightCBuf :register (b0)
 {
     float3 lightPos;
     float3 ambient;
@@ -24,6 +24,14 @@ cbuffer LightCBuf :register (b0)
     float attLin;
     float attQuad;
 };
+
+//cbuffer DirectionLightCBuf : register(b2)
+//{
+//    float4 ambient;
+//    float4 diffuse;
+//    float4 specular;
+//    float3 direction;
+//}
 
 cbuffer ObjectCBuf:register(b1)
 {

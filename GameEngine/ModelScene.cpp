@@ -1,4 +1,5 @@
 #include "ModelScene.h"
+#include "App.h"
 
 ModelScene::ModelScene(Graphics& gfx)
 	:
@@ -9,16 +10,19 @@ ModelScene::ModelScene(Graphics& gfx)
 
 void ModelScene::Update(float dt)
 {
+	
 }
 
 void ModelScene::Draw() 
 {
-	//nano.Draw(gfx);
-	//nano2.Draw(gfx);
-	minecraft.Draw(gfx);
+
+	nano1.Draw(gfx);
+	nano2.Draw(gfx);
+	nano3.Draw(gfx);
 
 	//imgui windows
-	//nano.ShowWindow("Model 1");
-	//nano2.ShowWindow("Model 2");
-	minecraft.ShowWindow("Minecraft 1");
+	nano1.ShowWindow("Model 1");
+	nano2.ShowWindow("Model 2");
+	nano3.ShowWindow("Model 3");
+
 }

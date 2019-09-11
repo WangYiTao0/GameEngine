@@ -11,10 +11,9 @@ public:
 
 	virtual void Draw()override;
 private:
-	
 	Graphics& gfx;
 
-	Model nano { gfx,"Models\\nano_textured\\nanosuit.obj" };
+	Model nano1 { gfx,"Models\\nano_textured\\nanosuit.obj" };
 	Model nano2{ gfx,"Models\\nano_textured\\nanosuit.obj" };
-	ModelWithOutTexture minecraft{ gfx, "Models\\Minecraft.fbx" };
+	ModelWithOutTexture nano3{ gfx, "Models\\nano_hierarchy.gltf" };
 };

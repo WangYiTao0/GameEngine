@@ -1,4 +1,4 @@
-cbuffer LightCBuf
+cbuffer PointLightCBuf
 {
     float3 lightPos;
     float3 ambient;
