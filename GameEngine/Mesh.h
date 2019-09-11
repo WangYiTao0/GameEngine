@@ -33,6 +33,7 @@ private:
 class Node
 {
 	friend class Model;
+	friend class ModelWithOutTexture;
 public:
 	Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noxnd;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd;
@@ -73,4 +74,26 @@ private:
 	//load all mesh  store in 
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
 	std::unique_ptr<class ModelWindow> pWindow;
+};
+
+class ModelWithOutTexture
+{
+public:
+	ModelWithOutTexture(Graphics& gfx, const std::string fileName);
+	void Draw(Graphics& gfx) const noxnd;
+	void ShowWindow(const char* windowName = nullptr) noexcept;
+	~ModelWithOutTexture() noexcept;
+private:
+	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials);
+	//analize
+	// take reference node struct from assimp
+	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node)noexcept;
+
+private:
+	//Link structor
+	std::unique_ptr<Node> pRoot;
+	//load all mesh  store in 
+	std::vector<std::unique_ptr<Mesh>> meshPtrs;
+	std::unique_ptr<class ModelWindow> pWindow;
+
 };

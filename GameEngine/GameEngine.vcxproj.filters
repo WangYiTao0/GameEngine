@@ -49,6 +49,9 @@
     <Filter Include="Header Files\Scenes">
       <UniqueIdentifier>{d05d4759-48c5-481e-a8aa-fc0aa11e7051}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{020791c3-5fff-4f58-9075-384421b9889f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -175,10 +178,10 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="ModelScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="GeometryScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,6 +413,12 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\PhongPSNormalMap.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongVSWithoutTex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPSWithoutTex.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

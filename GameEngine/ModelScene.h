@@ -9,11 +9,12 @@ public:
 
 	virtual void Update(float dt) override;
 
-	virtual void Draw()  override;
+	virtual void Draw()override;
 private:
 	
 	Graphics& gfx;
 
 	Model nano { gfx,"Models\\nano_textured\\nanosuit.obj" };
 	Model nano2{ gfx,"Models\\nano_textured\\nanosuit.obj" };
+	ModelWithOutTexture minecraft{ gfx, "Models\\Minecraft.fbx" };
 };
