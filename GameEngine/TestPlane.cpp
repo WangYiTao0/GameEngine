@@ -37,6 +37,11 @@ void TestPlane::SetPos(DirectX::XMFLOAT3 pos) noexcept
 	this->pos = pos;
 }
 
+DirectX::XMFLOAT3 TestPlane::GetPos() const noexcept
+{
+	return pos;
+}
+
 void TestPlane::SetRotation(float roll, float pitch, float yaw) noexcept
 {
 	this->roll = roll;

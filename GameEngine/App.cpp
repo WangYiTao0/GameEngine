@@ -7,6 +7,7 @@
 #include "imgui/imgui.h"
 #include "ModelScene.h"
 #include "GeometryScene.h"
+#include "PhysicScene.h"
 #include <sstream>
 
 namespace dx = DirectX;
@@ -26,6 +27,7 @@ App::App()
 
 	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
+	scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	curScene = scenes.begin();
 	OutoutSceneName();
 }

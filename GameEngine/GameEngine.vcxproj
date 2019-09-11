@@ -196,6 +196,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModelScene.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="PhysicScene.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="PhysicScene.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PointLight.h" />

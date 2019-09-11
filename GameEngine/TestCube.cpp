@@ -39,6 +39,11 @@ void TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept
 	this->pos = pos;
 }
 
+DirectX::XMFLOAT3 TestCube::GetPos() const noexcept
+{
+	return pos;
+}
+
 void TestCube::SetRotation(float roll, float pitch, float yaw) noexcept
 {
 	this->roll = roll;
