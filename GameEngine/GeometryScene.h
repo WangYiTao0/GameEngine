@@ -8,9 +8,9 @@ class GeometryScene : public Scene
 public:
 	GeometryScene(Graphics& gfx);
 
-	virtual void Update(Keyboard& kbd, Mouse& mouse, float dt) override;
+	virtual void Update(float dt) override;
 
-	virtual void Draw(Graphics& gfx)  override;
+	virtual void Draw()  override;
 private:
 	Graphics& gfx;
 	TestPlane plane;

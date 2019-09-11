@@ -9,11 +9,11 @@ ModelScene::ModelScene(Graphics& gfx)
 {
 }
 
-void ModelScene::Update(Keyboard& kbd, Mouse& mouse, float dt)
+void ModelScene::Update(float dt)
 {
 }
 
-void ModelScene::Draw(Graphics& gfx) 
+void ModelScene::Draw() 
 {
 	nano.Draw(gfx);
 	nano2.Draw(gfx);

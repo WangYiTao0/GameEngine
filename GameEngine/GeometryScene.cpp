@@ -11,11 +11,11 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	cube.SetPos({ 3.0f,14.0f,-2.0f });
 }
 
-void GeometryScene::Update(Keyboard& kbd, Mouse& mouse, float dt)
+void GeometryScene::Update(float dt)
 {
 }
 
-void GeometryScene::Draw(Graphics& gfx) 
+void GeometryScene::Draw() 
 {	
 	plane.Draw(gfx);
 	cube.Draw(gfx);	

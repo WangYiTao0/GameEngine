@@ -129,7 +129,7 @@ void App::HandleInput(float dt)
 void App::update(float dt)
 {
 	// update scene
-	(*curScene)->Update(wnd.kbd, wnd.mouse, dt);
+	(*curScene)->Update(dt);
 }
 
 void App::Draw()
@@ -139,7 +139,7 @@ void App::Draw()
 	// draw scene
 
 
-	(*curScene)->Draw(wnd.Gfx());	
+	(*curScene)->Draw();	
 	
 
 	// imgui windows

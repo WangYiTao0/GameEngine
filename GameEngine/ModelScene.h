@@ -7,9 +7,9 @@ class ModelScene : public Scene
 public:
 	ModelScene(Graphics& gfx);
 
-	virtual void Update(Keyboard& kbd, Mouse& mouse, float dt) override;
+	virtual void Update(float dt) override;
 
-	virtual void Draw(Graphics& gfx)  override;
+	virtual void Draw()  override;
 private:
 	
 	Graphics& gfx;
