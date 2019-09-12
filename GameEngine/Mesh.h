@@ -5,7 +5,6 @@
 #include <optional>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
-#include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
 class ModelException : public ChiliException
