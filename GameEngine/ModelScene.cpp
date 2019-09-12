@@ -17,12 +17,14 @@ void ModelScene::Draw()
 {
 
 	nano1.Draw(gfx);
-	nano2.Draw(gfx);
+	//nano2.Draw(gfx);
 	nano3.Draw(gfx);
+	nano4.Draw(gfx);
 
 	//imgui windows
 	nano1.ShowWindow("Model 1");
-	nano2.ShowWindow("Model 2");
+	//nano2.ShowWindow("Model 2");
 	nano3.ShowWindow("Model 3");
+	nano4.ShowWindow("model 4");
 
 }

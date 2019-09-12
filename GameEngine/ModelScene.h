@@ -16,4 +16,5 @@ private:
 	Model nano1 { gfx,"Models\\nano_textured\\nanosuit.obj" };
 	Model nano2{ gfx,"Models\\nano_textured\\nanosuit.obj" };
 	ModelWithOutTexture nano3{ gfx, "Models\\nano_hierarchy.gltf" };
+	ModelWithOutTexture nano4{ gfx, "Models\\body\\body2.80.fbx" };
 };
