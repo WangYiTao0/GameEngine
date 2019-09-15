@@ -445,5 +445,8 @@
     <FxCompile Include="HLSL\PhongVSNormalMap.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="HLSL\PhongPSNormalMapObject.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

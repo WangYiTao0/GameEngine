@@ -3,6 +3,7 @@
 #include "BindableCommon.h"
 #include "TransformPixelCbuf.h"
 #include "imgui/imgui.h"
+#include "TransformPixelCbuf.h"
 
 TestPlane::TestPlane(Graphics& gfx, float size)
 {
@@ -23,7 +24,7 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "HLSL\\PhongPSNormalMap.cso"));
+	AddBind(PixelShader::Resolve(gfx, "HLSL\\PhongPSNormalMapObject.cso"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));

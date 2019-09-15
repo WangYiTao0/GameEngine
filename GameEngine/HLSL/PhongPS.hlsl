@@ -45,10 +45,10 @@ Texture2D tex;
 SamplerState splr;
 
 
-float4 main(float3 worldPos : Position, float3 normal : Normal, float2 tc : Texcoord) : SV_Target
+float4 main(float3 viewPos : Position, float3 normal : Normal, float2 tc : Texcoord) : SV_Target
 {
     //fragment to light vector data
-    const float3 vToL = lightPos - worldPos;
+    const float3 vToL = lightPos - viewPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;
 	// attenuation
@@ -73,7 +73,7 @@ float4 main(float3 worldPos : Position, float3 normal : Normal, float2 tc : Texc
     const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity *
     pow(
         max(0.0f, 
-             dot(normalize(-r),normalize(worldPos)
+             dot(normalize(-r), normalize(viewPos)
     )), specularPower);
 	
     //diffuse * tex.diffuse  specular * tex.specular 

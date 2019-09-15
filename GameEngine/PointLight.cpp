@@ -40,7 +40,7 @@ void PointLight::SpawnControlWindow() noexcept
 void PointLight::Reset() noexcept
 {
 	cbData = {};
-	cbData.pos = { 1.5f,14.0f,-4.5f };
+	cbData.pos = { 0.0f,4.0f,-4.5f };
 	cbData.ambient = { 0.05f,0.05f,0.05f };
 	cbData.diffuseColor = { 1.0f,1.0f,1.0f };
 	cbData.diffuseIntensity = 1.0f;

@@ -214,6 +214,10 @@ void Model::ShowWindow(const char* windowName) noexcept
 {
 	pWindow->Show(windowName, *pRoot);
 }
+void Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept
+{
+	pRoot->SetAppliedTransform(tf);
+}
 Model::~Model() noexcept
 {
 }
@@ -328,6 +332,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 	if (hasSpecularMap)
 	{
 		bindablePtrs.push_back(PixelShader::Resolve(gfx, "HLSL\\PhongPSSpecNormalMap.cso"));
+
 		struct PSMaterialConstant
 		{
 			BOOL  normalMapEnabled = TRUE;
@@ -343,7 +348,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 
 		struct PSMaterialConstant
 		{
-			float specularIntensity = 1.6f;
+			float specularIntensity = 0.18f;
 			float specularPower;
 			BOOL  normalMapEnabled = TRUE;
 			float padding[1] = {};

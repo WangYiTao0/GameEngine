@@ -6,6 +6,8 @@ ModelScene::ModelScene(Graphics& gfx)
 	gfx(gfx),
 	Scene("Model Scene")
 {
+	wall.SetRootTransform(DirectX::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
+	tp.SetPos({ 1.5f,0.0f,0.0f });
 }
 
 void ModelScene::Update(float dt)
@@ -22,7 +24,9 @@ void ModelScene::Draw()
 	//nano4.Draw(gfx);
 
 	wall.Draw(gfx);
+	tp.Draw(gfx);
 
+	tp.SpawnControlWindow(gfx);
 	wall.ShowWindow("wall");
 
 	//imgui windows
