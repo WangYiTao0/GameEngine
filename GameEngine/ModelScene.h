@@ -13,8 +13,11 @@ public:
 private:
 	Graphics& gfx;
 
-	Model nano1 { gfx,"Models\\nano_textured\\nanosuit.obj" };
-	Model nano2{ gfx,"Models\\nano_textured\\nanosuit.obj" };
-	ModelWithOutTexture nano3{ gfx, "Models\\nano_hierarchy.gltf" };
-	ModelWithOutTexture nano4{ gfx, "Models\\body\\body2.80.fbx" };
+	//Model nano1 { gfx,"Models\\nano_textured\\nanosuit.obj" };
+//	Model nano2{ gfx,"Models\\nano_textured\\nanosuit.obj" };
+
+	Model wall{ gfx,"Models\\brick_wall\\brick_wall.obj" };
+
+	//ModelWithOutTexture nano3{ gfx, "Models\\nano_hierarchy.gltf" };
+	//ModelWithOutTexture nano4{ gfx, "Models\\body\\body2.80.fbx" };
 };

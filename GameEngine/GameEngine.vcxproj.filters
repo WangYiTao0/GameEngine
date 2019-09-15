@@ -433,10 +433,16 @@
     <FxCompile Include="HLSL\PhongPSNormalMap.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="PhongVSWithoutTex.hlsl">
+    <FxCompile Include="HLSL\PhongPSWithoutTex.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="PhongPSWithoutTex.hlsl">
+    <FxCompile Include="HLSL\PhongVSWithoutTex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\PhongPSSpecNormalMap.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\PhongVSNormalMap.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
