@@ -55,6 +55,9 @@
     <Filter Include="Header Files\Lights">
       <UniqueIdentifier>{d5532d5b-c623-4054-9965-971efcf6076a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS">
+      <UniqueIdentifier>{8ec2cb37-0a04-4178-90c0-1d22e1c0c358}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -191,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="PhysicScene.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ecsComponent.cpp">
+      <Filter>Header Files\ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +397,15 @@
     </ClInclude>
     <ClInclude Include="PhysicScene.h">
       <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ecsComponent.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ecsSystem.hpp">
+      <Filter>Header Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
