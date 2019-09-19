@@ -9,6 +9,7 @@
 #include "GeometryScene.h"
 #include "PhysicScene.h"
 #include <sstream>
+#include "ECS.hpp"
 
 namespace dx = DirectX;
 

@@ -180,6 +180,7 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DxgiInfoManager.cpp" />
+    <ClCompile Include="ECS.cpp" />
     <ClCompile Include="ecsComponent.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
     <ClCompile Include="GeometryScene.cpp" />

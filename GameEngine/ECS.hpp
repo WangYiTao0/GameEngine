@@ -39,7 +39,7 @@ private:
 
 	inline std::pair<unsigned int, std::vector < std::pair<unsigned int, unsigned int>>>* handleToRawType(EntityHandle handle)
 	{
-		(std::pair<unsigned int, std::vector<std::pair<unsigned int, unsigned int>>>*)handle;
+		return (std::pair<unsigned int, std::vector<std::pair<unsigned int, unsigned int>>>*)handle;
 	}
 
 	inline unsigned int handleToEntityIndex(EntityHandle handle)
@@ -52,9 +52,13 @@ private:
 		return handleToRawType(handle)->second;
 	}
 
+	void removeComponentInternal(unsigned int componentId,unsigned int index){}
+
 private:
 	std::vector<BaseECSSystem*> systems;
-	std::map<unsigned int, std::vector<unsigned char>> component;
+	std::map<unsigned int, std::vector<unsigned char>> components;
 	std::vector<std::pair<unsigned int, std::vector<
 		std::pair<unsigned int, unsigned int>>>*> entities;
 };
+
+

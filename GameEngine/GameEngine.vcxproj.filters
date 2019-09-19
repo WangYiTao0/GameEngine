@@ -198,6 +198,9 @@
     <ClCompile Include="ecsComponent.cpp">
       <Filter>Header Files\ECS</Filter>
     </ClCompile>
+    <ClCompile Include="ECS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
