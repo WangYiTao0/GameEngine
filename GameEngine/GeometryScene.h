@@ -13,6 +13,6 @@ public:
 	virtual void Draw()  override;
 private:
 	Graphics& gfx;
-	TestPlane plane;
-	TestCube cube;
+	//TestPlane plane;
+	//TestCube cube;
 };
