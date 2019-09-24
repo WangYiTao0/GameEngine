@@ -20,6 +20,6 @@ void ModelScene::Draw()
 
 	gobber.Draw(gfx);
 
-	gobber.ShowWindow("gobber");
+	gobber.ShowWindow(gfx,"gobber");
 
 }
