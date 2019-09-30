@@ -35,12 +35,14 @@ float4 main(float3 viewPos : Position, float3 viewNormal : Normal, float2 tc : T
     if (normalMapEnabled)
     {
         // unpack normal data
+        // sample and unpack normal data
         float3 tanNormal;
         const float3 normalSample = nmap.Sample(splr, tc).xyz;
         tanNormal.x = normalSample.x * 2.0f - 1.0f;
         tanNormal.y = -normalSample.y * 2.0f + 1.0f;
         tanNormal.z = -normalSample.z * 2.0f + 1.0f;
-        viewNormal = mul(tanNormal, (float3x3) modelView);
+        //bring normal from object space into view space
+        viewNormal = normalize(mul(tanNormal, (float3x3) modelView));
     }
 	// fragment to light vector data
     const float3 vToL = lightPos - viewPos;

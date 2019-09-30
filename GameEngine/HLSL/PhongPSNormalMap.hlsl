@@ -28,6 +28,7 @@ float4 main(float3 viewPos : Position, float3 viewNormal : Normal, float3 tan : 
     // sample normal from map if normal mapping enabled
     if (normalMapEnabled)
     {
+     
         // build the tranform (rotation) into tangent space
         const float3x3 tanToView = float3x3(
             normalize(tan),
@@ -35,12 +36,13 @@ float4 main(float3 viewPos : Position, float3 viewNormal : Normal, float3 tan : 
             normalize(viewNormal)
         );
         // unpack the normal from map into tangent space        
+        // sample and unpack the normal from texture into tangent space
         const float3 normalSample = nmap.Sample(splr, tc).xyz;
         float3 tanNormal;
         tanNormal = normalSample * 2.0f - 1.0f;
         tanNormal.y = -tanNormal.y;
         // bring normal from tanspace into view space
-        viewNormal = mul(tanNormal, tanToView);
+        viewNormal = normalize(mul(tanNormal, tanToView));
     }
 	// fragment to light vector data
     const float3 vToL = lightPos - viewPos;
