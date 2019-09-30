@@ -431,6 +431,12 @@
     <None Include="DXTrace.inl">
       <Filter>Dxerr</Filter>
     </None>
+    <None Include="HLSL\ShaderOptions.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="HLSL\LightOptions.hlsli">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\SolidVS.hlsl">

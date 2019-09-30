@@ -298,6 +298,8 @@
     <None Include="DXGetErrorDescription.inl" />
     <None Include="DXGetErrorString.inl" />
     <None Include="DXTrace.inl" />
+    <None Include="HLSL\LightOptions.hlsli" />
+    <None Include="HLSL\ShaderOptions.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\PhongPSNormalMap.hlsl">
