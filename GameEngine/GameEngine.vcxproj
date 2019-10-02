@@ -300,6 +300,8 @@
     <None Include="DXTrace.inl" />
     <None Include="HLSL\LightOptions.hlsli" />
     <None Include="HLSL\ShaderOptions.hlsli" />
+    <None Include="HLSL\LightVectorData.hlsli" />
+    <None Include="HLSL\Transform.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\PhongPSNormalMap.hlsl">

@@ -437,6 +437,12 @@
     <None Include="HLSL\LightOptions.hlsli">
       <Filter>Shader</Filter>
     </None>
+    <None Include="HLSL\LightVectorData.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="HLSL\Transform.hlsli">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\SolidVS.hlsl">
