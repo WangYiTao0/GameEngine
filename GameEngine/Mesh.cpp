@@ -186,7 +186,7 @@ private:
 	std::unordered_map<int, TransformParameters> transforms;
 };
 
-Model::Model(Graphics& gfx, const std::string& pathString)
+Model::Model(Graphics& gfx, const std::string& pathString, float scale)
 	:
 	pWindow(std::make_unique<ModelWindow>())
 {
@@ -210,7 +210,7 @@ Model::Model(Graphics& gfx, const std::string& pathString)
 	for (size_t i = 0; i < pScene->mNumMeshes; i++)
 	{
 		//analyze
-		meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i],pScene->mMaterials,pathString));
+		meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i],pScene->mMaterials,pathString,scale));
 	}
 	int nextId = 0;
 	//recursion fuction
@@ -237,7 +237,7 @@ void Model::Draw(Graphics& gfx) const noxnd
 }
 //analize
 // take reference node struct from assimp
-std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const aiMaterial* const* pMaterials, const std::filesystem::path& path)
+std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale)
 {
 	using namespace std::string_literals;
 	using Dvtx::VertexLayout;
@@ -306,7 +306,6 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 	const auto meshTag = path.string() + "%" + mesh.mName.C_Str();
 
-	const float scale = 6.0f;
 
 	if (hasDiffuseMap && hasNormalMap && hasSpecularMap)
 	{

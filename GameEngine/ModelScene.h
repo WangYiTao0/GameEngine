@@ -14,8 +14,8 @@ public:
 private:
 	Graphics& gfx;
 
-	Model gobber{ gfx,"Models\\gobber\\GoblinX.obj" };
-	//Model gobber{ gfx,"Models\\body\\body2.80.fbx" };
-	//Model nano1 { gfx,"Models\\nano_textured\\nanosuit.obj" };
-	//Model nano2{ gfx,"Models\\nano_textured\\nanosuit.obj" };
+	Model gobber{ gfx,"Models\\gobber\\GoblinX.obj",6.0f };
+	Model wall{ gfx,"Models\\brick_wall\\brick_wall.obj",6.0f };
+	TestPlane tp{ gfx,6.0 };
+	Model nano{ gfx,"Models\\nano_textured\\nanosuit.obj",2.0f };
 };
