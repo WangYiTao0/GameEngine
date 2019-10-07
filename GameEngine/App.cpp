@@ -28,7 +28,7 @@ App::App()
 
 	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
-	scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	curScene = scenes.begin();
 	OutoutSceneName();
 }

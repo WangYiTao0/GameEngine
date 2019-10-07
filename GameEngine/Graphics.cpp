@@ -17,6 +17,8 @@ namespace dx = DirectX;
 
 Graphics::Graphics(HWND hWnd, int width, int height)
 {
+
+
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
 	sd.BufferDesc.Height = 0;

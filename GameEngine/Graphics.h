@@ -85,4 +85,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDSV;
 	//Microsoft::WRL::ComPtr<ID3D11Buffer>
+
+	bool mVsyncEnable;
+	int mVideoCardMemory;// graphic card 
+	char mVideoCardDescription[128];//graphic card name
 };
