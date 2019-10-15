@@ -43,7 +43,7 @@ App::App(const std::string& commandLine)
 	}
 
 	LightType = PointLightType;
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 4000.0f));
 
 	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
