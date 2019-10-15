@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <filesystem>
 #include "imgui/imgui.h"
+#include "ChiliXM.h"
 
 class ModelException : public ChiliException
 {
@@ -58,6 +59,7 @@ public:
 	Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noxnd;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
+	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	int GetId() const noexcept;
 	void ShowTree(Node*& pSelectedNode) const noexcept;
 	template<class T>

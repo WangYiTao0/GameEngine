@@ -176,6 +176,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChiliException.cpp" />
     <ClCompile Include="ChiliTimer.cpp" />
+    <ClCompile Include="ChiliXM.cpp" />
     <ClCompile Include="CommonMath.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
     <ClCompile Include="Drawable.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="ChiliMath.h" />
     <ClInclude Include="ChiliTimer.h" />
     <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="ChiliXM.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CommonMath.h" />
     <ClInclude Include="ConditionalNoexcept.h" />
