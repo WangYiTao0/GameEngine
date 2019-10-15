@@ -9,6 +9,8 @@
 #include "IntersectData.h"
 #include <set>
 #include "Scene.h"
+#include "NormalMapTwerker.h"
+#include <shellapi.h>
 
 
 
@@ -25,7 +27,7 @@ private:
 	}LightType;
 
 public:
-	App();
+	App(const std::string& commandLine = "");
 	//master frame / message loop
 	int Go();
 	~App();
@@ -38,6 +40,7 @@ private:
 	void OutoutSceneName()const;
 	void CycleScenes();
 private:
+	std::string commandLine;
 	bool showDemoWindow = false;
 	int x = 0, y = 0;
 	ImguiManager imgui;

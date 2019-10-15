@@ -265,6 +265,7 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="NormalMapTwerker.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="PhysicScene.h" />
     <ClInclude Include="PixelShader.h" />

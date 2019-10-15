@@ -200,7 +200,6 @@ Model::Model(Graphics& gfx, const std::string& pathString, float scale)
 		aiProcess_GenNormals|
 		aiProcess_CalcTangentSpace
 	);
-
 	if (pScene == nullptr)
 	{
 		throw ModelException(__LINE__, __FILE__, imp.GetErrorString());
