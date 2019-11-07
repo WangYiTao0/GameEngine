@@ -64,6 +64,9 @@
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{40867489-196c-4e1a-a7f5-3447a9fddedc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\Common">
+      <UniqueIdentifier>{abec6840-f22d-49b7-b8c0-8e0778805c94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -452,17 +455,17 @@
     <None Include="DXTrace.inl">
       <Filter>Dxerr</Filter>
     </None>
-    <None Include="HLSL\ShaderOptions.hlsli">
-      <Filter>Shader</Filter>
+    <None Include="HLSL\Transform.hlsli">
+      <Filter>Shader\Common</Filter>
     </None>
     <None Include="HLSL\LightOptions.hlsli">
-      <Filter>Shader</Filter>
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="HLSL\ShaderOptions.hlsli">
+      <Filter>Shader\Common</Filter>
     </None>
     <None Include="HLSL\LightVectorData.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="HLSL\Transform.hlsli">
-      <Filter>Shader</Filter>
+      <Filter>Shader\Common</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
