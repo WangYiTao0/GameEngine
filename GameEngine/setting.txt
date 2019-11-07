@@ -1,0 +1,29 @@
+$(SolutionDir)GameEngine\libs\$(Platform)\$(Configuration)\
+$(SolutionDir)GameEngine\include
+$(SolutionDir)GameEngine\libs\assimp
+
+
+HLSL Path
+
+std::wstring shaderfolder = L"";
+#pragma region DetermineShaderPath
+	if (IsDebuggerPresent() == TRUE)
+	{
+#ifdef _DEBUG //Debug Mode
+#ifdef _WIN64 //x64
+		shaderfolder = L"..\\x64\\Debug\\";
+#else  //x86 (Win32)
+		shaderfolder = L"..\\Debug\\";
+#endif
+#else //Release Mode
+#ifdef _WIN64 //x64
+		shaderfolder = L"..\\x64\\Release\\";
+#else  //x86 (Win32)
+		shaderfolder = L"..\\Release\\";
+#endif
+#endif
+	}
+
+$(SolutionDir)\$(Configuration)\$(Platform)\%(Filename).cso
+
+$(IntDir)\%(Filename).cso
