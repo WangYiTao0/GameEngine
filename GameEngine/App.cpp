@@ -5,6 +5,8 @@
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
+#include "TexturePreprocessor.h""
+#include <shellapi.h>
 #include "ModelScene.h"
 #include "GeometryScene.h"
 #include "PhysicScene.h"
@@ -30,19 +32,53 @@ App::App(const std::string& commandLine)
 		int nArgs;
 		const auto pLineW = GetCommandLineW();
 		const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
-		if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--ntwerk-rotx180")
+		if (nArgs >= 3 && std::wstring(pArgs[1]) == L"--twerk-objnorm")
+		{
+			const std::wstring pathInWide = pArgs[2];
+			TexturePreprocessor::FlipYAllNormalMapsInObj(
+				std::string(pathInWide.begin(), pathInWide.end())
+			);
+			throw std::runtime_error("Normal maps all processed successfully. Just kidding about that whole runtime error thing.");
+		}
+		else if (nArgs >= 3 && std::wstring(pArgs[1]) == L"--twerk-flipy")
 		{
 			const std::wstring pathInWide = pArgs[2];
 			const std::wstring pathOutWide = pArgs[3];
-			NormalMapTwerker::RotateXAxis180(
+			TexturePreprocessor::FlipYNormalMap(
 				std::string(pathInWide.begin(), pathInWide.end()),
 				std::string(pathOutWide.begin(), pathOutWide.end())
 			);
 			throw std::runtime_error("Normal map processed successfully. Just kidding about that whole runtime error thing.");
 		}
+		else if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--twerk-validate")
+		{
+			const std::wstring minWide = pArgs[2];
+			const std::wstring maxWide = pArgs[3];
+			const std::wstring pathWide = pArgs[4];
+			TexturePreprocessor::ValidateNormalMap(
+				std::string(pathWide.begin(), pathWide.end()), std::stof(minWide), std::stof(maxWide)
+			);
+			throw std::runtime_error("Normal map validated successfully. Just kidding about that whole runtime error thing.");
+		}
 	}
+	//if (this->commandLine != "")
+	//{
+	//	int nArgs;
+	//	const auto pLineW = GetCommandLineW();
+	//	const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
+	//	if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--ntwerk-rotx180")
+	//	{
+	//		const std::wstring pathInWide = pArgs[2];
+	//		const std::wstring pathOutWide = pArgs[3];
+	//		NormalMapTwerker::RotateXAxis180(
+	//			std::string(pathInWide.begin(), pathInWide.end()),
+	//			std::string(pathOutWide.begin(), pathOutWide.end())
+	//		);
+	//		throw std::runtime_error("Normal map processed successfully. Just kidding about that whole runtime error thing.");
+	//	}
+	//}
 
-	LightType = PointLightType;
+	lightType = LightType::PointLightType;
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 4000.0f));
 
 	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
@@ -107,10 +143,10 @@ void App::HandleInput(float dt)
 			showDemoWindow = true;
 			break;
 		case VK_NUMPAD0:
-			LightType = DirectionLightType;
+			lightType = LightType::DirectionLightType;
 			break;
 		case VK_NUMPAD1:
-			LightType = PointLightType;
+			lightType = LightType::PointLightType;
 			break;
 		}
 	}
@@ -183,25 +219,25 @@ void App::DoFrame()
 
 	wnd.Gfx().SetCamera(cam.GetMatrix());
 
-	switch (LightType)
+	switch (lightType)
 	{
-	case App::DirectionLightType:	
+	case App::LightType::DirectionLightType:
 		{
 			directionLight.Bind(wnd.Gfx());
 			directionLight.Draw(wnd.Gfx());
 			directionLight.SpawnControlWindow();
 			break;
 		}
-	case App::PointLightType:	
+	case App::LightType::PointLightType:
 		{
 			pointLight.Bind(wnd.Gfx(), cam.GetMatrix());
 			pointLight.Draw(wnd.Gfx());
 			pointLight.SpawnControlWindow();
 			break;
 		}
-	case App::SpotLightType:
+	case App::LightType::SpotLightType:
 		break;
-	case App::MaxType:
+	case App::LightType::MaxType:
 		break;
 	default:
 		break;

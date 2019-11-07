@@ -17,14 +17,14 @@
 class App
 {
 private:
-	enum 
+	enum class LightType
 	{
 		DirectionLightType = 0,
 		PointLightType,
 		SpotLightType,
 
 		MaxType
-	}LightType;
+	} lightType;
 
 public:
 	App(const std::string& commandLine = "");

@@ -210,6 +210,7 @@
     <ClCompile Include="TestCube.cpp" />
     <ClCompile Include="TestPlane.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TexturePreprocessor.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCbuf.cpp" />
     <ClCompile Include="TransformPixelCbuf.cpp" />
@@ -284,6 +285,7 @@
     <ClInclude Include="TestCube.h" />
     <ClInclude Include="TestPlane.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TexturePreprocessor.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCbuf.h" />
     <ClInclude Include="TransformPixelCbuf.h" />
