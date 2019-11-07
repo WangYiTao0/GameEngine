@@ -67,6 +67,9 @@
     <Filter Include="Shader\Common">
       <UniqueIdentifier>{abec6840-f22d-49b7-b8c0-8e0778805c94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tool">
+      <UniqueIdentifier>{a3c19e0d-1456-4e79-ba7c-6ed4fa956495}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -218,6 +221,15 @@
     </ClCompile>
     <ClCompile Include="TexturePreprocessor.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencil_Mask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendState.cpp">
+      <Filter>Source Files\Binable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +451,15 @@
     </ClInclude>
     <ClInclude Include="TexturePreprocessor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendState.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencil_Mask.h">
+      <Filter>Header Files\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

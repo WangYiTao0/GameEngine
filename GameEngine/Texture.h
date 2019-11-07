@@ -20,6 +20,8 @@ namespace Bind
 	protected:
 		bool hasAlpha = false;
 		std::string path;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureView;
+	//	Microsoft::WRL::ComPtr<ID3D11Resource> pTexture = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureView = nullptr;
+		
 	};
 }

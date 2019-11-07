@@ -10,3 +10,5 @@
 #include "VertexShader.h"
 #include "Texture.h"
 #include "Sampler.h"
+#include "BlendState.h"
+#include "DepthStencil_Mask.h"

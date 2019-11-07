@@ -4,6 +4,9 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include <vector>
+#include <memory>
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
 #include "DxgiInfoManager.h"
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
@@ -84,7 +87,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;//configuring a pipeline in executing or issuing rendering command
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDSV;
+	Microsoft::WRL::ComPtr<ID3D11BlendState> pBlendState;
 	//Microsoft::WRL::ComPtr<ID3D11Buffer>
+
+	std::unique_ptr<DirectX::SpriteBatch> spriteBatch;
+	std::unique_ptr<DirectX::SpriteFont> spriteFont;
 
 	bool mVsyncEnable;
 	int mVideoCardMemory;// graphic card 

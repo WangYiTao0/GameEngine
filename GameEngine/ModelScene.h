@@ -19,6 +19,6 @@ private:
 	//TestPlane tp{ gfx,6.0 };
 	//Model nano{ gfx,"Models\\nano_textured\\nanosuit.obj",2.0f };
 
-	Model sponza{ gfx,"Models\\sponza\\sponza.obj",1.0f / 20.0f };
+	Model sponza{ gfx,"Data\\Models\\sponza\\sponza.obj",1.0f / 20.0f };
 
 };

@@ -80,6 +80,7 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 
 	//bind depth state
 	pContext->OMSetDepthStencilState(pDSState.Get(), 1u);
+
 	// create depth stensil texture
 	wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
 	D3D11_TEXTURE2D_DESC descDepth = {};
@@ -93,6 +94,26 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 	descDepth.Usage = D3D11_USAGE_DEFAULT;
 	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	GFX_THROW_INFO(pDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
+
+	//Create Blend State
+	//D3D11_RENDER_TARGET_BLEND_DESC rtbd = { 0 };
+	//rtbd.BlendEnable = true;
+	//rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
+	//rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
+	//rtbd.BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+	//rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+	//rtbd.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
+	//rtbd.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+	//rtbd.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE::D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	//D3D11_BLEND_DESC blendDesc = { 0 };
+	//blendDesc.RenderTarget[0] = rtbd;
+
+	//GFX_THROW_INFO(pDevice->CreateBlendState(&blendDesc, pBlendState.GetAddressOf()));
+
+	//spriteBatch = std::make_unique<DirectX::SpriteBatch>(pContext.Get());
+	//spriteFont = std::make_unique<DirectX::SpriteFont>(pDevice.Get(), L"Data\\Fonts\\comic_sans_ms_16.spritefont");
+
 
 	//Create view of depth stensil texture
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
@@ -169,6 +190,13 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 	const float color[] = { red,green,blue,1.0f };
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+
+	//pContext->OMSetBlendState(pBlendState.Get(), NULL, 0xFFFFFFFF);
+
+	////Draw Text
+	//spriteBatch->Begin();
+	//spriteFont->DrawString(spriteBatch.get(),"Hello World", DirectX::XMFLOAT2(0, 0), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
+	//spriteBatch->End();
 }
 
 void Graphics::DrawIndexed(UINT count) noxnd

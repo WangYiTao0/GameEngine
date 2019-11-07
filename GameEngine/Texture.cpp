@@ -2,6 +2,9 @@
 #include "Surface.h"
 #include "GraphicsThrowMacros.h"
 #include "BindableCodex.h"
+#include "StringHelper.h"
+#include <WICTextureLoader.h>
+#include <DDSTextureLoader.h>
 
 namespace Bind
 {
@@ -19,6 +22,12 @@ namespace Bind
 		const Surface s = Surface::FromFile(path);
 		hasAlpha = s.AlphaLoaded();
 
+	/*	HRESULT hr = DirectX::CreateWICTextureFromFile(
+			GetDevice(gfx),
+			StringHelper::StringToWide(path).c_str(),
+			this->pTexture.GetAddressOf(),
+			this->pTextureView.GetAddressOf());*/
+
 		// create texture resource
 		D3D11_TEXTURE2D_DESC textureDesc = {};
 		textureDesc.Width = s.GetWidth();
@@ -35,10 +44,15 @@ namespace Bind
 		//D3D11_SUBRESOURCE_DATA sd = {};
 		//sd.pSysMem = s.GetBufferPtr();
 		//sd.SysMemPitch = s.GetWidth() * sizeof(Surface::Color);
-		wrl::ComPtr<ID3D11Texture2D> pTexture;
+	
+		//ID3D11Texture2D* p2DTexture = nullptr;
+		
+
 		//GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(
 		//	&textureDesc, &nullptr, &pTexture
 		//));
+
+		wrl::ComPtr<ID3D11Texture2D> pTexture;
 
 		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(
 			&textureDesc, nullptr, &pTexture
@@ -50,6 +64,9 @@ namespace Bind
 			s.GetBufferPtrConst(),
 			s.GetWidth() * sizeof(Surface::Color), 0u
 		);
+
+		//pTexture = static_cast<ID3D11Texture2D*>(p2DTexture);
+
 		// create the resource view on the texture
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Format = textureDesc.Format;

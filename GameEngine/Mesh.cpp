@@ -327,6 +327,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 	const auto meshTag = path.string() + "%" + mesh.mName.C_Str();
 
+	//bindablePtrs.push_back(BlendState::Resolve(gfx));
 
 	if (hasDiffuseMap && hasNormalMap && hasSpecularMap)
 	{
@@ -372,6 +373,8 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		bindablePtrs.push_back(PixelShader::Resolve(gfx, "HLSL\\PhongPSSpecNormalMap.cso"));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
+
+		
 
 		Node::PSMaterialConstantFullmonte pmc;
 		pmc.specularPower = shininess;
