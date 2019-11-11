@@ -13,10 +13,15 @@
 #include <sstream>
 #include "ECS.hpp"
 
+
+
+
 namespace dx = DirectX;
 
 const int width = 1600;
-const int  height= 900;
+const int height= 900;
+const float nearZ = 0.1f;
+const float farZ = 4000.0f;
 GDIPlusManager gdipm;
 
 App::App(const std::string& commandLine)
@@ -27,6 +32,11 @@ App::App(const std::string& commandLine)
 	directionLight(wnd.Gfx()),
 	cam(wnd.Gfx())
 {
+	// Create the cpu object.
+	m_Cpu = std::make_unique<CpuClass>();
+
+	// Initialize the cpu object.
+	m_Cpu->Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 	if (this->commandLine != "")
 	{
@@ -80,9 +90,9 @@ App::App(const std::string& commandLine)
 	//}
 
 	lightType = LightType::PointLightType;
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 4000.0f));
+	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(PI / 3.0f, static_cast<float>(width) / static_cast<float>(height), nearZ, farZ));
 
-	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	curScene = scenes.begin();
@@ -193,11 +203,19 @@ void App::update(float dt)
 {
 	// update scene
 	(*curScene)->Update(dt);
+	m_Cpu->Frame();
 }
 
 void App::Draw()
 {	
-	
+	std::string cpuPrecentage = std::to_string(m_Cpu.get()->GetCpuPercentage()) + "%";
+	ImGui::Begin("Cpu");
+	ImGui::Text(cpuPrecentage.c_str());
+	ImGui::End();
+
+	ImGui::BeginMainMenuBar();
+	ImGui::Button("File");
+	ImGui::EndMainMenuBar();
 
 	// draw scene
 

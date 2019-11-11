@@ -6,6 +6,7 @@
 
 TestCube::TestCube(Graphics& gfx, float size)
 {
+
 	std::string shaderfolder = "";
 #pragma region DetermineShaderPath
 	if (IsDebuggerPresent() == TRUE)
@@ -24,10 +25,10 @@ TestCube::TestCube(Graphics& gfx, float size)
 #endif
 #endif
 	}
+	this->size = size;
 
 	using namespace Bind;
 	namespace dx = DirectX;
-
 	auto model = Cube::MakeIndependentTextured();
 	model.Transform(dx::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
@@ -35,14 +36,15 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	AddBind(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
-	AddBind(Texture::Resolve(gfx, "Images\\brickwall_normal.jpg", 1u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 1u));
 
 	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
+	//AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
+	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 
@@ -58,7 +60,7 @@ void TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept
 	this->pos = pos;
 }
 
-DirectX::XMFLOAT3 TestCube::GetPos() const noexcept
+DirectX::XMFLOAT3 TestCube::GetPos() noexcept
 {
 	return pos;
 }
@@ -100,4 +102,11 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 		}
 	}
 	ImGui::End();
+}
+
+DirectX::BoundingBox TestCube::GetLocalBoundingBox()  noexcept
+{
+	auto boundingBox = std::make_unique<DirectX::BoundingBox>(pos, DirectX::XMFLOAT3(this->size / 2.0f, this->size / 2.0f, this->size / 2.0f));
+	// TODO: insert return statement here
+	return *boundingBox;
 }

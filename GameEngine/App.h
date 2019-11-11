@@ -13,6 +13,7 @@
 #include <shellapi.h>
 
 
+#include "CpuClass.h"
 
 
 class App
@@ -51,6 +52,11 @@ private:
 	Camera cam;
 	PointLight pointLight;
 	DirectionLight directionLight;
+
+	
+
+	std::unique_ptr<CpuClass> m_Cpu = nullptr;
+
 
 	std::vector <std::unique_ptr<Scene>> scenes;
 	std::vector <std::unique_ptr<Scene>>::iterator curScene;

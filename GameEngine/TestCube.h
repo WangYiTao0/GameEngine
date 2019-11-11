@@ -1,15 +1,17 @@
 #pragma once
 #include "Drawable.h"
-
+#include <DirectXCollision.h>
 class TestCube : public Drawable
 {
 public:
 	TestCube(Graphics& gfx, float size);
 	void SetPos(DirectX::XMFLOAT3 pos) noexcept;
-	DirectX::XMFLOAT3 GetPos()const noexcept;
+	DirectX::XMFLOAT3 GetPos()noexcept;
 	void SetRotation(float roll, float pitch, float yaw) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void SpawnControlWindow(Graphics& gfx) noexcept;
+	DirectX::BoundingBox GetLocalBoundingBox() noexcept;
+
 private:
 	struct PSMaterialConstant
 	{
@@ -22,4 +24,5 @@ private:
 	float roll = 0.0f;
 	float pitch = 0.0f;
 	float yaw = 0.0f;
+	float size = 0.0f;
 };

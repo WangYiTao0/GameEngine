@@ -4,6 +4,8 @@
 #include "TransformPixelCbuf.h"
 #include "imgui/imgui.h"
 #include "TransformPixelCbuf.h"
+#include "Sampler.h"
+#include "BlendState.h"
 
 TestPlane::TestPlane(Graphics& gfx, float size)
 {
@@ -29,25 +31,31 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	using namespace Bind;
 	namespace dx = DirectX;
 
+	BlendState::ResetBlendState(gfx);
+
 	auto model = Plane::Make();
 	model.Transform(dx::XMMatrixScaling(size, size, 1.0f));
 	const auto geometryTag = "&plane." + std::to_string(size);
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
+	AddBind(Sampler::Resolve(gfx));
 
-	AddBind(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
-	//AddBind(Texture::Resolve(gfx, "Images\\brickwall_normal.jpg", 2u));
-	AddBind(Texture::Resolve(gfx, "Images\\brickwall_normal_obj.png", 2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
+	//AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal_obj.png", 2u));
+
 
 	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
+	//AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPS.cso"));
 	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
 
 }

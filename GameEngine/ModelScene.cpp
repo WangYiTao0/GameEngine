@@ -12,7 +12,8 @@ ModelScene::ModelScene(Graphics& gfx)
 	//tp.SetPos({ 12.0f,0.0f,0.0f });
 	//gobber.SetRootTransform(dx::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
 	//nano.SetRootTransform(dx::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
-
+	sponza.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f)
+		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 80.0f, 0.0f));
 }
 
 void ModelScene::Update(float dt)
