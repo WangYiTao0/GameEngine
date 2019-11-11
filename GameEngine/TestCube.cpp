@@ -6,6 +6,25 @@
 
 TestCube::TestCube(Graphics& gfx, float size)
 {
+	std::string shaderfolder = "";
+#pragma region DetermineShaderPath
+	if (IsDebuggerPresent() == TRUE)
+	{
+#ifdef _DEBUG //Debug Mode
+#ifdef _WIN64 //x64
+		shaderfolder = "..\\x64\\Debug\\";
+#else  //x86 (Win32)
+		shaderfolder = "..\\Debug\\";
+#endif
+#else //Release Mode
+#ifdef _WIN64 //x64
+		shaderfolder = "..\\x64\\Release\\";
+#else  //x86 (Win32)
+		shaderfolder = "..\\Release\\";
+#endif
+#endif
+	}
+
 	using namespace Bind;
 	namespace dx = DirectX;
 
@@ -19,11 +38,11 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(Texture::Resolve(gfx, "Images\\brickwall.jpg"));
 	AddBind(Texture::Resolve(gfx, "Images\\brickwall_normal.jpg", 1u));
 
-	auto pvs = VertexShader::Resolve(gfx, "HLSL\\PhongVS.cso");
+	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "HLSL\\PhongPSNormalMap.cso"));
+	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 

@@ -70,6 +70,9 @@
     <Filter Include="Header Files\Tool">
       <UniqueIdentifier>{a3c19e0d-1456-4e79-ba7c-6ed4fa956495}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lights">
+      <UniqueIdentifier>{c6201f08-c05e-4752-bcca-c765cbe2881c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -156,9 +159,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SolidSphere.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -175,9 +175,6 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="TransformPixelCbuf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AABB.cpp">
@@ -230,6 +227,12 @@
     </ClCompile>
     <ClCompile Include="BlendState.cpp">
       <Filter>Source Files\Binable</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCube.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\Lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

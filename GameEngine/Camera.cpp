@@ -3,11 +3,17 @@
 #include "ChiliMath.h"
 namespace dx = DirectX;
 
-Camera::Camera() 
+//Camera::Camera() 
+//{
+//	Reset();
+//}
+
+Camera::Camera(Graphics& gfx)
+	:
+	gfx(gfx)
 {
 	Reset();
 }
-
 
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 {
@@ -75,3 +81,36 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 		pos.z + translation.z
 	};
 }
+
+
+bool Camera::GetVisibility(DirectX::XMFLOAT3 Position)
+{
+	DirectX::XMVECTOR worldPos, viewPos, ProjPos;
+	DirectX::XMFLOAT3 ProjPosF;
+	worldPos = DirectX::XMLoadFloat3(&Position);
+	viewPos = DirectX::XMVector3TransformCoord(worldPos, GetMatrix());
+	ProjPos = DirectX::XMVector3TransformCoord(viewPos, gfx.GetProjection());
+	DirectX::XMStoreFloat3(&ProjPosF, ProjPos);
+
+	if (-1.0f < ProjPosF.x && ProjPosF.x < 1.0f &&
+		-1.0f < ProjPosF.y && ProjPosF.y < 1.0f &&
+		0.0f < ProjPosF.z && ProjPosF.z < 1.0f)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+/*
+void Ball::Draw()
+{
+	CCamera* camera;
+	camera = CManager::GetSceme()->GetGameObject<CCamera>();
+	if(camera->GetVisibility(m_Postion)==false)
+	{
+		return;
+	}
+}
+*/

@@ -8,20 +8,10 @@ namespace Bind
 	{
 		INFOMAN(gfx);
 
-		//Create Blend State
-		D3D11_RENDER_TARGET_BLEND_DESC rtbd = { 0 };
-		rtbd.BlendEnable = true;
-		rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
-		rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
-		rtbd.BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
-		rtbd.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
-		rtbd.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		rtbd.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE::D3D11_COLOR_WRITE_ENABLE_ALL;
-
 		D3D11_BLEND_DESC blendDesc = { 0 };
-		blendDesc.RenderTarget[0] = rtbd;
+		blendDesc.RenderTarget[0] = DefaultBlendState();
 
+		pBlendState.Get()->GetDesc(&blendDesc);
 		GFX_THROW_INFO(GetDevice(gfx)->CreateBlendState(&blendDesc, pBlendState.GetAddressOf()));
 	}
 
@@ -46,4 +36,23 @@ namespace Bind
 		return  GenerateUID();
 	}
 
+	D3D11_RENDER_TARGET_BLEND_DESC BlendState::DefaultBlendState()
+	{
+		D3D11_RENDER_TARGET_BLEND_DESC rtbd = { 0 };
+		rtbd.BlendEnable = true;
+		rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
+		rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
+		rtbd.BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+		rtbd.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
+		rtbd.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		rtbd.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE::D3D11_COLOR_WRITE_ENABLE_ALL;
+
+		return rtbd;
+	}
+
+	void BlendState::ResetBlendState(Graphics& gfx)
+	{
+		GetContext(gfx)->OMSetBlendState(0, 0, 0xffffffff);
+	}
 }

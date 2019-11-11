@@ -24,7 +24,8 @@ App::App(const std::string& commandLine)
 	commandLine(commandLine),
 	wnd(width, height, "Game Engine"),
 	pointLight(wnd.Gfx()),
-	directionLight(wnd.Gfx())
+	directionLight(wnd.Gfx()),
+	cam(wnd.Gfx())
 {
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 	if (this->commandLine != "")

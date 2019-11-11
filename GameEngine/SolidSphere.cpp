@@ -6,6 +6,25 @@
 
 SolidSphere::SolidSphere(Graphics& gfx, float radius)
 {
+
+	std::string shaderfolder = "";
+#pragma region DetermineShaderPath
+	if (IsDebuggerPresent() == TRUE)
+	{
+#ifdef _DEBUG //Debug Mode
+#ifdef _WIN64 //x64
+		shaderfolder = "..\\x64\\Debug\\";
+#else  //x86 (Win32)
+		shaderfolder = "..\\Debug\\";
+#endif
+#else //Release Mode
+#ifdef _WIN64 //x64
+		shaderfolder = "..\\x64\\Release\\";
+#else  //x86 (Win32)
+		shaderfolder = "..\\Release\\";
+#endif
+#endif
+	}
 	using namespace Bind;
 	namespace dx = DirectX;
 
@@ -16,12 +35,12 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 	AddBind(VertexBuffer::Resolve(gfx,geometryTag,model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx,geometryTag,model.indices));
 
-	auto pvs =VertexShader::Resolve(gfx, "HLSL\\SolidVS.cso");
+	auto pvs =VertexShader::Resolve(gfx, shaderfolder + "SolidVS.cso");
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve (gfx, "HLSL\\SolidPS.cso"));
+	AddBind(PixelShader::Resolve (gfx, shaderfolder + "SolidPS.cso"));
 
 	struct PSColorConstant
 	{
