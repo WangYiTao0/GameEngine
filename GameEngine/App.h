@@ -38,7 +38,7 @@ private:
 	void update(float dt);
 	void Draw();
 	void DoFrame();
-	void ShowImguiDemoWindow();
+	void EngineState();
 	void OutoutSceneName()const;
 	void CycleScenes();
 private:

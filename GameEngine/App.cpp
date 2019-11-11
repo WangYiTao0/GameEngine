@@ -208,15 +208,6 @@ void App::update(float dt)
 
 void App::Draw()
 {	
-	std::string cpuPrecentage = std::to_string(m_Cpu.get()->GetCpuPercentage()) + "%";
-	ImGui::Begin("Cpu");
-	ImGui::Text(cpuPrecentage.c_str());
-	ImGui::End();
-
-	ImGui::BeginMainMenuBar();
-	ImGui::Button("File");
-	ImGui::EndMainMenuBar();
-
 	// draw scene
 
 
@@ -225,7 +216,7 @@ void App::Draw()
 	// imgui windows
 	cam.SpawnControlWindow();
 
-	ShowImguiDemoWindow();
+	EngineState();
 
 
 }
@@ -262,9 +253,6 @@ void App::DoFrame()
 		break;
 	}
 
-
-
-
 	HandleInput(dt);
 	update(dt);
 	Draw();
@@ -273,12 +261,27 @@ void App::DoFrame()
 	wnd.Gfx().EndFrame();
 }
 
-void App::ShowImguiDemoWindow()
+void App::EngineState()
 {
 	if (showDemoWindow)
 	{
 		ImGui::ShowDemoWindow(&showDemoWindow);
 	}
+	std::string cpuPrecentage = std::to_string(m_Cpu.get()->GetCpuPercentage()) + "%";
+	// imgui window to control simulation speed
+	if (ImGui::Begin("Game State"))
+	{
+		ImGui::Text("CPU: %s %",cpuPrecentage.c_str());
+		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 6.0f, "%.4f", 3.2f);
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING (hold spacebar to pause)");
+	}
+	ImGui::End();
+
+	ImGui::BeginMainMenuBar();
+	ImGui::Button("File");
+	ImGui::EndMainMenuBar();
+
 }
 
 void App::OutoutSceneName() const
