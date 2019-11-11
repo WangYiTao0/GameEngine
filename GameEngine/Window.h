@@ -1,6 +1,6 @@
 #pragma once
 #include "WindowHelper.h"
-#include "ChiliException.h"
+#include "BaseException.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
@@ -9,9 +9,9 @@
 class Window
 {
 public:
-	class Exception : public ChiliException
+	class Exception : public BaseException
 	{
-		using ChiliException::ChiliException;
+		using BaseException::BaseException;
 	public:
 		static std::string TranslateErrorCode(HRESULT hr) noexcept;
 	};

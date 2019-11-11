@@ -13,9 +13,6 @@
 #include <sstream>
 #include "ECS.hpp"
 
-
-
-
 namespace dx = DirectX;
 
 const int width = 1600;
@@ -209,16 +206,11 @@ void App::update(float dt)
 void App::Draw()
 {	
 	// draw scene
-
-
 	(*curScene)->Draw();	
 	
 	// imgui windows
 	cam.SpawnControlWindow();
-
-	EngineState();
-
-
+	SpawnEngineStateWindow();
 }
 
 void App::DoFrame()
@@ -261,7 +253,7 @@ void App::DoFrame()
 	wnd.Gfx().EndFrame();
 }
 
-void App::EngineState()
+void App::SpawnEngineStateWindow()
 {
 	if (showDemoWindow)
 	{

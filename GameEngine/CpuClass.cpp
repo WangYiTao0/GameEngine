@@ -35,7 +35,7 @@ void CpuClass::Initialize()
 		m_canReadCpu = false;
 	}
 
-	m_lastSampleTime = GetTickCount64();
+	m_lastSampleTime = static_cast<unsigned long>(GetTickCount64());
 
 	m_cpuUsage = 0;
 
@@ -58,9 +58,9 @@ void CpuClass::Frame()
 
 	if (m_canReadCpu)
 	{
-		if ((m_lastSampleTime + 1000) < GetTickCount64())
+		if ((m_lastSampleTime + static_cast < unsigned long>(1000)) < static_cast<unsigned long>(GetTickCount64()))
 		{
-			m_lastSampleTime = GetTickCount64();
+			m_lastSampleTime = static_cast<unsigned long>(GetTickCount64());
 
 			PdhCollectQueryData(m_queryHandle);
 

@@ -6,7 +6,7 @@ ECS::~ECS()
 	{
 		size_t typeSize = BaseECSComponent::getTypeSize(it->first);
 		auto freefn = BaseECSComponent::GetTypeFreeFunction(it->first);
-		for (unsigned int i = 0; i < it->second.size(); i += typeSize)
+		for (unsigned int i = 0; i < it->second.size(); i += static_cast<unsigned int>(typeSize))
 		{
 			freefn((BaseECSComponent*)& it->second[i]);
 		}

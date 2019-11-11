@@ -13,7 +13,7 @@
 #include "imgui/imgui.h"
 #include "DirectXMathHelper.h"
 
-class ModelException : public ChiliException
+class ModelException : public BaseException
 {
 public:
 	ModelException(int line, const char* file, std::string note) noexcept;

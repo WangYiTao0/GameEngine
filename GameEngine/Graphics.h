@@ -1,6 +1,6 @@
 #pragma once
 #include "WindowHelper.h"
-#include "ChiliException.h"
+#include "BaseException.h"
 #include <d3d11.h>
 #include <wrl.h>
 #include <vector>
@@ -24,9 +24,9 @@ class Graphics
 {
 	friend Bind::Bindable;
 public:
-	class Exception :public ChiliException
+	class Exception :public BaseException
 	{
-		using ChiliException::ChiliException;
+		using BaseException::BaseException;
 	};
 	class HrException :public Exception
 	{

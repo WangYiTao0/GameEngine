@@ -50,12 +50,6 @@ void GeometryScene::Update(float dt)
 void GeometryScene::Draw()
 {
 	using namespace DirectX;
-	//XMFLOAT4X4 flhs = {};
-	//XMFLOAT4X4 frhs = {};
-	//flhs == frhs;
-	XMMATRIX lhs, rhs;
-	//lhs == rhs;
-
 	plane.Draw(gfx);
 	//sphere.Draw(gfx);
 	//actually draw number

@@ -5,7 +5,6 @@ namespace Bind
 {
 	DepthStencil_Mask::DepthStencil_Mask(Graphics& gfx)
 	{
-		INFOMAN(gfx);
 
 		CD3D11_DEPTH_STENCIL_DESC dsd = {};
 

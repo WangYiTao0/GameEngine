@@ -2,10 +2,10 @@
 #include <exception>
 #include <string>
 
-class ChiliException : public std::exception
+class BaseException : public std::exception
 {
 public:
-	ChiliException(int line, const char* file)noexcept;
+	BaseException(int line, const char* file)noexcept;
 	const char* what() const noexcept override;
 	virtual const char* GetType() const noexcept;
 	int GetLine() const noexcept;

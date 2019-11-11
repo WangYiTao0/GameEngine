@@ -178,7 +178,7 @@
     <ClCompile Include="BlendState.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ChiliException.cpp" />
+    <ClCompile Include="BaseException.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="DirectXMathHelper.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -237,7 +237,7 @@
     <ClInclude Include="BlendState.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="ChiliException.h" />
+    <ClInclude Include="BaseException.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="WindowHelper.h" />
