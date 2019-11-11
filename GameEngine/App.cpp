@@ -1,16 +1,17 @@
 #include "App.h"
 #include <memory>
+#include <shellapi.h>
 #include <algorithm>
+#include <sstream>
+
 #include "MathHelper.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
-#include "TexturePreprocessor.h""
-#include <shellapi.h>
+#include "TexturePreprocessor.h"
 #include "ModelScene.h"
 #include "GeometryScene.h"
 #include "PhysicScene.h"
-#include <sstream>
 #include "ECS.hpp"
 
 namespace dx = DirectX;
