@@ -212,6 +212,7 @@
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Sampler.cpp" />
+    <ClCompile Include="ShapesScene.cpp" />
     <ClCompile Include="SolidSphere.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="Surface.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="BaseException.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="ShapesScene.h" />
     <ClInclude Include="WindowHelper.h" />
     <ClInclude Include="DirectXMathHelper.h" />
     <ClInclude Include="Collision.h" />

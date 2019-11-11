@@ -2,16 +2,13 @@
 #include "Scene.h"
 #include "Graphics.h"
 
-class PhysicScene : public Scene
+
+class ShapesScene :public Scene
 {
 public:
-	PhysicScene(Graphics& gfx);
-
+	ShapesScene(Graphics& gfx);
 	virtual void Update(float dt) override;
-
-	virtual void Draw()override;
+	virtual void Draw()  override;
 private:
 	Graphics& gfx;
-
-
 };

@@ -210,9 +210,6 @@
     <ClCompile Include="StringHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DepthStencil_Mask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BlendState.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
@@ -228,9 +225,6 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXMathHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -238,6 +232,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BaseException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencil_Mask.cpp">
+      <Filter>Source Files\Binable</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapesScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -475,6 +478,9 @@
     </ClInclude>
     <ClInclude Include="BaseException.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapesScene.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

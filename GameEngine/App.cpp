@@ -11,6 +11,7 @@
 #include "TexturePreprocessor.h"
 #include "ModelScene.h"
 #include "GeometryScene.h"
+#include "ShapesScene.h"
 #include "PhysicScene.h"
 #include "ECS.hpp"
 
@@ -88,10 +89,14 @@ App::App(const std::string& commandLine)
 	//}
 
 	lightType = LightType::PointLightType;
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(PI / 3.0f, static_cast<float>(width) / static_cast<float>(height), nearZ, farZ));
+	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(PI / 3.0f, 
+		static_cast<float>(width) / static_cast<float>(height), 
+		nearZ, farZ));
 
 	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
+	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
+	scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	curScene = scenes.begin();
 	OutoutSceneName();
@@ -123,13 +128,11 @@ void App::HandleInput(float dt)
 		{
 			continue;
 		}
-
 		// cycle through scenes when tab is pressed
 		//if (e->GetCode() == VK_TAB && e->IsPress())
 		//{
 		//	CycleScenes();
 		//}
-
 		switch (e->GetCode())
 		{
 		case VK_TAB:
