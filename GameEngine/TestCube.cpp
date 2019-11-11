@@ -53,6 +53,8 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
+
+	//CreateBoundingBox();
 }
 
 void TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept
@@ -104,9 +106,16 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 	ImGui::End();
 }
 
+void TestCube::CreateBoundingBox()
+{
+	float radius = size / 2.0f;
+	DirectX::XMFLOAT3 minPos = { pos.x - radius,pos.y - radius,pos.z - radius };
+	DirectX::XMFLOAT3 maxPos = { pos.x + radius,pos.y + radius,pos.z + radius };
+	DirectX::BoundingBox::CreateFromPoints(boundingBox, DirectX::XMLoadFloat3(&minPos), DirectX::XMLoadFloat3(&maxPos));
+}
+
 DirectX::BoundingBox TestCube::GetLocalBoundingBox()  noexcept
 {
-	auto boundingBox = std::make_unique<DirectX::BoundingBox>(pos, DirectX::XMFLOAT3(this->size / 2.0f, this->size / 2.0f, this->size / 2.0f));
 	// TODO: insert return statement here
-	return *boundingBox;
+	return boundingBox;
 }

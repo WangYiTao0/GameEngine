@@ -29,6 +29,7 @@ private:
 
 	std::vector<std::unique_ptr<class TestCube>> cubes;
 	std::vector<DirectX::XMMATRIX> m_InstancedData;
+	std::vector <DirectX::BoundingBox> BoxData;
 	std::vector<DirectX::XMMATRIX> refData;
 	//Collision::WireFrameData BoxData;
 
