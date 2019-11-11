@@ -1,5 +1,5 @@
 #pragma once
-#include "ChiliWin.h"
+#include "WindowHelper.h"
 #include <wrl.h>
 #include <vector>
 #include <string>

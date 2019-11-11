@@ -254,7 +254,7 @@ void App::DoFrame()
 	}
 
 	HandleInput(dt);
-	update(dt);
+	update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 	Draw();
 
 	// present

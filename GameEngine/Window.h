@@ -1,5 +1,5 @@
 #pragma once
-#include "ChiliWin.h"
+#include "WindowHelper.h"
 #include "ChiliException.h"
 #include "Keyboard.h"
 #include "Mouse.h"

@@ -240,7 +240,7 @@
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="GameTimer.h" />
-    <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="WindowHelper.h" />
     <ClInclude Include="DirectXMathHelper.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Color.h" />
