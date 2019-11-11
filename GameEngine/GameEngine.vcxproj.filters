@@ -201,9 +201,6 @@
     <ClCompile Include="ECS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommonMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -212,9 +209,6 @@
     </ClCompile>
     <ClCompile Include="Keyboard.cpp">
       <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="ChiliXM.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TexturePreprocessor.cpp">
       <Filter>Source Files</Filter>
@@ -241,6 +235,9 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXMathHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -313,9 +310,6 @@
     </ClInclude>
     <ClInclude Include="Plane.h">
       <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="ChiliMath.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>Header Files\Geometry</Filter>
@@ -446,9 +440,6 @@
     <ClInclude Include="ecsSystem.hpp">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="CommonMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -456,9 +447,6 @@
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="NormalMapTwerker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChiliXM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TexturePreprocessor.h">
@@ -480,6 +468,12 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXMathHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -180,9 +180,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChiliException.cpp" />
     <ClCompile Include="ChiliTimer.cpp" />
-    <ClCompile Include="ChiliXM.cpp" />
+    <ClCompile Include="DirectXMathHelper.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CommonMath.cpp" />
     <ClCompile Include="CpuClass.cpp" />
     <ClCompile Include="DepthStencil_Mask.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
@@ -239,13 +238,12 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChiliException.h" />
-    <ClInclude Include="ChiliMath.h" />
+    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="ChiliTimer.h" />
     <ClInclude Include="ChiliWin.h" />
-    <ClInclude Include="ChiliXM.h" />
+    <ClInclude Include="DirectXMathHelper.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="CommonMath.h" />
     <ClInclude Include="ConditionalNoexcept.h" />
     <ClInclude Include="Cone.h" />
     <ClInclude Include="ConstantBuffers.h" />

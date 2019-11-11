@@ -1,7 +1,7 @@
 #include "App.h"
 #include <memory>
 #include <algorithm>
-#include "ChiliMath.h"
+#include "MathHelper.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"

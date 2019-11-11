@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "imgui/imgui.h"
-#include "ChiliMath.h"
+#include "MathHelper.h"
 namespace dx = DirectX;
 
 //Camera::Camera() 

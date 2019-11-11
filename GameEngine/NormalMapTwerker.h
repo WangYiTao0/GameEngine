@@ -1,6 +1,6 @@
 #pragma once
 #include "Surface.h"
-#include "ChiliMath.h"
+#include "MathHelper.h"
 #include <string>
 #include <DirectXMath.h>
 

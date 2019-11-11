@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <sstream>
 #include "Mesh.h"
-#include "ChiliMath.h"
+#include "MathHelper.h"
 
 
 template<typename F>
