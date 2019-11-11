@@ -179,7 +179,7 @@
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChiliException.cpp" />
-    <ClCompile Include="ChiliTimer.cpp" />
+    <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="DirectXMathHelper.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CpuClass.cpp" />
@@ -239,7 +239,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="MathHelper.h" />
-    <ClInclude Include="ChiliTimer.h" />
+    <ClInclude Include="GameTimer.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="DirectXMathHelper.h" />
     <ClInclude Include="Collision.h" />

@@ -1,13 +1,13 @@
-#include "ChiliTimer.h"
+#include "GameTimer.h"
 
 using namespace std::chrono;
 
-ChiliTimer::ChiliTimer() noexcept
+GameTimer::GameTimer() noexcept
 {
 	last = steady_clock::now();
 }
 
-float ChiliTimer::Mark()noexcept
+float GameTimer::Mark()noexcept
 {
 	const auto old = last;
 	last = steady_clock::now();
@@ -15,7 +15,7 @@ float ChiliTimer::Mark()noexcept
 	return frameTime.count();
 }
 
-float ChiliTimer::Peek() const noexcept
+float GameTimer::Peek() const noexcept
 {
 	return duration<float>(steady_clock::now() - last).count();
 }

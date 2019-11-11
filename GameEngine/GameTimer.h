@@ -1,10 +1,10 @@
 #pragma once
 #include <chrono>
 
-class ChiliTimer
+class GameTimer
 {
 public:
-	ChiliTimer()noexcept;
+	GameTimer()noexcept;
 	//give time last time call mark
 	float Mark() noexcept;
 	//give  duration between now -> mark()

@@ -1,6 +1,6 @@
 #pragma once
 #include "Window.h"
-#include "ChiliTimer.h"
+#include "GameTimer.h"
 #include "ImguiManager.h"
 #include "Camera.h"
 #include "PointLight.h"
@@ -47,7 +47,7 @@ private:
 	int x = 0, y = 0;
 	ImguiManager imgui;
 	Window wnd;
-	ChiliTimer timer;
+	GameTimer timer;
 	float speed_factor = 1.0f;
 	Camera cam;
 	PointLight pointLight;

@@ -87,9 +87,6 @@
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChiliTimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -240,6 +237,9 @@
     <ClCompile Include="DirectXMathHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -255,9 +255,6 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChiliTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
@@ -474,6 +471,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DirectXMathHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
