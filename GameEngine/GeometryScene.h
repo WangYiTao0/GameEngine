@@ -21,13 +21,13 @@ private:
 private:
 	Graphics& gfx;
 
-	std::unique_ptr<Frustum> frustum;
 	bool EnableFrustumCulling = true;
-	bool isVisiable = false;
 
 	TestPlane plane;
 
 	std::vector<std::unique_ptr<class TestCube>> cubes;
+	//std::vector<TestCube> cubes;
+
 	std::vector<DirectX::XMMATRIX> m_InstancedData;
 	std::vector <DirectX::BoundingBox> BoxData;
 	std::vector<DirectX::XMMATRIX> refData;

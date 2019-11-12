@@ -1,14 +1,12 @@
 #pragma once
-#include <optional>
-#include "Vertex.h"
-#include "IndexedTriangleList.h"
-#include <DirectXMath.h>
-#include "MathHelper.h"
+
+#include "GeometryHeader.h"
 
 class Sphere
 {
 public:
-	static IndexedTriangleList MakeTesselated(Dvtx::VertexLayout layout, int latDiv, int longDiv)
+	static IndexedTriangleList MakeTesselated(Dvtx::VertexLayout layout,
+		int latDiv, int longDiv)
 	{
 		namespace dx = DirectX;
 		assert(latDiv >= 3);

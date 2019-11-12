@@ -14,8 +14,6 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 	std::uniform_real_distribution<float> rdist(-20.0f, 20.0f);
 
-	frustum = std::make_unique<Frustum>();
-
 	for (auto i = 0; i < 80; i++)
 	{
 		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));

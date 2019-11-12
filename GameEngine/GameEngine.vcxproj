@@ -195,6 +195,7 @@
     <ClCompile Include="GDIPlusManager.cpp" />
     <ClCompile Include="GeometryScene.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="GridTerrain.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -241,7 +242,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="BaseException.h" />
     <ClInclude Include="ErrorLogger.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GeometryHeader.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="GridTerrain.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="ShapesScene.h" />

@@ -185,6 +185,12 @@ void Graphics::EndFrame()
 void Graphics::DrawIndexed(UINT count) noxnd
 {
 	GFX_THROW_INFO_ONLY(m_pContext->DrawIndexed(count, 0u, 0u));
+
+	
+}
+void Graphics::DrawIndexedInstanced(UINT count) noxnd
+{
+//m_pContext->DrawIndexedInstanced()
 }
 
 void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept

@@ -228,9 +228,6 @@
     <ClCompile Include="DepthStencil_Mask.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
-    <ClCompile Include="ShapesScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BaseException.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
@@ -248,6 +245,12 @@
     </ClCompile>
     <ClCompile Include="ErrorLogger.cpp">
       <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="GridTerrain.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapesScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +496,15 @@
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryHeader.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="GridTerrain.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

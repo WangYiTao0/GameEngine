@@ -28,8 +28,8 @@ light Pos
 //    float3 direction;
 //}
 
-cbuffer ObjectCBuf
-    //:register(b1)
+cbuffer ObjectCBuf 
+    :register(b4)
 {
     float specularIntensity;
     float specularPower;
