@@ -26,7 +26,7 @@ namespace Bind
 
 	TransformCbuf::Transforms TransformCbuf::GetTransforms(Graphics& gfx) noexcept
 	{
-		const auto modelView = parent.GetTransformXM() * gfx.GetCamera();
+		const auto modelView = parent.GetTransformXM() * gfx.GetCameraViewMatrix();
 		return{
 			DirectX::XMMatrixTranspose(modelView),
 			DirectX::XMMatrixTranspose(

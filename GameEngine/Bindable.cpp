@@ -3,12 +3,12 @@ namespace Bind
 {
 	ID3D11DeviceContext* Bindable::GetContext(Graphics& gfx) noexcept
 	{
-		return	gfx.pContext.Get();
+		return	gfx.m_pContext.Get();
 	}
 
 	ID3D11Device* Bindable::GetDevice(Graphics& gfx) noexcept
 	{
-		return gfx.pDevice.Get();
+		return gfx.m_pDevice.Get();
 	}
 
 	DxgiInfoManager& Bindable::GetInfoManager(Graphics& gfx)

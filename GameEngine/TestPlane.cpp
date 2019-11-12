@@ -31,7 +31,7 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	BlendState::ResetBlendState(gfx);
+	//BlendState::ResetBlendState(gfx);
 
 	auto model = Plane::Make();
 	model.Transform(dx::XMMatrixScaling(size, size, 1.0f));

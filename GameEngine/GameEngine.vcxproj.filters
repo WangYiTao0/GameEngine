@@ -67,11 +67,14 @@
     <Filter Include="Shader\Common">
       <UniqueIdentifier>{abec6840-f22d-49b7-b8c0-8e0778805c94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Tool">
-      <UniqueIdentifier>{a3c19e0d-1456-4e79-ba7c-6ed4fa956495}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Lights">
       <UniqueIdentifier>{c6201f08-c05e-4752-bcca-c765cbe2881c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CommonTool">
+      <UniqueIdentifier>{843a03ae-79d1-4d17-a603-f3ea4108e407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CommonTool">
+      <UniqueIdentifier>{222c260f-d34a-4644-ac9c-9a24ed43e06c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -89,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="dxerr.cpp">
       <Filter>Dxerr</Filter>
-    </ClCompile>
-    <ClCompile Include="DxgiInfoManager.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bindable.cpp">
       <Filter>Source Files\Binable</Filter>
@@ -204,12 +204,6 @@
     <ClCompile Include="Keyboard.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="TexturePreprocessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StringHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BlendState.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
@@ -225,13 +219,7 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXMathHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameTimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
@@ -242,6 +230,24 @@
     </ClCompile>
     <ClCompile Include="ShapesScene.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseException.cpp">
+      <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXMathHelper.cpp">
+      <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="DxgiInfoManager.cpp">
+      <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturePreprocessor.cpp">
+      <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorLogger.cpp">
+      <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,9 +265,6 @@
     </ClInclude>
     <ClInclude Include="dxerr.h">
       <Filter>Dxerr</Filter>
-    </ClInclude>
-    <ClInclude Include="DxgiInfoManager.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsThrowMacros.h">
       <Filter>Header Files\Macros</Filter>
@@ -371,9 +374,6 @@
     <ClInclude Include="Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConditionalNoexcept.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BindableCommon.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
@@ -440,15 +440,6 @@
     <ClInclude Include="Mouse.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="NormalMapTwerker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TexturePreprocessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringHelper.h">
-      <Filter>Header Files\Tool</Filter>
-    </ClInclude>
     <ClInclude Include="BlendState.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
@@ -464,23 +455,44 @@
     <ClInclude Include="Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MathHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXMathHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShapesScene.h">
       <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseException.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionalNoexcept.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXMathHelper.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="DxgiInfoManager.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturePreprocessor.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalMapTwerker.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorLogger.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowHelper.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

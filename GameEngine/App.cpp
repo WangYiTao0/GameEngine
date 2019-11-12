@@ -3,7 +3,6 @@
 #include <shellapi.h>
 #include <algorithm>
 #include <sstream>
-
 #include "MathHelper.h"
 #include "Surface.h"
 #include "GDIPlusManager.h"
@@ -33,7 +32,6 @@ App::App(const std::string& commandLine)
 {
 	// Create the cpu object.
 	m_Cpu = std::make_unique<CpuClass>();
-
 	// Initialize the cpu object.
 	m_Cpu->Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
@@ -71,28 +69,13 @@ App::App(const std::string& commandLine)
 			throw std::runtime_error("Normal map validated successfully. Just kidding about that whole runtime error thing.");
 		}
 	}
-	//if (this->commandLine != "")
-	//{
-	//	int nArgs;
-	//	const auto pLineW = GetCommandLineW();
-	//	const auto pArgs = CommandLineToArgvW(pLineW, &nArgs);
-	//	if (nArgs >= 4 && std::wstring(pArgs[1]) == L"--ntwerk-rotx180")
-	//	{
-	//		const std::wstring pathInWide = pArgs[2];
-	//		const std::wstring pathOutWide = pArgs[3];
-	//		NormalMapTwerker::RotateXAxis180(
-	//			std::string(pathInWide.begin(), pathInWide.end()),
-	//			std::string(pathOutWide.begin(), pathOutWide.end())
-	//		);
-	//		throw std::runtime_error("Normal map processed successfully. Just kidding about that whole runtime error thing.");
-	//	}
-	//}
 
 	lightType = LightType::PointLightType;
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(PI / 3.0f, 
 		static_cast<float>(width) / static_cast<float>(height), 
 		nearZ, farZ));
 
+	
 	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
@@ -223,7 +206,7 @@ void App::DoFrame()
 	
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 
-	wnd.Gfx().SetCamera(cam.GetMatrix());
+	wnd.Gfx().SetCameraViewMatirx(cam.GetMatrix());
 
 	switch (lightType)
 	{

@@ -65,35 +65,57 @@ public:
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics();
+	void OnResize();
 	void EndFrame();
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void DrawIndexed(UINT count) noxnd;
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
-	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
-	DirectX::XMMATRIX GetCamera() const noexcept;// view matrix
+	void SetCameraViewMatirx(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCameraViewMatrix() const noexcept;// view matrix
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
 	bool IsImguiEnabled() const noexcept;
 private:
-	bool imguiEnabled = true;
-	DirectX::XMMATRIX projection;
-	DirectX::XMMATRIX camera;
+	bool InitializeDirectX();
+private:
+	bool m_imguiEnabled = true;
+	DirectX::XMMATRIX m_Projection;
+	DirectX::XMMATRIX m_CameraViewMatrix;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif
-	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;//using for allocating someting
-	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwap;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;//configuring a pipeline in executing or issuing rendering command
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDSV;
-	Microsoft::WRL::ComPtr<ID3D11BlendState> pBlendState;
+	HWND m_hMainWnd;
+	int m_ClientWidth;
+	int m_ClientHeight;
+	bool m_Minimized;       //  minimized
+	bool m_Maximized;       //  maximized
+	bool m_Resizing;        //  Resizing
+	bool m_Enable4xMsaa;	 //  Enable 4x Mutiple sampler
+	UINT m_4xMsaaQuality; //MSAA support level
+	// Direct3D 11
+	Microsoft::WRL::ComPtr<ID3D11Device> m_pDevice;//using for allocating someting
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_pContext;//configuring a pipeline in executing or issuing rendering command
+	Microsoft::WRL::ComPtr<IDXGISwapChain> m_pSwapChain;
+	// Direct3D 11.1
+	Microsoft::WRL::ComPtr<ID3D11Device1> m_pDevice1;						// D3D11.1 device
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext1> m_pContext1;		// D3D11.1 context
+	Microsoft::WRL::ComPtr<IDXGISwapChain1> m_pSwapChain1;						// D3D11.1 swapchain
+	//common resource view
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;	
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pDepthStencilBuffer;		
+	//
+	D3D11_VIEWPORT m_ScreenViewPort;                          // view port
+	//BlendState
+	//Microsoft::WRL::ComPtr<ID3D11BlendState> m_pBlendState;
 	//Microsoft::WRL::ComPtr<ID3D11Buffer>
 
 	std::unique_ptr<DirectX::SpriteBatch> spriteBatch;
 	std::unique_ptr<DirectX::SpriteFont> spriteFont;
 
-	bool mVsyncEnable;
-	int mVideoCardMemory;// graphic card 
-	char mVideoCardDescription[128];//graphic card name
+	bool m_VsyncEnable;
+	int m_VideoCardMemory;// graphic card 
+	char m_VideoCardDescription[128];//graphic card name
+
 };

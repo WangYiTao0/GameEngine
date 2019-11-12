@@ -66,7 +66,7 @@ void GeometryScene::Draw()
 		acceptedData = Collision::FrustumCulling(
 			m_InstancedData,
 			B,
-			gfx.GetCamera(),
+			gfx.GetCameraViewMatrix(),
 			gfx.GetProjection());	
 	}
 	
