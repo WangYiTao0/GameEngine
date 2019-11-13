@@ -328,24 +328,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	const auto meshTag = path.string() + "%" + mesh.mName.C_Str();
 
 	//bindablePtrs.push_back(BlendState::Resolve(gfx));
-	std::string shaderfolder = "";
-#pragma region DetermineShaderPath
-	if (IsDebuggerPresent() == TRUE)
-	{
-#ifdef _DEBUG //Debug Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Debug\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Debug\\";
-#endif
-#else //Release Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Release\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Release\\";
-#endif
-#endif
-	}
+	std::string shaderfolder = StringHelper::GetShaderRootPath();
 
 	if (hasDiffuseMap && hasNormalMap && hasSpecularMap)
 	{

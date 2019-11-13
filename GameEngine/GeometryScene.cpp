@@ -7,6 +7,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	Scene("Geometry Scene"),
 	plane(gfx, 3.0f),
 	sphere(gfx, 4.0f),
+	gridTerrain(gfx),
 	rng(std::random_device{}())
 {
 	plane.SetPos({ 0.0f,0.0f,5.0f });
@@ -83,6 +84,8 @@ void GeometryScene::Draw()
 			
 		}
 	}
+
+	gridTerrain.Draw(gfx);
 
 	//for (auto& c : cubes)
 	//{

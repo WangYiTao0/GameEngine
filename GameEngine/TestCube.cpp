@@ -3,28 +3,13 @@
 #include "BindableCommon.h"
 #include "TransformPixelCbuf.h"
 #include "imgui/imgui.h"
+#include "StringHelper.h"
 
 TestCube::TestCube(Graphics& gfx, float size)
 {
 
-	std::string shaderfolder = "";
-#pragma region DetermineShaderPath
-	if (IsDebuggerPresent() == TRUE)
-	{
-#ifdef _DEBUG //Debug Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Debug\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Debug\\";
-#endif
-#else //Release Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Release\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Release\\";
-#endif
-#endif
-	}
+	std::string shaderfolder = StringHelper::GetShaderRootPath();
+
 	this->size = size;
 
 	using namespace Bind;

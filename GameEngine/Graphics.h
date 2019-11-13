@@ -112,8 +112,6 @@ private:
 	//Microsoft::WRL::ComPtr<ID3D11BlendState> m_pBlendState;
 	//Microsoft::WRL::ComPtr<ID3D11Buffer>
 
-	std::unique_ptr<DirectX::SpriteBatch> spriteBatch;
-	std::unique_ptr<DirectX::SpriteFont> spriteFont;
 
 	bool m_VsyncEnable;
 	int m_VideoCardMemory;// graphic card 

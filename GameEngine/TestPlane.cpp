@@ -6,27 +6,11 @@
 #include "TransformPixelCbuf.h"
 #include "Sampler.h"
 #include "BlendState.h"
+#include "StringHelper.h"
 
 TestPlane::TestPlane(Graphics& gfx, float size)
 {
-	std::string shaderfolder = "";
-#pragma region DetermineShaderPath
-	if (IsDebuggerPresent() == TRUE)
-	{
-#ifdef _DEBUG //Debug Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Debug\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Debug\\";
-#endif
-#else //Release Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Release\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Release\\";
-#endif
-#endif
-	}
+	std::string shaderfolder = StringHelper::GetShaderRootPath();
 
 	using namespace Bind;
 	namespace dx = DirectX;

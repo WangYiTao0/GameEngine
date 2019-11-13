@@ -39,13 +39,12 @@ public:
 				float x = -halfWidth + j * dx;
 				//pos
 				vb[i * n + j].Attr<Type::Position3D>() = DirectX::XMFLOAT3(x, 0.0f, z);
-				//Normal
-				//vb.EmplaceBack(DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
-				////TangentU
-				//vb.EmplaceBack(DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f));
-				////textoord
-				//vb.EmplaceBack(j * du);
-				//vb.EmplaceBack(i * dv);
+				//normal
+				vb[i * n + j].Attr<Type::Normal>() = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
+				//TangentU
+				vb[i * n + j].Attr<Type::Tangent>() = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
+				//Texture2D
+				vb[i * n + j].Attr<Type::Texture2D>() = DirectX::XMFLOAT2(j * du, i * du);
 				//meshData.Vertices[i * n + j].Position = XMFLOAT3(x, 0.0f, z);
 				//meshData.Vertices[i * n + j].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 				//meshData.Vertices[i * n + j].TangentU = XMFLOAT3(1.0f, 0.0f, 0.0f);

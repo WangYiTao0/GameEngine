@@ -2,29 +2,14 @@
 #include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
 #include "Sphere.h"
+#include "StringHelper.h"
 
 
 SolidSphere::SolidSphere(Graphics& gfx, float radius)
 {
 
-	std::string shaderfolder = "";
-#pragma region DetermineShaderPath
-	if (IsDebuggerPresent() == TRUE)
-	{
-#ifdef _DEBUG //Debug Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Debug\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Debug\\";
-#endif
-#else //Release Mode
-#ifdef _WIN64 //x64
-		shaderfolder = "..\\x64\\Release\\";
-#else  //x86 (Win32)
-		shaderfolder = "..\\Release\\";
-#endif
-#endif
-	}
+	std::string shaderfolder = StringHelper::GetShaderRootPath();
+
 	using namespace Bind;
 	namespace dx = DirectX;
 

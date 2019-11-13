@@ -12,6 +12,7 @@
 #include <filesystem>
 #include "imgui/imgui.h"
 #include "DirectXMathHelper.h"
+#include "StringHelper.h"
 
 class ModelException : public BaseException
 {

@@ -8,6 +8,7 @@
 #include <memory>
 #include "imgui/imgui.h"
 #include "Frustum.h"
+#include "GridTerrain.h"
 class GeometryScene : public Scene
 {
 public:
@@ -24,6 +25,8 @@ private:
 	bool EnableFrustumCulling = true;
 
 	TestPlane plane;
+	GridTerrain gridTerrain;
+
 
 	std::vector<std::unique_ptr<class TestCube>> cubes;
 	//std::vector<TestCube> cubes;

@@ -76,6 +76,9 @@
     <Filter Include="Source Files\CommonTool">
       <UniqueIdentifier>{222c260f-d34a-4644-ac9c-9a24ed43e06c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ECS">
+      <UniqueIdentifier>{b88cf7c6-cec5-4299-b7b8-fd01972cee40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -192,9 +195,6 @@
     <ClCompile Include="ecsComponent.cpp">
       <Filter>Header Files\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="ECS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -212,9 +212,6 @@
     </ClCompile>
     <ClCompile Include="PointLight.cpp">
       <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="CpuClass.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Frustum.cpp">
       <Filter>Source Files\Physics</Filter>
@@ -243,14 +240,17 @@
     <ClCompile Include="TexturePreprocessor.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
-    <ClCompile Include="ErrorLogger.cpp">
-      <Filter>Source Files\CommonTool</Filter>
-    </ClCompile>
     <ClCompile Include="GridTerrain.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="ShapesScene.cpp">
       <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="CpuClass.cpp">
+      <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -449,9 +449,6 @@
     <ClInclude Include="DepthStencil_Mask.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
-    <ClInclude Include="CpuClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Frustum.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
@@ -488,9 +485,6 @@
     <ClInclude Include="StringHelper.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorLogger.h">
-      <Filter>Header Files\CommonTool</Filter>
-    </ClInclude>
     <ClInclude Include="WindowHelper.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
@@ -505,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="CpuClass.h">
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

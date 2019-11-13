@@ -11,8 +11,6 @@
 #include "Scene.h"
 #include "NormalMapTwerker.h"
 #include <shellapi.h>
-
-
 #include "CpuClass.h"
 
 

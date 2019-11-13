@@ -36,3 +36,26 @@ std::string StringHelper::GetFileExtension(const std::string& filename)
 	}
 	return std::string(filename.substr(off + 1));
 }
+
+std::string StringHelper::GetShaderRootPath()
+{
+	std::string shaderfolder = "";
+#pragma region DetermineShaderPath
+	if (IsDebuggerPresent() == TRUE)
+	{
+#ifdef _DEBUG //Debug Mode
+#ifdef _WIN64 //x64
+		shaderfolder = "..\\Build\\x64\\Debug\\";
+#else  //x86 (Win32)
+		shaderfolder = "..\\Build\\Win32\\Debug\\";
+#endif
+#else //Release Mode
+#ifdef _WIN64 //x64
+		shaderfolder = "..\\Build\\x64\\Release\\";
+#else  //x86 (Win32)
+		shaderfolder = "..\\Build\\Win32\\Release\\";
+#endif
+#endif
+	}
+	return shaderfolder;
+}
