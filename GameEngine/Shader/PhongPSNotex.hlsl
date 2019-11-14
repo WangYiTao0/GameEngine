@@ -17,6 +17,13 @@ light Pos
 
 #include "LightOptions.hlsli"
 
+struct PS_INPUT
+{
+    //SV_Position describes the pixel location.
+    float3 viewPixelPos : Position;
+    float3 viewNormal : Normal;
+};
+
 cbuffer ObjectCBuf
 {
     float4 materialColor;
@@ -25,20 +32,20 @@ cbuffer ObjectCBuf
 };
 
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal) : SV_Target
+float4 main(PS_INPUT input) : SV_Target
 {
     // normalize the mesh normal
-    viewNormal = normalize(viewNormal);
+    input.viewNormal = normalize(input.viewNormal);
 	// fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(viewLightPos, viewFragPos);
+    const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
+    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
     // specular
     const float3 specular = Speculate(
-        specularColor.rgb, 1.0f, viewNormal,
-        lv.vToL, viewFragPos, att, specularPower
+        specularColor.rgb, 1.0f, input.viewNormal,
+        lv.vToL, input.viewPixelPos, att, specularPower
     );
 	// final color
     return float4(saturate((diffuse + ambient) * materialColor.rgb + specular), 1.0f);

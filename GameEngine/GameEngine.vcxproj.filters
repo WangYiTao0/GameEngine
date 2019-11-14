@@ -538,12 +538,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\Light_PS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Light_VS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\PhongPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
@@ -557,9 +551,6 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSSpec.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongPSSpecMap.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSSpecNormalMap.hlsl">
