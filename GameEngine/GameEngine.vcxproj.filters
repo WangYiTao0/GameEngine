@@ -76,7 +76,7 @@
     <Filter Include="Header Files\CommonTool\imgui">
       <UniqueIdentifier>{61b44ed0-4620-4934-8f4c-bfc62f217c24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Macros">
+    <Filter Include="Header Files\CommonTool\Macros">
       <UniqueIdentifier>{12714e1a-204f-4931-a322-e71f40883252}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -204,9 +204,6 @@
     <ClCompile Include="Keyboard.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="BlendState.cpp">
-      <Filter>Source Files\Binable</Filter>
-    </ClCompile>
     <ClCompile Include="TestCube.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -252,6 +249,9 @@
     <ClCompile Include="CpuClass.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
+    <ClCompile Include="RenderStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -270,10 +270,10 @@
       <Filter>Dxerr</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsThrowMacros.h">
-      <Filter>Header Files\Macros</Filter>
+      <Filter>Header Files\CommonTool\Macros</Filter>
     </ClInclude>
     <ClInclude Include="WindowsThrowMacros.h">
-      <Filter>Header Files\Macros</Filter>
+      <Filter>Header Files\CommonTool\Macros</Filter>
     </ClInclude>
     <ClInclude Include="Bindable.h">
       <Filter>Header Files\Bindable</Filter>
@@ -443,9 +443,6 @@
     <ClInclude Include="Mouse.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="BlendState.h">
-      <Filter>Header Files\Bindable</Filter>
-    </ClInclude>
     <ClInclude Include="DepthStencil_Mask.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
@@ -502,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="CpuClass.h">
       <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderStates.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

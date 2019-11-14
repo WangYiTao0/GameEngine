@@ -102,6 +102,9 @@ void Graphics::OnResize()
 	GFX_THROW_INFO(m_pDevice->CreateDepthStencilView(m_pDepthStencilBuffer.Get(),
 		nullptr, m_pDepthStencilView.GetAddressOf()));
 
+
+
+
 	////create depth stensil state
 	//D3D11_DEPTH_STENCIL_DESC dsDesc = {};
 	//dsDesc.DepthEnable = TRUE;
@@ -128,11 +131,15 @@ void Graphics::OnResize()
 	//Rasterizer Stage
 	m_pContext->RSSetViewports(1u, &m_ScreenViewPort);
 
+	RenderStates::InitAll(m_pDevice.Get());
+
 
 }
 
 void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
+
+
 	// imgui begin frame
 	if (m_imguiEnabled)
 	{
@@ -140,11 +147,12 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 	}
-
-
 	const float color[] = { red,green,blue,1.0f };
 	m_pContext->ClearRenderTargetView(m_pRenderTargetView.Get(), color);
 	m_pContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+
+	m_pContext->RSSetState(RenderStates::RSNoCull.Get());
+	m_pContext->OMSetBlendState(RenderStates::BSTransparent.Get(), nullptr, 0xFFFFFFFF);
 
 	//pContext->OMSetBlendState(pBlendState.Get(), NULL, 0xFFFFFFFF);
 
@@ -185,8 +193,6 @@ void Graphics::EndFrame()
 void Graphics::DrawIndexed(UINT count) noxnd
 {
 	GFX_THROW_INFO_ONLY(m_pContext->DrawIndexed(count, 0u, 0u));
-
-	
 }
 void Graphics::DrawIndexedInstanced(UINT count) noxnd
 {

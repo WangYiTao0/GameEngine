@@ -326,7 +326,6 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	}
 
 	const auto meshTag = path.string() + "%" + mesh.mName.C_Str();
-
 	//bindablePtrs.push_back(BlendState::Resolve(gfx));
 	std::string shaderfolder = StringHelper::GetShaderRootPath();
 

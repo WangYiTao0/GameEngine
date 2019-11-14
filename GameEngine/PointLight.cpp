@@ -1,6 +1,6 @@
 #include "PointLight.h"
 #include "imgui/imgui.h"
-#include "BlendState.h"
+
 PointLight::PointLight(Graphics& gfx, float radius)
 	:
 	mesh(gfx, radius),
@@ -52,7 +52,6 @@ void PointLight::Reset() noexcept
 
 void PointLight::Draw(Graphics& gfx) const noxnd
 {
-	Bind::BlendState::ResetBlendState(gfx);
 	mesh.SetPos(cbData.pos);
 	mesh.Draw(gfx);
 }

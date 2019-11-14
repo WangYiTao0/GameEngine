@@ -11,6 +11,7 @@
 #include <memory>
 #include <random>
 #include "ConditionalNoexcept.h"
+#include "RenderStates.h"
 
 namespace Bind
 {
@@ -96,18 +97,13 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Device> m_pDevice;//using for allocating someting
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_pContext;//configuring a pipeline in executing or issuing rendering command
 	Microsoft::WRL::ComPtr<IDXGISwapChain> m_pSwapChain;
-	//// Direct3D 11.1
-	//Microsoft::WRL::ComPtr<ID3D11Device1> m_pDevice1;						// D3D11.1 device
-	//Microsoft::WRL::ComPtr<ID3D11DeviceContext1> m_pContext1;		// D3D11.1 context
-	//Microsoft::WRL::ComPtr<IDXGISwapChain1> m_pSwapChain1;						// D3D11.1 swapchain
 	//common resource view
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;	
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pDepthStencilBuffer;		
-	//
-	D3D11_VIEWPORT m_ScreenViewPort;                          // view port
-	//BlendState
-	//Microsoft::WRL::ComPtr<ID3D11BlendState> m_pBlendState;
+	//view port
+	D3D11_VIEWPORT m_ScreenViewPort;                         
+
 	//Microsoft::WRL::ComPtr<ID3D11Buffer>
 
 

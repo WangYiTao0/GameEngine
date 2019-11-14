@@ -5,7 +5,6 @@
 #include "imgui/imgui.h"
 #include "TransformPixelCbuf.h"
 #include "Sampler.h"
-#include "BlendState.h"
 #include "StringHelper.h"
 
 TestPlane::TestPlane(Graphics& gfx, float size)

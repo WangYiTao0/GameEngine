@@ -55,6 +55,13 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// specular
     const float3 specular = Speculate(diffuseColor, diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
 	// final color
-    return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f);    
+    float4 finalColor = 1.0f;
+    float4 texColor = tex.Sample(splr, tc);
+    clip(texColor.a - 0.1f);
+    finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specular;
+    finalColor.a = texColor.a;
+
+	// final color
+    return finalColor;
     //return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(splr,tc);
 }
