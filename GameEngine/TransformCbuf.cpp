@@ -27,12 +27,12 @@ namespace Bind
 	TransformCbuf::Transforms TransformCbuf::GetTransforms(Graphics& gfx) noexcept
 	{
 		const auto modelView = parent.GetTransformXM() * gfx.GetCameraViewMatrix();
+		const auto modelViewProj = modelView * gfx.GetProjection();
+
+		//DirectX  are row matrix need transpose to column transpose for HLSL
 		return{
 			DirectX::XMMatrixTranspose(modelView),
-			DirectX::XMMatrixTranspose(
-				modelView *
-				gfx.GetProjection()
-			)
+			DirectX::XMMatrixTranspose(modelViewProj)
 		};
 	}
 
