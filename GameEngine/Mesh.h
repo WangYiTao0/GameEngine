@@ -6,6 +6,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+//#include <assimp5.0/Importer.hpp>
+//#include <assimp5.0/scene.h>
+//#include <assimp5.0/postprocess.h>
 #include "ConditionalNoexcept.h"
 #include "ConstantBuffers.h"
 #include <type_traits>

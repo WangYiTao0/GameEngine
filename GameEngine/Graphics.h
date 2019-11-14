@@ -5,8 +5,6 @@
 #include <wrl.h>
 #include <vector>
 #include <memory>
-#include <SpriteBatch.h>
-#include <SpriteFont.h>
 #include "DxgiInfoManager.h"
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
@@ -98,10 +96,10 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Device> m_pDevice;//using for allocating someting
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_pContext;//configuring a pipeline in executing or issuing rendering command
 	Microsoft::WRL::ComPtr<IDXGISwapChain> m_pSwapChain;
-	// Direct3D 11.1
-	Microsoft::WRL::ComPtr<ID3D11Device1> m_pDevice1;						// D3D11.1 device
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext1> m_pContext1;		// D3D11.1 context
-	Microsoft::WRL::ComPtr<IDXGISwapChain1> m_pSwapChain1;						// D3D11.1 swapchain
+	//// Direct3D 11.1
+	//Microsoft::WRL::ComPtr<ID3D11Device1> m_pDevice1;						// D3D11.1 device
+	//Microsoft::WRL::ComPtr<ID3D11DeviceContext1> m_pContext1;		// D3D11.1 context
+	//Microsoft::WRL::ComPtr<IDXGISwapChain1> m_pSwapChain1;						// D3D11.1 swapchain
 	//common resource view
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;	

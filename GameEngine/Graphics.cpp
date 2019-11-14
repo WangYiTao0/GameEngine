@@ -50,12 +50,12 @@ void Graphics::OnResize()
 	assert(m_pDevice);
 	assert(m_pSwapChain);
 
-	if (m_pDevice1 != nullptr)
-	{
-		assert(m_pContext1);
-		assert(m_pDevice1);
-		assert(m_pSwapChain1);
-	}
+	//if (m_pDevice1 != nullptr)
+	//{
+	//	assert(m_pContext1);
+	//	assert(m_pDevice1);
+	//	assert(m_pSwapChain1);
+	//}
 
 	// Release all outstanding references to the swap chain's buffers.
 	// Reset the Rending pipeline  source view
@@ -323,56 +323,14 @@ bool Graphics::InitializeDirectX()
 	wrl::ComPtr<IDXGIDevice> dxgiDevice = nullptr;
 	wrl::ComPtr<IDXGIAdapter> dxgiAdapter = nullptr;
 	wrl::ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;	// D3D11.0(contain DXGI1.1)
-	wrl::ComPtr<IDXGIFactory2> dxgiFactory2 = nullptr;	// D3D11.1(contain DXGI1.2)
+	//wrl::ComPtr<IDXGIFactory2> dxgiFactory2 = nullptr;	// D3D11.1(contain DXGI1.2)
 	// "IDXGIFactory::CreateSwapChain: This function is being called with a device from a different IDXGIFactory."
 	GFX_THROW_INFO(m_pDevice.As(&dxgiDevice));
 	GFX_THROW_INFO(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
 	GFX_THROW_INFO(dxgiAdapter->GetParent(__uuidof(IDXGIFactory1),
 		reinterpret_cast<void**>(dxgiFactory1.GetAddressOf())));
 
-	//check  IDXGIFactory2
-	hr = dxgiFactory1.As(&dxgiFactory2);
-	if (dxgiFactory2 != nullptr)
-	{
-		HR(m_pDevice.As(&m_pDevice1));
-		HR(m_pContext.As(&m_pContext1));
-		// 
-		DXGI_SWAP_CHAIN_DESC1 sd;
-		ZeroMemory(&sd, sizeof(sd));
-		sd.Width = m_ClientWidth;
-		sd.Height = m_ClientHeight;
-		sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;	// DXGI_FORMAT_B8G8R8A8_UNORM
-		// turn on 4xMsaa
-		if (m_Enable4xMsaa)
-		{
-			sd.SampleDesc.Count = 4;
-			sd.SampleDesc.Quality = m_4xMsaaQuality - 1;
-		}
-		else
-		{
-			sd.SampleDesc.Count = 1;
-			sd.SampleDesc.Quality = 0;
-		}
-		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		sd.BufferCount = 1;
-		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-		sd.Flags = 0;
 
-		DXGI_SWAP_CHAIN_FULLSCREEN_DESC fd;
-		fd.RefreshRate.Numerator = 60;
-		fd.RefreshRate.Denominator = 1;
-		fd.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-		fd.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-		fd.Windowed = TRUE;
-		// Create SwapChain for cur Hwnd
-		HR(dxgiFactory2->CreateSwapChainForHwnd(
-			m_pDevice.Get(),
-			m_hMainWnd, &sd, &fd, nullptr,
-			m_pSwapChain1.GetAddressOf()));
-		HR(m_pSwapChain1.As(&m_pSwapChain));
-	}
-	else
-	{
 		DXGI_SWAP_CHAIN_DESC sd = {};
 		// DXGI_MODE_DESC  Buffer Desc
 		sd.BufferDesc.Width = m_ClientWidth;
@@ -405,7 +363,7 @@ bool Graphics::InitializeDirectX()
 		GFX_THROW_INFO(dxgiFactory1->CreateSwapChain(
 			m_pDevice.Get(),
 			&sd, m_pSwapChain.GetAddressOf()));
-	}
+	
 
 
 	//// gain access to texture subresource in swap chain (back buffer)

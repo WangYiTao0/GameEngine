@@ -3,8 +3,8 @@
 #include "GraphicsThrowMacros.h"
 #include "BindableCodex.h"
 #include "StringHelper.h"
-#include <WICTextureLoader.h>
-#include <DDSTextureLoader.h>
+#include <DirectXTK\WICTextureLoader.h>
+#include <DirectXTK\DDSTextureLoader.h>
 
 namespace Bind
 {

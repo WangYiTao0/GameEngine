@@ -71,25 +71,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)GameEngine\libs\assimp;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)GameEngine\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermidiate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(SolutionDir)GameEngine\libs\assimp;$(SolutionDir)GameEngine\libs\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)GameEngine\include\DirectXTK;$(SolutionDir)GameEngine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)GameEngine\libs\assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameEngine\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermidiate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(SolutionDir)GameEngine\libs\assimp;$(SolutionDir)GameEngine\libs\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)GameEngine\include\DirectXTK;$(SolutionDir)GameEngine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)GameEngine\libs\assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameEngine\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermidiate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>$(SolutionDir)GameEngine\libs\assimp;$(SolutionDir)GameEngine\libs\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)GameEngine\include\DirectXTK;$(SolutionDir)GameEngine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)GameEngine\libs\assimp;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameEngine\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermidiate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
