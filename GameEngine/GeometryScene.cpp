@@ -31,19 +31,6 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 void GeometryScene::Update(float dt)
 {
-	//frustum->BuildFrustum(4000.0f, gfx.GetProjection(), gfx.GetCamera());
-	//for (auto& c : cubes)
-	//{
-	//	if (EnableFrustumCulling)
-	//	{
-	//		isVisiable = frustum->CheckCube(c->GetPos().x, c->GetPos().y, c->GetPos().z, 1.0f);
-	//	}
-	//	else
-	//	{
-	//		isVisiable = true;
-	//	}
-	//}
-
 }
 
 void GeometryScene::Draw()
@@ -87,17 +74,8 @@ void GeometryScene::Draw()
 
 	gridTerrain.Draw(gfx);
 
-	//for (auto& c : cubes)
-	//{
-	//	if (isVisiable)
-	//	{
-	//		c->Draw(gfx);
-	//		renderCount++;
-	//	}
-	//}
-
-
 	//imgui windows
+	gridTerrain.SpawnControlWindow(gfx);
 	plane.SpawnControlWindow(gfx);
 	SpownFrustumControl();
 

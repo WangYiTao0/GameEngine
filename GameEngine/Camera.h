@@ -4,7 +4,6 @@
 class Camera
 {
 public:
-	//Camera();
 	Camera(Graphics& gfx);
 	DirectX::XMMATRIX GetViewMatrix() const noexcept;
 	void SpawnControlWindow() noexcept;

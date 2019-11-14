@@ -4,11 +4,6 @@
 #include <DirectXMath.h>
 using namespace  DirectX;
 
-//Camera::Camera() 
-//{
-//	Reset();
-//}
-
 Camera::Camera(Graphics& gfx)
 	:
 	gfx(gfx)

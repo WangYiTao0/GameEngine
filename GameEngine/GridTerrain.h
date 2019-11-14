@@ -8,6 +8,7 @@ public:
 		unsigned int m = 24, unsigned int n = 24);
 	void SetPos(DirectX::XMFLOAT3 pos) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
+	void SpawnControlWindow(Graphics& gfx)noexcept;
 private:
 	struct PSMaterialConstant
 	{

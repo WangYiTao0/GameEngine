@@ -4,6 +4,7 @@
 #include "GraphicsThrowMacros.h"
 #include "TransformPixelCbuf.h"
 #include "Grid.h"
+#include "imgui/imgui.h"
 
 GridTerrain::GridTerrain(Graphics& gfx,float width, float depth,
 	unsigned int m, unsigned int n)
@@ -43,7 +44,7 @@ GridTerrain::GridTerrain(Graphics& gfx,float width, float depth,
 	//	float padding[2];
 	//} phongConnst;
 
-	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 4u));
+	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
@@ -62,4 +63,21 @@ void GridTerrain::SetPos(DirectX::XMFLOAT3 pos) noexcept
 DirectX::XMMATRIX GridTerrain::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+}
+
+void GridTerrain::SpawnControlWindow(Graphics& gfx) noexcept
+{
+	if (ImGui::Begin("Grid"))
+	{
+		bool changed0 = ImGui::SliderFloat("Spec. Int.", &pmc.specularIntensity, 0.0f, 1.0f);
+		bool changed1 = ImGui::SliderFloat("Spec. Power", &pmc.specularPower, 0.0f, 100.0f);
+		bool checkState = pmc.normalMappingEnabled == TRUE;
+		bool changed2 = ImGui::Checkbox("Enable Normal Map", &checkState);
+		pmc.normalMappingEnabled = checkState ? TRUE : FALSE;
+		if (changed0 || changed1 || changed2)
+		{
+			QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);
+		}
+	}
+	ImGui::End();
 }

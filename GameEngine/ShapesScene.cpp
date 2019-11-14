@@ -16,4 +16,8 @@ void ShapesScene::Update(float dt)
 void ShapesScene::Draw()
 {
 	gridTerrain.Draw(gfx);
+
+
+	//imgui
+	gridTerrain.SpawnControlWindow(gfx);
 }

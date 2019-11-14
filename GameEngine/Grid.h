@@ -27,7 +27,7 @@ public:
 		float dv = 1.0f / (m - 1);
 
 		//without 0
-		Dvtx::VertexBuffer vb(std::move(layout),vertexCount);
+		Dvtx::VertexBuffer vb(std::move(layout), vertexCount);
 		for (uint32 i = 0; i < m; ++i)
 		{
 			float z = halfDepth - i * dz;
@@ -61,14 +61,14 @@ public:
 		{
 			for (uint32 j = 0; j < n - 1; ++j)
 			{
-				indices.push_back ( i * n + j);
-				indices.push_back (i * n + j + 1);
-				indices.push_back ( (i + 1) * n + j);
-				
-				indices.push_back ( (i + 1) * n + j);
-				indices.push_back ( i * n + j + 1);
-				indices.push_back ( (i + 1) * n + j + 1);
-					
+				indices.push_back(i * n + j);
+				indices.push_back(i * n + j + 1);
+				indices.push_back((i + 1) * n + j);
+
+				indices.push_back((i + 1) * n + j);
+				indices.push_back(i * n + j + 1);
+				indices.push_back((i + 1) * n + j + 1);
+
 				k += 6; // next quad
 			}
 		}
