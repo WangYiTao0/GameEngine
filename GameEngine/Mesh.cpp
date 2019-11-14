@@ -153,8 +153,8 @@ public:
 				if (i == transforms.end())
 				{
 					const auto& applied = pSelectedNode->GetAppliedTransform();
-					const auto angles = ExtractEulerAngles(applied);
-					const auto translation = ExtractTranslation(applied);
+					const auto angles = DXMathHelper::ExtractEulerAngles(applied);
+					const auto translation = DXMathHelper::ExtractTranslation(applied);
 					TransformParameters tp;
 					tp.roll = angles.z;
 					tp.pitch = angles.x;

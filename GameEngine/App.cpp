@@ -31,9 +31,9 @@ App::App(const std::string& commandLine)
 	cam(wnd.Gfx())
 {
 	// Create the cpu object.
-	m_Cpu = std::make_unique<CpuClass>();
+	
 	// Initialize the cpu object.
-	m_Cpu->Initialize();
+	m_Cpu.Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 	if (this->commandLine != "")
 	{
@@ -187,7 +187,7 @@ void App::update(float dt)
 {
 	// update scene
 	(*curScene)->Update(dt);
-	m_Cpu->Frame();
+	m_Cpu.Frame();
 }
 
 void App::Draw()
@@ -246,7 +246,7 @@ void App::SpawnEngineStateWindow()
 	{
 		ImGui::ShowDemoWindow(&showDemoWindow);
 	}
-	std::string cpuPrecentage = std::to_string(m_Cpu.get()->GetCpuPercentage()) + "%";
+	std::string cpuPrecentage = std::to_string(m_Cpu.GetCpuPercentage()) + "%";
 	// imgui window to control simulation speed
 	if (ImGui::Begin("Game State"))
 	{

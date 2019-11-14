@@ -2,17 +2,7 @@
 
 
 
-CpuClass::CpuClass()
-{
-}
 
-CpuClass::CpuClass(const CpuClass&)
-{
-}
-
-CpuClass::~CpuClass()
-{
-}
 
 void CpuClass::Initialize()
 {

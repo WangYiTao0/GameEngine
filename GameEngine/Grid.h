@@ -3,10 +3,7 @@
 
 class Grid
 {
-
-
 public:
-
 	static IndexedTriangleList MakeIndependent(Dvtx::VertexLayout layout,
 		float width, float depth,
 		unsigned int m, unsigned int n)

@@ -52,8 +52,7 @@ private:
 	DirectionLight directionLight;
 
 	
-
-	std::unique_ptr<CpuClass> m_Cpu = nullptr;
+	CpuClass m_Cpu;
 
 
 	std::vector <std::unique_ptr<Scene>> scenes;

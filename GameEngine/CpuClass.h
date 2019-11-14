@@ -6,10 +6,6 @@
 class CpuClass
 {
 public:
-	CpuClass();
-	CpuClass(const CpuClass&);
-	~CpuClass();
-
 	void Initialize();
 	void Shutdown();
 	void Frame();
