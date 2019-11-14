@@ -17,7 +17,9 @@ Texture2D nmap : register(t2);
 
 SamplerState splr;
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
+float4 main(float3 viewFragPos : Position, 
+float3 viewNormal : Normal, 
+float2 tc : Texcoord) : SV_Target
 {
 	// sample normal from map if normal mapping enabled
     if (normalMapEnabled)

@@ -9,7 +9,9 @@ namespace Bind
 	protected:
 		struct Transforms
 		{
+			//camera view pos
 			DirectX::XMMATRIX modelView;
+			//screen pos
 			DirectX::XMMATRIX modelViewProj;
 		};
 	public:

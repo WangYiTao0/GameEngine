@@ -171,9 +171,6 @@
     <ClCompile Include="BoundingSphere.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="TransformPixelCbuf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AABB.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
@@ -251,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="RenderStates.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformPixelCbuf.cpp">
+      <Filter>Source Files\Binable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -464,9 +464,6 @@
     <ClInclude Include="ConditionalNoexcept.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXMathHelper.h">
-      <Filter>Header Files\CommonTool</Filter>
-    </ClInclude>
     <ClInclude Include="DxgiInfoManager.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
@@ -502,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="RenderStates.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXMathHelper.h">
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

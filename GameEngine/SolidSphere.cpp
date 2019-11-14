@@ -35,8 +35,7 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 
 	AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst,1u));
 
-	AddBind(InputLayout::Resolve(gfx, 
-		model.vertices.GetLayout(), pvsbc));
+	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 

@@ -76,7 +76,7 @@ App::App(const std::string& commandLine)
 		nearZ, farZ));
 
 	
-	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
@@ -206,7 +206,7 @@ void App::DoFrame()
 	
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 
-	wnd.Gfx().SetCameraViewMatirx(cam.GetMatrix());
+	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
 
 	switch (lightType)
 	{
@@ -219,7 +219,7 @@ void App::DoFrame()
 		}
 	case App::LightType::PointLightType:
 		{
-			pointLight.Bind(wnd.Gfx(), cam.GetMatrix());
+			pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
 			pointLight.Draw(wnd.Gfx());
 			pointLight.SpawnControlWindow();
 			break;

@@ -6,14 +6,11 @@ class Camera
 public:
 	//Camera();
 	Camera(Graphics& gfx);
-	DirectX::XMMATRIX GetMatrix() const noexcept;
+	DirectX::XMMATRIX GetViewMatrix() const noexcept;
 	void SpawnControlWindow() noexcept;
 	void Reset() noexcept;
 	void Rotate(float dx, float dy) noexcept;
 	void Translate(DirectX::XMFLOAT3 translation) noexcept;
-
-
-	bool GetVisibility(DirectX::XMFLOAT3 Position);
 private:
 	//float r = 20.0f; //distance to the origin
 	//float theta = 0.0f;//rotation the camera around origin

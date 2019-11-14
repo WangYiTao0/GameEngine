@@ -1,5 +1,14 @@
 #include "Transform.hlsli"
-struct VSOut
+struct VS_INPUT
+{
+    float3 pos : Position;
+    float3 normal : Normal;
+    float3 tangent : Tangent;
+    float3 biTangent : Bitangent;
+    float2 texcoord : Texcoord;
+};
+
+struct VS_OUTPUT
 {
     float3 viewPos : Position;
     float3 viewNormal : Normal;
@@ -9,14 +18,14 @@ struct VSOut
     float4 pos : SV_Position;
 };
 
-VSOut main(float3 pos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord)
+ VS_OUTPUT main(VS_INPUT input)
 {
-    VSOut vso;
-    vso.viewPos = (float3) mul(float4(pos, 1.0f), modelView);
-    vso.viewNormal = mul(n, (float3x3) modelView);
-    vso.tan = mul(tan, (float3x3) modelView);
-    vso.bitan = mul(bitan, (float3x3) modelView);
-    vso.pos = mul(float4(pos, 1.0f), modelViewProj);
-    vso.tc = tc;
+    VS_OUTPUT vso;
+    vso.viewPos = (float3) mul(float4(input.pos, 1.0f), modelView);
+    vso.viewNormal = mul(input.normal, (float3x3) modelView);
+    vso.tan = mul(input.tangent, (float3x3) modelView);
+    vso.bitan = mul(input.biTangent, (float3x3) modelView);
+    vso.pos = mul(float4(input.pos, 1.0f), modelViewProj);
+    vso.tc = input.texcoord;
     return vso;
 }

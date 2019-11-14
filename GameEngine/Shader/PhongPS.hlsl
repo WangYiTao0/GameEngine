@@ -16,9 +16,7 @@ light Pos
 
 #include "ShaderOptions.hlsli"
 #include "LightVectorData.hlsli"
-
 #include "LightOptions.hlsli"
-
 
 //cbuffer DirectionLightCBuf : register(b2)
 //{

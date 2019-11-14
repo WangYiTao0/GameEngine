@@ -1,7 +1,8 @@
 #include "Camera.h"
 #include "imgui/imgui.h"
 #include "MathHelper.h"
-namespace dx = DirectX;
+#include <DirectXMath.h>
+using namespace  DirectX;
 
 //Camera::Camera() 
 //{
@@ -15,20 +16,23 @@ Camera::Camera(Graphics& gfx)
 	Reset();
 }
 
-DirectX::XMMATRIX Camera::GetMatrix() const noexcept
+DirectX::XMMATRIX Camera::GetViewMatrix() const noexcept
 {
-	using namespace dx;
 
-	const dx::XMVECTOR forwardBaseVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+
+	const XMVECTOR forwardBaseVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	// apply the camera rotations to a base vector
 	const auto lookVector = XMVector3Transform(forwardBaseVector,
-		dx::XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f)
+		XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f)
 	);
 	// generate camera transform (applied to all objects to arrange them relative
 	// to camera position/orientation in world) from cam position and direction
 	// camera "top" always faces towards +Y (cannot do a barrel roll)
 	const auto camPosition = XMLoadFloat3(&pos);
 	const auto camTarget = camPosition + lookVector;
+
+	//view matrix
+	//Builds a view matrix for a left-handed coordinate system using a camera position, an up direction, and a focal point.
 	return XMMatrixLookAtLH(camPosition, camTarget, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 }
 
@@ -71,10 +75,9 @@ void Camera::Rotate(float dx, float dy) noexcept
 
 void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 {
-	dx::XMStoreFloat3(&translation, dx::XMVector3Transform(
-		dx::XMLoadFloat3(&translation),
-		dx::XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f) *
-		dx::XMMatrixScaling(travelSpeed, travelSpeed, travelSpeed)
+	XMStoreFloat3(&translation, 
+		XMVector3Transform(XMLoadFloat3(&translation),XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f) *
+		XMMatrixScaling(travelSpeed, travelSpeed, travelSpeed)
 	));
 	pos = {
 		pos.x + translation.x,
@@ -83,35 +86,3 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 	};
 }
 
-
-bool Camera::GetVisibility(DirectX::XMFLOAT3 Position)
-{
-	DirectX::XMVECTOR worldPos, viewPos, ProjPos;
-	DirectX::XMFLOAT3 ProjPosF;
-	worldPos = DirectX::XMLoadFloat3(&Position);
-	viewPos = DirectX::XMVector3TransformCoord(worldPos, GetMatrix());
-	ProjPos = DirectX::XMVector3TransformCoord(viewPos, gfx.GetProjection());
-	DirectX::XMStoreFloat3(&ProjPosF, ProjPos);
-
-	if (-1.0f < ProjPosF.x && ProjPosF.x < 1.0f &&
-		-1.0f < ProjPosF.y && ProjPosF.y < 1.0f &&
-		0.0f < ProjPosF.z && ProjPosF.z < 1.0f)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-
-/*
-void Ball::Draw()
-{
-	CCamera* camera;
-	camera = CManager::GetSceme()->GetGameObject<CCamera>();
-	if(camera->GetVisibility(m_Postion)==false)
-	{
-		return;
-	}
-}
-*/

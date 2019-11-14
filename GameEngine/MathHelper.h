@@ -21,7 +21,7 @@ T wrap_angle(T theta)
 		(modded - (T)2.0 * (T)PI_D) :
 		modded;
 }
-//
+//lerp
 template<typename T>
 constexpr T interpolate(const T& src, const T& dst, float alpha)
 {
