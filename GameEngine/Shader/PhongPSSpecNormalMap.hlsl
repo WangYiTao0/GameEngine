@@ -32,7 +32,7 @@ SamplerState splr;
 float4 main(PS_INPUT input) : SV_Target
 {
     // normalize the mesh normal
-    input.viewPixelPos = normalize(input.viewPixelPos);
+    input.viewNormal = normalize(input.viewNormal);
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
