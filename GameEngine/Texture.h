@@ -1,13 +1,12 @@
 #pragma once
 #include "Bindable.h"
-class Surface;
 
 namespace Bind
 {
 	class Texture : public Bindable
 	{
 	public:
-		Texture(Graphics& gfx, const std::string& path, UINT slot = 0);
+		Texture(Graphics& gfx, const std::string& filePath, UINT slot = 0);
 		void Bind(Graphics& gfx) noexcept override;
 		static std::shared_ptr<Texture> Resolve(Graphics& gfx, const std::string& path, UINT slot = 0);
 		static std::string GenerateUID(const std::string& path, UINT slot = 0);
@@ -20,8 +19,9 @@ namespace Bind
 	protected:
 		bool hasAlpha = false;
 		std::string path;
-	//	Microsoft::WRL::ComPtr<ID3D11Resource> pTexture = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11Resource> pTexture = nullptr;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureView = nullptr;
+		//Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2D =nullptr;
 		
 	};
 }

@@ -189,9 +189,6 @@
     <ClCompile Include="PhysicScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ecsComponent.cpp">
-      <Filter>Header Files\ECS</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -251,6 +248,12 @@
     </ClCompile>
     <ClCompile Include="TransformPixelCbuf.cpp">
       <Filter>Source Files\Binable</Filter>
+    </ClCompile>
+    <ClCompile Include="ecsComponent.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -502,6 +505,9 @@
     </ClInclude>
     <ClInclude Include="DirectXMathHelper.h">
       <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="CerTest.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
