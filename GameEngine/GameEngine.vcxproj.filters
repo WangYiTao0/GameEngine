@@ -87,9 +87,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -237,9 +234,6 @@
     <ClCompile Include="ShapesScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="ECS.cpp">
-      <Filter>Source Files\ECS</Filter>
-    </ClCompile>
     <ClCompile Include="CpuClass.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
@@ -249,10 +243,16 @@
     <ClCompile Include="TransformPixelCbuf.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
-    <ClCompile Include="ecsComponent.cpp">
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS\ECS.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="Color.cpp">
+    <ClCompile Include="ECS\ecsComponent.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -431,15 +431,6 @@
     <ClInclude Include="PhysicScene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="ecsComponent.hpp">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS.hpp">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="ecsSystem.hpp">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -508,6 +499,18 @@
     </ClInclude>
     <ClInclude Include="CerTest.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\ECS.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\ecsComponent.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\ecsSystem.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

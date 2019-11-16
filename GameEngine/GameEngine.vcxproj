@@ -197,8 +197,8 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DxgiInfoManager.cpp" />
-    <ClCompile Include="ECS.cpp" />
-    <ClCompile Include="ecsComponent.cpp" />
+    <ClCompile Include="ECS\ECS.cpp" />
+    <ClCompile Include="ECS\ecsComponent.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
     <ClCompile Include="GeometryScene.cpp" />
@@ -246,6 +246,7 @@
     <ClInclude Include="BindableCodex.h" />
     <ClInclude Include="BindableCommon.h" />
     <ClInclude Include="CerTest.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
@@ -272,9 +273,9 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgiInfoManager.h" />
-    <ClInclude Include="ECS.hpp" />
-    <ClInclude Include="ecsComponent.hpp" />
-    <ClInclude Include="ecsSystem.hpp" />
+    <ClInclude Include="ECS\ECS.hpp" />
+    <ClInclude Include="ECS\ecsComponent.hpp" />
+    <ClInclude Include="ECS\ecsSystem.hpp" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GDIPlusManager.h" />
     <ClInclude Include="GeometryScene.h" />

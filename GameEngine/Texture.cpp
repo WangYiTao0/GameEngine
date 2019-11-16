@@ -21,7 +21,9 @@ namespace Bind
 
 		if (StringHelper::GetFileExtension(filePath) == ".dds")
 		{
-			HRESULT hr = DirectX::CreateDDSTextureFromFileEx(GetDevice(gfx),
+			HRESULT hr = DirectX::CreateDDSTextureFromFileEx(
+				GetDevice(gfx),
+				GetContext(gfx),// if given a d3dContext instance for auto-gen mipmap support. 
 				StringHelper::StringToWide(filePath).c_str(),
 				0,
 				D3D11_USAGE_DEFAULT,
@@ -40,6 +42,7 @@ namespace Bind
 		{
 			HRESULT hr = DirectX::CreateWICTextureFromFileEx(
 				GetDevice(gfx),
+				GetContext(gfx),// if given a d3dContext instance for auto-gen mipmap support. 
 				StringHelper::StringToWide(filePath).c_str(),
 				0, 
 				D3D11_USAGE_DEFAULT, 
@@ -55,29 +58,7 @@ namespace Bind
 			}
 			return;
 		}
-		//ID3D11Texture2D pTexture2D;
-		//pTexture.As(&pTexture);
-		
-
-		//static_cast<ID3D11Texture2D>(pTexture)
-		//CD3D11_TEXTURE2D_DESC Texture2D ()
-		//D3D11_TEXTURE2D_DESC textureDesc = {};
-		//pTexture2D->GetDesc(&textureDesc);
-		//textureDesc.MipLevels = 0;
-		//textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-
-		// write image data into top mip level
-		//GetContext(gfx)->UpdateSubresource(
-		//	pTexture.Get(), 0u, nullptr, nullptr, textureDesc.Width , 0u
-		//);
-
-		// create the resource view on the texture
-		CD3D11_SHADER_RESOURCE_VIEW_DESC srvDesc(D3D11_SRV_DIMENSION_TEXTURE2D);
-		pTextureView->GetDesc(&srvDesc);
 	
-
-		// generate the mip chain using the gpu rendering pipeline
-		GetContext(gfx)->GenerateMips(pTextureView.Get());
 	}
 
 	void Texture::Bind(Graphics& gfx) noexcept
