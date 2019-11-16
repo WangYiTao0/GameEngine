@@ -509,7 +509,7 @@
     <ClInclude Include="ECS\ecsSystem.hpp">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h">
+    <ClInclude Include="Common.hpp">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
   </ItemGroup>

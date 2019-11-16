@@ -65,6 +65,21 @@ private:
 		return HandleToRawType(handle)->second;
 	}
 
+	void removeComponentInternal(uint32 componentID, uint32 index) {}
+
 };
 
+template<class Component>
+inline void ECS::addComponent(EntityHandle entity, Component* component)
+{
+}
 
+template<class Component>
+inline void ECS::removeComponent(EntityHandle entity)
+{
+}
+
+template<class Component>
+inline void ECS::getComponent(EntityHandle entity)
+{
+}

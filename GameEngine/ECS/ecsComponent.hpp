@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "..\\Common.h"
+#include "..\\Common.hpp"
 #include <vector>
 #include <tuple>
 
@@ -23,19 +23,24 @@ public:
 		ECSComponentFreeFunction freefn, size_t size);
 	EntityHandle entity = NULL_ENTITY_HANDLE;
 
-	inline static ECSComponentCreateFunction getTypeCreateFunction(uint32 id)
+	inline static ECSComponentCreateFunction GetTypeCreateFunction(uint32 id)
 	{
 		return std::get<0>(componentTypes[id]);
 	}
 
-	inline static ECSComponentFreeFunction getTypeFreeFunction(uint32 id)
+	inline static ECSComponentFreeFunction GetTypeFreeFunction(uint32 id)
 	{
 		return std::get<1>(componentTypes[id]);
 	}
 
-	inline static size_t getTypeSize(uint32 id)
+	inline static size_t GetTypeSize(uint32 id)
 	{
 		return std::get<2>(componentTypes[id]);
+	}
+
+	inline static bool IsTypeValid(uint32 id)
+	{
+		return id < componentTypes.size();
 	}
 
 private:

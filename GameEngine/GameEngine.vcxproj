@@ -246,7 +246,7 @@
     <ClInclude Include="BindableCodex.h" />
     <ClInclude Include="BindableCommon.h" />
     <ClInclude Include="CerTest.h" />
-    <ClInclude Include="Common.h" />
+    <ClInclude Include="Common.hpp" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
