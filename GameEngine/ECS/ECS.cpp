@@ -3,7 +3,7 @@
 
 ECS::~ECS()
 {
-	for (std::map < uint32, std::vector<uint8>>::iterator it = components.begin(); it != components.end(); ++it)
+	for (std::unordered_map < uint32, std::vector<uint8>>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		size_t typeSize = BaseECSComponent::GetTypeSize(it->first);
 		//free
@@ -150,10 +150,16 @@ void ECS::UpdateSystems(ECSSystemList& systems, float delta)
 uint32 ECS::FindLeastCommonComponent(const std::vector<uint32>& componentTypes,
 	const std::vector<uint32>& componentFlags)
 {
-	uint32 minSize = components[componentTypes[0]].size()
-		/ BaseECSComponent::GetTypeSize(componentTypes[0]);
-	uint32 minIndex = 0;
-	for (uint32 i = 1; i < componentTypes.size(); i++) {
+	//uint32 minSize = components[componentTypes[0]].size()
+	//	/ BaseECSComponent::GetTypeSize(componentTypes[0]);
+	//uint32 minIndex = 0;
+
+	uint32 minSize = (uint32)-1;
+	uint32 minIndex = (uint32)-1;
+	for (uint32 i = 0; i < componentTypes.size(); i++) {
+		if ((componentFlags[i] & BaseECSSystem::FLAG_OPTIONAL) != 0) {
+			continue;
+		}
 		size_t typeSize = BaseECSComponent::GetTypeSize(componentTypes[i]);
 		uint32 size = components[componentTypes[i]].size() / typeSize;
 		if (size <= minSize) {

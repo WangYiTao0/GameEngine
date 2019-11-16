@@ -10,7 +10,7 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-cbuffer ObjectCBuf
+cbuffer ObjectCBuf :register (b1)
 {
     float specularIntensity;
     float specularPower;
@@ -22,7 +22,7 @@ cbuffer ObjectCBuf
 Texture2D tex;
 Texture2D nmap : register(t2);
 
-SamplerState splr;
+SamplerState splr : register(s0);
 
 float4 main(PS_INPUT input) : SV_Target
 {

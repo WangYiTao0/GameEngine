@@ -79,6 +79,9 @@
     <Filter Include="Header Files\CommonTool\Macros">
       <UniqueIdentifier>{12714e1a-204f-4931-a322-e71f40883252}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS\Component">
+      <UniqueIdentifier>{9ed497bc-7b66-4eff-b325-8cafa200e11f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -183,9 +186,6 @@
     <ClCompile Include="DirectionLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -257,6 +257,9 @@
     </ClCompile>
     <ClCompile Include="ECS\EcsSystem.cpp">
       <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -514,6 +517,9 @@
     </ClInclude>
     <ClInclude Include="Common.hpp">
       <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\ECS\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

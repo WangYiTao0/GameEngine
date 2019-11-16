@@ -3,6 +3,7 @@
 #include "ecsComponent.hpp"
 #include "ecsSystem.hpp"
 #include <map>
+#include <unordered_map>
 
 
 class ECS
@@ -133,7 +134,7 @@ private:
 	//system
 	std::vector<BaseECSSystem*> systems;
 	//component  map  ID   array of component
-	std::map<uint32,std::vector<uint8>> components;
+	std::unordered_map<uint32,std::vector<uint8>> components;
 	//entity               index  ,   entity           ID componenttype,index
 	std::vector <std::pair<uint32, std::vector<std::pair<uint32, uint32>>>* > entities;
 

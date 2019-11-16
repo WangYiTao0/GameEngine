@@ -42,8 +42,8 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-Texture2D tex;
-SamplerState splr;
+Texture2D tex : register(t0);
+SamplerState splr : register(s0);
 
 float4 main(PS_INPUT input) : SV_Target
 {

@@ -20,7 +20,7 @@ cbuffer ObjectCBuf
 Texture2D tex;
 Texture2D spec;
 
-SamplerState splr;
+SamplerState splr : register(s0);
 
 
 float4 main(PS_INPUT input) : SV_Target

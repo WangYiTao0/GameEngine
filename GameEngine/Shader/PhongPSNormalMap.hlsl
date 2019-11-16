@@ -22,10 +22,10 @@ cbuffer ObjectCBuf
     float padding[1];
 };
 
-Texture2D tex;
+Texture2D tex : register(t0);
 Texture2D nmap : register(t2);
 
-SamplerState splr;
+SamplerState splr : register(s0);
 
 
 float4 main(PS_INPUT input) : SV_Target

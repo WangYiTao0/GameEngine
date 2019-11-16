@@ -6,8 +6,8 @@
 #include "Grid.h"
 #include "imgui/imgui.h"
 
-GridTerrain::GridTerrain(Graphics& gfx,float width, float depth,
-	unsigned int m, unsigned int n)
+GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
+	unsigned int m , unsigned int n , float gridSize )
 {
 	using namespace Bind;
 
@@ -20,15 +20,15 @@ GridTerrain::GridTerrain(Graphics& gfx,float width, float depth,
 		.Append(Element::Normal)
 		.Append(Element::Tangent)
 		.Append(Element::Texture2D);
-	auto model = Grid::MakeIndependent(layout,width,depth,m,n);
+	auto model = Grid::MakeIndependent(layout, width, depth, m, n, gridSize);
 	const auto geometryTag = "$Grid." + std::to_string(width);
-	//model.SetNormalsIndependentFlat();
+	model.SetNormalsIndependentFlat();
 
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 1u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\tile.dds"));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 1u));
 
 	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();

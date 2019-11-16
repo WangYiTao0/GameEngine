@@ -248,6 +248,7 @@
     <ClInclude Include="BindableCommon.h" />
     <ClInclude Include="CerTest.h" />
     <ClInclude Include="Common.hpp" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Graphics.h"
+#include "Component.h"
 
 class PhysicScene : public Scene
 {
@@ -13,5 +14,5 @@ public:
 private:
 	Graphics& gfx;
 
-
+	ECS ecs;
 };

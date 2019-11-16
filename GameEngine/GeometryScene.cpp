@@ -7,7 +7,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	Scene("Geometry Scene"),
 	plane(gfx, 3.0f),
 	sphere(gfx, 4.0f),
-	gridTerrain(gfx),
+	gridTerrain(gfx,160,160,50,50),
 	rng(std::random_device{}())
 {
 	plane.SetPos({ 0.0f,0.0f,5.0f });

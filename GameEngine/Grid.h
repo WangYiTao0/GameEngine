@@ -4,9 +4,14 @@
 class Grid
 {
 public:
+	///<summary>
+	/// Creates an mxn grid in the xz-plane with m rows and n columns, centered
+	/// at the origin with the specified width and depth.
+	///</summary>
 	static IndexedTriangleList MakeIndependent(Dvtx::VertexLayout layout,
 		float width, float depth,
-		unsigned int m, unsigned int n)
+		unsigned int m, unsigned int n,
+		float gridSize)
 	{
 		using Type = Dvtx::VertexLayout::ElementType;
 
@@ -20,8 +25,12 @@ public:
 		float halfWidth = 0.5f * width;
 		float halfDepth = 0.5f * depth;
 
+		//each grid width height
 		float dx = width / (n - 1);
 		float dz = depth / (m - 1);
+
+		//float du = 1.0f / (n - 1);
+		//float dv = 1.0f / (m - 1);
 
 		float du = 1.0f / (n - 1);
 		float dv = 1.0f / (m - 1);
@@ -36,12 +45,12 @@ public:
 				float x = -halfWidth + j * dx;
 				//pos
 				vb[i * n + j].Attr<Type::Position3D>() = DirectX::XMFLOAT3(x, 0.0f, z);
-				//normal
+				////normal
 				vb[i * n + j].Attr<Type::Normal>() = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
 				//TangentU
 				vb[i * n + j].Attr<Type::Tangent>() = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
 				//Texture2D
-				vb[i * n + j].Attr<Type::Texture2D>() = DirectX::XMFLOAT2(j * du, i * du);
+				vb[i * n + j].Attr<Type::Texture2D>() = DirectX::XMFLOAT2(j * du * gridSize, i * dv * gridSize);
 				//meshData.Vertices[i * n + j].Position = XMFLOAT3(x, 0.0f, z);
 				//meshData.Vertices[i * n + j].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 				//meshData.Vertices[i * n + j].TangentU = XMFLOAT3(1.0f, 0.0f, 0.0f);
@@ -84,7 +93,7 @@ public:
 		{
 			layout = Dvtx::VertexLayout{}.Append(Element::Position3D);
 		}
-		return MakeIndependent(std::move(*layout), 24, 24, 12, 12);
+		return MakeIndependent(std::move(*layout), 256, 256, 257, 257, 5);
 	}
 };
 

@@ -4,7 +4,7 @@ ShapesScene::ShapesScene(Graphics& gfx)
 	:
 	gfx(gfx),
 	Scene("Shapes Scene"),
-	gridTerrain(gfx)
+	gridTerrain(gfx,200,200,200,200)
 {
 	
 }
