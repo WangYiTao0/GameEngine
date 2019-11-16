@@ -1,8 +1,11 @@
 #include "ecsComponent.hpp"
 
-static uint32 componentID = 0;
+std::vector<std::tuple<ECSComponentCreateFunction, ECSComponentFreeFunction, size_t>>  BaseECSComponent::componentTypes;
 
-uint32 BaseECSComponent::nextID()
+uint32 BaseECSComponent::registerComponentType(ECSComponentCreateFunction createfn, ECSComponentFreeFunction freefn, size_t size)
 {
-	return componentID++;
+	uint32 componentID = componentTypes.size();
+
+	componentTypes.push_back(std::tuple<ECSComponentCreateFunction, ECSComponentFreeFunction, size_t>(createfn, freefn, size));
+	return componentID;
 }

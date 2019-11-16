@@ -5,13 +5,15 @@
 class BaseECSSystem
 {
 public:
-	BaseECSSystem(const std::vector<unsigned int>& componentTypesIn)
+	BaseECSSystem(const std::vector<uint32>& componentTypesIn)
 		:componentTypes(componentTypesIn){}
+
 	virtual void updateComponents(float delta,BaseECSComponent** component){}
-	const std::vector<unsigned int>& getComponentTypes()
+	
+	const std::vector<uint32>& getComponentTypes()
 	{
 		return componentTypes;
 	}
 private:
-	std::vector<unsigned int> componentTypes;
+	std::vector<uint32> componentTypes;
 };
