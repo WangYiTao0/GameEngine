@@ -184,6 +184,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ECS\EcsSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
