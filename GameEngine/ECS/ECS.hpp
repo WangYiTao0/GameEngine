@@ -23,13 +23,22 @@ public:
 
 	// Component methods
 	template<class Component>
-	void addComponent(EntityHandle entity, Component* component);
+	inline void AddComponent(EntityHandle entity, Component* component)
+	{
+		AddComponentInternal(entity, HandleToEntity(entity), Component::ID, component);
+	}
 
 	template<class Component>
-	void removeComponent(EntityHandle entity);
+	void RemoveComponent(EntityHandle entity)
+	{
+		return RemoveComponentInternal(entity, Component::ID);
+	}
 
 	template<class Component>
-	void getComponent(EntityHandle entity);
+	void GetComponent(EntityHandle entity)
+	{
+		GetComponentInternal(HandleToEntity(entity), Component::ID);
+	}
 
 
 	// System methods
@@ -44,11 +53,12 @@ private:
 	
 
 private:
+	//system
 	std::vector<BaseECSSystem*> systems;
-
+	//component  map  ID   array of component
 	std::map<uint32,std::vector<uint8>> components;
-
-	std::vector <std::pair<uint32, std::vector<std::pair<uint32, uint32>>>*> entities;
+	//entity               index  ,   entity           ID componenttype,index
+	std::vector <std::pair<uint32, std::vector<std::pair<uint32, uint32>>>* > entities;
 
 	inline std::pair<uint32, std::vector<std::pair<uint32, uint32>>>* HandleToRawType(EntityHandle handle)
 	{
@@ -65,21 +75,17 @@ private:
 		return HandleToRawType(handle)->second;
 	}
 
-	void removeComponentInternal(uint32 componentID, uint32 index) {}
+	void DeleteComponent(uint32 componentID, uint32 index);
+
+	bool RemoveComponentInternal(EntityHandle handle, uint32 componentID);
+
+	void AddComponentInternal(EntityHandle handle,
+		std::vector<std::pair<uint32, uint32> >& entity, 
+		uint32 componentID, BaseECSComponent* component);
+
+	BaseECSComponent* GetComponentInternal(std::vector<std::pair<uint32, uint32> >& entityComponents, uint32 componentID);
+
 
 };
 
-template<class Component>
-inline void ECS::addComponent(EntityHandle entity, Component* component)
-{
-}
 
-template<class Component>
-inline void ECS::removeComponent(EntityHandle entity)
-{
-}
-
-template<class Component>
-inline void ECS::getComponent(EntityHandle entity)
-{
-}
