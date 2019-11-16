@@ -37,18 +37,18 @@ public:
 	template<class Component>
 	void GetComponent(EntityHandle entity)
 	{
-		GetComponentInternal(HandleToEntity(entity), Component::ID);
+		GetComponentInternal(HandleToEntity(entity), components[Component::ID], Component::ID);
 	}
 
 
 	// System methods
-	inline void addSystem(BaseECSSystem& system)
+	inline void AddSystem(BaseECSSystem& system)
 	{
 		systems.push_back(&system);
 	}
-	void updateSystems(float delta);
+	void UpdateSystems(float delta);
 
-	void removeSystem(BaseECSSystem& system);
+	bool RemoveSystem(BaseECSSystem& system);
 private:
 	
 
@@ -83,9 +83,18 @@ private:
 		std::vector<std::pair<uint32, uint32> >& entity, 
 		uint32 componentID, BaseECSComponent* component);
 
-	BaseECSComponent* GetComponentInternal(std::vector<std::pair<uint32, uint32> >& entityComponents, uint32 componentID);
+	//BaseECSComponent* GetComponentInternal(std::vector<std::pair<uint32, uint32> >& entityComponents, uint32 componentID);
 
+	BaseECSComponent* GetComponentInternal(
+		std::vector<std::pair<uint32, uint32> >& entityComponents,
+		std::vector<uint8>& array, uint32 componentID);
 
+	void UpdateSystemWithMultipleComponents(uint32 index, float delta, 
+		const std::vector<uint32>& componentTypes,
+		std::vector<BaseECSComponent*>& componentParam, 
+		std::vector<std::vector<uint8>*>& componentArrays);
+
+	uint32 FindLeastCommonComponent(const std::vector<uint32>& componentTypes);
 };
 
 
