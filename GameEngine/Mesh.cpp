@@ -231,6 +231,7 @@ Model::Model(Graphics& gfx, const std::string& pathString, float scale)
 	for (size_t i = 0; i < pScene->mNumMeshes; i++)
 	{
 		//analyze
+		//load all the mesh into zhe meshPtr vector
 		meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i],pScene->mMaterials,pathString,scale));
 	}
 	int nextId = 0;
@@ -270,6 +271,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 	bool hasSpecularMap = false;
 	bool hasAlphaGloss = false;
+	bool hasAlphaDiffuse = false;
 	bool hasNormalMap = false;
 	bool hasDiffuseMap = false;
 	float shininess = 2.0f;
@@ -287,7 +289,10 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			bindablePtrs.push_back(Texture::Resolve(gfx, rootPath + texFileName.C_Str()));
+			//bindablePtrs.push_back(Texture::Resolve(gfx, rootPath + texFileName.C_Str()));
+			auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
+			hasAlphaDiffuse = tex->HasAlpha();
+			bindablePtrs.push_back(std::move(tex));
 			hasDiffuseMap = true;
 		}
 		else
@@ -599,6 +604,16 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	{
 		throw std::runtime_error("terrible combination of textures in material smh");
 	}
+
+	//// all materials need a blending mode
+	//bindablePtrs.push_back(Blender::Resolve(gfx, hasAlphaDiffuse));
+
+	//bindablePtrs.push_back(Rasterizer::Resolve(gfx, false));
+
+	// anything with alpha diffuse is 2-sided IN SPONZA, need a better way
+	// of signalling 2-sidedness to be more general in the future
+	bindablePtrs.push_back(Rasterizer::Resolve(gfx, hasAlphaDiffuse));
+
 
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }

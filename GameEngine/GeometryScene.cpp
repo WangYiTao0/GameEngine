@@ -25,7 +25,6 @@ GeometryScene::GeometryScene(Graphics& gfx)
 		c->SetPos({ rdist(rng),rdist(rng),rdist(rng) });
 		//BoxData.push_back(c->GetLocalBoundingBox());
 		m_InstancedData.push_back(c->GetTransformXM());
-
 	}
 }
 

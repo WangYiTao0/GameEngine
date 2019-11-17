@@ -22,9 +22,9 @@ cbuffer ObjectCBuf
     float specularMapWeight;
 };
 
-Texture2D tex;
-Texture2D spec;
-Texture2D nmap;
+Texture2D tex : register(t0);
+Texture2D spec : register(t1);
+Texture2D nmap : register(t2);
 
 SamplerState splr : register(s0);
 
@@ -42,11 +42,15 @@ float4 main(PS_INPUT input) : SV_Target
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
     // specular parameter determination (mapped or uniform)
     float3 specularReflectionColor;
+    //if doesn't has specularMap  using specularPowerConst
     float specularPower = specularPowerConst;
     if (specularMapEnabled)
     {
         const float4 specularSample = spec.Sample(splr, input.texcoord);
         specularReflectionColor = specularSample.rgb * specularMapWeight;
+
+        //specularSample.a is [0,1] need  be power scale
+        //specularPower = pow(2.0, 13.0 * shininessMap)
         if (hasGloss)
         {
             specularPower = pow(2.0f, specularSample.a * 13.0f);
@@ -67,8 +71,11 @@ float4 main(PS_INPUT input) : SV_Target
     );
 	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
     float4 finalColor = 1.0f;
+
+    //alpha blender
     float4 texColor = tex.Sample(splr, input.texcoord);
-    clip(texColor.a - 0.1f);
+    //clip(texColor.a - 0.1f);
+    clip(texColor.a < 0.1f ? -1 : 1);
     finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specularReflected;
     finalColor.a = texColor.a;
 

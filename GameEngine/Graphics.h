@@ -11,7 +11,6 @@
 #include <memory>
 #include <random>
 #include "ConditionalNoexcept.h"
-#include "RenderStates.h"
 
 namespace Bind
 {

@@ -131,9 +131,6 @@ void Graphics::OnResize()
 	//Rasterizer Stage
 	m_pContext->RSSetViewports(1u, &m_ScreenViewPort);
 
-	RenderStates::InitAll(m_pDevice.Get());
-
-
 }
 
 void Graphics::BeginFrame(float red, float green, float blue) noexcept
@@ -151,15 +148,7 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 	m_pContext->ClearRenderTargetView(m_pRenderTargetView.Get(), color);
 	m_pContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 
-	m_pContext->RSSetState(RenderStates::RSNoCull.Get());
-	m_pContext->OMSetBlendState(RenderStates::BSTransparent.Get(), nullptr, 0xFFFFFFFF);
 
-	//pContext->OMSetBlendState(pBlendState.Get(), NULL, 0xFFFFFFFF);
-
-	////Draw Text
-	//spriteBatch->Begin();
-	//spriteFont->DrawString(spriteBatch.get(),"Hello World", DirectX::XMFLOAT2(0, 0), DirectX::Colors::White, 0.0f, DirectX::XMFLOAT2(0.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f));
-	//spriteBatch->End();
 }
 
 void Graphics::EndFrame()
@@ -289,7 +278,7 @@ bool Graphics::InitializeDirectX()
 
 		if (hr == E_INVALIDARG)
 		{
-			// Direct3D 11.0 的API不承认D3D_FEATURE_LEVEL_11_1，所以我们需要尝试特性等级11.0以及以下的版本
+			// Direct3D 11.0
 			hr = D3D11CreateDevice(nullptr,
 				d3dDriverType,
 				nullptr,

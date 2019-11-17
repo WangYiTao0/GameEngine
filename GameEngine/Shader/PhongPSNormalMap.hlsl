@@ -51,6 +51,13 @@ float4 main(PS_INPUT input) : SV_Target
     float4 finalColor = 1.0f;
     float4 texColor = tex.Sample(splr, input.texcoord);
     clip(texColor.a - 0.1f);
+
+    // flip Normal when backface
+    if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+    {
+        input.viewNormal = -input.viewNormal;
+    }
+
     finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specular;
     finalColor.a = texColor.a;
 

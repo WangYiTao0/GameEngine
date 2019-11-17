@@ -8,9 +8,11 @@ float3 MapNormal(
 {
     // build the tranform (rotation) into same space as tan/bitan/normal (target space)
     const float3x3 tanToTarget = float3x3(tan, bitan, normal);
+
     // sample and unpack the normal from texture into target space   
     const float3 normalSample = nmap.Sample(splr, tc).xyz;
     const float3 tanNormal = normalSample * 2.0f - 1.0f;
+
     // bring normal from tanspace into target space
     return normalize(mul(tanNormal, tanToTarget));
 }
