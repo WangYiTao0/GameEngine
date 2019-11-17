@@ -43,7 +43,7 @@ struct PS_INPUT
 };
 
 Texture2D tex : register(t0);
-SamplerState splr : register(s0);
+SamplerState splr;
 
 float4 main(PS_INPUT input) : SV_Target
 {

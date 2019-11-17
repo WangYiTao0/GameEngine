@@ -24,8 +24,7 @@ private:
 
 	bool EnableFrustumCulling = true;
 
-	TestPlane plane;
-	GridTerrain gridTerrain;
+	GridTerrain gridTerrain{ gfx,160,160,50,50 };
 
 
 	std::vector<std::unique_ptr<class TestCube>> cubes;

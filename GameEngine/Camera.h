@@ -10,6 +10,7 @@ public:
 	void Reset() noexcept;
 	void Rotate(float dx, float dy) noexcept;
 	void Translate(DirectX::XMFLOAT3 translation) noexcept;
+	DirectX::XMFLOAT3 GetPos() const noexcept;
 private:
 	//float r = 20.0f; //distance to the origin
 	//float theta = 0.0f;//rotation the camera around origin

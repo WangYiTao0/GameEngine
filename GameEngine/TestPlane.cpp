@@ -7,39 +7,42 @@
 #include "Sampler.h"
 #include "StringHelper.h"
 
-TestPlane::TestPlane(Graphics& gfx, float size)
+TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
+	:
+	pmc({ color })
 {
 	std::string shaderfolder = StringHelper::GetShaderRootPath();
 
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	//BlendState::ResetBlendState(gfx);
-
 	auto model = Plane::Make();
-	model.Transform(dx::XMMatrixScaling(size, size, 1.0f));
-	const auto geometryTag = "&plane." + std::to_string(size);
-	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
-	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
-	AddBind(Sampler::Resolve(gfx));
+	model.Transform( dx::XMMatrixScaling( size,size,1.0f ) );
+	const auto geometryTag = "$plane." + std::to_string( size );
+	AddBind( VertexBuffer::Resolve( gfx,geometryTag,model.vertices ) );
+	AddBind( IndexBuffer::Resolve( gfx,geometryTag,model.indices ) );
 
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
-	//AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal_obj.png", 2u));
-
-
-	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
+	auto pvs = VertexShader::Resolve( gfx, shaderfolder + "SolidVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
-	AddBind(std::move(pvs));
+	AddBind( std::move( pvs ) );
 
-	//AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPS.cso"));
-	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
+	AddBind( PixelShader::Resolve( gfx, shaderfolder +  "SolidPS.cso" ) );
 
-	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
-	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
-	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	//AddBind( PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx,pmc,1u ) );
+	AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u));
 
-	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
+
+	AddBind( InputLayout::Resolve( gfx,model.vertices.GetLayout(),pvsbc ) );
+
+	AddBind( Topology::Resolve( gfx,D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+
+	AddBind( std::make_shared<TransformCbuf>( gfx,*this,0u ) );
+
+	//AddBind( Blender::Resolve( gfx,true,0.5f ) );
+
+	AddBind(std::make_shared<Blender>(gfx, true, 0.5f));
+	
+	AddBind( Rasterizer::Resolve( gfx,true ) );
 
 }
 
@@ -66,9 +69,9 @@ DirectX::XMMATRIX TestPlane::GetTransformXM() const noexcept
 		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 }
 
-void TestPlane::SpawnControlWindow(Graphics& gfx) noexcept
+void TestPlane::SpawnControlWindow(Graphics& gfx, const std::string& name) noexcept
 {
-	if (ImGui::Begin("Plane"))
+	if (ImGui::Begin(name.c_str()))
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");
@@ -79,15 +82,10 @@ void TestPlane::SpawnControlWindow(Graphics& gfx) noexcept
 		ImGui::SliderAngle("Pitch", &pitch, -180.0f, 180.0f);
 		ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
 		ImGui::Text("Shading");
-		bool changed0 = ImGui::SliderFloat("Spec. Int.", &pmc.specularIntensity, 0.0f, 1.0f);
-		bool changed1 = ImGui::SliderFloat("Spec. Power", &pmc.specularPower, 0.0f, 100.0f);
-		bool checkState = pmc.normalMappingEnabled == TRUE;
-		bool changed2 = ImGui::Checkbox("Enable Normal Map", &checkState);
-		pmc.normalMappingEnabled = checkState ? TRUE : FALSE;
-		if (changed0 || changed1 || changed2)
-		{
-			QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);
-		}
+		auto pBlender = QueryBindable<Bind::Blender>();
+		float factor = pBlender->GetFactor();
+		ImGui::SliderFloat("Translucency", &factor, 0.0f, 1.0f);
+		pBlender->SetFactor(factor);
 	}
 	ImGui::End();
 }

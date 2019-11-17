@@ -3,8 +3,7 @@
 #include "GameTimer.h"
 #include "ImguiManager.h"
 #include "Camera.h"
-#include "PointLight.h"
-#include "DirectionLight.h"
+#include "LightCommon.h"
 #include "BoundingSphere.h"
 #include "IntersectData.h"
 #include <set>
@@ -16,15 +15,6 @@
 
 class App
 {
-private:
-	enum class LightType
-	{
-		DirectionLightType = 0,
-		PointLightType,
-		SpotLightType,
-
-		MaxType
-	} lightType;
 
 public:
 	App(const std::string& commandLine = "");
@@ -49,7 +39,7 @@ private:
 	float speed_factor = 1.0f;
 	Camera cam;
 	PointLight pointLight;
-	DirectionLight directionLight;
+
 
 	
 	CpuClass m_Cpu;

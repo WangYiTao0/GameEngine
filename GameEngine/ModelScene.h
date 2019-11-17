@@ -15,11 +15,8 @@ public:
 private:
 	Graphics& gfx;
 
-	//Model gobber{ gfx,"Models\\gobber\\GoblinX.obj",6.0f };
-	//Model wall{ gfx,"Models\\brick_wall\\brick_wall.obj",6.0f };
-	//TestPlane tp{ gfx,6.0 };
-	//Model nano{ gfx,"Models\\nano_textured\\nanosuit.obj",2.0f };
-
 	Model sponza{ gfx,"Data\\Models\\sponza\\sponza.obj",1.0f / 20.0f };
 
+	TestPlane bluePlane{ gfx,6.0f,{ 0.3f,0.3f,1.0f,0.0f } };
+	TestPlane redPlane{ gfx,6.0f,{ 1.0f,0.3f,0.3f,0.0f } };
 };

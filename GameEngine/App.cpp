@@ -26,7 +26,6 @@ App::App(const std::string& commandLine)
 	commandLine(commandLine),
 	wnd(width, height, "Game Engine"),
 	pointLight(wnd.Gfx()),
-	directionLight(wnd.Gfx()),
 	cam(wnd.Gfx())
 {
 	// Create the cpu object.
@@ -69,7 +68,6 @@ App::App(const std::string& commandLine)
 		}
 	}
 
-	lightType = LightType::PointLightType;
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(PI / 3.0f, 
 		static_cast<float>(width) / static_cast<float>(height), 
 		nearZ, farZ));
@@ -136,12 +134,7 @@ void App::HandleInput(float dt)
 		case VK_F1:
 			showDemoWindow = true;
 			break;
-		case VK_NUMPAD0:
-			lightType = LightType::DirectionLightType;
-			break;
-		case VK_NUMPAD1:
-			lightType = LightType::PointLightType;
-			break;
+
 		}
 	}
 
@@ -207,29 +200,11 @@ void App::DoFrame()
 
 	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
 
-	switch (lightType)
-	{
-	case App::LightType::DirectionLightType:
-		{
-			directionLight.Bind(wnd.Gfx());
-			directionLight.Draw(wnd.Gfx());
-			directionLight.SpawnControlWindow();
-			break;
-		}
-	case App::LightType::PointLightType:
-		{
-			pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
-			pointLight.Draw(wnd.Gfx());
-			pointLight.SpawnControlWindow();
-			break;
-		}
-	case App::LightType::SpotLightType:
-		break;
-	case App::LightType::MaxType:
-		break;
-	default:
-		break;
-	}
+
+	pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
+	pointLight.Draw(wnd.Gfx());
+	pointLight.SpawnControlWindow();
+
 
 	HandleInput(dt);
 	update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);

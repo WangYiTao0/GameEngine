@@ -8,9 +8,11 @@ ModelScene::ModelScene(Graphics& gfx)
 	gfx(gfx),
 	Scene("Model Scene")
 {
+	bluePlane.SetPos({0.0f,0.0f,5.0f});
+	redPlane.SetPos({ 0.0f,0.0f,6.0f });
 
 	sponza.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f)
-		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 80.0f, 0.0f));
+		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 90.0f, 0.0f));
 }
 
 void ModelScene::Update(float dt)
@@ -20,17 +22,18 @@ void ModelScene::Update(float dt)
 
 void ModelScene::Draw() 
 {
-	//wall.Draw(gfx);
-	//tp.Draw(gfx);
-	//nano.Draw(gfx);
-	//gobber.Draw(gfx);
+
 	sponza.Draw(gfx);
 
-	sponza.ShowWindow(gfx, "Sponza");
+	redPlane.Draw(gfx);
+	bluePlane.Draw(gfx);
 
-	//gobber.ShowWindow(gfx,"gobber");
-	//wall.ShowWindow(gfx, "Wall");
-	//tp.SpawnControlWindow(gfx);
-	//nano.ShowWindow(gfx, "Nano");
+
+
+	sponza.ShowWindow(gfx, "Sponza");
+	bluePlane.SpawnControlWindow(gfx, "Blue Plane");
+	redPlane.SpawnControlWindow(gfx, "Red Plane");
+
+
 
 }

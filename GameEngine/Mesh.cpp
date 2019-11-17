@@ -283,15 +283,12 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		aiString texFileName;
 
-		//material.Get(AI_MATKEY_COLOR_DIFFUSE, reinterpret_cast<aiColor3D&>(diffuseColor));
-		//material.Get(AI_MATKEY_COLOR_SPECULAR, reinterpret_cast<aiColor3D&>(specularColor));
-		//material.Get(AI_MATKEY_SHININESS, shininess);
-
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 		{
 			//bindablePtrs.push_back(Texture::Resolve(gfx, rootPath + texFileName.C_Str()));
-			auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
-			hasAlphaDiffuse = tex->HasAlpha();
+			std::shared_ptr<Bind::Texture> tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
+			//hasAlphaDiffuse = tex->HasAlpha();
+			hasAlphaDiffuse = true;
 			bindablePtrs.push_back(std::move(tex));
 			hasDiffuseMap = true;
 		}
@@ -376,6 +373,10 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		bindablePtrs.push_back(std::move(pvs));
 
 		bindablePtrs.push_back(PixelShader::Resolve(gfx, shaderfolder + "PhongPSSpecNormalMap.cso"));
+
+		bindablePtrs.push_back(PixelShader::Resolve(gfx, 
+			hasAlphaDiffuse ? shaderfolder + "PhongPSSpecNormalMask.cso" : shaderfolder + "PhongPSSpecNormalMap.cso"
+		));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
@@ -614,6 +615,8 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	// of signalling 2-sidedness to be more general in the future
 	bindablePtrs.push_back(Rasterizer::Resolve(gfx, hasAlphaDiffuse));
 
+	//turn off alpha blender
+	bindablePtrs.push_back(Blender::Resolve(gfx, false));
 
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }

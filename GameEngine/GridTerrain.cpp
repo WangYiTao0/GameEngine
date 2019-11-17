@@ -24,11 +24,13 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	const auto geometryTag = "$Grid." + std::to_string(width);
 	model.SetNormalsIndependentFlat();
 
+	AddBind(Sampler::Resolve(gfx));
+
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\tile.dds"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 1u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\water1.dds"));
+	//AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
@@ -37,12 +39,6 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
 
-	//struct PSColorConstant
-	//{
-	//	float specularIntensity;
-	//	float specularPower;
-	//	float padding[2];
-	//} phongConnst;
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 
@@ -50,6 +46,9 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
+	AddBind(Blender::Resolve(gfx, true, 0.3f));
+
+	AddBind(Rasterizer::Resolve(gfx, true));
 
 	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
@@ -78,6 +77,11 @@ void GridTerrain::SpawnControlWindow(Graphics& gfx) noexcept
 		{
 			QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);
 		}
+		ImGui::Text("Shading");
+		auto pBlender = QueryBindable<Bind::Blender>();
+		float factor = pBlender->GetFactor();
+		ImGui::SliderFloat("Translucency", &factor, 0.0f, 1.0f);
+		pBlender->SetFactor(factor);
 	}
 	ImGui::End();
 }

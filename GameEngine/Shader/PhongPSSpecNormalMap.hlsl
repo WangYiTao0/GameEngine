@@ -26,7 +26,7 @@ Texture2D tex : register(t0);
 Texture2D spec : register(t1);
 Texture2D nmap : register(t2);
 
-SamplerState splr : register(s0);
+SamplerState splr ;
 
 
 float4 main(PS_INPUT input) : SV_Target
@@ -74,8 +74,15 @@ float4 main(PS_INPUT input) : SV_Target
 
     //alpha blender
     float4 texColor = tex.Sample(splr, input.texcoord);
-    //clip(texColor.a - 0.1f);
+    #ifdef HASMASK
     clip(texColor.a < 0.1f ? -1 : 1);
+    // flip Normal when backface
+    if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+    {
+        input.viewNormal = -input.viewNormal;
+    }
+    #endif
+
     finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specularReflected;
     finalColor.a = texColor.a;
 

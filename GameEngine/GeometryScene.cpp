@@ -5,14 +5,9 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	:
 	gfx(gfx),
 	Scene("Geometry Scene"),
-	plane(gfx, 3.0f),
 	sphere(gfx, 4.0f),
-	gridTerrain(gfx,160,160,50,50),
 	rng(std::random_device{}())
 {
-	plane.SetPos({ 0.0f,0.0f,5.0f });
-	plane.SetRotation(0.0f, 0.0f, 0.0f);
-
 	std::uniform_real_distribution<float> rdist(-20.0f, 20.0f);
 
 	for (auto i = 0; i < 80; i++)
@@ -35,7 +30,6 @@ void GeometryScene::Update(float dt)
 void GeometryScene::Draw()
 {
 	using namespace DirectX;
-	plane.Draw(gfx);
 	//sphere.Draw(gfx);
 	//actually draw number
 	std::vector<DirectX::XMMATRIX> acceptedData;
@@ -75,7 +69,6 @@ void GeometryScene::Draw()
 
 	//imgui windows
 	gridTerrain.SpawnControlWindow(gfx);
-	plane.SpawnControlWindow(gfx);
 	SpownFrustumControl();
 
 }

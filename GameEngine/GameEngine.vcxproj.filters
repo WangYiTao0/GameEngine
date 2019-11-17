@@ -533,6 +533,9 @@
     <ClInclude Include="ImguiManager.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
+    <ClInclude Include="LightCommon.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">
@@ -599,6 +602,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\SolidVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongPSSpecNormalMask.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

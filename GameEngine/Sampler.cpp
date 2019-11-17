@@ -3,7 +3,9 @@
 #include "BindableCodex.h"
 namespace Bind
 {
-	Sampler::Sampler(Graphics& gfx)
+	Sampler::Sampler(Graphics& gfx, UINT slot)
+		:
+		slot(slot)
 	{
 		INFOMAN(gfx);
 
@@ -22,15 +24,16 @@ namespace Bind
 
 	void Sampler::Bind(Graphics& gfx) noexcept
 	{
-		GetContext(gfx)->PSSetSamplers(0, 1, pSampler.GetAddressOf());
+		GetContext(gfx)->PSSetSamplers(slot, 1, pSampler.GetAddressOf());
 	}
 	std::shared_ptr<Sampler> Sampler::Resolve(Graphics& gfx)
 	{
 		return Codex::Resolve<Sampler>(gfx);
 	}
-	std::string Sampler::GenerateUID()
+	std::string Sampler::GenerateUID(UINT slot)
 	{
-		return typeid(Sampler).name();
+		using namespace std::string_literals;
+		return typeid(Sampler).name() + "#"s + std::to_string(slot);
 	}
 	std::string Sampler::GetUID() const noexcept
 	{

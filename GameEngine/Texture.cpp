@@ -5,6 +5,7 @@
 #include <DirectXTK\WICTextureLoader.h>
 #include <DirectXTK\DDSTextureLoader.h>
 
+
 namespace Bind
 {
 	namespace wrl = Microsoft::WRL;
@@ -16,8 +17,6 @@ namespace Bind
 		slot(slot)
 	{
 		INFOMAN(gfx);
-
-		ID3D11Texture2D* pTexture2D = nullptr;
 
 		if (StringHelper::GetFileExtension(filePath) == ".dds")
 		{
@@ -82,16 +81,13 @@ namespace Bind
 	}
 	bool Texture::HasAlpha() const noexcept
 	{
-		D3D11_TEXTURE2D_DESC texture2dDesc;
+	/*	D3D11_TEXTURE2D_DESC texture2dDesc;
 		ID3D11Texture2D* pTexture2D;
 		pTexture2D->GetDesc(&texture2dDesc);
 
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc;
-		pTextureView->GetDesc(&textureViewDesc);
-
-		
-
+		pTextureView->GetDesc(&textureViewDesc);*/
 		return hasAlpha;
 	}
 	UINT Texture::CalculateNumberOfMipLevels(UINT width, UINT height) noexcept

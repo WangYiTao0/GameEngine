@@ -40,6 +40,10 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 
 
 	AddBind(std::make_shared<TransformCbuf>(gfx, *this));
+
+	AddBind(Blender::Resolve(gfx, false));
+
+	AddBind(Rasterizer::Resolve(gfx, false));
 }
 
 
