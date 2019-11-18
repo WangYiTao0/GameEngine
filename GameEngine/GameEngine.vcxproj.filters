@@ -267,6 +267,9 @@
     <ClCompile Include="ImguiManager.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
+    <ClCompile Include="WaterWaves.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -535,6 +538,9 @@
     </ClInclude>
     <ClInclude Include="LightCommon.h">
       <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterWaves.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

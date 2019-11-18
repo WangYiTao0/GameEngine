@@ -13,7 +13,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	bluePlane.SetPos({ 0.0f,0.0f,5.0f });
 	redPlane.SetPos({ 0.0f,0.0f,6.0f });
 
-	for (auto i = 0; i < 80; i++)
+	for (auto i = 0; i < 20; i++)
 	{
 		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));
 	}

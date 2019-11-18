@@ -59,6 +59,57 @@ public:
 		}
 	}
 
+	void ComputeTangentBiTtngent() noxnd
+	{
+		using namespace DirectX;
+		using Type = Dvtx::VertexLayout::ElementType;
+		for (size_t i = 0; i < vertices.Size(); i += 3)
+		{
+			auto v0 = vertices[indices[i]];
+			auto v1 = vertices[indices[i + 1]];
+			auto v2 = vertices[indices[i + 2]];
+
+			// Shortcuts for vertices
+			const auto p0 = XMLoadFloat3(&v0.Attr<Type::Position3D>());
+			const auto p1 = XMLoadFloat3(&v1.Attr<Type::Position3D>());
+			const auto p2 = XMLoadFloat3(&v2.Attr<Type::Position3D>());
+
+			// Shortcuts for UVs
+			const auto uv0 = XMLoadFloat2(&v0.Attr<Type::Texture2D>());
+			const auto uv1 = XMLoadFloat2(&v1.Attr<Type::Texture2D>());
+			const auto uv2 = XMLoadFloat2(&v2.Attr<Type::Texture2D>());
+
+			// Edges of the triangle : postion delta
+			auto deltaPos1 = p1 - p0;
+			auto deltaPos2 = p2 - p0;
+
+			// UV delta
+			auto deltaUV1 = uv1 - uv0;
+			auto deltaUV2 = uv2 - uv0;
+
+			DirectX::XMFLOAT3 fdeltaPos1, fdeltaPos2;
+			DirectX::XMFLOAT2 fdeltaUV1, fdeltaUV2;
+
+			DirectX::XMStoreFloat3(&fdeltaPos1, deltaPos1);
+			DirectX::XMStoreFloat3(&fdeltaPos2, deltaPos2);
+
+			DirectX::XMStoreFloat2(&fdeltaUV1, deltaUV1);
+			DirectX::XMStoreFloat2(&fdeltaUV2, deltaUV2);
+	
+			float r = 1.0f / (fdeltaUV1.x * fdeltaUV2.y - fdeltaUV1.y * fdeltaUV2.x);
+			auto tangent = (deltaPos1 * fdeltaUV2.y - deltaPos2 * fdeltaUV1.y) * r;
+			auto bitangent = (deltaPos2 * fdeltaUV1.x - deltaPos1 * fdeltaUV2.x) * r;
+
+			XMStoreFloat3(&v0.Attr<Type::Tangent>(), tangent);
+			XMStoreFloat3(&v1.Attr<Type::Tangent>(), tangent);
+			XMStoreFloat3(&v2.Attr<Type::Tangent>(), tangent);
+			XMStoreFloat3(&v0.Attr<Type::Bitangent>(), bitangent);
+			XMStoreFloat3(&v1.Attr<Type::Bitangent>(), bitangent);
+			XMStoreFloat3(&v2.Attr<Type::Bitangent>(), bitangent);
+
+		}
+	}
+
 
 public:
 	Dvtx::VertexBuffer vertices;

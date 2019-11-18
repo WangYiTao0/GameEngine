@@ -9,6 +9,9 @@ public:
 	void SetPos(DirectX::XMFLOAT3 pos) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void SpawnControlWindow(Graphics& gfx)noexcept;
+
+private:
+	float GetHillsHeight(float x, float z)const;
 private:
 	struct PSMaterialConstant
 	{
@@ -17,6 +20,8 @@ private:
 		BOOL normalMappingEnabled = TRUE;
 		float padding[1];
 	} pmc;
+
+	//IndexedTriangleList m_Model ;
 
 	DirectX::XMFLOAT3 pos = { 1.0f,1.0f,1.0f };
 }; 

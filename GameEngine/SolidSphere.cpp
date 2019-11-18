@@ -13,7 +13,6 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 	using namespace Bind;
 	namespace dx = DirectX;
 
-
 	auto model = Sphere::Make();
 	model.Transform(dx::XMMatrixScaling(radius, radius, radius));
 	const auto geometryTag = "$sphere." + std::to_string(radius);

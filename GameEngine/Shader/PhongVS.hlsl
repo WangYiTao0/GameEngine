@@ -19,6 +19,7 @@ struct VS_OUTPUT
 VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT vso;
+
     //Camera view Positon
     vso.viewPos = (float3) mul(float4(input.pos, 1.0f), modelView);
     //Camera view Normal

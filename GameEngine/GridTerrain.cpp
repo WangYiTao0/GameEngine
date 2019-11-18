@@ -10,6 +10,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	unsigned int m , unsigned int n , float gridSize )
 {
 	using namespace Bind;
+	using namespace DirectX;
 
 	std::string shaderfolder = StringHelper::GetShaderRootPath();
 
@@ -18,11 +19,23 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	auto layout = Dvtx::VertexLayout{}
 		.Append(Element::Position3D)
 		.Append(Element::Normal)
-		//.Append(Element::Tangent)
+		.Append(Element::Tangent)
+		.Append(Element::Bitangent)
 		.Append(Element::Texture2D);
+
 	auto model = Grid::MakeIndependent(layout, width, depth, m, n, gridSize);
 	const auto geometryTag = "$Grid." + std::to_string(width);
 	//model.SetNormalsIndependentFlat();
+	model.ComputeTangentBiTtngent();
+
+	for (size_t i = 0; i < model.vertices.Size(); i ++)
+	{
+		auto fpos = model.vertices[i].Attr<Element::Position3D>();
+		fpos.y = GetHillsHeight(fpos.x, fpos.z);
+		auto pos = XMLoadFloat3(&fpos);
+
+		XMStoreFloat3(&model.vertices[i].Attr<Element::Position3D>(), pos);
+	}
 
 	AddBind(Sampler::Resolve(gfx));
 
@@ -32,13 +45,13 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\water1.dds"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
+	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVSNormalMap.cso");
 	
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
+	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
 
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
@@ -49,7 +62,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(std::make_shared<Blender>(gfx, true, 0.5f));
 
-	AddBind(Rasterizer::Resolve(gfx, true));
+	AddBind(Rasterizer::Resolve(gfx, true, true));
 
 	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
@@ -85,4 +98,9 @@ void GridTerrain::SpawnControlWindow(Graphics& gfx) noexcept
 		pBlender->SetFactor(factor);
 	}
 	ImGui::End();
+}
+
+float GridTerrain::GetHillsHeight(float x, float z) const
+{
+	return 0.3f * (z * sinf(0.1f * x) + x * cosf(0.1f * z));
 }

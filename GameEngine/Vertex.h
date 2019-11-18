@@ -240,6 +240,7 @@ namespace Dvtx
 	class VertexBuffer
 	{
 	public:
+		VertexBuffer() = default;
 		VertexBuffer(VertexLayout layout,size_t size = 0u) noxnd;
 		const char* GetData() const noxnd;
 		const VertexLayout& GetLayout() const noexcept;

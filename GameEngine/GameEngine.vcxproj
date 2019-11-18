@@ -243,6 +243,7 @@
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="WaterWaves.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -269,6 +270,7 @@
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="ShapesScene.h" />
+    <ClInclude Include="WaterWaves.h" />
     <ClInclude Include="WindowHelper.h" />
     <ClInclude Include="DirectXMathHelper.h" />
     <ClInclude Include="Collision.h" />

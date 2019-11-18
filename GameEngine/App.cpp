@@ -73,7 +73,7 @@ App::App(const std::string& commandLine)
 		nearZ, farZ));
 
 	
-	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));

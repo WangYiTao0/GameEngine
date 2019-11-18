@@ -26,6 +26,8 @@ SamplerState splr ;
 
 float4 main(PS_INPUT input) : SV_Target
 {
+    // normalize the mesh normal
+    input.viewNormal = normalize(input.viewNormal);
 	// sample normal from map if normal mapping enabled
     if (normalMapEnabled)
     {

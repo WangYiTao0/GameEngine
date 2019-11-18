@@ -86,6 +86,8 @@ public:
 
 	}
 
+	//static IndexedTriangleList MakeWave();
+
 	static IndexedTriangleList Make(std::optional<Dvtx::VertexLayout> layout = std::nullopt)
 	{
 		using Element = Dvtx::VertexLayout::ElementType;
