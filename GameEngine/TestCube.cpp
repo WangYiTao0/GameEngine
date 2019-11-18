@@ -7,7 +7,6 @@
 
 TestCube::TestCube(Graphics& gfx, float size)
 {
-
 	std::string shaderfolder = StringHelper::GetShaderRootPath();
 
 	this->size = size;
@@ -19,7 +18,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	model.SetNormalsIndependentFlat();
 	const auto geometryTag = "$cube." + std::to_string(size);
 
-	AddBind(Sampler::Resolve(gfx));
+	//AddBind(Sampler::Resolve(gfx));
 
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
@@ -42,6 +41,10 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
 
+	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
+
+	AddBind(Rasterizer::Resolve(gfx, true));
+
 	//CreateBoundingBox();
 }
 
@@ -60,6 +63,12 @@ void TestCube::SetRotation(float roll, float pitch, float yaw) noexcept
 	this->roll = roll;
 	this->pitch = pitch;
 	this->yaw = yaw;
+}
+
+void TestCube::SetWorldMatrix(DirectX::XMMATRIX m_worldMatrix)
+{	
+	this->m_worldMatrix = m_worldMatrix;
+	//model.Transform(this->m_worldMatrix);
 }
 
 DirectX::XMMATRIX TestCube::GetTransformXM() const noexcept
@@ -81,6 +90,10 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 		ImGui::SliderAngle("Pitch", &pitch, -180.0f, 180.0f);
 		ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
 		ImGui::Text("Shading");
+		auto pBlender = QueryBindable<Bind::Blender>();
+		float factor = pBlender->GetFactor();
+		ImGui::SliderFloat("Translucency", &factor, 0.0f, 1.0f);
+		pBlender->SetFactor(factor);
 		bool changed0 = ImGui::SliderFloat("Spec. Int.", &pmc.specularIntensity, 0.0f, 1.0f);
 		bool changed1 = ImGui::SliderFloat("Spec. Power", &pmc.specularPower, 0.0f, 100.0f);
 		bool checkState = pmc.normalMappingEnabled == TRUE;

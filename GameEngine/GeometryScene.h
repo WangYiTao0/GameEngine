@@ -24,9 +24,11 @@ private:
 
 	bool EnableFrustumCulling = true;
 
+	
+
+	TestPlane bluePlane{ gfx,6.0f,{ 0.3f,0.3f,1.0f,0.0f } };
+	TestPlane redPlane{ gfx,6.0f,{ 1.0f,0.3f,0.3f,0.0f } };
 	GridTerrain gridTerrain{ gfx,160,160,50,50 };
-
-
 	std::vector<std::unique_ptr<class TestCube>> cubes;
 	//std::vector<TestCube> cubes;
 

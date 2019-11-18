@@ -82,6 +82,15 @@ float4 main(PS_INPUT input) : SV_Target
         input.viewNormal = -input.viewNormal;
     }
     #endif
+    if (texColor.a < 0.1f)
+    {
+        clip(texColor.a < 0.1f ? -1 : 1);
+    // flip Normal when backface
+        if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+        {
+            input.viewNormal = -input.viewNormal;
+        }
+    }
 
     finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specularReflected;
     finalColor.a = texColor.a;

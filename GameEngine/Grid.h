@@ -48,7 +48,7 @@ public:
 				////normal
 				vb[i * n + j].Attr<Type::Normal>() = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
 				//TangentU
-				vb[i * n + j].Attr<Type::Tangent>() = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
+				//vb[i * n + j].Attr<Type::Tangent>() = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
 				//Texture2D
 				vb[i * n + j].Attr<Type::Texture2D>() = DirectX::XMFLOAT2(j * du * gridSize, i * dv * gridSize);
 				//meshData.Vertices[i * n + j].Position = XMFLOAT3(x, 0.0f, z);

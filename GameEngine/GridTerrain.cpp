@@ -18,11 +18,11 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	auto layout = Dvtx::VertexLayout{}
 		.Append(Element::Position3D)
 		.Append(Element::Normal)
-		.Append(Element::Tangent)
+		//.Append(Element::Tangent)
 		.Append(Element::Texture2D);
 	auto model = Grid::MakeIndependent(layout, width, depth, m, n, gridSize);
 	const auto geometryTag = "$Grid." + std::to_string(width);
-	model.SetNormalsIndependentFlat();
+	//model.SetNormalsIndependentFlat();
 
 	AddBind(Sampler::Resolve(gfx));
 
@@ -30,9 +30,10 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\water1.dds"));
-	//AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
+	
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
@@ -46,7 +47,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-	AddBind(Blender::Resolve(gfx, true, 0.3f));
+	AddBind(std::make_shared<Blender>(gfx, true, 0.5f));
 
 	AddBind(Rasterizer::Resolve(gfx, true));
 

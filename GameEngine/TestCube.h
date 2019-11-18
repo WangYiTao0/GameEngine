@@ -15,8 +15,6 @@ public:
 	DirectX::BoundingBox GetLocalBoundingBox() noexcept;
 private:
 	void CreateBoundingBox();
-	
-
 private:
 	struct PSMaterialConstant
 	{
@@ -26,7 +24,9 @@ private:
 		float padding[1];
 	} pmc;
 
-	DirectX::XMMATRIX m_worldMatrix;
+	//IndexedTriangleList model;
+
+	DirectX::XMMATRIX m_worldMatrix = {};
 
 	DirectX::XMFLOAT3 pos = { 1.0f,1.0f,1.0f };
 	float roll = 0.0f;

@@ -22,7 +22,7 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 	AddBind( VertexBuffer::Resolve( gfx,geometryTag,model.vertices ) );
 	AddBind( IndexBuffer::Resolve( gfx,geometryTag,model.indices ) );
 
-	auto pvs = VertexShader::Resolve( gfx, shaderfolder + "SolidVS.cso" );
+	auto pvs = VertexShader::Resolve( gfx, shaderfolder + "PhongVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
 
@@ -30,7 +30,6 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 
 	//AddBind( PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx,pmc,1u ) );
 	AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u));
-
 
 	AddBind( InputLayout::Resolve( gfx,model.vertices.GetLayout(),pvsbc ) );
 

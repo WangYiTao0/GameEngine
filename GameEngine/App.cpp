@@ -77,7 +77,6 @@ App::App(const std::string& commandLine)
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
-	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	curScene = scenes.begin();
 	OutoutSceneName();
 }
