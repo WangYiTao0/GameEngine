@@ -26,7 +26,8 @@ namespace Bind
 
 	TransformCbuf::Transforms TransformCbuf::GetTransforms(Graphics& gfx) noexcept
 	{
-		const auto modelView = parent.GetTransformXM() * gfx.GetCameraViewMatrix();
+		const auto worldmatrix = parent.GetTransformXM();
+		const auto modelView = worldmatrix * gfx.GetCameraViewMatrix();
 		const auto modelViewProj = modelView * gfx.GetProjection();
 
 		//DirectX  are row matrix need transpose to column transpose for HLSL

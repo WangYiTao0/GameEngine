@@ -190,6 +190,7 @@
     <ClCompile Include="Blender.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ECS\EcsSystem.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="LightCommon.h" />
+    <ClInclude Include="PlaneMirror.h" />
     <ClInclude Include="Rasterizer.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />

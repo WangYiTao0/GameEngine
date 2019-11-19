@@ -12,6 +12,7 @@ namespace Bind
 			RSWireframe,
 			RSNoCull,
 			RSCullClockWise,
+			RSCull,
 		};
 
 	public:

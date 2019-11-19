@@ -264,6 +264,9 @@
     <ClCompile Include="DepthStencil.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -520,6 +523,9 @@
     </ClInclude>
     <ClInclude Include="DepthStencil.h">
       <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneMirror.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
