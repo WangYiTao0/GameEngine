@@ -37,13 +37,13 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 		XMStoreFloat3(&model.vertices[i].Attr<Element::Position3D>(), pos);
 	}
 
-	AddBind(Sampler::Resolve(gfx));
+	AddBind(Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSAnistropicWrap));
 
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\water1.dds"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\grass.dds"));
+	//AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVSNormalMap.cso");
 	
@@ -60,9 +60,9 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-	AddBind(std::make_shared<Blender>(gfx, true, 0.5f));
+	AddBind(std::make_shared<Blender>(gfx, false, 0.5f));
 
-	AddBind(Rasterizer::Resolve(gfx, true, true));
+	AddBind(Rasterizer::Resolve(gfx, false, true));
 
 	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));

@@ -12,7 +12,7 @@ ModelScene::ModelScene(Graphics& gfx)
 	redPlane.SetPos({ 0.0f,0.0f,6.0f });
 
 	sponza.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f)
-		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 90.0f, 0.0f));
+		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f));
 }
 
 void ModelScene::Update(float dt)

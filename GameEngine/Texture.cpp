@@ -81,19 +81,6 @@ namespace Bind
 	}
 	bool Texture::HasAlpha() const noexcept
 	{
-	/*	D3D11_TEXTURE2D_DESC texture2dDesc;
-		ID3D11Texture2D* pTexture2D;
-		pTexture2D->GetDesc(&texture2dDesc);
-
-
-		D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc;
-		pTextureView->GetDesc(&textureViewDesc);*/
 		return hasAlpha;
-	}
-	UINT Texture::CalculateNumberOfMipLevels(UINT width, UINT height) noexcept
-	{
-		const float xSteps = std::ceil(log2((float)width));
-		const float ySteps = std::ceil(log2((float)height));
-		return (UINT)std::max(xSteps, ySteps);
 	}
 }

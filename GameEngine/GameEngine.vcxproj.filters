@@ -82,6 +82,12 @@
     <Filter Include="Header Files\ECS\Component">
       <UniqueIdentifier>{9ed497bc-7b66-4eff-b325-8cafa200e11f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\VS">
+      <UniqueIdentifier>{b80af53b-852b-4968-bebd-85ae22697dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PS">
+      <UniqueIdentifier>{fe8eab05-4d14-41fe-912c-d81d7a9f31d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -204,9 +210,6 @@
     <ClCompile Include="Collision.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="DepthStencil_Mask.cpp">
-      <Filter>Source Files\Binable</Filter>
-    </ClCompile>
     <ClCompile Include="BaseException.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
@@ -269,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="WaterWaves.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencil.cpp">
+      <Filter>Source Files\Binable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -449,9 +455,6 @@
     <ClInclude Include="Mouse.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="DepthStencil_Mask.h">
-      <Filter>Header Files\Bindable</Filter>
-    </ClInclude>
     <ClInclude Include="Frustum.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
@@ -542,6 +545,9 @@
     <ClInclude Include="WaterWaves.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="DepthStencil.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">
@@ -578,40 +584,46 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PhongPS.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSNormalMap.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSNormalMapObject.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSNotex.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSSpec.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSSpecNormalMap.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongVSNormalMap.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongVSNotex.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\SolidPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\SolidVS.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSSpecNormalMask.hlsl">
-      <Filter>Shader</Filter>
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongVS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongVSNormalMap.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongVSNotex.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\SolidPS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\SolidVS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\WaterWavesPS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\WaterWavesVS.hlsl">
+      <Filter>Shader\VS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

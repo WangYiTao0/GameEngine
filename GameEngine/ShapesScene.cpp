@@ -18,12 +18,12 @@ void ShapesScene::Draw()
 {
 	gridTerrain.Draw(gfx);
 
-	armory_Blast_W_HIGH.Draw(gfx);
+	Role.Draw(gfx);
 
 	//Samba.Draw(gfx);
 
 	//imgui
 	gridTerrain.SpawnControlWindow(gfx);
-	armory_Blast_W_HIGH.ShowWindow(gfx, "armory_Blast_W_HIGH");
+	Role.ShowWindow(gfx, "Role");
 	//Samba.ShowWindow(gfx, "Samba");
 }

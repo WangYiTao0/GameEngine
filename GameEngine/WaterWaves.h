@@ -9,29 +9,15 @@ public:
 	
 	void Update(float dt);
 
-	void Disturb(UINT i, UINT j, float magnitude);
+	void SetPos(DirectX::XMFLOAT3 pos) noexcept;
 
+
+	virtual DirectX::XMMATRIX GetTransformXM() const noexcept override;
 
 private:
-	float dt;
-	float speed;
-	float damping;
 
-	UINT mNumRows;
-	UINT mNumCols;
+	//IndexedTriangleList model;
 
-	UINT mVertexCount;
-	UINT mTriangleCount;
-
-	// Simulation constants we can precompute.
-	float mK1;
-	float mK2;
-	float mK3;
-
-	float mTimeStep;
-	float mSpatialStep;
-
-	DirectX::XMFLOAT3* mPrevSolution;
-	DirectX::XMFLOAT3* mCurrSolution;
+	DirectX::XMFLOAT3 pos = { 1.0f,1.0f,1.0f };
 };
 #pragma once

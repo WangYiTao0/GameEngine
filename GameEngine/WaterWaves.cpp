@@ -12,17 +12,14 @@ WaterWaves::WaterWaves(Graphics& gfx, float width, float depth, unsigned int m, 
 	using Element = Dvtx::VertexLayout::ElementType;
 	auto layout = Dvtx::VertexLayout{}
 		.Append(Element::Position3D)
-		.Append(Element::Normal)
-		.Append(Element::Tangent)
-		.Append(Element::Bitangent)
-		.Append(Element::Texture2D);
+		.Append(Element::Float4Color);
 
-	auto model = Grid::MakeIndependent(layout, width, depth, m, n, gridSize);
+	auto model = Grid::MakeIndependentColor(layout, width, depth, m, n);
 	const auto geometryTag = "$WaterWaves" + std::to_string(width);
 
-	model.ComputeTangentBiTtngent();
+	//model.ComputeTangentBiTtngent();
 
-	AddBind(Sampler::Resolve(gfx));
+	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
 
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
@@ -30,13 +27,13 @@ WaterWaves::WaterWaves(Graphics& gfx, float width, float depth, unsigned int m, 
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\water1.dds"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVSNormalMap.cso");
+	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "WaterWavesVS.cso");
 
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
+	AddBind(PixelShader::Resolve(gfx, shaderfolder + "WaterWavesPS.cso"));
 
 	//AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 
@@ -49,7 +46,7 @@ WaterWaves::WaterWaves(Graphics& gfx, float width, float depth, unsigned int m, 
 	AddBind(Rasterizer::Resolve(gfx, true));
 
 	AddBind(std::make_shared<TransformCbuf>(gfx, *this));
-	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
+	//AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
 }
 
 
@@ -58,7 +55,13 @@ void WaterWaves::Update(float dt)
 	//DirectX::(x,z,dt)
 }
 
-void WaterWaves::Disturb(UINT i, UINT j, float magnitude)
+void WaterWaves::SetPos(DirectX::XMFLOAT3 pos) noexcept
 {
-
+	this->pos = pos;
 }
+
+DirectX::XMMATRIX WaterWaves::GetTransformXM() const noexcept
+{
+	return DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+}
+

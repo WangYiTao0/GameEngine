@@ -12,4 +12,4 @@
 #include "Sampler.h"
 #include "Blender.h"
 #include "Rasterizer.h"
-#include "DepthStencil_Mask.h"
+#include "DepthStencil.h"

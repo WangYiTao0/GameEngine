@@ -9,6 +9,8 @@
 #include "imgui/imgui.h"
 #include "Frustum.h"
 #include "GridTerrain.h"
+#include "WaterWaves.h"
+
 class GeometryScene : public Scene
 {
 public:
@@ -24,12 +26,14 @@ private:
 
 	bool EnableFrustumCulling = true;
 
-	
-
-	TestPlane bluePlane{ gfx,6.0f,{ 0.3f,0.3f,1.0f,0.0f } };
-	TestPlane redPlane{ gfx,6.0f,{ 1.0f,0.3f,0.3f,0.0f } };
 	GridTerrain gridTerrain{ gfx,160,160,50,50 };
 	std::vector<std::unique_ptr<class TestCube>> cubes;
+
+	WaterWaves m_WaterWaves{ gfx };
+	TestPlane bluePlane{ gfx,6.0f,{ 0.3f,0.3f,1.0f,0.0f } };
+	TestPlane redPlane{ gfx,6.0f,{ 1.0f,0.3f,0.3f,0.0f } };
+	
+
 	//std::vector<TestCube> cubes;
 
 	std::vector<DirectX::XMMATRIX> m_InstancedData;

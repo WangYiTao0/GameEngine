@@ -323,7 +323,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		if (hasDiffuseMap || hasSpecularMap || hasNormalMap)
 		{
-			bindablePtrs.push_back(Bind::Sampler::Resolve(gfx));
+			bindablePtrs.push_back(Bind::Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSAnistropicWrap));
 		}
 	}
 

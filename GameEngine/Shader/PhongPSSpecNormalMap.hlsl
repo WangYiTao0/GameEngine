@@ -22,7 +22,7 @@ cbuffer ObjectCBuf
     float specularMapWeight;
 };
 
-Texture2D tex : register(t0);
+Texture2D diff : register(t0);
 Texture2D spec : register(t1);
 Texture2D nmap : register(t2);
 
@@ -31,6 +31,20 @@ SamplerState splr ;
 
 float4 main(PS_INPUT input) : SV_Target
 {
+    
+    //alpha blender
+    float4 diffColor = diff.Sample(splr, input.texcoord);
+
+    //check diffuse color alpha
+    if (diffColor.a != 1.0f)
+    {
+        clip(diffColor.a < 0.1f ? -1 : 1);
+    // flip Normal when backface
+        if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+        {
+            //input.viewNormal = -input.viewNormal;
+        }
+    }
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
     // replace normal with mapped if normal mapping enabled
@@ -72,28 +86,18 @@ float4 main(PS_INPUT input) : SV_Target
 	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
     float4 finalColor = 1.0f;
 
-    //alpha blender
-    float4 texColor = tex.Sample(splr, input.texcoord);
-    #ifdef HASMASK
-    clip(texColor.a < 0.1f ? -1 : 1);
-    // flip Normal when backface
-    if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-    {
-        input.viewNormal = -input.viewNormal;
-    }
-    #endif
-    if (texColor.a < 0.1f)
-    {
-        clip(texColor.a < 0.1f ? -1 : 1);
-    // flip Normal when backface
-        if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-        {
-            input.viewNormal = -input.viewNormal;
-        }
-    }
 
-    finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specularReflected;
-    finalColor.a = texColor.a;
+    //#ifdef HASMASK
+    //clip(texColor.a < 0.1f ? -1 : 1);
+    //// flip Normal when backface
+    //if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+    //{
+    //    input.viewNormal = -input.viewNormal;
+    //}
+    //#endif
+
+    finalColor.rgb = diffColor.rgb * saturate(ambient + diffuse) + specularReflected;
+    finalColor.a = diffColor.a;
 
 	// final color
     return finalColor;

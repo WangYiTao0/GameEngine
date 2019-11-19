@@ -18,7 +18,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	model.SetNormalsIndependentFlat();
 	const auto geometryTag = "$cube." + std::to_string(size);
 
-	AddBind(Sampler::Resolve(gfx));
+	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
 
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));

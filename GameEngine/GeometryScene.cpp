@@ -28,6 +28,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 void GeometryScene::Update(float dt)
 {
+	m_WaterWaves.Update(dt);
 }
 
 void GeometryScene::Draw()
@@ -71,9 +72,11 @@ void GeometryScene::Draw()
 		}
 	}
 	
+	m_WaterWaves.Draw(gfx);
 	redPlane.Draw(gfx);
 	bluePlane.Draw(gfx);
-	gridTerrain.Draw(gfx);
+	//gridTerrain.Draw(gfx);
+
 
 
 
