@@ -7,14 +7,21 @@ namespace Bind
 	class Rasterizer : public Bindable
 	{
 	public:
-		Rasterizer(Graphics& gfx, bool twoSided = false, bool solid = true);
+		enum class RasterizerState
+		{
+			RSWireframe,
+			RSNoCull,
+			RSCullClockWise,
+		};
+
+	public:
+		Rasterizer(Graphics& gfx, RasterizerState Rs);
 		void Bind(Graphics& gfx) noexcept override;
-		static std::shared_ptr<Rasterizer> Resolve(Graphics& gfx, bool twoSided = false, bool solid = true);
-		static std::string GenerateUID(bool twoSided, bool solid);
+		static std::shared_ptr<Rasterizer> Resolve(Graphics& gfx, RasterizerState Rs);
+		static std::string GenerateUID(RasterizerState Rs);
 		std::string GetUID() const noexcept override;
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> pRasterizer;
-		bool twoSided;
-		bool solid;
+		RasterizerState Rs;
 	};
 }

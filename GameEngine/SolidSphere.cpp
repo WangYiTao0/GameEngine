@@ -41,7 +41,7 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 
 	AddBind(Blender::Resolve(gfx, false));
 
-	AddBind(Rasterizer::Resolve(gfx, false));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCullClockWise));
 }
 
 

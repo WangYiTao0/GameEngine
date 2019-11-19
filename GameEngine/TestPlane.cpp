@@ -41,7 +41,7 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 
 	AddBind(std::make_shared<Blender>(gfx, true, 0.5f));
 	
-	AddBind( Rasterizer::Resolve( gfx,true ) );
+	AddBind( Rasterizer::Resolve( gfx,Rasterizer::RasterizerState::RSNoCull ) );
 
 }
 

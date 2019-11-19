@@ -1,6 +1,5 @@
 #include "Mesh.h"
 #include "imgui/imgui.h"
-#include "Surface.h"
 #include <unordered_map>
 #include <sstream>
 
@@ -614,7 +613,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	// anything with alpha diffuse is 2-sided IN SPONZA, need a better way
 	// of signalling 2-sidedness to be more general in the future
 	//bindablePtrs.push_back(Rasterizer::Resolve(gfx, hasAlphaDiffuse));
-	bindablePtrs.push_back(Rasterizer::Resolve(gfx, true));
+	bindablePtrs.push_back(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSNoCull));
 
 	//turn off alpha blender
 	bindablePtrs.push_back(Blender::Resolve(gfx, false));

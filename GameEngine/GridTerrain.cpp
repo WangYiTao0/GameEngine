@@ -62,7 +62,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(std::make_shared<Blender>(gfx, false, 0.5f));
 
-	AddBind(Rasterizer::Resolve(gfx, false, true));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCullClockWise));
 
 	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));

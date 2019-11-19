@@ -8,7 +8,6 @@
 #include "IntersectData.h"
 #include <set>
 #include "Scene.h"
-#include "NormalMapTwerker.h"
 #include <shellapi.h>
 #include "CpuClass.h"
 
@@ -17,7 +16,7 @@ class App
 {
 
 public:
-	App(const std::string& commandLine = "");
+	App();
 	//master frame / message loop
 	int Go();
 	~App();
@@ -30,7 +29,6 @@ private:
 	void OutoutSceneName()const;
 	void CycleScenes();
 private:
-	std::string commandLine;
 	bool showDemoWindow = false;
 	int x = 0, y = 0;
 	ImguiManager imgui;
@@ -40,10 +38,7 @@ private:
 	Camera cam;
 	PointLight pointLight;
 
-
-	
 	CpuClass m_Cpu;
-
 
 	std::vector <std::unique_ptr<Scene>> scenes;
 	std::vector <std::unique_ptr<Scene>>::iterator curScene;

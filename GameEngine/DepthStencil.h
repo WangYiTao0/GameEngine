@@ -6,16 +6,24 @@ namespace Bind
 	class DepthStencil : public Bindable
 	{
 	public:
-		DepthStencil(Graphics& gfx);
+		enum class DepthStencilState
+		{
+			DSSWriteStencil,
+			DSSDrawWithStencil,
+			DSSNoDoubleBlend,
+			DSSNoDepthTest,
+			DSSNoDepthWrite,
+		};
+
+	public:
+		DepthStencil(Graphics& gfx, DepthStencilState Dss);
 		void Bind(Graphics& gfx) noexcept override;
-		static std::shared_ptr<DepthStencil> Resolve(Graphics& gfx);
-		static std::string GenerateUID();
+		static std::shared_ptr<DepthStencil> Resolve(Graphics& gfx, DepthStencilState Dss);
+		static std::string GenerateUID(DepthStencilState Dss);
 		std::string GetUID() const noexcept override;
 	protected:
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> DSSWriteStencil;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> DSSDrawWithStencil;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> DSSNoDoubleBlend;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> DSSNoDepthTest;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> DSSNoDepthWrite;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> DStencil;
+		DepthStencilState Dss;
+
 	};
 }

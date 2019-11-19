@@ -126,12 +126,6 @@
     <ClCompile Include="TransformCbuf.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
-    <ClCompile Include="Surface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GDIPlusManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
@@ -222,9 +216,6 @@
     <ClCompile Include="StringHelper.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
-    <ClCompile Include="TexturePreprocessor.cpp">
-      <Filter>Source Files\CommonTool</Filter>
-    </ClCompile>
     <ClCompile Include="GridTerrain.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -233,9 +224,6 @@
     </ClCompile>
     <ClCompile Include="CpuClass.cpp">
       <Filter>Source Files\CommonTool</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderStates.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TransformPixelCbuf.cpp">
       <Filter>Source Files\Binable</Filter>
@@ -346,12 +334,6 @@
     </ClInclude>
     <ClInclude Include="Prism.h">
       <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Surface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GDIPlusManager.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Bindable</Filter>
@@ -479,12 +461,6 @@
     <ClInclude Include="MathHelper.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
-    <ClInclude Include="TexturePreprocessor.h">
-      <Filter>Header Files\CommonTool</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalMapTwerker.h">
-      <Filter>Header Files\CommonTool</Filter>
-    </ClInclude>
     <ClInclude Include="StringHelper.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
@@ -505,9 +481,6 @@
     </ClInclude>
     <ClInclude Include="CpuClass.h">
       <Filter>Header Files\CommonTool</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderStates.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DirectXMathHelper.h">
       <Filter>Header Files\CommonTool</Filter>

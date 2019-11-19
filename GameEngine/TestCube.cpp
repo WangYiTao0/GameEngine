@@ -43,7 +43,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, true));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCullClockWise));
 
 	//CreateBoundingBox();
 }

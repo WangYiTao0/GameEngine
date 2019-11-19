@@ -191,7 +191,6 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ECS\EcsSystem.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
-    <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="BaseException.cpp" />
@@ -207,7 +206,6 @@
     <ClCompile Include="ECS\ECS.cpp" />
     <ClCompile Include="ECS\ecsComponent.cpp" />
     <ClCompile Include="Frustum.cpp" />
-    <ClCompile Include="GDIPlusManager.cpp" />
     <ClCompile Include="GeometryScene.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="GridTerrain.cpp" />
@@ -232,11 +230,9 @@
     <ClCompile Include="ShapesScene.cpp" />
     <ClCompile Include="SolidSphere.cpp" />
     <ClCompile Include="StringHelper.cpp" />
-    <ClCompile Include="Surface.cpp" />
     <ClCompile Include="TestCube.cpp" />
     <ClCompile Include="TestPlane.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TexturePreprocessor.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCbuf.cpp" />
     <ClCompile Include="TransformPixelCbuf.cpp" />
@@ -259,7 +255,6 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="LightCommon.h" />
     <ClInclude Include="Rasterizer.h" />
-    <ClInclude Include="RenderStates.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="BaseException.h" />
@@ -290,7 +285,6 @@
     <ClInclude Include="ECS\ecsComponent.hpp" />
     <ClInclude Include="ECS\ecsSystem.hpp" />
     <ClInclude Include="Frustum.h" />
-    <ClInclude Include="GDIPlusManager.h" />
     <ClInclude Include="GeometryScene.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
@@ -311,7 +305,6 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Mouse.h" />
-    <ClInclude Include="NormalMapTwerker.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="PhysicScene.h" />
     <ClInclude Include="PixelShader.h" />
@@ -325,11 +318,9 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StringHelper.h" />
-    <ClInclude Include="Surface.h" />
     <ClInclude Include="TestCube.h" />
     <ClInclude Include="TestPlane.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TexturePreprocessor.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCbuf.h" />
     <ClInclude Include="TransformPixelCbuf.h" />

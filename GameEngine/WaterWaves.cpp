@@ -43,7 +43,7 @@ WaterWaves::WaterWaves(Graphics& gfx, float width, float depth, unsigned int m, 
 
 	AddBind(std::make_shared<Blender>(gfx, true, 0.5f));
 
-	AddBind(Rasterizer::Resolve(gfx, true));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSNoCull));
 
 	AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 	//AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
