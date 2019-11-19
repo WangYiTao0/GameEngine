@@ -12,7 +12,7 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-cbuffer ObjectCBuf
+cbuffer ObjectCBuf : register(b1)
 {
     bool normalMapEnabled;
     bool specularMapEnabled;

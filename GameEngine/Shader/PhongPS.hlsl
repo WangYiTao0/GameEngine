@@ -26,8 +26,7 @@ light Pos
 //    float3 direction;
 //}
 
-cbuffer ObjectCBuf 
-    :register(b4)
+cbuffer ObjectCBuf : register(b1)
 {
     float specularIntensity;
     float specularPower;
@@ -47,6 +46,7 @@ SamplerState splr;
 
 float4 main(PS_INPUT input) : SV_Target
 {
+
     //renormalize interpolatednormal
     input.viewNormal = normalize(input.viewNormal);
 

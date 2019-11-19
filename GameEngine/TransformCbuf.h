@@ -9,10 +9,11 @@ namespace Bind
 	protected:
 		struct Transforms
 		{
+			DirectX::XMMATRIX world;
 			//camera view pos
-			DirectX::XMMATRIX modelView;
+			DirectX::XMMATRIX view;
 			//screen pos
-			DirectX::XMMATRIX modelViewProj;
+			DirectX::XMMATRIX proj;
 		};
 	public:
 		TransformCbuf(Graphics& gfx, const Drawable& parent, UINT slot = 0u);

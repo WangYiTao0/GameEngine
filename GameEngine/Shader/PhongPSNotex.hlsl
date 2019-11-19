@@ -24,7 +24,7 @@ struct PS_INPUT
     float3 viewNormal : Normal;
 };
 
-cbuffer ObjectCBuf
+cbuffer ObjectCBuf : register(b1)
 {
     float4 materialColor;
     float4 specularColor;

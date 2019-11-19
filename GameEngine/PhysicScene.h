@@ -1,12 +1,13 @@
 #pragma once
 #include "Scene.h"
 #include "Graphics.h"
-#include "Component.h"
+#include "Cube.h"
 
 class PhysicScene : public Scene
 {
 public:
 	PhysicScene(Graphics& gfx);
+	~PhysicScene();
 
 	virtual void Update(float dt) override;
 
@@ -14,5 +15,6 @@ public:
 private:
 	Graphics& gfx;
 
-	ECS ecs;
+
+
 };

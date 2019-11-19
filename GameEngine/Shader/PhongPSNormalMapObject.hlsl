@@ -10,7 +10,7 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-cbuffer ObjectCBuf :register (b1)
+cbuffer ObjectCBuf : register(b1)
 {
     float specularIntensity;
     float specularPower;
@@ -26,6 +26,9 @@ SamplerState splr ;
 
 float4 main(PS_INPUT input) : SV_Target
 {
+    matrix modelView = mul(world, view);
+    matrix modelViewProj = mul(modelView, proj);
+
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
 	// sample normal from map if normal mapping enabled

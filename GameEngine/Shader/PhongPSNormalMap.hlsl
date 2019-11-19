@@ -14,7 +14,7 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-cbuffer ObjectCBuf
+cbuffer ObjectCBuf :register (b1)
 {
     float specularIntensity;
     float specularPower;

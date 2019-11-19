@@ -1,6 +1,6 @@
-cbuffer TransformCBuf 
-    //:register(b0)
+cbuffer TransformCBuf  : register(b0)
 {
-    matrix modelView;
-    matrix modelViewProj;
+    matrix world;
+    matrix view;
+    matrix proj;
 };

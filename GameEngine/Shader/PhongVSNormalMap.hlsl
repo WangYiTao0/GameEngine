@@ -21,6 +21,9 @@ struct VS_OUTPUT
  VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT vso;
+    matrix modelView = mul(world, view);
+    matrix modelViewProj = mul(modelView, proj);
+
     vso.viewPos = (float3) mul(float4(input.pos, 1.0f), modelView);
     vso.viewNormal = mul(input.normal, (float3x3) modelView);
     vso.tan = mul(input.tangent, (float3x3) modelView);
