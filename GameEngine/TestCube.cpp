@@ -9,7 +9,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 {
 	std::string shaderfolder = StringHelper::GetShaderRootPath();
 
-	this->size = size;
+	this->scale = { size,size,size };
 
 	using namespace Bind;
 	namespace dx = DirectX;
@@ -24,7 +24,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 1u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
@@ -33,13 +33,13 @@ TestCube::TestCube(Graphics& gfx, float size)
 	//AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
 	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
 
-	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
+	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));
 
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 2u));
+	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 0u));
 
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
@@ -48,33 +48,13 @@ TestCube::TestCube(Graphics& gfx, float size)
 	//CreateBoundingBox();
 }
 
-void TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept
-{
-	this->pos = pos;
-}
 
-DirectX::XMFLOAT3 TestCube::GetPos() noexcept
-{
-	return pos;
-}
-
-void TestCube::SetRotation(float roll, float pitch, float yaw) noexcept
-{
-	this->roll = roll;
-	this->pitch = pitch;
-	this->yaw = yaw;
-}
-
-void TestCube::SetWorldMatrix(DirectX::XMMATRIX m_worldMatrix)
-{	
-	this->m_worldMatrix = m_worldMatrix;
-	//model.Transform(this->m_worldMatrix);
-}
 
 DirectX::XMMATRIX TestCube::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixRotationRollPitchYaw(roll, pitch, yaw) *
-		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+	return DirectX::XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z) *
+		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z)*
+		DirectX::XMMatrixScaling(scale.x,scale.y,scale.z);
 }
 
 void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
@@ -86,9 +66,9 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 		ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f, "%.1f");
 		ImGui::SliderFloat("Z", &pos.z, -80.0f, 80.0f, "%.1f");
 		ImGui::Text("Orientation");
-		ImGui::SliderAngle("Roll", &roll, -180.0f, 180.0f);
-		ImGui::SliderAngle("Pitch", &pitch, -180.0f, 180.0f);
-		ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
+		ImGui::SliderAngle("Roll", &rollPitchYaw.x, -180.0f, 180.0f);
+		ImGui::SliderAngle("Pitch", &rollPitchYaw.y, -180.0f, 180.0f);
+		ImGui::SliderAngle("Yaw", &rollPitchYaw.z, -180.0f, 180.0f);
 		ImGui::Text("Shading");
 		auto pBlender = QueryBindable<Bind::Blender>();
 		float factor = pBlender->GetFactor();
@@ -109,7 +89,7 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 
 void TestCube::CreateBoundingBox()
 {
-	float radius = size / 2.0f;
+	float radius = scale.x / 2.0f;
 	DirectX::XMFLOAT3 minPos = { pos.x - radius,pos.y - radius,pos.z - radius };
 	DirectX::XMFLOAT3 maxPos = { pos.x + radius,pos.y + radius,pos.z + radius };
 	DirectX::BoundingBox::CreateFromPoints(boundingBox, DirectX::XMLoadFloat3(&minPos), DirectX::XMLoadFloat3(&maxPos));

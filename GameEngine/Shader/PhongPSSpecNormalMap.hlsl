@@ -1,6 +1,6 @@
 #include "ShaderOptions.hlsli"
 #include "LightVectorData.hlsli"
-#include "LightOptions.hlsli"
+#include "CommonPSOption.hlsli"
 
 struct PS_INPUT
 {
@@ -12,7 +12,7 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-cbuffer ObjectCBuf : register(b1)
+cbuffer ObjectCBuf : register(b2)
 {
     bool normalMapEnabled;
     bool specularMapEnabled;
@@ -26,14 +26,13 @@ Texture2D diff : register(t0);
 Texture2D spec : register(t1);
 Texture2D nmap : register(t2);
 
-SamplerState splr ;
 
 
 float4 main(PS_INPUT input) : SV_Target
 {
     
     //alpha blender
-    float4 diffColor = diff.Sample(splr, input.texcoord);
+    float4 diffColor = diff.Sample(sample0, input.texcoord);
 
     //check diffuse color alpha
     if (diffColor.a != 1.0f)
@@ -42,7 +41,7 @@ float4 main(PS_INPUT input) : SV_Target
     // flip Normal when backface
         if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
         {
-            //input.viewNormal = -input.viewNormal;
+            input.viewNormal = -input.viewNormal;
         }
     }
     // normalize the mesh normal
@@ -50,7 +49,7 @@ float4 main(PS_INPUT input) : SV_Target
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
-        input.viewNormal = MapNormal(normalize(input.viewTan), normalize(input.viewBitan), input.viewNormal, input.texcoord, nmap, splr);
+        input.viewNormal = MapNormal(normalize(input.viewTan), normalize(input.viewBitan), input.viewNormal, input.texcoord, nmap, sample0);
     }
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
@@ -60,7 +59,7 @@ float4 main(PS_INPUT input) : SV_Target
     float specularPower = specularPowerConst;
     if (specularMapEnabled)
     {
-        const float4 specularSample = spec.Sample(splr, input.texcoord);
+        const float4 specularSample = spec.Sample(sample0, input.texcoord);
         specularReflectionColor = specularSample.rgb * specularMapWeight;
 
         //specularSample.a is [0,1] need  be power scale

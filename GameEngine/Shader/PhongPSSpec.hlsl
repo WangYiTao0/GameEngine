@@ -1,6 +1,6 @@
 #include "ShaderOptions.hlsli"
 #include "LightVectorData.hlsli"
-#include "LightOptions.hlsli"
+#include "CommonPSOption.hlsli"
 
 struct PS_INPUT
 {
@@ -10,7 +10,7 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-cbuffer ObjectCBuf : register(b1)
+cbuffer ObjectCBuf : register(b2)
 {
     float specularPowerConst;
     bool hasGloss;
@@ -20,7 +20,6 @@ cbuffer ObjectCBuf : register(b1)
 Texture2D tex : register(t0);
 Texture2D spec : register(t1);
 
-SamplerState splr;
 
 
 float4 main(PS_INPUT input) : SV_Target
@@ -31,7 +30,7 @@ float4 main(PS_INPUT input) : SV_Target
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
     // specular parameters
     float specularPower = specularPowerConst;
-    const float4 specularSample = spec.Sample(splr, input.texcoord);
+    const float4 specularSample = spec.Sample(sample0, input.texcoord);
     const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
     if (hasGloss)
     {
@@ -48,7 +47,7 @@ float4 main(PS_INPUT input) : SV_Target
     );
 	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
     float4 finalColor = 1.0f;
-    float4 texColor = tex.Sample(splr, input.texcoord);
+    float4 texColor = tex.Sample(sample0, input.texcoord);
       //clip(texColor.a - 0.1f);
     clip(texColor.a < 0.1f ? -1 : 1);
     // flip Normal when backface

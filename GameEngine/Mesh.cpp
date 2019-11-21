@@ -285,7 +285,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 		{
 			//bindablePtrs.push_back(Texture::Resolve(gfx, rootPath + texFileName.C_Str()));
-			std::shared_ptr<Bind::Texture> tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
+			std::shared_ptr<Bind::Texture> tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(),0);
 			//hasAlphaDiffuse = tex->HasAlpha();
 			//hasAlphaDiffuse = true;
 			bindablePtrs.push_back(std::move(tex));
@@ -386,7 +386,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantFullmonte>::Resolve(gfx, pmc, 1u));
+		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantFullmonte>::Resolve(gfx, pmc, 2u));
 	}
 	else if (hasDiffuseMap && hasNormalMap)
 	{
@@ -444,7 +444,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffnorm>::Resolve(gfx, pmc, 1u));
+		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffnorm>::Resolve(gfx, pmc, 2u));
 	}
 	else if (hasDiffuseMap)
 	{
@@ -497,7 +497,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffuse>::Resolve(gfx, pmc, 1u));
+		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffuse>::Resolve(gfx, pmc, 2u));
 	}
 	else if (hasDiffuseMap && !hasNormalMap && hasSpecularMap)
 	{
@@ -552,7 +552,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	pmc.specularMapWeight = 1.0f;
 	// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 	// Ns (specular power) specified for each in the material properties... bad conflict
-	bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffuseSpec>::Resolve(gfx, pmc, 1u));
+	bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantDiffuseSpec>::Resolve(gfx, pmc, 2u));
 	}
 	else if (!hasDiffuseMap && !hasNormalMap && !hasSpecularMap)
 	{
@@ -598,7 +598,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		pmc.materialColor = diffuseColor;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
+		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(gfx, pmc, 2u));
 	}
 	else
 	{
