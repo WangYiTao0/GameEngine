@@ -19,6 +19,9 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 	auto model = Plane::Make();
 	model.Transform( dx::XMMatrixScaling( size,size,1.0f ) );
 	const auto geometryTag = "$plane." + std::to_string( size );
+
+	//AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
+
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
@@ -28,7 +31,7 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 
 	AddBind( PixelShader::Resolve( gfx, shaderfolder +  "SolidPS.cso" ) );
 
-	AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u));
+	AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 3u));
 
 	AddBind( InputLayout::Resolve( gfx,model.vertices.GetLayout(),pvsbc ) );
 

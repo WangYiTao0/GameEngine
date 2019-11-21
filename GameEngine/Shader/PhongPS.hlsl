@@ -16,17 +16,11 @@ light Pos
 
 #include "ShaderOptions.hlsli"
 #include "LightVectorData.hlsli"
-#include "LightOptions.hlsli"
+#include "CommonPSOption.hlsli"
 
-//cbuffer DirectionLightCBuf : register(b2)
-//{
-//    float4 ambient;
-//    float4 diffuse;
-//    float4 specular;
-//    float3 direction;
-//}
 
-cbuffer ObjectCBuf : register(b1)
+
+cbuffer ObjectCBuf : register(b2)
 {
     float specularIntensity;
     float specularPower;
@@ -42,7 +36,7 @@ struct PS_INPUT
 };
 
 Texture2D tex : register(t0);
-SamplerState splr;
+
 
 float4 main(PS_INPUT input) : SV_Target
 {
@@ -60,12 +54,12 @@ float4 main(PS_INPUT input) : SV_Target
     const float3 specular = Speculate(diffuseColor, diffuseIntensity, input.viewNormal, lv.vToL, input.viewPixelPos, att, specularPower);
 	// final color
     float4 finalColor = 1.0f;
-    float4 texColor = tex.Sample(splr, input.texcoord);
+    float4 texColor = tex.Sample(sample0, input.texcoord);
     clip(texColor.a - 0.1f);
     finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specular;
     finalColor.a = texColor.a;
 
 	// final color
     return finalColor;
-    //return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(splr,tc);
+    //return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(sample0,tc);
 }

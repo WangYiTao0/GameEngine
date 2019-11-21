@@ -14,8 +14,7 @@ light Pos
 */ 
 #include "ShaderOptions.hlsli"
 #include "LightVectorData.hlsli"
-
-#include "LightOptions.hlsli"
+#include "CommonPSOption.hlsli"
 
 struct PS_INPUT
 {
@@ -24,7 +23,7 @@ struct PS_INPUT
     float3 viewNormal : Normal;
 };
 
-cbuffer ObjectCBuf : register(b1)
+cbuffer ObjectCBuf : register(b2)
 {
     float4 materialColor;
     float4 specularColor;

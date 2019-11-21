@@ -1,4 +1,5 @@
-#include "Transform.hlsli"
+#include "CommonPSOption.hlsli"
+
 float4 main(float3 pos : Position) : SV_Position
 {
     matrix modelView = mul(world, view);

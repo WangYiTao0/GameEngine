@@ -26,23 +26,7 @@ private:
 
 	bool EnableFrustumCulling = true;
 
-	GridTerrain gridTerrain{ gfx,160,160,50,50 };
-	std::vector<std::unique_ptr<class TestCube>> cubes;
+	GridTerrain gridTerrain{ gfx,160,160,50,50,20 };
+	TestCube cube{ gfx,2};
 
-	WaterWaves m_WaterWaves{ gfx };
-	TestPlane bluePlane{ gfx,6.0f,{ 0.3f,0.3f,1.0f,0.0f } };
-	TestPlane redPlane{ gfx,6.0f,{ 1.0f,0.3f,0.3f,0.0f } };
-	
-
-	//std::vector<TestCube> cubes;
-
-	std::vector<DirectX::XMMATRIX> m_InstancedData;
-	std::vector <DirectX::BoundingBox> BoxData;
-	std::vector<DirectX::XMMATRIX> refData;
-	//Collision::WireFrameData BoxData;
-
-	std::mt19937 rng;
-	const int objectCount = 180;
-	int renderCount = 0;
-	SolidSphere sphere;
 };

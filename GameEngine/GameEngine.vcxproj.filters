@@ -265,7 +265,7 @@
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -373,9 +373,6 @@
     </ClInclude>
     <ClInclude Include="SolidSphere.h">
       <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
-    <ClInclude Include="Cylinder.h">
-      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Header Files</Filter>
@@ -548,16 +545,13 @@
     <None Include="DXTrace.inl">
       <Filter>Dxerr</Filter>
     </None>
-    <None Include="Shader\Transform.hlsli">
-      <Filter>Shader\Common</Filter>
-    </None>
-    <None Include="Shader\LightOptions.hlsli">
-      <Filter>Shader\Common</Filter>
-    </None>
     <None Include="Shader\LightVectorData.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
     <None Include="Shader\ShaderOptions.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="Shader\CommonPSOption.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
   </ItemGroup>

@@ -52,6 +52,10 @@ public:
 			const auto p2 = XMLoadFloat3(&v2.Attr<Type::Position3D>());
 
 			const auto n = XMVector3Normalize(XMVector3Cross((p1 - p0), (p2 - p0)));
+			
+			XMFLOAT4 normal;
+			XMStoreFloat4(&normal, n);
+			normal;
 
 			XMStoreFloat3(&v0.Attr<Type::Normal>(), n);
 			XMStoreFloat3(&v1.Attr<Type::Normal>(), n);
@@ -63,7 +67,7 @@ public:
 	{
 		using namespace DirectX;
 		using Type = Dvtx::VertexLayout::ElementType;
-		for (size_t i = 0; i < vertices.Size(); i += 3)
+		for (size_t i = 0; i < indices.size(); i += 3)
 		{
 			auto v0 = vertices[indices[i]];
 			auto v1 = vertices[indices[i + 1]];

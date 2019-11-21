@@ -1,6 +1,6 @@
 #include "ShaderOptions.hlsli"
 #include "LightVectorData.hlsli"
-#include "LightOptions.hlsli"
+#include "CommonPSOption.hlsli"
 
 struct PS_INPUT
 {
@@ -10,19 +10,18 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-cbuffer ObjectCBuf : register(b1)
+cbuffer ObjectCBuf : register(b2)
 {
     float specularIntensity;
     float specularPower;
     bool normalMapEnabled;
     float padding[1];
 };
-#include "Transform.hlsli"
 
-Texture2D tex;
+
+Texture2D tex : register(t0);
 Texture2D nmap : register(t2);
 
-SamplerState splr ;
 
 float4 main(PS_INPUT input) : SV_Target
 {
@@ -35,7 +34,7 @@ float4 main(PS_INPUT input) : SV_Target
     if (normalMapEnabled)
     {
         // sample and unpack normal data
-        const float3 normalSample = nmap.Sample(splr, input.texcoord).xyz;
+        const float3 normalSample = nmap.Sample(sample0, input.texcoord).xyz;
         const float3 objectNormal = normalSample * 2.0f - 1.0f;
         // bring normal from object space into view space
         input.viewNormal = normalize(mul(objectNormal, (float3x3) modelView));
@@ -53,7 +52,7 @@ float4 main(PS_INPUT input) : SV_Target
     );
 
     float4 finalColor = 1.0f;
-    float4 texColor = tex.Sample(splr, input.texcoord);
+    float4 texColor = tex.Sample(sample0, input.texcoord);
        //clip(texColor.a - 0.1f);
     clip(texColor.a < 0.1f ? -1 : 1);
     // flip Normal when backface

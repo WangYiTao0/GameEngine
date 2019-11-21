@@ -277,7 +277,6 @@
     <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="CpuClass.h" />
     <ClInclude Include="Cube.h" />
-    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="DepthStencil.h" />
     <ClInclude Include="DirectionLight.h" />
     <ClInclude Include="Drawable.h" />
@@ -342,10 +341,9 @@
     <None Include="DXGetErrorDescription.inl" />
     <None Include="DXGetErrorString.inl" />
     <None Include="DXTrace.inl" />
-    <None Include="Shader\LightOptions.hlsli" />
+    <None Include="Shader\CommonPSOption.hlsli" />
     <None Include="Shader\ShaderOptions.hlsli" />
     <None Include="Shader\LightVectorData.hlsli" />
-    <None Include="Shader\Transform.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PhongPSNormalMap.hlsl">
