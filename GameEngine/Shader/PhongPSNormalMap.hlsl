@@ -31,10 +31,12 @@ float4 main(PS_INPUT input) : SV_Target
 {
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
+    input.viewBitan = normalize(input.viewBitan);
+    input.viewTan = normalize(input.viewTan);
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
-        input.viewNormal = MapNormal(normalize(input.viewTan), normalize(input.viewBitan), input.viewNormal, input.texcoord, nmap, sample0);
+        input.viewNormal = MapNormal(input.viewTan, input.viewBitan, input.viewNormal, input.texcoord, nmap, sample0);
     }
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);

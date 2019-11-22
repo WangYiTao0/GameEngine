@@ -14,14 +14,14 @@ namespace Bind
 
 		switch (this->samplerState)
 		{
-		case SamplerState::SSLinearWrap:
+		case SamplerState::SSAnistropicWrap:
 			samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 			samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 			samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 			samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 			samplerDesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
 			break;
-		case SamplerState::SSAnistropicWrap:
+		case SamplerState::SSLinearWrap:
 			samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 			samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 			samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;

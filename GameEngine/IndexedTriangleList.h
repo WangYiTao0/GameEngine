@@ -53,10 +53,6 @@ public:
 
 			const auto n = XMVector3Normalize(XMVector3Cross((p1 - p0), (p2 - p0)));
 			
-			XMFLOAT4 normal;
-			XMStoreFloat4(&normal, n);
-			normal;
-
 			XMStoreFloat3(&v0.Attr<Type::Normal>(), n);
 			XMStoreFloat3(&v1.Attr<Type::Normal>(), n);
 			XMStoreFloat3(&v2.Attr<Type::Normal>(), n);
@@ -100,10 +96,11 @@ public:
 			DirectX::XMStoreFloat2(&fdeltaUV1, deltaUV1);
 			DirectX::XMStoreFloat2(&fdeltaUV2, deltaUV2);
 	
-			float r = 1.0f / (fdeltaUV1.x * fdeltaUV2.y - fdeltaUV1.y * fdeltaUV2.x);
+			float r = 1.0f / (fdeltaUV1.x * fdeltaUV2.y - fdeltaUV2.x * fdeltaUV1.y);
 			auto tangent = (deltaPos1 * fdeltaUV2.y - deltaPos2 * fdeltaUV1.y) * r;
 			auto bitangent = (deltaPos2 * fdeltaUV1.x - deltaPos1 * fdeltaUV2.x) * r;
-
+			tangent = DirectX::XMVector3Normalize(tangent);
+			bitangent = DirectX::XMVector3Normalize(bitangent);
 			XMStoreFloat3(&v0.Attr<Type::Tangent>(), tangent);
 			XMStoreFloat3(&v1.Attr<Type::Tangent>(), tangent);
 			XMStoreFloat3(&v2.Attr<Type::Tangent>(), tangent);

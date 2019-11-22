@@ -1,7 +1,8 @@
 #pragma once
 #include "Drawable.h"
+#include "GameObject.h"
 
-class GridTerrain : public Drawable 
+class GridTerrain : public Drawable,public GameObject
 {
 public:
 	GridTerrain(Graphics& gfx, float width = 256.0f, float depth = 256.0f,
@@ -19,6 +20,4 @@ private:
 		float padding[1];
 	} pmc;
 
-
-	DirectX::XMFLOAT3 pos = { 1.0f,1.0f,1.0f };
 }; 

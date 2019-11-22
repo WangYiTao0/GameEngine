@@ -58,6 +58,8 @@ public:
 		auto itl = MakeIndependent(std::move(VertexLayout{}
 			.Append(Type::Position3D)
 			.Append(Type::Normal)
+			.Append(Type::Tangent)
+			.Append(Type::Bitangent)
 			.Append(Type::Texture2D)
 		));
 

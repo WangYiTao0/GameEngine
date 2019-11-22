@@ -17,6 +17,9 @@ void GeometryScene::Draw()
 {
 	gridTerrain.Draw(gfx);
 	cube.Draw(gfx);
+
+	gridTerrain.SpawnControlWindow(gfx);
+	cube.SpawnControlWindow(gfx);
 }
 
 void GeometryScene::SpownFrustumControl()

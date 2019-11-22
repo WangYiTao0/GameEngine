@@ -16,6 +16,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	auto model = Cube::MakeIndependentTextured();
 	model.Transform(dx::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
+	model.ComputeTangentBiTtngent();
 	const auto geometryTag = "$cube." + std::to_string(size);
 
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
@@ -26,12 +27,12 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVS.cso");
+	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVSNormalMap.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
 	//AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
-	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMapObject.cso"));
+	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));
 
