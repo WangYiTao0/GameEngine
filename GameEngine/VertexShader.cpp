@@ -1,6 +1,7 @@
 #include "VertexShader.h"
 #include "GraphicsThrowMacros.h"
 #include "BindableCodex.h"
+#include "StringHelper.h"
 #include <typeinfo>
 namespace Bind
 {
@@ -10,11 +11,15 @@ namespace Bind
 	{
 		INFOMAN(gfx);
 
+		std::string shaderfolder = StringHelper::GetShaderRootPath();
 
+		auto m_Path = shaderfolder + path;
 
 		//create vertex shader
-		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ path.begin(), path.end()}.c_str(), &pBytecodeBlob));
+		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ m_Path.begin(), m_Path.end()}.c_str(), &pBytecodeBlob));
 		
+
+
 		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
 

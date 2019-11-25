@@ -12,8 +12,6 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	using namespace Bind;
 	using namespace DirectX;
 
-	std::string shaderfolder = StringHelper::GetShaderRootPath();
-
 	using Element = Dvtx::VertexLayout::ElementType;
 
 	auto layout = Dvtx::VertexLayout{}
@@ -37,13 +35,13 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, shaderfolder + "PhongVSNormalMap.cso");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso");
 	
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, shaderfolder + "PhongPSNormalMap.cso"));
+	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap.cso"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));
 

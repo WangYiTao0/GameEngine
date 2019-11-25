@@ -11,7 +11,7 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 	:
 	pmc({ color })
 {
-	std::string shaderfolder = StringHelper::GetShaderRootPath();
+	 
 
 	using namespace Bind;
 	namespace dx = DirectX;
@@ -25,11 +25,11 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	auto pvs = VertexShader::Resolve( gfx, shaderfolder + "PhongVS.cso" );
+	auto pvs = VertexShader::Resolve( gfx,  "PhongVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
 
-	AddBind( PixelShader::Resolve( gfx, shaderfolder +  "SolidPS.cso" ) );
+	AddBind( PixelShader::Resolve( gfx,   "SolidPS.cso" ) );
 
 	AddBind(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 3u));
 

@@ -1,6 +1,7 @@
 #include "PixelShader.h"
 #include "GraphicsThrowMacros.h"
 #include "BindableCodex.h"
+#include "StringHelper.h"
 
 namespace Bind
 {
@@ -9,6 +10,10 @@ namespace Bind
 		path(path)
 	{
 		INFOMAN(gfx);
+
+		std::string shaderfolder = StringHelper::GetShaderRootPath();
+
+		auto m_Path = shaderfolder + path;
 
 		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
@@ -20,7 +25,7 @@ namespace Bind
 
 		//create pixel shader
 		Microsoft::WRL::ComPtr<ID3D10Blob> pBlob;
-		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ path.begin(),path.end() }.c_str(), &pBlob));
+		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ m_Path.begin(),m_Path.end() }.c_str(), &pBlob));
 		GFX_THROW_INFO(GetDevice(gfx)->CreatePixelShader(pBlob->GetBufferPointer(),
 			pBlob->GetBufferSize(), nullptr, &pPixelShader));
 
