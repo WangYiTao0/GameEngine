@@ -5,29 +5,51 @@
 
 namespace Bind
 {
-	PixelShader::PixelShader(Graphics& gfx, const std::string& path)
+	PixelShader::PixelShader(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
 		:
-		path(path)
+		csoPath(csoPath),
+		hlslPath(hlslPath)
 	{
 		INFOMAN(gfx);
 
-		std::string shaderfolder = StringHelper::GetShaderRootPath();
+		std::string csofolder = StringHelper::GetShaderRootPath();
+		auto m_csoPath = csofolder + csoPath;
+		auto m_WcsoPath = std::wstring{ m_csoPath.begin(), m_csoPath.end() };
 
-		auto m_Path = shaderfolder + path;
+		std::string hlslfolder = "Shader\\";
+		auto m_hlslPath = hlslfolder + hlslPath;
+		auto m_WhlslPath = std::wstring{ m_hlslPath.begin(),m_hlslPath.end() };
 
-		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+
+		////create vertex shader
+		//if (m_WcsoPath.c_str() && D3DReadFileToBlob(m_WcsoPath.c_str(), &pBlobOut) == S_OK)
+		//{
+		//	
+		//}
+		//else
+		{
+			DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
 
-		dwShaderFlags |= D3DCOMPILE_DEBUG;
+			dwShaderFlags |= D3DCOMPILE_DEBUG;
 
-		dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+			dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+
 #endif
+			Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
+			GFX_THROW_INFO(D3DCompileFromFile(m_WhlslPath.c_str(),
+				nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_5_0",
+				dwShaderFlags, 0, pBlobOut.GetAddressOf(), errorBlob.GetAddressOf()));
 
+
+			if (m_WcsoPath.c_str())
+			{
+				D3DWriteBlobToFile(pBlobOut.Get(), m_WcsoPath.c_str(), FALSE);
+			}
+		}
 		//create pixel shader
-		Microsoft::WRL::ComPtr<ID3D10Blob> pBlob;
-		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ m_Path.begin(),m_Path.end() }.c_str(), &pBlob));
-		GFX_THROW_INFO(GetDevice(gfx)->CreatePixelShader(pBlob->GetBufferPointer(),
-			pBlob->GetBufferSize(), nullptr, &pPixelShader));
+		GFX_THROW_INFO(GetDevice(gfx)->CreatePixelShader(pBlobOut->GetBufferPointer(),
+			pBlobOut->GetBufferSize(), nullptr, &pPixelShader));
 
 	}
 
@@ -38,17 +60,17 @@ namespace Bind
 
 	}
 
-	std::shared_ptr<PixelShader> PixelShader::Resolve(Graphics& gfx, const std::string& path)
+	std::shared_ptr<PixelShader> PixelShader::Resolve(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
 	{
-		return Codex::Resolve<PixelShader>(gfx, path);
+		return Codex::Resolve<PixelShader>(gfx, csoPath, hlslPath);
 	}
-	std::string PixelShader::GenerateUID(const std::string& path)
+	std::string PixelShader::GenerateUID(const std::string& csoPath, const std::string& hlslPath)
 	{
 		using namespace std::string_literals;
-		return typeid(PixelShader).name() + "#"s + path;
+		return typeid(PixelShader).name() + "#"s + csoPath + hlslPath;
 	}
 	std::string PixelShader::GetUID() const noexcept
 	{
-		return GenerateUID(path);
+		return GenerateUID(csoPath, hlslPath);
 	}
 }

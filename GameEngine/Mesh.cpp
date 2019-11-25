@@ -366,11 +366,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-		auto pvs = VertexShader::Resolve(gfx,  "PhongVSNormalMap.cso");
+		auto pvs = VertexShader::Resolve(gfx,  "PhongVSNormalMap.cso","PhongVSNormalMap.hlsl");
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
 
-		bindablePtrs.push_back(PixelShader::Resolve(gfx,  "PhongPSSpecNormalMap.cso"));
+		bindablePtrs.push_back(PixelShader::Resolve(gfx,"PhongPSSpecNormalMap.cso","PhongPSSpecNormalMap.hlsl"));
 
 		//bindablePtrs.push_back(PixelShader::Resolve(gfx, 
 		//	hasAlphaDiffuse ?  "PhongPSSpecNormalMask.cso" :  "PhongPSSpecNormalMap.cso"
@@ -424,11 +424,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-		auto pvs = VertexShader::Resolve(gfx,  "PhongVSNormalMap.cso");
+		auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
 
-		bindablePtrs.push_back(PixelShader::Resolve(gfx,  "PhongPSNormalMap.cso"));
+		bindablePtrs.push_back(PixelShader::Resolve(gfx,  "PhongPSNormalMap.cso","PhongPSNormalMap.hlsl"));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
@@ -478,11 +478,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-		auto pvs = VertexShader::Resolve(gfx,  "PhongVS.cso");
+		auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso", "PhongVS.hlsl");
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
 
-		bindablePtrs.push_back(PixelShader::Resolve(gfx,  "PhongPS.cso"));
+		bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPS.cso", "PhongPS.hlsl"));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
@@ -531,11 +531,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 	bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-	auto pvs = VertexShader::Resolve(gfx,  "PhongVS.cso");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso", "PhongVS.hlsl");
 	auto pvsbc = pvs->GetBytecode();
 	bindablePtrs.push_back(std::move(pvs));
 
-	bindablePtrs.push_back(PixelShader::Resolve(gfx,  "PhongPSSpec.cso"));
+	bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpec.cso", "PhongPSSpec.hlsl"));
 
 	bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
@@ -584,11 +584,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-		auto pvs = VertexShader::Resolve(gfx,  "PhongVSNotex.cso");
+		auto pvs = VertexShader::Resolve(gfx, "PhongVSNotex.cso", "PhongVSNotex.hlsl");
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
 
-		bindablePtrs.push_back(PixelShader::Resolve(gfx,  "PhongPSNotex.cso"));
+		bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSNotex.cso","PhongPSNotex.hlsl"));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 		Node::PSMaterialConstantNotex pmc;

@@ -27,12 +27,11 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx,  "PhongVSNormalMap.cso");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	//AddBind(PixelShader::Resolve(gfx,  "PhongPSNormalMap.cso"));
-	AddBind(PixelShader::Resolve(gfx,  "PhongPSNormalMap.cso"));
+	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap.cso", "PhongPSNormalMap.hlsl"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));
 

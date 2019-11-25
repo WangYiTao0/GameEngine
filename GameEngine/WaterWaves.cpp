@@ -27,13 +27,13 @@ WaterWaves::WaterWaves(Graphics& gfx, float width, float depth, unsigned int m, 
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\water1.dds"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx,  "WaterWavesVS.cso");
+	auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");
 
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx,  "WaterWavesPS.cso"));
+	AddBind(PixelShader::Resolve(gfx, "WaterWavesPS.cso", "WaterWavesPS.hlsl"));
 
 	//AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 

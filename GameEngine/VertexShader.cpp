@@ -5,30 +5,48 @@
 #include <typeinfo>
 namespace Bind
 {
-	VertexShader::VertexShader(Graphics& gfx, const std::string& path)
+	VertexShader::VertexShader(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
 		:
-		path(path)
+		csoPath(csoPath),
+		hlslPath(hlslPath)
 	{
 		INFOMAN(gfx);
 
-		std::string shaderfolder = StringHelper::GetShaderRootPath();
+		std::string csofolder = StringHelper::GetShaderRootPath();
+		auto m_csoPath = csofolder + csoPath;
+		auto m_WcsoPath = std::wstring{ m_csoPath.begin(), m_csoPath.end() };
 
-		auto m_Path = shaderfolder + path;
-
-		//create vertex shader
-		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ m_Path.begin(), m_Path.end()}.c_str(), &pBytecodeBlob));
-		
+		std::string hlslfolder = "Shader\\";
+		auto m_hlslPath = hlslfolder + hlslPath;
+		auto m_WhlslPath = std::wstring{ m_hlslPath.begin(),m_hlslPath.end() };
 
 
-		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+		////create vertex shader
+		//if(m_WcsoPath.c_str() && D3DReadFileToBlob(m_WcsoPath.c_str(), &pBytecodeBlob) == S_OK)
+		//{
+		//	
+		//}
+		//else
+		{
+			DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
 
-		dwShaderFlags |= D3DCOMPILE_DEBUG;
+			dwShaderFlags |= D3DCOMPILE_DEBUG;
 
-		dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+			dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
+			Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
+			D3DCompileFromFile(m_WhlslPath.c_str(), 
+				nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_5_0",
+				dwShaderFlags, 0, &pBytecodeBlob, &errorBlob);
 
-		
+
+			if (m_WcsoPath.c_str())
+			{
+				D3DWriteBlobToFile(pBytecodeBlob.Get(), m_WcsoPath.c_str(), FALSE);
+			}
+		}
+
 		GFX_THROW_INFO(GetDevice(gfx)->CreateVertexShader(
 			pBytecodeBlob->GetBufferPointer(),
 			pBytecodeBlob->GetBufferSize(), nullptr, &pVertexShader));
@@ -48,17 +66,17 @@ namespace Bind
 		return pBytecodeBlob.Get();
 	}
 
-	std::shared_ptr<VertexShader> VertexShader::Resolve(Graphics& gfx, const std::string& path)
+	std::shared_ptr<VertexShader> VertexShader::Resolve(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
 	{
-		return Codex::Resolve<VertexShader>(gfx, path);
+		return Codex::Resolve<VertexShader>(gfx, csoPath, hlslPath);
 	}
-	std::string VertexShader::GenerateUID(const std::string& path)
+	std::string VertexShader::GenerateUID(const std::string& csoPath, const std::string& hlslPath)
 	{
 		using namespace std::string_literals;
-		return typeid(VertexShader).name() + "#"s + path;
+		return typeid(VertexShader).name() + "#"s + csoPath + hlslPath;
 	}
 	std::string VertexShader::GetUID() const noexcept
 	{
-		return GenerateUID(path);
+		return GenerateUID(csoPath,hlslPath);
 	}
 }
