@@ -10,11 +10,24 @@ namespace Bind
 	{
 		INFOMAN(gfx);
 
+
+
 		//create vertex shader
 		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ path.begin(), path.end()}.c_str(), &pBytecodeBlob));
+		
+		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+#ifdef _DEBUG
+
+		dwShaderFlags |= D3DCOMPILE_DEBUG;
+
+		dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
+
+		
 		GFX_THROW_INFO(GetDevice(gfx)->CreateVertexShader(
 			pBytecodeBlob->GetBufferPointer(),
 			pBytecodeBlob->GetBufferSize(), nullptr, &pVertexShader));
+
 
 	}
 

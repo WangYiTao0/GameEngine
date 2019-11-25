@@ -189,6 +189,7 @@
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Blender.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="ECS\EcsSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="CerTest.h" />
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="LightCommon.h" />
     <ClInclude Include="PlaneMirror.h" />
     <ClInclude Include="Rasterizer.h" />

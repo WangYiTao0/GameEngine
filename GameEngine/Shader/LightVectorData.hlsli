@@ -9,9 +9,13 @@ LightVectorData CalculateLightVectorData(const in float3 lightPos, const in floa
 {
     LightVectorData lv;
     lv.vToL = lightPos - fragPos;
-    lv.distToL = length(lv.vToL);
-    //lv.dirToL = lv.vToL / lv.distToL;
     lv.dirToL = normalize(lv.vToL);
+
+    lv.distToL = length(lv.vToL);
+    lv.dirToL = lv.vToL / lv.distToL;
+    
+   
+
     return lv;
 }
 

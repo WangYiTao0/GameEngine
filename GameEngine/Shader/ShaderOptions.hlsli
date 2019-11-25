@@ -13,13 +13,17 @@ float3 MapNormal(
     const float3 normalSample = nmap.Sample(splr, tc).rgb;
     const float3 tanNormal = normalSample * 2.0f - 1.0f;
 
+    const float3 finalN = normalize(mul(tanNormal, tanToTarget));
+
     // bring normal from tanspace into target space
-    return normalize(mul(tanNormal, tanToTarget));
+    return finalN;
 }
 
 float Attenuate(uniform float attConst, uniform float attLin, uniform float attQuad, const in float distFragToL)
 {
-    return 1.0f / (attConst + attLin * distFragToL + attQuad * (distFragToL * distFragToL));
+    float dist = distFragToL;
+    float attenuate = 1.0f / (attConst + attLin * dist + attQuad * (dist * dist));
+    return attenuate;
 }
 
 float3 Diffuse(
@@ -29,6 +33,8 @@ float3 Diffuse(
     const in float3 viewDirFragToL,
     const in float3 viewNormal)
 {
+    float a = att;
+
     return diffuseColor * diffuseIntensity * att * max(0.0f, dot(viewDirFragToL, viewNormal));
 }
 

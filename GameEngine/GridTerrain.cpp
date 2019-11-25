@@ -29,7 +29,6 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	const auto geometryTag = "$Grid." + std::to_string(width);
 	AddBind(Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSAnistropicWrap));
-
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 

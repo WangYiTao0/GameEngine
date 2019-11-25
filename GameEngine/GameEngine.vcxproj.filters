@@ -267,6 +267,9 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="d3dUtil.cpp">
+      <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -523,6 +526,9 @@
     </ClInclude>
     <ClInclude Include="PlaneMirror.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dUtil.h">
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

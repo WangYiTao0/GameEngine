@@ -29,17 +29,12 @@ Texture2D nmap : register(t2);
 
 float4 main(PS_INPUT input) : SV_Target
 {
-    matrix modelView = mul(world, view);
-    matrix modelViewProj = mul(modelView, proj);
-
     // normalize the mesh normal
 
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
         input.viewNormal = MapNormal(input.viewTan, input.viewBitan, input.viewNormal, input.texcoord, nmap, sample0);
-        input.viewNormal = normalize(mul(input.viewNormal, (float3x3) modelView));
-
     }
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);

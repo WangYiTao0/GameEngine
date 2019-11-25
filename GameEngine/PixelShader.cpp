@@ -9,6 +9,15 @@ namespace Bind
 		path(path)
 	{
 		INFOMAN(gfx);
+
+		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+#ifdef _DEBUG
+
+		dwShaderFlags |= D3DCOMPILE_DEBUG;
+
+		dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
+
 		//create pixel shader
 		Microsoft::WRL::ComPtr<ID3D10Blob> pBlob;
 		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{ path.begin(),path.end() }.c_str(), &pBlob));
