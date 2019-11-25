@@ -70,11 +70,7 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 		ImGui::SliderAngle("Roll", &rollPitchYaw.x, -180.0f, 180.0f);
 		ImGui::SliderAngle("Pitch", &rollPitchYaw.y, -180.0f, 180.0f);
 		ImGui::SliderAngle("Yaw", &rollPitchYaw.z, -180.0f, 180.0f);
-		ImGui::Text("Shading");
-		auto pBlender = QueryBindable<Bind::Blender>();
-		float factor = pBlender->GetFactor();
-		ImGui::SliderFloat("Translucency", &factor, 0.0f, 1.0f);
-		pBlender->SetFactor(factor);
+
 		bool changed0 = ImGui::SliderFloat("Spec. Int.", &pmc.specularIntensity, 0.0f, 1.0f);
 		bool changed1 = ImGui::SliderFloat("Spec. Power", &pmc.specularPower, 0.0f, 100.0f);
 		bool checkState = pmc.normalMappingEnabled == TRUE;
@@ -83,7 +79,12 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 		if (changed0 || changed1 || changed2)
 		{
 			QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);
-		}
+		}	
+		ImGui::Text("Shading");
+		auto pBlender = QueryBindable<Bind::Blender>();
+		float factor = pBlender->GetFactor();
+		ImGui::SliderFloat("Translucency", &factor, 0.0f, 1.0f);
+		pBlender->SetFactor(factor);
 	}
 	ImGui::End();
 }

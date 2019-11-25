@@ -44,12 +44,6 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCull));
 }
 
-
-void SolidSphere::SetPos(DirectX::XMFLOAT3 pos) noexcept
-{
-	this->pos = pos;
-}
-
 DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);

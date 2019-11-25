@@ -55,13 +55,12 @@ void WaterWaves::Update(float dt)
 	//DirectX::(x,z,dt)
 }
 
-void WaterWaves::SetPos(DirectX::XMFLOAT3 pos) noexcept
-{
-	this->pos = pos;
-}
+
 
 DirectX::XMMATRIX WaterWaves::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+	return DirectX::XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z) *
+		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z) *
+		DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 }
 

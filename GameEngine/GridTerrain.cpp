@@ -24,11 +24,10 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 		.Append(Element::Texture2D);
 
 	auto model = Grid::MakeIndependent(layout, width, depth, m, n, gridSize);
-	const auto geometryTag = "$Grid." + std::to_string(width);
 	model.SetNormalsIndependentFlat();
 	model.ComputeTangentBiTtngent();
 
-
+	const auto geometryTag = "$Grid." + std::to_string(width);
 	AddBind(Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSAnistropicWrap));
 
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
@@ -53,7 +52,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-	AddBind(std::make_shared<Blender>(gfx, false, 0.5f));
+	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
 	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCull));
 
