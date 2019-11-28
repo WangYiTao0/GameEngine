@@ -32,8 +32,8 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\tile.dds"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\tile_nmap.dds", 2u));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
 	

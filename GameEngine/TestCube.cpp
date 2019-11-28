@@ -7,8 +7,6 @@
 
 TestCube::TestCube(Graphics& gfx, float size)
 {
-	 
-
 	this->scale = { size,size,size };
 
 	using namespace Bind;
@@ -24,8 +22,8 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall.jpg"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\brickwall_normal.jpg", 2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
 	auto pvsbc = pvs->GetBytecode();
@@ -44,8 +42,6 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
 	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCull));
-
-	//CreateBoundingBox();
 }
 
 

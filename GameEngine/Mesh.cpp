@@ -22,7 +22,7 @@ const char* ModelException::what() const noexcept
 
 const char* ModelException::GetType() const noexcept
 {
-	return "Chili Model Exception";
+	return "Model Exception";
 }
 
 const std::string& ModelException::GetNote() const noexcept
@@ -284,10 +284,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			//bindablePtrs.push_back(Texture::Resolve(gfx, rootPath + texFileName.C_Str()));
 			std::shared_ptr<Bind::Texture> tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(),0);
-			//hasAlphaDiffuse = tex->HasAlpha();
-			//hasAlphaDiffuse = true;
 			bindablePtrs.push_back(std::move(tex));
 			hasDiffuseMap = true;
 		}
