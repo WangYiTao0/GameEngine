@@ -49,18 +49,19 @@ float4 main(PS_INPUT input) : SV_Target
     );
     float4 finalColor = 1.0f;
     float4 texColor = tex.Sample(sample0, input.texcoord);
-     //clip(texColor.a - 0.1f);
-    clip(texColor.a < 0.1f ? -1 : 1);
 
-    // flip Normal when backface
-    if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-    {
-        input.viewNormal = -input.viewNormal;
-    }
+    // //clip(texColor.a - 0.1f);
+    //clip(texColor.a < 0.1f ? -1 : 1);
+
+    //// flip Normal when backface
+    //if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+    //{
+    //    input.viewNormal = -input.viewNormal;
+    //}
 
     finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specular;
-    finalColor.a = texColor.a;
-
-	// final color
+    //  finalColor.a = texColor.a;
+    finalColor.a = 1.0f;
+    // final color
     return finalColor;
 }

@@ -10,6 +10,7 @@
 #include <memory>
 #include <random>
 #include "ConditionalNoexcept.h"
+#include "RTT.h"
 
 namespace Bind
 {
@@ -61,6 +62,9 @@ public:
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics();
+
+	void RenderToTexture();
+
 	void EndFrame();
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void DrawIndexed(UINT count) noxnd;
@@ -85,4 +89,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDSV;
 
 	UINT      m_4xMsaaQuality;   // MSAA
+
+	std::unique_ptr<Bind::RTT> mRTT = nullptr;
 };

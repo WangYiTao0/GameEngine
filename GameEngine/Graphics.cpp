@@ -17,6 +17,7 @@ namespace dx = DirectX;
 
 Graphics::Graphics(HWND hWnd, int width, int height)
 {
+
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = width;
 	sd.BufferDesc.Height = height;
@@ -113,11 +114,31 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 
 	// init imgui d3d impl
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
+
+	//render 3d to 2d
+	mRTT = std::make_unique<Bind::RTT>(pDevice, width, height);
+
+
 }
 
 Graphics::~Graphics()
 {
 	ImGui_ImplDX11_Shutdown();
+}
+
+void Graphics::RenderToTexture()
+{
+	bool result;
+
+	//设置的渲染目标为(那个跟屏幕一样大的)纹理,而非背后缓存
+	mRTT->SetRenderTarget(*this, pDSV.Get());
+
+	//清除那个承载3D模型效果的纹理为蓝色
+	mRTT->ClearRenderTarget(*this, pDSV.Get(), 0.0f, 0.0f, 1.0f, 1.0f);
+
+
+
+	return true;
 }
 
 void Graphics::EndFrame()

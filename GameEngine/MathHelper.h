@@ -48,4 +48,13 @@ namespace MathHelper
 		return rdist(rng);
 	}
 
+	template<typename T>
+	T RandI(T a, T b)
+	{
+		std::mt19937 rng(std::random_device{}());
+		std::uniform_int_distribution<T> rdist(a, b);
+
+		return rdist(rng);
+	}
+
 }

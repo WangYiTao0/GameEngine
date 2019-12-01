@@ -2,8 +2,7 @@
 #include "GraphicsThrowMacros.h"
 #include "BindableCodex.h"
 #include "StringHelper.h"
-#include <DirectXTK\WICTextureLoader.h>
-#include <DirectXTK\DDSTextureLoader.h>
+#include "Surface.h"
 
 
 namespace Bind
@@ -13,18 +12,18 @@ namespace Bind
 
 	Texture::Texture(Graphics& gfx, const std::string& filePath, UINT slot,aiTextureType type)
 		:
-		path(path),
+		filePath(filePath),
 		slot(slot),
 		type(type)
 	{
 		INFOMAN(gfx);
 
-		if (StringHelper::GetFileExtension(filePath) == ".dds")
+		/*if (StringHelper::GetFileExtension(filePath) == ".dds")
 		{
 			HRESULT hr = DirectX::CreateDDSTextureFromFileEx(
 				GetDevice(gfx),
 				GetContext(gfx),// if given a d3dContext instance for auto-gen mipmap support. 
-				StringHelper::StringToWide(filePath).c_str(),
+				StringHelper::ToWide(filePath).c_str(),
 				0,
 				D3D11_USAGE_DEFAULT,
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET,
@@ -43,7 +42,7 @@ namespace Bind
 			HRESULT hr = DirectX::CreateWICTextureFromFileEx(
 				GetDevice(gfx),
 				GetContext(gfx),// if given a d3dContext instance for auto-gen mipmap support. 
-				StringHelper::StringToWide(filePath).c_str(),
+				StringHelper::ToWide(filePath).c_str(),
 				0, 
 				D3D11_USAGE_DEFAULT, 
 				D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET,
@@ -57,35 +56,76 @@ namespace Bind
 				Initialize1x1ColorTexture(gfx,Colors::UnloadedTextureColor, type);
 			}
 			return;
-		}
+		}*/
+
+
+		// load surface
+		const auto s = Surface::FromFile(filePath);
+		hasAlpha = s.AlphaLoaded();
+
+		// create texture resource
+		D3D11_TEXTURE2D_DESC textureDesc = {};
+		textureDesc.Width = s.GetWidth();
+		textureDesc.Height = s.GetHeight();
+		textureDesc.MipLevels = 0;
+		textureDesc.ArraySize = 1;
+		textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.SampleDesc.Quality = 0;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+		wrl::ComPtr<ID3D11Texture2D> pTexture;
+		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(
+			&textureDesc, nullptr, &pTexture
+		));
+
+		// write image data into top mip level
+		GetContext(gfx)->UpdateSubresource(
+			pTexture.Get(), 0u, nullptr, s.GetBufferPtrConst(), s.GetWidth() * sizeof(Surface::Color), 0u
+		);
+
+		// create the resource view on the texture
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = textureDesc.Format;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+		srvDesc.Texture2D.MipLevels = -1;
+		GFX_THROW_INFO(GetDevice(gfx)->CreateShaderResourceView(
+			pTexture.Get(), &srvDesc, &pTextureView
+		));
+
+		// generate the mip chain using the gpu rendering pipeline
+		GetContext(gfx)->GenerateMips(pTextureView.Get());
 	
 	}
 
-	Texture::Texture(Graphics& gfx,const uint8_t* pData, size_t size, aiTextureType type)
-	{
-		this->type = type;
-		HRESULT hr = DirectX::CreateWICTextureFromMemory(GetDevice(gfx), pData, size, this->pTexture.GetAddressOf(), this->pTextureView.GetAddressOf());
-		COM_ERROR_IF_FAILED(hr, "Failed to create Texture from memory.");
-	}
+	//Texture::Texture(Graphics& gfx,const uint8_t* pData, size_t size, aiTextureType type)
+	//{
+	//	this->type = type;
+	//	HRESULT hr = DirectX::CreateWICTextureFromMemory(GetDevice(gfx), pData, size, this->pTexture.GetAddressOf(), this->pTextureView.GetAddressOf());
+	//	COM_ERROR_IF_FAILED(hr, "Failed to create Texture from memory.");
+	//}
 
 	void Texture::Bind(Graphics& gfx) noexcept
 	{
 		GetContext(gfx)->PSSetShaderResources(slot, 1u, pTextureView.GetAddressOf());
 	}
 
-	std::shared_ptr<Texture> Texture::Resolve(Graphics& gfx, const std::string& path, UINT slot)
+	std::shared_ptr<Texture> Texture::Resolve(Graphics& gfx, const std::string& filePath, UINT slot)
 	{
-		return Codex::Resolve<Texture>(gfx, path, slot);
+		return Codex::Resolve<Texture>(gfx, filePath, slot);
 	}
-	std::string Texture::GenerateUID(const std::string& path, UINT slot)
+	std::string Texture::GenerateUID(const std::string& filePath, UINT slot)
 	{
 		using namespace std::string_literals;
 		//using path & slot
-		return typeid(Texture).name() + "#"s + path + "#" + std::to_string(slot);
+		return typeid(Texture).name() + "#"s + filePath + "#" + std::to_string(slot);
 	}
 	std::string Texture::GetUID() const noexcept
 	{
-		return GenerateUID(path, slot);
+		return GenerateUID(filePath, slot);
 	}
 	bool Texture::HasAlpha() const noexcept
 	{

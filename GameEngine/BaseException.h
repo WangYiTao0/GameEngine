@@ -32,13 +32,13 @@ public:
 	COMException(HRESULT hr, const std::string& msg, const std::string& file, const std::string& function, int line)
 	{
 		_com_error error(hr);
-		whatmsg = L"Msg: " + StringHelper::StringToWide(std::string(msg)) + L"\n";
+		whatmsg = L"Msg: " + StringHelper::ToWide(std::string(msg)) + L"\n";
 		auto m = error.ErrorMessage();
 		auto s = std::to_wstring(*m);
 		whatmsg += s;
-		whatmsg += L"\nFile: " + StringHelper::StringToWide(file);
-		whatmsg += L"\nFunction: " + StringHelper::StringToWide(function);
-		whatmsg += L"\nLine: " + StringHelper::StringToWide(std::to_string(line));
+		whatmsg += L"\nFile: " + StringHelper::ToWide(file);
+		whatmsg += L"\nFunction: " + StringHelper::ToWide(function);
+		whatmsg += L"\nLine: " + StringHelper::ToWide(std::to_string(line));
 	}
 
 	const wchar_t* what() const

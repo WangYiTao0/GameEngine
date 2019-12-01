@@ -273,6 +273,15 @@
     <ClCompile Include="WaterWave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RTT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturePreprocessor.cpp">
+      <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -530,14 +539,20 @@
     <ClInclude Include="d3dUtil.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
-    <ClInclude Include="RTT.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="Waves.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="WaterWave.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="RTT.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturePreprocessor.h">
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

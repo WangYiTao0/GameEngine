@@ -34,16 +34,23 @@ float4 main(PS_INPUT input) : SV_Target
     //alpha blender
     float4 diffColor = diff.Sample(sample0, input.texcoord);
 
-    //check diffuse color alpha
-    if (diffColor.a != 1.0f)
+    #ifdef HASMASK
+    // bail if highly translucent
+    clip(diffColor.a < 0.1f ? -1 : 1);
+    // flip normal when backface
+    if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
     {
-        clip(diffColor.a < 0.1f ? -1 : 1);
-    // flip Normal when backface
-        if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-        {
-            input.viewNormal = -input.viewNormal;
-        }
+        input.viewNormal = -input.viewNormal;
     }
+    #endif
+
+    //clip(diffColor.a < 0.1f ? -1 : 1);
+    //// flip normal when backface
+    //if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+    //{
+    //    input.viewNormal = -input.viewNormal;
+    //}
+    
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
     // replace normal with mapped if normal mapping enabled
@@ -84,16 +91,6 @@ float4 main(PS_INPUT input) : SV_Target
     );
 	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
     float4 finalColor = 1.0f;
-
-
-    //#ifdef HASMASK
-    //clip(texColor.a < 0.1f ? -1 : 1);
-    //// flip Normal when backface
-    //if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-    //{
-    //    input.viewNormal = -input.viewNormal;
-    //}
-    //#endif
 
     finalColor.rgb = diffColor.rgb * saturate(ambient + diffuse) + specularReflected;
     finalColor.a = diffColor.a;
