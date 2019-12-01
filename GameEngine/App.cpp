@@ -31,12 +31,12 @@ App::App()
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 
 
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(PI / 3.0f, 
+	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(MathHelper::PI / 3.0f,
 		static_cast<float>(width) / static_cast<float>(height), 
 		nearZ, farZ));
 
 	
-	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));

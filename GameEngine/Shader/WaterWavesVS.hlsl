@@ -1,36 +1,42 @@
 #include "CommonPSOption.hlsli"
 
+cbuffer vsWaterConstant :register (b1)
+{
+    float3 pos;
+};
 
 struct VS_IN
 {
     float3 pos : Position;
-    float4 Color : Color;
+    float3 normal : Normal;
+    float3 tangent : Tangent;
+    float3 biTangent : Bitangent;
+    float2 texcoord : Texcoord;
 };
 
 
 struct VS_OUT
 {
     float3 viewPos : Position;
-    float4 Color : Color;
+
 
     float4 pos : SV_Position;
 };
 
-VS_OUT main(VS_IN vs_in)
+VS_OUT main(VS_IN vIn)
 {
-    VS_OUT vs_out;
+    VS_OUT vOut;
     matrix modelView = mul(world, view);
     matrix modelViewProj = mul(modelView, proj);
     //Camera view Positon
-    vs_out.viewPos = (float3) mul(float4(vs_in.pos, 1.0f), modelView);
 
-    vs_out.viewPos.y = sin(vs_out.viewPos.x);
+    vIn.pos += pos;
 
-    vs_out.Color = vs_in.Color;
+    vOut.viewPos = (float3) mul(float4(vIn.pos, 1.0f), modelView);
 
     //world pos
-    vs_out.pos = mul(float4(vs_in.pos, 1.0f), modelViewProj);
+    vOut.pos = mul(float4(vIn.pos, 1.0f), modelViewProj);
 
-    return vs_out;
+    return vOut;
 
 }

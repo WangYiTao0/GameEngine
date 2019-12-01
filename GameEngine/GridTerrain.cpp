@@ -1,10 +1,13 @@
 #include "GridTerrain.h"
 #include "StringHelper.h"
+#include "MathHelper.h"
 #include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
 #include "TransformPixelCbuf.h"
 #include "Grid.h"
 #include "imgui/imgui.h"
+
+IndexedTriangleList GridTerrain::model;
 
 GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	unsigned int m , unsigned int n , float gridSize )
@@ -21,7 +24,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 		.Append(Element::Bitangent)
 		.Append(Element::Texture2D);
 
-	auto model = Grid::MakeIndependent(layout, width, depth, m, n, gridSize);
+    model = Grid::MakeGrid(layout, width, depth, m, n, gridSize);
 	model.SetNormalsIndependentFlat();
 	model.ComputeTangentBiTtngent();
 
@@ -36,14 +39,16 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
-	
+	//auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
 	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap.cso", "PhongPSNormalMap.hlsl"));
+	//AddBind(PixelShader::Resolve(gfx, "WaterWavesPS.cso", "WaterWavesPS.hlsl"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));
+
 
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
@@ -51,10 +56,12 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSWireframe));
 
 	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 0u));
+
+
 }
 
 
@@ -63,6 +70,10 @@ DirectX::XMMATRIX GridTerrain::GetTransformXM() const noexcept
 	return DirectX::XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z) *
 		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z) *
 		DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+}
+
+void GridTerrain::Update(Graphics& gfx,float dt)
+{
 }
 
 void GridTerrain::SpawnControlWindow(Graphics& gfx) noexcept

@@ -241,7 +241,8 @@
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
-    <ClCompile Include="WaterWaves.cpp" />
+    <ClCompile Include="WaterWave.cpp" />
+    <ClCompile Include="Waves.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -268,8 +269,10 @@
     <ClInclude Include="GridTerrain.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="RTT.h" />
     <ClInclude Include="ShapesScene.h" />
-    <ClInclude Include="WaterWaves.h" />
+    <ClInclude Include="WaterWave.h" />
+    <ClInclude Include="Waves.h" />
     <ClInclude Include="WindowHelper.h" />
     <ClInclude Include="DirectXMathHelper.h" />
     <ClInclude Include="Collision.h" />
@@ -495,6 +498,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shader\WaterWavesVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

@@ -33,7 +33,9 @@ private:
 	int x = 0, y = 0;
 	ImguiManager imgui;
 	Window wnd;
+
 	GameTimer timer;
+
 	float speed_factor = 1.0f;
 	Camera cam;
 	PointLight pointLight;

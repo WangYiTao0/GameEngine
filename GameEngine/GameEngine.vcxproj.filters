@@ -258,9 +258,6 @@
     <ClCompile Include="ImguiManager.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
-    <ClCompile Include="WaterWaves.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="DepthStencil.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
@@ -269,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="d3dUtil.cpp">
       <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="Waves.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterWave.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -518,9 +521,6 @@
     <ClInclude Include="LightCommon.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="WaterWaves.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="DepthStencil.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
@@ -529,6 +529,15 @@
     </ClInclude>
     <ClInclude Include="d3dUtil.h">
       <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="RTT.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Waves.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterWave.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

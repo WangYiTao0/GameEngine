@@ -4,14 +4,22 @@
 class Grid
 {
 public:
+	static IndexedTriangleList MakeGrid(Dvtx::VertexLayout layout,
+		float width, float depth,
+		unsigned int m, unsigned int n,
+		float gridSize)
+	{
+		return MakeWave(layout, width, depth, m, n, gridSize, 0, 0, 0);
+	}
+
 	///<summary>
 	/// Creates an mxn grid in the xz-plane with m rows and n columns, centered
 	/// at the origin with the specified width and depth.
 	///</summary>
-	static IndexedTriangleList MakeIndependent(Dvtx::VertexLayout layout,
+	static IndexedTriangleList MakeWave(Dvtx::VertexLayout layout,
 		float width, float depth,
 		unsigned int m, unsigned int n,
-		float gridSize)
+		float gridSize, float dt,float speed, float damping)
 	{
 		using Type = Dvtx::VertexLayout::ElementType;
 
@@ -152,7 +160,7 @@ public:
 		{
 			layout = Dvtx::VertexLayout{}.Append(Element::Position3D);
 		}
-		return MakeIndependent(std::move(*layout), 256, 256, 257, 257, 5);
+		return MakeGrid(std::move(*layout), 256, 256, 257, 257, 5);
 	}
 };
 

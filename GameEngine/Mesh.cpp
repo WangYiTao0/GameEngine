@@ -284,7 +284,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			std::shared_ptr<Bind::Texture> tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(),0);
+			std::shared_ptr<Bind::Texture> tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 0);
 			bindablePtrs.push_back(std::move(tex));
 			hasDiffuseMap = true;
 		}

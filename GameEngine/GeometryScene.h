@@ -9,7 +9,7 @@
 #include "imgui/imgui.h"
 #include "Frustum.h"
 #include "GridTerrain.h"
-#include "WaterWaves.h"
+#include "WaterWave.h"
 
 class GeometryScene : public Scene
 {

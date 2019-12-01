@@ -10,6 +10,7 @@ namespace Bind
 		VertexBuffer(Graphics& gfx,  const std::string& tag, const Dvtx::VertexBuffer& vbuf);
 		VertexBuffer(Graphics& gfx, const Dvtx::VertexBuffer& vbuf);
 		void Bind(Graphics& gfx)noexcept override;
+
 		static std::shared_ptr<VertexBuffer> Resolve(Graphics& gfx, const std::string& tag,
 			const Dvtx::VertexBuffer& vbuf);
 		template<typename...Ignore>

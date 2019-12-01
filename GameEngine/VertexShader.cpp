@@ -21,12 +21,12 @@ namespace Bind
 		auto m_WhlslPath = std::wstring{ m_hlslPath.begin(),m_hlslPath.end() };
 
 
-		////create vertex shader
-		//if(m_WcsoPath.c_str() && D3DReadFileToBlob(m_WcsoPath.c_str(), &pBytecodeBlob) == S_OK)
-		//{
-		//	
-		//}
-		//else
+		//create vertex shader
+		if(m_WcsoPath.c_str() && D3DReadFileToBlob(m_WcsoPath.c_str(), &pBytecodeBlob) == S_OK)
+		{
+			
+		}
+		else
 		{
 			DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG

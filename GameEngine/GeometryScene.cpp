@@ -11,6 +11,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 void GeometryScene::Update(float dt)
 {
+	gridTerrain.Update(gfx, dt);
 }
 
 void GeometryScene::Draw()
@@ -18,7 +19,7 @@ void GeometryScene::Draw()
 	gridTerrain.Draw(gfx);
 	cube.Draw(gfx);
 
-	gridTerrain.SpawnControlWindow(gfx);
+	//gridTerrain.SpawnControlWindow(gfx);
 	cube.SpawnControlWindow(gfx);
 }
 
