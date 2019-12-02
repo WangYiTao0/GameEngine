@@ -14,11 +14,20 @@ namespace Bind
 		RTT(const RTT& rhs) = default;
 		~RTT() = default;
 
-		void SetRenderTarget(Graphics& gfx, ID3D11DepthStencilView* depthStencilView);
-		void ClearRenderTarget(Graphics& gfx, ID3D11DepthStencilView* depthStencilView, float red, float green, float blue, float alpha);
+		void Bind(Graphics& gfx)noexcept override;
+
+		static std::shared_ptr<RTT> Resolve(Graphics& gfx, int TextureWidth, int TexureHeight);
+		static std::string GenerateUID(int TextureWidth, int TexureHeight);
+		std::string GetUID() const noexcept override;
+
+
+		void SetRenderTarget(Graphics& gfx);
+		void ClearRenderTarget(Graphics& gfx);
 		ID3D11ShaderResourceView* GetShaderResourceView();
 
 	private:
+		int texWidth;
+		int texHeight;
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> mRenderTargetTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mRenderTargetView;

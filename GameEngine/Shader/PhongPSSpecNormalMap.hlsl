@@ -43,14 +43,6 @@ float4 main(PS_INPUT input) : SV_Target
         input.viewNormal = -input.viewNormal;
     }
     #endif
-
-    //clip(diffColor.a < 0.1f ? -1 : 1);
-    //// flip normal when backface
-    //if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-    //{
-    //    input.viewNormal = -input.viewNormal;
-    //}
-    
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
     // replace normal with mapped if normal mapping enabled

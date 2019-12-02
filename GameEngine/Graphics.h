@@ -80,6 +80,8 @@ public:
 	void SetCamera2DWorldMatirx(DirectX::FXMMATRIX cam) noexcept;
 	DirectX::XMMATRIX GetCamera2DWorldMatrix() const noexcept;
 
+	float* GetClearColor();
+
 	void SetBackBufferRenderTarget();
 
 	void EnableImgui() noexcept;
@@ -90,6 +92,9 @@ private:
 	DirectX::XMMATRIX Ortho;
 	DirectX::XMMATRIX camera2D;
 	DirectX::XMMATRIX camera3D;
+
+	float color[4] = {1.0f,1.0f,1.0f,1.0f};
+
 	bool imguiEnabled = true;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;

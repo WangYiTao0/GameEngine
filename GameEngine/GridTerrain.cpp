@@ -7,7 +7,7 @@
 #include "Grid.h"
 #include "imgui/imgui.h"
 
-IndexedTriangleList GridTerrain::model;
+IndexedTriangleList GridTerrain::model ;
 
 GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	unsigned int m , unsigned int n , float gridSize )

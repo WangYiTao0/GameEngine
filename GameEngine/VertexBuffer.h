@@ -9,10 +9,30 @@ namespace Bind
 	public:
 		VertexBuffer(Graphics& gfx,  const std::string& tag, const Dvtx::VertexBuffer& vbuf);
 		VertexBuffer(Graphics& gfx, const Dvtx::VertexBuffer& vbuf);
+		VertexBuffer(Graphics& gfx, const std::string& tag, const Dvtx::VertexBuffer& vbuf, int usage );
 		void Bind(Graphics& gfx)noexcept override;
 
+		template<typename T>
+		void UpdateDynamicVertexBuffer(Graphics& gfx, T& vs)
+		{
+			INFOMAN(gfx);
+
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			GFX_THROW_INFO(GetContext(gfx)->Map(
+				pVertexBuffer.Get(), 0u,
+				D3D11_MAP_WRITE_DISCARD, 0u,
+				&mappedResource));
+
+			T* vsPtr;
+			vsPtr = (T*)mappedResource.pData;
+
+			memcpy(vsPtr, &vs, sizeof(vs));
+			GetContext(gfx)->Unmap(pVertexBuffer.Get(), 0u);
+
+		}
+
 		static std::shared_ptr<VertexBuffer> Resolve(Graphics& gfx, const std::string& tag,
-			const Dvtx::VertexBuffer& vbuf);
+			const Dvtx::VertexBuffer& vbuf,int usage = D3D11_USAGE::D3D11_USAGE_DEFAULT);
 		template<typename...Ignore>
 		static std::string GenerateUID(const std::string& tag, Ignore&& ...ignore)
 		{
@@ -24,6 +44,7 @@ namespace Bind
 	protected:
 		std::string tag;
 		UINT stride;
+		int usage;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
 	};
 }

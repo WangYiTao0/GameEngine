@@ -22,13 +22,8 @@ private:
 		BOOL normalMappingEnabled = TRUE;
 		float padding;
 	} pmc;
-	struct VSWaveConstant
-	{
-		DirectX::XMFLOAT3 pos;
-		float padding;
-	};
+
 	
-	VSWaveConstant* vwc = nullptr;
 
 	static IndexedTriangleList model;
 

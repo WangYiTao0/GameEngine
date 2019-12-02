@@ -19,7 +19,7 @@ namespace Bind
 	class Texture : public Bindable
 	{
 	public:
-		Texture(Graphics& gfx, const std::string& filePath, UINT slot = 0, aiTextureType type = aiTextureType_UNKNOWN);
+		Texture(Graphics& gfx, const std::string& filePath, UINT slot = 0, ID3D11ShaderResourceView* pTv = nullptr);
 		void Bind(Graphics& gfx) noexcept override;
 		static std::shared_ptr<Texture> Resolve(Graphics& gfx, const std::string& filePath, UINT slot = 0);
 		static std::string GenerateUID(const std::string& filePath, UINT slot = 0);

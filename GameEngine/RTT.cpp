@@ -45,22 +45,40 @@ namespace Bind
 
 	}
 
-	void RTT::SetRenderTarget(Graphics& gfx, ID3D11DepthStencilView* depthStencilView)
+	void RTT::Bind(Graphics& gfx) noexcept
 	{
-		GetContext(gfx)->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), depthStencilView);
+		SetRenderTarget(gfx);
+		ClearRenderTarget(gfx);
 	}
-	void RTT::ClearRenderTarget(Graphics& gfx, ID3D11DepthStencilView* depthStencilView, float red, float green, float blue, float alpha)
-	{
 
-		float color[4];
-		color[0] = red;
-		color[1] = green;
-		color[2] = blue;
-		color[3] = alpha;
+	std::shared_ptr<RTT> RTT::Resolve(Graphics& gfx, int TextureWidth, int TexureHeight)
+	{
+		return Codex::Resolve<RTT>(gfx,TextureWidth,TexureHeight);
+	}
+
+	std::string RTT::GenerateUID(int TextureWidth, int TexureHeight)
+	{
+		using namespace std::string_literals;
+		//using path & slot
+		return typeid(RTT).name() + "#"s + std::to_string(TextureWidth) + "#" + std::to_string(TexureHeight);
+	}
+
+	std::string RTT::GetUID() const noexcept
+	{
+		return GenerateUID(texWidth, texHeight);
+	}
+
+	void RTT::SetRenderTarget(Graphics& gfx)
+	{
+		GetContext(gfx)->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), gfx.GetDepthStencilView());
+	}
+	void RTT::ClearRenderTarget(Graphics& gfx)
+	{
+		auto color = gfx.GetClearColor();
 
 		GetContext(gfx)->ClearRenderTargetView(mRenderTargetView.Get(), color);
 
-		GetContext(gfx)->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		GetContext(gfx)->ClearDepthStencilView(gfx.GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	}
 	ID3D11ShaderResourceView* RTT::GetShaderResourceView()

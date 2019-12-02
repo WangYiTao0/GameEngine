@@ -22,8 +22,11 @@ App::App()
 	:
 	wnd(width, height, "Game Engine"),
 	pointLight(wnd.Gfx()),
-	cam(wnd.Gfx())
+	cam(wnd.Gfx()),
+	rtt(wnd.Gfx(), width, height)
+
 {
+	tex2.SetPos({ 0.5f,3.0,0.0f });
 	// Create the cpu object.
 	m_Cpu.Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
@@ -36,9 +39,6 @@ App::App()
 		static_cast<float>(width) / static_cast<float>(height), nearZ, farZ);
 	wnd.Gfx().SetProjection(cam.GetProj());
 
-	//render 3d to 2d
-	//mRTT = std::make_unique<Bind::RTT>(GetDevice(gfx), width, height);
-	
 	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
@@ -142,43 +142,46 @@ void App::HandleInput(float dt)
 
 void App::update(float dt)
 {
+	//update Matrix
+	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
+	wnd.Gfx().SetCamera2DWorldMatirx(cam2D.GetWorldMatrix());
+
+	//update point light
+	pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
+	//update Gpu frame
+	m_Cpu.Frame();
 	// update scene
 	(*curScene)->Update(dt);
-	m_Cpu.Frame();
+	
 }
 
 void App::Draw()
 {	
-	// draw scene
-	(*curScene)->Draw();	
-	
+	RenderToTexture();
+
+	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
+
+	RenderScene();
+
 	// imgui windows
 	cam.SpawnControlWindow();
 	SpawnEngineStateWindow();
+	pointLight.SpawnControlWindow();
+
+	tex2.Draw(wnd.Gfx());
+
+
+	// present
+	wnd.Gfx().EndFrame();
 }
 
 void App::DoFrame()
 {
 	const auto dt = timer.Mark()* speed_factor;
-	
-	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
-
-	//update Matrix
-	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
-	wnd.Gfx().SetCamera2DWorldMatirx(cam2D.GetWorldMatrix());
-
-
-	pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
-	pointLight.Draw(wnd.Gfx());
-	pointLight.SpawnControlWindow();
-
-
 	HandleInput(dt);
 	update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
-
 	Draw();
-	// present
-	wnd.Gfx().EndFrame();
+
 }
 
 void App::SpawnEngineStateWindow()
@@ -227,6 +230,18 @@ void App::CycleScenes()
 
 void App::RenderToTexture()
 {
+	rtt.Bind(wnd.Gfx());
+
+	RenderScene();
+
+	wnd.Gfx().SetBackBufferRenderTarget();
+}
+
+void App::RenderScene()
+{
+	pointLight.Draw(wnd.Gfx());
+	// draw scene
+	(*curScene)->Draw();
 }
 
 

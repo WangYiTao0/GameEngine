@@ -10,7 +10,8 @@
 #include "Scene.h"
 #include <shellapi.h>
 #include "CpuClass.h"
-
+#include "Tex2D.h"
+#include "RTT.h"
 
 class App
 {
@@ -30,6 +31,7 @@ private:
 	void CycleScenes();
 
 	void RenderToTexture();
+	void RenderScene();
 
 private:
 	bool showDemoWindow = false;
@@ -50,6 +52,8 @@ private:
 	std::vector <std::unique_ptr<Scene>> scenes;
 	std::vector <std::unique_ptr<Scene>>::iterator curScene;
 
+	Bind::RTT rtt;
 
-	//std::unique_ptr<Bind::RTT> mRTT = nullptr;
+	Tex2D tex2{ wnd.Gfx(),1600,900,256,256,rtt.GetShaderResourceView() };
+
 };

@@ -114,10 +114,6 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 
 	// init imgui d3d impl
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
-
-
-
-
 }
 
 Graphics::~Graphics()
@@ -167,7 +163,11 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 		ImGui::NewFrame();
 	}
 
-	const float color[] = { red,green,blue,1.0f };
+	color[0] = red;
+	color[1] = green;
+	color[2] = blue;
+	color[3] = 1.0f;
+
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
@@ -215,6 +215,11 @@ void Graphics::SetCamera2DWorldMatirx(DirectX::FXMMATRIX cam) noexcept
 DirectX::XMMATRIX Graphics::GetCamera2DWorldMatrix() const noexcept
 {
 	return camera2D;
+}
+
+float* Graphics::GetClearColor()
+{
+	return color;
 }
 
 void Graphics::SetBackBufferRenderTarget()
