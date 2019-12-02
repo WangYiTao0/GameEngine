@@ -38,6 +38,12 @@ namespace Bind
 			rasterDesc.FrontCounterClockwise = false;
 			rasterDesc.DepthClipEnable = true;
 			break;
+		case RasterizerState::RSDepthDisable:
+			rasterDesc.FillMode = D3D11_FILL_SOLID;
+			rasterDesc.CullMode = D3D11_CULL_BACK;
+			rasterDesc.FrontCounterClockwise = false;
+			rasterDesc.DepthClipEnable = false;
+			break;
 		default:
 			break;
 		}

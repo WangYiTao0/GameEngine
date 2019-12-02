@@ -13,6 +13,7 @@ namespace Bind
 			RSNoCull,
 			RSCullClockWise,
 			RSCull,
+			RSDepthDisable
 		};
 
 	public:

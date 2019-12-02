@@ -1,28 +1,44 @@
 #pragma once
 #include "Graphics.h"
+#include "GameObject2D.h"
+#include "GameObject3D.h"
 
-class Camera
+class Camera3D 
 {
 public:
-	Camera(Graphics& gfx);
+	Camera3D(Graphics& gfx);
+	void Set3DProj(float fov, float aspec, float nearZ, float farZ);
+	DirectX::XMMATRIX GetProj();
 	DirectX::XMMATRIX GetViewMatrix() const noexcept;
+
 	void SpawnControlWindow() noexcept;
 	void Reset() noexcept;
 	void Rotate(float dx, float dy) noexcept;
 	void Translate(DirectX::XMFLOAT3 translation) noexcept;
 	DirectX::XMFLOAT3 GetPos() const noexcept;
 private:
-	//float r = 20.0f; //distance to the origin
-	//float theta = 0.0f;//rotation the camera around origin
-	//float phi = 0.0f;
-	//// rotation camera
-	//float pitch = 0.0f;
-	//float yaw = 0.0f;
-	//float roll = 0.0f;
+;
 	Graphics& gfx;
+	DirectX::XMMATRIX proj;
 	DirectX::XMFLOAT3 pos;
 	float pitch;
 	float yaw;
 	static constexpr float travelSpeed = 12.0f;
 	static constexpr float rotationSpeed = 0.004f;
+};
+
+class Camera2D
+{
+public:
+	Camera2D();
+	void SetOrtho(float width, float height, float nearZ, float farZ);
+	void Translate(DirectX::XMFLOAT3 translation) noexcept;
+	const DirectX::XMMATRIX& GetOrthoMatrix() const;
+	DirectX::XMMATRIX GetWorldMatrix();
+
+private:
+	DirectX::XMFLOAT3 pos;
+	DirectX::XMFLOAT3 rot;
+
+	DirectX::XMMATRIX orthoMatrix;
 };

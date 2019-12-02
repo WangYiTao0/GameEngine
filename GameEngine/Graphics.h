@@ -10,7 +10,7 @@
 #include <memory>
 #include <random>
 #include "ConditionalNoexcept.h"
-#include "RTT.h"
+
 
 namespace Bind
 {
@@ -63,21 +63,33 @@ public:
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics();
 
-	void RenderToTexture();
+	
+	ID3D11DepthStencilView* GetDepthStencilView();
 
 	void EndFrame();
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void DrawIndexed(UINT count) noxnd;
+	//camera 3d
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 	void SetCameraViewMatirx(DirectX::FXMMATRIX cam) noexcept;
 	DirectX::XMMATRIX GetCameraViewMatrix() const noexcept;
+	//camera 2d
+	void SetOrtho(DirectX::FXMMATRIX proj) noexcept;
+	DirectX::XMMATRIX GetOrtho() const noexcept;
+	void SetCamera2DWorldMatirx(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCamera2DWorldMatrix() const noexcept;
+
+	void SetBackBufferRenderTarget();
+
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
 	bool IsImguiEnabled() const noexcept;
 private:
 	DirectX::XMMATRIX projection;
-	DirectX::XMMATRIX camera;
+	DirectX::XMMATRIX Ortho;
+	DirectX::XMMATRIX camera2D;
+	DirectX::XMMATRIX camera3D;
 	bool imguiEnabled = true;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
@@ -90,5 +102,5 @@ private:
 
 	UINT      m_4xMsaaQuality;   // MSAA
 
-	std::unique_ptr<Bind::RTT> mRTT = nullptr;
+
 };

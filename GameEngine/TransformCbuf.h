@@ -14,6 +14,11 @@ namespace Bind
 			DirectX::XMMATRIX view;
 			//screen pos
 			DirectX::XMMATRIX proj;
+			//Camera2D
+			DirectX::XMMATRIX ortho;
+
+			DirectX::XMMATRIX world2D;
+
 		};
 	public:
 		TransformCbuf(Graphics& gfx, const Drawable& parent, UINT slot = 0u);

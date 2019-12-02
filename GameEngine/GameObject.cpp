@@ -13,7 +13,6 @@ DirectX::XMFLOAT3 GameObject::GetPos() const noexcept
 void GameObject::SetRotation(DirectX::XMFLOAT3 rollPitchYaw) noexcept
 {
 	this->rollPitchYaw = rollPitchYaw;
-
 }
 
 DirectX::XMFLOAT3 GameObject::GetRotation() const noexcept
@@ -29,4 +28,9 @@ void GameObject::SetScale(DirectX::XMFLOAT3 scale) noexcept
 DirectX::XMFLOAT3 GameObject::GetScale() const noexcept
 {
 	return scale;
+}
+
+void GameObject::UpdateMatrix()
+{
+	assert("UpdateMatrix must be overridden." && 0);
 }

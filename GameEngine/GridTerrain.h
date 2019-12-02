@@ -1,10 +1,10 @@
 #pragma once
 #include "Drawable.h"
-#include "GameObject.h"
+#include "GameObject3D.h"
 #include "IndexedTriangleList.h"
 
 
-class GridTerrain : public Drawable,public GameObject
+class GridTerrain : public Drawable,public GameObject3D
 {
 public:
 	GridTerrain(Graphics& gfx, float width = 256.0f, float depth = 256.0f,

@@ -25,16 +25,19 @@ App::App()
 	cam(wnd.Gfx())
 {
 	// Create the cpu object.
-	
-	// Initialize the cpu object.
 	m_Cpu.Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 
+	//2D Camera
+	cam2D.SetOrtho(static_cast<float>(width), static_cast<float>(height), nearZ, farZ);
+	wnd.Gfx().SetOrtho(cam2D.GetOrthoMatrix());
+	//3D Camera
+	cam.Set3DProj(MathHelper::PI / 4.0f,
+		static_cast<float>(width) / static_cast<float>(height), nearZ, farZ);
+	wnd.Gfx().SetProjection(cam.GetProj());
 
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(MathHelper::PI / 3.0f,
-		static_cast<float>(width) / static_cast<float>(height), 
-		nearZ, farZ));
-
+	//render 3d to 2d
+	//mRTT = std::make_unique<Bind::RTT>(GetDevice(gfx), width, height);
 	
 	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
@@ -160,7 +163,9 @@ void App::DoFrame()
 	
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 
+	//update Matrix
 	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
+	wnd.Gfx().SetCamera2DWorldMatirx(cam2D.GetWorldMatrix());
 
 
 	pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
@@ -218,6 +223,10 @@ void App::CycleScenes()
 		curScene = scenes.begin();
 	}
 	OutoutSceneName();
+}
+
+void App::RenderToTexture()
+{
 }
 
 

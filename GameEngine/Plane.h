@@ -5,6 +5,32 @@
 class Plane
 {
 public:
+	static IndexedTriangleList Make2DTextured()
+	{
+		using namespace Dvtx;
+		using Element = Dvtx::VertexLayout::ElementType;
+		auto layout = Dvtx::VertexLayout{}
+			.Append(Element::Position3D)
+			.Append(Element::Texture2D);
+
+		constexpr float side = 1.0f / 2.0f;
+		VertexBuffer vertices(std::move(layout), 4);
+		vertices[0].Attr<Element::Position3D>() = { -side,-side,0.0f };// 0 near side
+		vertices[1].Attr<Element::Position3D>() = { side,-side,0.0f };// 1
+		vertices[2].Attr<Element::Position3D>() = { -side,side,0.0f };// 2
+		vertices[3].Attr<Element::Position3D>() = { side,side,0.0f };// 3
+		vertices[0].Attr<Element::Texture2D>() = { 0.0f,0.0f };// 0 near side
+		vertices[1].Attr<Element::Texture2D>() = { 1.0f,0.0f };// 1
+		vertices[2].Attr<Element::Texture2D>() = { 0.0f,1.0f };// 2
+		vertices[3].Attr<Element::Texture2D>() = { 1.0f,1.0f };// 3
+
+		return{
+			std::move(vertices),{
+			0,1,2,
+			2,1,3
+			}
+		};
+	}
 	static IndexedTriangleList MakeTesselatedTextured(Dvtx::VertexLayout layout, int divisions_x, int divisions_y)
 	{
 		namespace dx = DirectX;

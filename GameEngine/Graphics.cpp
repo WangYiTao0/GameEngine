@@ -99,8 +99,8 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 		pDepthStencil.Get(), &descDSV, &pDSV
 	));
 
-	// bind depth stensil view to OM
-	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
+	SetBackBufferRenderTarget();
+	
 
 	// configure viewport
 	D3D11_VIEWPORT vp;
@@ -115,8 +115,7 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 	// init imgui d3d impl
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
 
-	//render 3d to 2d
-	mRTT = std::make_unique<Bind::RTT>(pDevice, width, height);
+
 
 
 }
@@ -126,19 +125,10 @@ Graphics::~Graphics()
 	ImGui_ImplDX11_Shutdown();
 }
 
-void Graphics::RenderToTexture()
+
+ID3D11DepthStencilView* Graphics::GetDepthStencilView()
 {
-	bool result;
-
-	//设置的渲染目标为(那个跟屏幕一样大的)纹理,而非背后缓存
-	mRTT->SetRenderTarget(*this, pDSV.Get());
-
-	//清除那个承载3D模型效果的纹理为蓝色
-	mRTT->ClearRenderTarget(*this, pDSV.Get(), 0.0f, 0.0f, 1.0f, 1.0f);
-
-
-
-	return true;
+	return pDSV.Get();
 }
 
 void Graphics::EndFrame()
@@ -199,12 +189,38 @@ DirectX::XMMATRIX Graphics::GetProjection() const noexcept
 
 void Graphics::SetCameraViewMatirx(DirectX::FXMMATRIX cam) noexcept
 {
-	camera = cam;
+	camera3D = cam;
 }
 
 DirectX::XMMATRIX Graphics::GetCameraViewMatrix() const noexcept
 {
-	return camera;
+	return camera3D;
+}
+
+void Graphics::SetOrtho(DirectX::FXMMATRIX proj) noexcept
+{
+	Ortho = proj;
+}
+
+DirectX::XMMATRIX Graphics::GetOrtho() const noexcept
+{
+	return Ortho;
+}
+
+void Graphics::SetCamera2DWorldMatirx(DirectX::FXMMATRIX cam) noexcept
+{
+	camera2D = cam;
+}
+
+DirectX::XMMATRIX Graphics::GetCamera2DWorldMatrix() const noexcept
+{
+	return camera2D;
+}
+
+void Graphics::SetBackBufferRenderTarget()
+{
+	// bind depth stensil view to OM
+	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 }
 
 void Graphics::EnableImgui() noexcept

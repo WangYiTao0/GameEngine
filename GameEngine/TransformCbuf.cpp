@@ -29,12 +29,15 @@ namespace Bind
 		const auto world = parent.GetTransformXM();
 		const auto view = gfx.GetCameraViewMatrix();
 		const auto proj = gfx.GetProjection();
-
+		const auto ortho = gfx.GetOrtho();
+		const auto world2D = gfx.GetCamera2DWorldMatrix();
 		//DirectX  are row matrix need transpose to column transpose for HLSL
 		return{
 			DirectX::XMMatrixTranspose(world),
 			DirectX::XMMatrixTranspose(view),
-			DirectX::XMMatrixTranspose(proj)
+			DirectX::XMMatrixTranspose(proj),
+			DirectX::XMMatrixTranspose(ortho),
+			DirectX::XMMatrixTranspose(world2D)
 		};
 	}
 

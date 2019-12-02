@@ -1,8 +1,8 @@
 #pragma once
 #include "Drawable.h"
-#include "GameObject.h"
+#include "GameObject3D.h"
 
-class SolidSphere : public Drawable,public GameObject
+class SolidSphere : public Drawable,public GameObject3D
 {
 public:
 	SolidSphere(Graphics& gfx, float radius);

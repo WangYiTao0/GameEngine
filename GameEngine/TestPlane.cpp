@@ -3,7 +3,6 @@
 #include "BindableCommon.h"
 #include "TransformPixelCbuf.h"
 #include "imgui/imgui.h"
-#include "TransformPixelCbuf.h"
 #include "Sampler.h"
 #include "StringHelper.h"
 
@@ -11,8 +10,6 @@ TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)
 	:
 	pmc({ color })
 {
-	 
-
 	using namespace Bind;
 	namespace dx = DirectX;
 

@@ -4,17 +4,27 @@
 #include <DirectXMath.h>
 using namespace  DirectX;
 
-Camera::Camera(Graphics& gfx)
+Camera3D::Camera3D(Graphics& gfx)
 	:
 	gfx(gfx)
 {
 	Reset();
 }
 
-DirectX::XMMATRIX Camera::GetViewMatrix() const noexcept
+void Camera3D::Set3DProj(float fov, float aspec, float nearZ, float farZ)
 {
+	proj = DirectX::XMMatrixPerspectiveFovLH(fov,
+		aspec,
+		nearZ, farZ);
+}
 
+DirectX::XMMATRIX Camera3D::GetProj()
+{
+	return proj;
+}
 
+DirectX::XMMATRIX Camera3D::GetViewMatrix() const noexcept
+{
 	const XMVECTOR forwardBaseVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	// apply the camera rotations to a base vector
 	const auto lookVector = XMVector3Transform(forwardBaseVector,
@@ -31,7 +41,7 @@ DirectX::XMMATRIX Camera::GetViewMatrix() const noexcept
 	return XMMatrixLookAtLH(camPosition, camTarget, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 }
 
-void Camera::SpawnControlWindow() noexcept
+void Camera3D::SpawnControlWindow() noexcept
 {
 	if (ImGui::Begin("Camera"))
 	{
@@ -54,24 +64,24 @@ void Camera::SpawnControlWindow() noexcept
 	ImGui::End();
 }
 
-void Camera::Reset() noexcept
+void Camera3D::Reset() noexcept
 {
 	pos = { 0.0f,10.0f,-10.0f };
 	pitch = DirectX::XMConvertToRadians(10.0f);
 	yaw = 0.0f;
-
 }
 
-void Camera::Rotate(float dx, float dy) noexcept
+void Camera3D::Rotate(float dx, float dy) noexcept
 {
 	yaw = MathHelper::wrap_angle(yaw + dx * rotationSpeed);
 	pitch = std::clamp(pitch + dy * rotationSpeed, 0.995f * -MathHelper::PI / 2.0f, 0.995f * MathHelper::PI / 2.0f);
 }
 
-void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
+void Camera3D::Translate(DirectX::XMFLOAT3 translation) noexcept
 {
 	XMStoreFloat3(&translation, 
-		XMVector3Transform(XMLoadFloat3(&translation),XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f) *
+		XMVector3Transform(XMLoadFloat3(&translation),
+			XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f) *
 		XMMatrixScaling(travelSpeed, travelSpeed, travelSpeed)
 	));
 	pos = {
@@ -82,8 +92,33 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 }
 
 
-DirectX::XMFLOAT3 Camera::GetPos() const noexcept
+DirectX::XMFLOAT3 Camera3D::GetPos() const noexcept
 {
 	return pos;
 }
 
+Camera2D::Camera2D()
+{
+	pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	rot = XMFLOAT3(0.0f, 0.0f, 0.0f);
+}
+
+void Camera2D::SetOrtho(float width, float height, float nearZ, float farZ)
+{
+	orthoMatrix = XMMatrixOrthographicOffCenterLH(0.0f, width, height, 0.0f, nearZ, farZ);
+}
+
+const DirectX::XMMATRIX& Camera2D::GetOrthoMatrix() const
+{
+	return orthoMatrix;
+}
+
+DirectX::XMMATRIX Camera2D::GetWorldMatrix()
+{
+
+	XMMATRIX translationOffsetMatrix = XMMatrixTranslation(-pos.x, -pos.y, 0.0f); //z component irrelevant for 2d camera
+	XMMATRIX camRotationMatrix = XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z);
+	XMMATRIX worldMatrix = camRotationMatrix * translationOffsetMatrix;
+
+	return worldMatrix;
+}

@@ -28,6 +28,9 @@ private:
 	void SpawnEngineStateWindow();
 	void OutoutSceneName()const;
 	void CycleScenes();
+
+	void RenderToTexture();
+
 private:
 	bool showDemoWindow = false;
 	int x = 0, y = 0;
@@ -37,11 +40,16 @@ private:
 	GameTimer timer;
 
 	float speed_factor = 1.0f;
-	Camera cam;
+	Camera3D cam;
+	Camera2D cam2D;
+
 	PointLight pointLight;
 
 	CpuClass m_Cpu;
 
 	std::vector <std::unique_ptr<Scene>> scenes;
 	std::vector <std::unique_ptr<Scene>>::iterator curScene;
+
+
+	//std::unique_ptr<Bind::RTT> mRTT = nullptr;
 };

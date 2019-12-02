@@ -261,9 +261,6 @@
     <ClCompile Include="DepthStencil.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="d3dUtil.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
@@ -273,14 +270,26 @@
     <ClCompile Include="WaterWave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RTT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TexturePreprocessor.cpp">
       <Filter>Source Files\CommonTool</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject3D.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject2D.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="RTT.cpp">
+      <Filter>Source Files\Binable</Filter>
+    </ClCompile>
+    <ClCompile Include="Tex2D.cpp">
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,9 +500,6 @@
     <ClInclude Include="GridTerrain.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="CpuClass.h">
       <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
@@ -553,6 +559,18 @@
     </ClInclude>
     <ClInclude Include="TexturePreprocessor.h">
       <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject3D.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject2D.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Tex2D.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -627,6 +645,12 @@
     </FxCompile>
     <FxCompile Include="Shader\WaterWavesVS.hlsl">
       <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\VS_2D.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PS_2D.hlsl">
+      <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
