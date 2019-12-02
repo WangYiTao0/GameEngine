@@ -66,32 +66,24 @@ namespace Bind
 		}
 	}
 
-
-	//Texture::Texture(Graphics& gfx,const uint8_t* pData, size_t size, aiTextureType type)
-	//{
-	//	this->type = type;
-	//	HRESULT hr = DirectX::CreateWICTextureFromMemory(GetDevice(gfx), pData, size, this->pTexture.GetAddressOf(), this->pTextureView.GetAddressOf());
-	//	COM_ERROR_IF_FAILED(hr, "Failed to create Texture from memory.");
-	//}
-
 	void Texture::Bind(Graphics& gfx) noexcept
 	{
 		GetContext(gfx)->PSSetShaderResources(slot, 1u, pTextureView.GetAddressOf());
 	}
 
-	std::shared_ptr<Texture> Texture::Resolve(Graphics& gfx, const std::string& filePath, UINT slot)
+	std::shared_ptr<Texture> Texture::Resolve(Graphics& gfx, const std::string& filePath, UINT slot, ID3D11ShaderResourceView* pTv)
 	{
-		return Codex::Resolve<Texture>(gfx, filePath, slot);
+		return Codex::Resolve<Texture>(gfx, filePath, slot, pTv);
 	}
-	std::string Texture::GenerateUID(const std::string& filePath, UINT slot)
+	std::string Texture::GenerateUID(const std::string& filePath, UINT slot, ID3D11ShaderResourceView* pTv)
 	{
 		using namespace std::string_literals;
 		//using path & slot
-		return typeid(Texture).name() + "#"s + filePath + "#" + std::to_string(slot);
+		return typeid(Texture).name() + "#"s + filePath + "#" + std::to_string(slot) + "#" + typeid(ID3D11ShaderResourceView).name();
 	}
 	std::string Texture::GetUID() const noexcept
 	{
-		return GenerateUID(filePath, slot);
+		return GenerateUID(filePath, slot, pTextureView.Get());
 	}
 	bool Texture::HasAlpha() const noexcept
 	{

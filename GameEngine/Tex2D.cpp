@@ -50,11 +50,8 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, tex2D.vertices,D3D11_USAGE::D3D11_USAGE_DYNAMIC));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, tex2D.indices));
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
-	AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
-	//AddBind(Texture::Resolve(gfx, "", 0u, pSv));
-
-	//AddBind(RTT::Resolve(gfx, width, height));
-
+	//AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
+	AddBind(Texture::Resolve(gfx, "null", 0u, pSv));
 	auto pvs = VertexShader::Resolve(gfx, "VS_2D.cso", "VS_2D.hlsl");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
@@ -77,11 +74,9 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 
 void Tex2D::Update(Graphics& gfx)
 {
-	Vertex* vt;
-	//vt[0].pos =
-
-
-	QueryBindable<Bind::VertexBuffer>()->UpdateDynamicVertexBuffer(gfx, vt);
+	//Vertex* vt;
+	////vt[0].pos =
+	//QueryBindable<Bind::VertexBuffer>()->UpdateDynamicVertexBuffer(gfx, vt);
 }
 
 DirectX::XMMATRIX Tex2D::GetTransformXM() const noexcept

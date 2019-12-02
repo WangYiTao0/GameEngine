@@ -1,7 +1,11 @@
 #pragma once
 #include "Window.h"
 #include "GameTimer.h"
+
 #include "ImguiManager.h"
+#include "imgui/imgui_impl_dx11.h"
+#include "imgui/imgui_impl_win32.h"
+
 #include "Camera.h"
 #include "LightCommon.h"
 #include "BoundingSphere.h"
@@ -34,6 +38,12 @@ private:
 	void RenderScene();
 
 private:
+
+	const int width = 1600;
+	const int height = 900;
+	const float nearZ = 0.1f;
+	const float farZ = 4000.0f;
+
 	bool showDemoWindow = false;
 	int x = 0, y = 0;
 	ImguiManager imgui;
@@ -53,7 +63,7 @@ private:
 	std::vector <std::unique_ptr<Scene>>::iterator curScene;
 
 	Bind::RTT rtt;
-
-	Tex2D tex2{ wnd.Gfx(),1600,900,256,256,rtt.GetShaderResourceView() };
+	//
+	Tex2D tex2{ wnd.Gfx(),width,height,480,270,rtt.GetShaderResourceView() };
 
 };

@@ -12,10 +12,7 @@
 
 namespace dx = DirectX;
 
-const int width = 1600;
-const int height= 900;
-const float nearZ = 0.1f;
-const float farZ = 4000.0f;
+
 
 
 App::App()
@@ -32,7 +29,7 @@ App::App()
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 
 	//2D Camera
-	cam2D.SetOrtho(static_cast<float>(width), static_cast<float>(height), nearZ, farZ);
+	cam2D.SetOrtho(static_cast<float>(width), static_cast<float>(height), 0.0f, 1.0f);
 	wnd.Gfx().SetOrtho(cam2D.GetOrthoMatrix());
 	//3D Camera
 	cam.Set3DProj(MathHelper::PI / 4.0f,
@@ -157,10 +154,6 @@ void App::update(float dt)
 
 void App::Draw()
 {	
-	RenderToTexture();
-
-	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
-
 	RenderScene();
 
 	// imgui windows
@@ -169,19 +162,22 @@ void App::Draw()
 	pointLight.SpawnControlWindow();
 
 	tex2.Draw(wnd.Gfx());
-
-
-	// present
-	wnd.Gfx().EndFrame();
 }
 
 void App::DoFrame()
 {
 	const auto dt = timer.Mark()* speed_factor;
+
+	RenderToTexture();
+
+	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
+
 	HandleInput(dt);
 	update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 	Draw();
 
+	// present
+	wnd.Gfx().EndFrame();
 }
 
 void App::SpawnEngineStateWindow()

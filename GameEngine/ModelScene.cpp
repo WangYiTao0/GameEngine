@@ -21,6 +21,11 @@ ModelScene::ModelScene(Graphics& gfx)
 void ModelScene::Update(float dt)
 {
 	
+	//imgui window in update 
+	//conflict with RTT
+	sponza.ShowWindow(gfx, "Sponza");
+	bluePlane.SpawnControlWindow(gfx, "Blue Plane");
+	redPlane.SpawnControlWindow(gfx, "Red Plane");
 }
 
 void ModelScene::Draw() 
@@ -31,7 +36,4 @@ void ModelScene::Draw()
 
 
 
-	//sponza.ShowWindow(gfx, "Sponza");
-	//bluePlane.SpawnControlWindow(gfx, "Blue Plane");
-	//redPlane.SpawnControlWindow(gfx, "Red Plane");
 }
