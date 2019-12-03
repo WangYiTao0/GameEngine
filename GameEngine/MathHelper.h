@@ -6,6 +6,7 @@ namespace MathHelper
 {
 	constexpr float PI = 3.14159265f;
 	constexpr double PI_D = 3.1415926535897932;
+	constexpr float oneRad = 0.0174532925f;
 
 	template<typename T>
 	constexpr auto sq(const T& x)

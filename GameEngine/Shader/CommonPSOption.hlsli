@@ -9,10 +9,10 @@ cbuffer TransformCBuf : register(b0)
 cbuffer PointLightCBuf : register(b1)
 {
     float3 viewLightPos;
-    float3 ambient;
-    float3 diffuseColor;
     float diffuseIntensity;
+    float3 ambient; 
     float attConst;
+    float3 diffuseColor;
     float attLin;
     float attQuad;
 };

@@ -11,6 +11,9 @@ public:
 	DirectX::XMMATRIX GetProj();
 	DirectX::XMMATRIX GetViewMatrix() const noexcept;
 
+	void RenderReflection(float height);
+	DirectX::XMMATRIX GetReflectionViewMatrix();
+
 	void SpawnControlWindow() noexcept;
 	void Reset() noexcept;
 	void Rotate(float dx, float dy) noexcept;
@@ -19,6 +22,9 @@ private:
 ;
 	Graphics& gfx;
 	DirectX::XMMATRIX proj;
+
+	DirectX::XMMATRIX m_reflectionViewMatrix;
+
 	static constexpr float travelSpeed = 12.0f;
 	static constexpr float rotationSpeed = 0.004f;
 };

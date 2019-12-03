@@ -41,6 +41,40 @@ DirectX::XMMATRIX Camera3D::GetViewMatrix() const noexcept
 	return XMMatrixLookAtLH(camPosition, camTarget, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 }
 
+void Camera3D::RenderReflection(float height)
+{
+	DirectX::XMFLOAT3 up, position, lookAt;
+	float radians;
+
+	// Setup the vector that points upwards.
+	up.x = 0.0f;
+	up.y = 1.0f;
+	up.z = 0.0f;
+
+	// Setup the position of the camera in the world.
+	// For planar reflection invert the Y position of the camera.
+	position.x = pos.x;
+	position.y = -pos.y + (height * 2.0f);
+	position.z = pos.z;
+
+	// Calculate the rotation in radians.
+	radians = rollPitchYaw.y * MathHelper::oneRad;
+
+	// Setup where the camera is looking.
+	lookAt.x = sinf(radians) + pos.x;
+	lookAt.y = position.y;
+	lookAt.z = cosf(radians) + pos.z;
+
+	// Create the view matrix from the three vectors.
+	m_reflectionViewMatrix =  DirectX::XMMatrixLookAtLH(
+		XMLoadFloat3(&position), XMLoadFloat3(&lookAt), XMLoadFloat3(&up));
+}
+
+DirectX::XMMATRIX Camera3D::GetReflectionViewMatrix()
+{
+	return m_reflectionViewMatrix;
+}
+
 void Camera3D::SpawnControlWindow() noexcept
 {
 	if (ImGui::Begin("Camera"))
