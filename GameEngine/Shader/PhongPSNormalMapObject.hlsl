@@ -40,6 +40,7 @@ float4 main(PS_INPUT input) : SV_Target
         input.viewNormal = normalize(mul(objectNormal, (float3x3) modelView));
     }
 	// fragment to light vector data
+    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), view);
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);

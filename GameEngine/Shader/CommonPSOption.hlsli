@@ -8,7 +8,7 @@ cbuffer TransformCBuf : register(b0)
 };
 cbuffer PointLightCBuf : register(b1)
 {
-    float3 viewLightPos;
+    float3 worldLightPos;
     float diffuseIntensity;
     float3 ambient; 
     float attConst;

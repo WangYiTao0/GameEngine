@@ -148,7 +148,7 @@ void App::update(float dt)
 
 
 	//update point light
-	pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
+	pointLight.Bind(wnd.Gfx());
 	//update Gpu frame
 	m_Cpu.Frame();
 	// update scene

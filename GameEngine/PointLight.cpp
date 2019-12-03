@@ -56,13 +56,13 @@ void PointLight::Draw(Graphics& gfx) const noxnd
 	mesh.Draw(gfx);
 }
 
-void PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept
+void PointLight::Bind(Graphics& gfx) const noexcept
 {
-	auto dataCopy = cbData;
-	const auto pos = DirectX::XMLoadFloat3(&cbData.pos);
-	DirectX::XMStoreFloat3(&dataCopy.pos, DirectX::XMVector3Transform(pos, view));
+	//auto dataCopy = cbData;
+	//const auto pos = DirectX::XMLoadFloat3(&cbData.pos);
+	//DirectX::XMStoreFloat3(&dataCopy.pos, DirectX::XMVector3Transform(pos, view));
 
-	cbuf.Update(gfx, dataCopy);
+	cbuf.Update(gfx, cbData);
 	cbuf.Bind(gfx);
 
 }
