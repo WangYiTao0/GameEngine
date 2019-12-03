@@ -28,7 +28,7 @@ DirectX::XMMATRIX Camera3D::GetViewMatrix() const noexcept
 	const XMVECTOR forwardBaseVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	// apply the camera rotations to a base vector
 	const auto lookVector = XMVector3Transform(forwardBaseVector,
-		XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f)
+		XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, 0.0f)
 	);
 	// generate camera transform (applied to all objects to arrange them relative
 	// to camera position/orientation in world) from cam position and direction
@@ -52,8 +52,8 @@ void Camera3D::SpawnControlWindow() noexcept
 			ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f, "%.1f");
 			ImGui::SliderFloat("Z", &pos.z, -80.0f, 80.0f, "%.1f");
 			ImGui::Text("Orientation");
-			ImGui::SliderAngle("Pitch X", &pitch, 0.995f * -90.0f, 0.995f * 90.0f);
-			ImGui::SliderAngle("Yaw   Y", &yaw, -180.0f, 180.0f);
+			ImGui::SliderAngle("Pitch X", &rollPitchYaw.x, 0.995f * -90.0f, 0.995f * 90.0f);
+			ImGui::SliderAngle("Yaw   Y", &rollPitchYaw.y, -180.0f, 180.0f);
 			if (ImGui::Button("Reset"))
 			{
 				Reset();
@@ -67,21 +67,21 @@ void Camera3D::SpawnControlWindow() noexcept
 void Camera3D::Reset() noexcept
 {
 	pos = { 0.0f,10.0f,-10.0f };
-	pitch = DirectX::XMConvertToRadians(10.0f);
-	yaw = 0.0f;
+	rollPitchYaw.x = DirectX::XMConvertToRadians(10.0f);
+	rollPitchYaw.y = 0.0f;
 }
 
 void Camera3D::Rotate(float dx, float dy) noexcept
 {
-	yaw = MathHelper::wrap_angle(yaw + dx * rotationSpeed);
-	pitch = std::clamp(pitch + dy * rotationSpeed, 0.995f * -MathHelper::PI / 2.0f, 0.995f * MathHelper::PI / 2.0f);
+	rollPitchYaw.y = MathHelper::wrap_angle(rollPitchYaw.y + dx * rotationSpeed);
+	rollPitchYaw.x = std::clamp(rollPitchYaw.x + dy * rotationSpeed, 0.995f * -MathHelper::PI / 2.0f, 0.995f * MathHelper::PI / 2.0f);
 }
 
 void Camera3D::Translate(DirectX::XMFLOAT3 translation) noexcept
 {
 	XMStoreFloat3(&translation, 
 		XMVector3Transform(XMLoadFloat3(&translation),
-			XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f) *
+			XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, 0.0f) *
 		XMMatrixScaling(travelSpeed, travelSpeed, travelSpeed)
 	));
 	pos = {
@@ -89,12 +89,6 @@ void Camera3D::Translate(DirectX::XMFLOAT3 translation) noexcept
 		pos.y + translation.y,
 		pos.z + translation.z
 	};
-}
-
-
-DirectX::XMFLOAT3 Camera3D::GetPos() const noexcept
-{
-	return pos;
 }
 
 Camera2D::Camera2D()

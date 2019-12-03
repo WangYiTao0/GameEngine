@@ -88,6 +88,18 @@
     <Filter Include="Header Files\Bindable\CommonTool\Macros">
       <UniqueIdentifier>{12714e1a-204f-4931-a322-e71f40883252}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\GS">
+      <UniqueIdentifier>{bcba5c6d-ad53-4c48-ac55-828d16298b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\DS">
+      <UniqueIdentifier>{8f691965-12c6-4df7-8bad-f8b05ea25a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\HS">
+      <UniqueIdentifier>{e8cc9684-2784-471d-938b-948e4df508e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\CS">
+      <UniqueIdentifier>{2607c1bb-a3fc-411b-9774-a326c98539e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -602,6 +614,12 @@
     <None Include="Shader\CommonPSOption.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
+    <None Include="Shader\ShadingMath.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="Shader\BRDF.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PhongPS.hlsl">
@@ -650,6 +668,12 @@
       <Filter>Shader\VS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PS_2D.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ReflectionVS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ReflectionPS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>

@@ -127,7 +127,6 @@ void Node::AddChild(std::unique_ptr<Node> pChild) noxnd
 	childPtrs.push_back(std::move(pChild));
 }
 
-
 // Model
 class ModelWindow // pImpl idiom, only defined in this .cpp
 {

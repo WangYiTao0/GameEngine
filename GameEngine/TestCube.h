@@ -1,9 +1,9 @@
 #pragma once
 #include "Drawable.h"
-#include "GameObject3D.h"
+#include "GameObject.h"
 
 #include <DirectXCollision.h>
-class TestCube : public Drawable, public GameObject3D
+class TestCube : public Drawable, public GameObject
 {
 public:
 	TestCube(Graphics& gfx, float size);

@@ -1,10 +1,10 @@
 #pragma once
 #include "Drawable.h"
-#include "GameObject3D.h"
+#include "GameObject.h"
 #include "Waves.h"
 #include "IndexedTriangleList.h"
 
-class WaterWave:public Drawable,public GameObject3D
+class WaterWave:public Drawable,public GameObject
 {
 public:
 	WaterWave(Graphics& gfx);

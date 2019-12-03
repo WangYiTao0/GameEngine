@@ -82,7 +82,7 @@ void Tex2D::Update(Graphics& gfx)
 DirectX::XMMATRIX Tex2D::GetTransformXM() const noexcept
 {
 	return
-		DirectX::XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z)
-		*DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z)
-		* DirectX::XMMatrixScaling(scale.x, scale.y, 1.0f);
+		DirectX::XMMatrixScaling(scale.x, scale.y, 1.0f)
+		* DirectX::XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z)
+		* DirectX::XMMatrixTranslation(pos.x + scale.x / 2.0f, pos.y + scale.y / 2.0f, pos.z);
 }

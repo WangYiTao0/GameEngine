@@ -1,7 +1,7 @@
 #pragma once
 #include "Drawable.h"
-#include "GameObject3D.h"
-class TestPlane : public Drawable, public GameObject3D
+#include "GameObject.h"
+class TestPlane : public Drawable, public GameObject
 {
 public:
 	TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color = { 1.0f,1.0f,1.0f,0.0f });

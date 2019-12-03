@@ -3,7 +3,7 @@
 #include "GameObject2D.h"
 #include "GameObject3D.h"
 
-class Camera3D 
+class Camera3D : public GameObject3D
 {
 public:
 	Camera3D(Graphics& gfx);
@@ -15,14 +15,10 @@ public:
 	void Reset() noexcept;
 	void Rotate(float dx, float dy) noexcept;
 	void Translate(DirectX::XMFLOAT3 translation) noexcept;
-	DirectX::XMFLOAT3 GetPos() const noexcept;
 private:
 ;
 	Graphics& gfx;
 	DirectX::XMMATRIX proj;
-	DirectX::XMFLOAT3 pos;
-	float pitch;
-	float yaw;
 	static constexpr float travelSpeed = 12.0f;
 	static constexpr float rotationSpeed = 0.004f;
 };

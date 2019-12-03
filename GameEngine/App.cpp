@@ -17,26 +17,29 @@ namespace dx = DirectX;
 
 App::App()
 	:
-	wnd(width, height, "Game Engine"),
+	wnd(screenWidth, screenHeight, "Game Engine"),
 	pointLight(wnd.Gfx()),
 	cam(wnd.Gfx()),
-	rtt(wnd.Gfx(), width, height)
+	rtt(wnd.Gfx(), screenWidth, screenHeight)
 
 {
-	tex2.SetPos({ 0.5f,3.0,0.0f });
+	tex2.SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
 	// Create the cpu object.
 	m_Cpu.Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 
 	//2D Camera
-	cam2D.SetOrtho(static_cast<float>(width), static_cast<float>(height), 0.0f, 1.0f);
+	cam2D.SetOrtho(static_cast<float>(screenWidth), 
+		static_cast<float>(screenHeight),
+		0.0f, 1.0f);
 	wnd.Gfx().SetOrtho(cam2D.GetOrthoMatrix());
 	//3D Camera
 	cam.Set3DProj(MathHelper::PI / 4.0f,
-		static_cast<float>(width) / static_cast<float>(height), nearZ, farZ);
+		static_cast<float>(screenWidth) / static_cast<float>(screenHeight),
+		nearZ, farZ);
 	wnd.Gfx().SetProjection(cam.GetProj());
 
-	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
@@ -140,8 +143,9 @@ void App::HandleInput(float dt)
 void App::update(float dt)
 {
 	//update Matrix
-	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
 	wnd.Gfx().SetCamera2DWorldMatirx(cam2D.GetWorldMatrix());
+	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
+
 
 	//update point light
 	pointLight.Bind(wnd.Gfx(), cam.GetViewMatrix());
@@ -168,6 +172,7 @@ void App::DoFrame()
 {
 	const auto dt = timer.Mark()* speed_factor;
 
+	//render scene to texture
 	RenderToTexture();
 
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);

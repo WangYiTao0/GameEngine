@@ -39,8 +39,8 @@ private:
 
 private:
 
-	const int width = 1600;
-	const int height = 900;
+	const int screenWidth = 1600;
+	const int screenHeight = 900;
 	const float nearZ = 0.1f;
 	const float farZ = 4000.0f;
 
@@ -50,7 +50,6 @@ private:
 	Window wnd;
 
 	GameTimer timer;
-
 	float speed_factor = 1.0f;
 	Camera3D cam;
 	Camera2D cam2D;
@@ -64,6 +63,8 @@ private:
 
 	Bind::RTT rtt;
 	//
-	Tex2D tex2{ wnd.Gfx(),width,height,480,270,rtt.GetShaderResourceView() };
+	Tex2D tex2{ wnd.Gfx(),screenWidth,screenHeight,
+		screenWidth/4,
+		screenHeight/4,rtt.GetShaderResourceView() };
 
 };

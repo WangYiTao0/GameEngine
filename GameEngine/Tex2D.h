@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include "Drawable.h"
-#include "GameObject2D.h"
+#include "GameObject.h"
 #include "IndexedTriangleList.h"
 #include "RTT.h"
 
-class Tex2D :public Drawable ,public GameObject2D
+class Tex2D :public Drawable ,public GameObject
 {
 public:
 	Tex2D(Graphics& gfx,float screenWidth,float screenHeight, float texWidth, float texHeight, std::string filePath);
