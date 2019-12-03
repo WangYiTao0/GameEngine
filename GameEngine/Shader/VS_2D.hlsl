@@ -14,10 +14,10 @@ struct VS_OUTPUT
 
 VS_OUTPUT main(VS_INPUT vIn)
 {
-    matrix wvp = mul(world2D, ortho);
+    matrix wvp = mul(worldMatrix2D, orthoMatrix);
 
     VS_OUTPUT output;
-    float4 posW = mul(float4(vIn.inPos, 1.0f), world);
+    float4 posW = mul(float4(vIn.inPos, 1.0f), worldMatrix);
     output.outPosition = mul(posW, wvp);
     output.outTexCoord = vIn.inTexCoord;
     return output;

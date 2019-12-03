@@ -1,14 +1,14 @@
 cbuffer TransformCBuf : register(b0)
 {
-    matrix world;
-    matrix view;
-    matrix proj;
-    matrix ortho;
-    matrix world2D;
+    matrix worldMatrix;
+    matrix viewMatrix;
+    matrix projMatrix;
+    matrix orthoMatrix;
+    matrix worldMatrix2D;
 };
 cbuffer PointLightCBuf : register(b1)
 {
-    float3 worldLightPos;
+    float3 worldMatrixLightPos;
     float diffuseIntensity;
     float3 ambient; 
     float attConst;

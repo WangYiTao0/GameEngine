@@ -44,7 +44,7 @@ float4 main(PS_INPUT input) : SV_Target
     //renormalize interpolatednormal
     input.viewNormal = normalize(input.viewNormal);
 
-    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), view);
+    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
 
     //fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);

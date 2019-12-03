@@ -25,8 +25,8 @@ Texture2D nmap : register(t2);
 
 float4 main(PS_INPUT input) : SV_Target
 {
-    matrix modelView = mul(world, view);
-    matrix modelViewProj = mul(modelView, proj);
+    matrix modelView = mul(worldMatrix, viewMatrix);
+    matrix modelViewprojMatrix = mul(modelView, projMatrix);
 
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
@@ -40,7 +40,7 @@ float4 main(PS_INPUT input) : SV_Target
         input.viewNormal = normalize(mul(objectNormal, (float3x3) modelView));
     }
 	// fragment to light vector data
-    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), view);
+    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);

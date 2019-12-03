@@ -20,11 +20,11 @@ float4 main(PS_IN pIn):SV_TARGET
     // Sample the texture pixel at this location.
     textureColor = shaderTexture.Sample(sample0, pIn.tex);
     
-        // Calculate the projected reflection texture coordinates.
+        // Calculate the projMatrixected reflection texture coordinates.
     reflectTexCoord.x = pIn.reflectionPosition.x / pIn.reflectionPosition.w / 2.0f + 0.5f;
     reflectTexCoord.y = -pIn.reflectionPosition.y / pIn.reflectionPosition.w / 2.0f + 0.5f;
 
-    // Sample the texture pixel from the reflection texture using the projected texture coordinates.
+    // Sample the texture pixel from the reflection texture using the projMatrixected texture coordinates.
     reflectionColor = reflectionTexture.Sample(sample0, reflectTexCoord);
 
     // Do a linear interpolation between the two textures for a blend effect.

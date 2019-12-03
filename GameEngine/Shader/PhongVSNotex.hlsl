@@ -16,10 +16,10 @@ struct VSOut
 VSOut main(VS_INPUT input)
 {
     VSOut vso;
-    matrix modelView = mul(world, view);
-    matrix modelViewProj = mul(modelView, proj);
+    matrix modelView = mul(worldMatrix, viewMatrix);
+    matrix modelViewprojMatrix = mul(modelView, projMatrix);
     vso.viewPos = (float3) mul(float4(input.pos, 1.0f), modelView);
     vso.viewNormal = mul(input.normal, (float3x3) modelView);
-    vso.pos = mul(float4(input.pos, 1.0f), modelViewProj);
+    vso.pos = mul(float4(input.pos, 1.0f), modelViewprojMatrix);
     return vso;
 }

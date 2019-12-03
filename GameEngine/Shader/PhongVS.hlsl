@@ -20,15 +20,15 @@ VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT vso;
 
-    matrix modelView = mul(world, view);
-    matrix modelViewProj = mul(modelView , proj);
+    matrix modelView = mul(worldMatrix, viewMatrix);
+    matrix modelViewprojMatrix = mul(modelView , projMatrix);
 
     //Camera view Positon
     vso.viewPos = (float3) mul(float4(input.pos, 1.0f), modelView);
     //Camera view Normal
     vso.viewNormal = mul(input.normal, (float3x3) modelView);
-    //world pos
-    vso.pos = mul(float4(input.pos, 1.0f), modelViewProj);
+    //worldMatrix pos
+    vso.pos = mul(float4(input.pos, 1.0f), modelViewprojMatrix);
     vso.tc = input.texcoord;
     return vso;
 }

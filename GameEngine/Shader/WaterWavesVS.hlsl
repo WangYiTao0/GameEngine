@@ -26,16 +26,16 @@ struct VS_OUT
 VS_OUT main(VS_IN vIn)
 {
     VS_OUT vOut;
-    matrix modelView = mul(world, view);
-    matrix modelViewProj = mul(modelView, proj);
+    matrix modelView = mul(worldMatrix, viewMatrix);
+    matrix modelViewprojMatrix = mul(modelView, projMatrix);
     //Camera view Positon
 
     vIn.pos += pos;
 
     vOut.viewPos = (float3) mul(float4(vIn.pos, 1.0f), modelView);
 
-    //world pos
-    vOut.pos = mul(float4(vIn.pos, 1.0f), modelViewProj);
+    //worldMatrix pos
+    vOut.pos = mul(float4(vIn.pos, 1.0f), modelViewprojMatrix);
 
     return vOut;
 

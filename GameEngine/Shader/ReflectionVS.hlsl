@@ -21,21 +21,21 @@ struct VS_OUT
 VS_OUT main(VS_IN vIn)
 {
     VS_OUT vOut;
-    matrix reflectProjectWorld;
+    matrix reflectprojMatrixectworldMatrix;
 
-      // Calculate the position of the vertex against the world, view, and projection matrices.
-    vOut.pos = mul(float4(vIn.pos, 1.0f), world);
-    vOut.pos = mul(vOut.pos, view);
-    vOut.pos = mul(vOut.pos, proj);
+      // Calculate the position of the vertex against the worldMatrix, view, and projMatrixection matrices.
+    vOut.pos = mul(float4(vIn.pos, 1.0f), worldMatrix);
+    vOut.pos = mul(vOut.pos, viewMatrix);
+    vOut.pos = mul(vOut.pos, projMatrix);
 
    // Store the texture coordinates for the pixel shader.
     vOut.tex = vIn.tex;
-   // Create the reflection projection world matrix.
-    reflectProjectWorld = mul(reflectionMatrix, proj);
-    reflectProjectWorld = mul(world, reflectProjectWorld);
+   // Create the reflection projMatrixection worldMatrix matrix.
+    reflectprojMatrixectworldMatrix = mul(reflectionMatrix, projMatrix);
+    reflectprojMatrixectworldMatrix = mul(worldMatrix, reflectprojMatrixectworldMatrix);
 
-    // Calculate the input position against the reflectProjectWorld matrix.
-    vOut.reflectionPosition = mul(vIn.pos, reflectProjectWorld);
+    // Calculate the input position against the reflectprojMatrixectworldMatrix matrix.
+    vOut.reflectionPosition = mul(vIn.pos, reflectprojMatrixectworldMatrix);
 
     return vOut;
 }

@@ -37,7 +37,7 @@ float4 main(PS_INPUT input) : SV_Target
         input.viewNormal = MapNormal(input.viewTan, input.viewBitan, input.viewNormal, input.texcoord, nmap, sample0);
     }
 	// fragment to light vector data
-    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), view);
+    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
