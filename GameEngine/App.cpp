@@ -9,11 +9,9 @@
 #include "GeometryScene.h"
 #include "ShapesScene.h"
 #include "PhysicScene.h"
+#include "PBRScene.h"
 
 namespace dx = DirectX;
-
-
-
 
 App::App()
 	:
@@ -21,9 +19,8 @@ App::App()
 	pointLight(wnd.Gfx()),
 	cam(wnd.Gfx()),
 	rtt(wnd.Gfx(), screenWidth, screenHeight)
-
 {
-	tex2.SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
+	smallScene.SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
 	// Create the cpu object.
 	m_Cpu.Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
@@ -41,7 +38,8 @@ App::App()
 
 	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
-	scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
+	scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	curScene = scenes.begin();
 	OutoutSceneName();
@@ -96,8 +94,11 @@ void App::HandleInput(float dt)
 				wnd.mouse.DisableRaw();
 			}
 			break;
+		//case VK_F1:
+		//	showDemoWindow = true;
+		//	break;
 		case VK_F1:
-			showDemoWindow = true;
+			enableRenderTarget = !enableRenderTarget;
 			break;
 
 		}
@@ -157,7 +158,8 @@ void App::update(float dt)
 }
 
 void App::Draw()
-{	
+{
+
 	RenderScene();
 
 	// imgui windows
@@ -165,15 +167,22 @@ void App::Draw()
 	SpawnEngineStateWindow();
 	pointLight.SpawnControlWindow();
 
-	tex2.Draw(wnd.Gfx());
+	if (enableRenderTarget)
+	{
+		smallScene.Draw(wnd.Gfx());
+	}
 }
 
 void App::DoFrame()
 {
 	const auto dt = timer.Mark()* speed_factor;
 
-	//render scene to texture
-	RenderToTexture();
+	if (enableRenderTarget)
+	{
+		//render scene to texture
+		RenderToTexture();
+	}
+	
 
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 
@@ -187,10 +196,10 @@ void App::DoFrame()
 
 void App::SpawnEngineStateWindow()
 {
-	if (showDemoWindow)
-	{
-		ImGui::ShowDemoWindow(&showDemoWindow);
-	}
+	//if (showDemoWindow)
+	//{
+	//	ImGui::ShowDemoWindow(&showDemoWindow);
+	//}
 	std::string cpuPrecentage = std::to_string(m_Cpu.GetCpuPercentage()) + "%";
 	// imgui window to control simulation speed
 	if (ImGui::Begin("Game State"))
@@ -200,6 +209,10 @@ void App::SpawnEngineStateWindow()
 		// 1000/fps  = ms render one frame time
 		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING (hold spacebar to pause)");
+		ImGui::Text("F1 RenderTagert: %s", enableRenderTarget ? "On" : "OFF ");
+		ImGui::Text("F2 SSAO	    : %s", enableRenderTarget ? "On" : "OFF ");
+		ImGui::Text("F3 Bloom       : %s", enableRenderTarget ? "On" : "OFF ");
+		//ImGui::Text("F4 RenderTagert: %s", wnd.kbd.KeyIsPressed(VK_F2) ? "On" : "OFF ");
 	}
 	ImGui::End();
 

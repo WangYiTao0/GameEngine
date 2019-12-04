@@ -1,5 +1,5 @@
 #include "ShaderOptions.hlsli"
-#include "LightVectorData.hlsli"
+#include "LightingUtil.hlsli"
 #include "CommonPSOption.hlsli"
 
 struct PS_INPUT
@@ -33,7 +33,8 @@ float4 main(PS_INPUT input) : SV_Target
     
     //alpha blender
     float4 diffColor = diff.Sample(sample0, input.texcoord);
-
+	//using view light pos  
+    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
     #ifdef HASMASK
     // bail if highly translucent
     clip(diffColor.a < 0.1f ? -1 : 1);
@@ -50,8 +51,7 @@ float4 main(PS_INPUT input) : SV_Target
     {
         input.viewNormal = MapNormal(normalize(input.viewTan), normalize(input.viewBitan), input.viewNormal, input.texcoord, nmap, sample0);
     }
-	// fragment to light vector data
-    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
+    // fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
     // specular parameter determination (mapped or uniform)
     float3 specularReflectionColor;
@@ -76,7 +76,7 @@ float4 main(PS_INPUT input) : SV_Target
     	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse light
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuse, intensity, att, lv.dirToL, input.viewNormal);
     // specular reflected
     const float3 specularReflected = Speculate(
         specularReflectionColor, 1.0f, input.viewNormal,
@@ -85,7 +85,7 @@ float4 main(PS_INPUT input) : SV_Target
 	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
     float4 finalColor = 1.0f;
 
-    finalColor.rgb = diffColor.rgb * saturate(ambient + diffuse) + specularReflected;
+    finalColor.rgb = diffColor.rgb * saturate(ambient + diff) + specularReflected;
     finalColor.a = diffColor.a;
 
 	// final color

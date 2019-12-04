@@ -13,7 +13,7 @@ light Pos
 6 add diffuse+ambient, filter by material color, saturate and scale
 */ 
 #include "ShaderOptions.hlsli"
-#include "LightVectorData.hlsli"
+#include "LightingUtil.hlsli"
 #include "CommonPSOption.hlsli"
 
 struct PS_INPUT
@@ -36,17 +36,17 @@ float4 main(PS_INPUT input) : SV_Target
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
 	// fragment to light vector data
-    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
+    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuse, intensity, att, lv.dirToL, input.viewNormal);
     // specular
     const float3 specular = Speculate(
         specularColor.rgb, 1.0f, input.viewNormal,
         lv.vToL, input.viewPixelPos, att, specularPower
     );
 	// final color
-    return float4(saturate((diffuse + ambient) * materialColor.rgb + specular), 1.0f);
+    return float4(saturate((diff + ambient) * materialColor.rgb + specular), 1.0f);
 }

@@ -1,5 +1,5 @@
 #include "ShaderOptions.hlsli"
-#include "LightVectorData.hlsli"
+#include "LightingUtil.hlsli"
 #include "CommonPSOption.hlsli"
 
 struct PS_INPUT
@@ -27,7 +27,7 @@ float4 main(PS_INPUT input) : SV_Target
     // normalize the mesh normal
     input.viewNormal = normalize(input.viewNormal);
 	// fragment to light vector data
-    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
+    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
     // specular parameters
     float specularPower = specularPowerConst;
@@ -40,7 +40,7 @@ float4 main(PS_INPUT input) : SV_Target
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse light
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuse, intensity, att, lv.dirToL, input.viewNormal);
     // specular reflected
     const float3 specularReflected = Speculate(
         specularReflectionColor, 1.0f, input.viewNormal,
@@ -56,7 +56,7 @@ float4 main(PS_INPUT input) : SV_Target
     {
         input.viewNormal = -input.viewNormal;
     }
-    finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specularReflected;
+    finalColor.rgb = texColor.rgb * saturate(ambient + diff) + specularReflected;
     finalColor.a = texColor.a;
 
 	// final color

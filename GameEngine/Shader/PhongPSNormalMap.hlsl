@@ -1,5 +1,5 @@
 #include "ShaderOptions.hlsli"
-#include "LightVectorData.hlsli"
+#include "LightingUtil.hlsli"
 #include "CommonPSOption.hlsli"
 
 
@@ -37,30 +37,22 @@ float4 main(PS_INPUT input) : SV_Target
         input.viewNormal = MapNormal(input.viewTan, input.viewBitan, input.viewNormal, input.texcoord, nmap, sample0);
     }
 	// fragment to light vector data
-    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
+    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuse, intensity, att, lv.dirToL, input.viewNormal);
     // specular
     const float3 specular = Speculate(
-        diffuseColor, diffuseIntensity, input.viewNormal,
+        diffuse, intensity, input.viewNormal,
         lv.vToL, input.viewPixelPos, att, specularPower
     );
     float4 finalColor = 1.0f;
     float4 texColor = tex.Sample(sample0, input.texcoord);
 
-    // //clip(texColor.a - 0.1f);
-    //clip(texColor.a < 0.1f ? -1 : 1);
 
-    //// flip Normal when backface
-    //if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-    //{
-    //    input.viewNormal = -input.viewNormal;
-    //}
-
-    finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specular;
+    finalColor.rgb = texColor.rgb * saturate(ambient + diff) + specular;
     //  finalColor.a = texColor.a;
     finalColor.a = 1.0f;
     // final color

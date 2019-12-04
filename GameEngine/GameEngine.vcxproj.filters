@@ -285,13 +285,7 @@
     <ClCompile Include="TexturePreprocessor.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject3D.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject2D.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="RTT.cpp">
@@ -302,6 +296,12 @@
     </ClCompile>
     <ClCompile Include="WaterWave.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaneMirror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBRScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -572,17 +572,14 @@
     <ClInclude Include="TexturePreprocessor.h">
       <Filter>Header Files\Bindable\CommonTool</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject3D.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject2D.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="Tex2D.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRScene.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -605,9 +602,6 @@
     <None Include="DXTrace.inl">
       <Filter>Dxerr</Filter>
     </None>
-    <None Include="Shader\LightVectorData.hlsli">
-      <Filter>Shader\Common</Filter>
-    </None>
     <None Include="Shader\ShaderOptions.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
@@ -618,6 +612,9 @@
       <Filter>Shader\Common</Filter>
     </None>
     <None Include="Shader\BRDF.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="Shader\LightingUtil.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
   </ItemGroup>
@@ -674,6 +671,12 @@
       <Filter>Shader\VS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\ReflectionPS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Foward_Phong_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Forward_Phong_PS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>

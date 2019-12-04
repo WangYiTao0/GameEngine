@@ -1,9 +1,8 @@
 #pragma once
 #include "Graphics.h"
-#include "GameObject2D.h"
-#include "GameObject3D.h"
+#include "GameObject.h"
 
-class Camera3D : public GameObject3D
+class Camera3D : public GameObject
 {
 public:
 	Camera3D(Graphics& gfx);
@@ -29,7 +28,7 @@ private:
 	static constexpr float rotationSpeed = 0.004f;
 };
 
-class Camera2D
+class Camera2D : public GameObject
 {
 public:
 	Camera2D();
@@ -39,8 +38,6 @@ public:
 	DirectX::XMMATRIX GetWorldMatrix();
 
 private:
-	DirectX::XMFLOAT3 pos;
-	DirectX::XMFLOAT3 rot;
 
 	DirectX::XMMATRIX orthoMatrix;
 };

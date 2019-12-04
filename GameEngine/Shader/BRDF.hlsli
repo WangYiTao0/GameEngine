@@ -39,13 +39,12 @@ struct BRDF_Surface
 };
 
 // Trowbridge-Reitz GGX Distribution
+// Normal Distribution  
 inline float NormalDistributionGGX(float3 N, float3 H, float roughness)
 { // approximates microfacets :	approximates the amount the surface's microfacets are
 	//								aligned to the halfway vector influenced by the roughness
 	//								of the surface
 	//							:	determines the size, brightness, and shape of the specular highlight
-	// more: http://reedbeta.com/blog/hows-the-ndf-really-defined/
-	//
 	// NDF_GGXTR(N, H, roughness) = roughness^2 / ( PI * ( dot(N, H))^2 * (roughness^2 - 1) + 1 )^2
     const float a = roughness * roughness;
     const float a2 = a * a;

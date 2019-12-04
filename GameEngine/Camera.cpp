@@ -128,7 +128,7 @@ void Camera3D::Translate(DirectX::XMFLOAT3 translation) noexcept
 Camera2D::Camera2D()
 {
 	pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	rot = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	rollPitchYaw = XMFLOAT3(0.0f, 0.0f, 0.0f);
 }
 
 void Camera2D::SetOrtho(float width, float height, float nearZ, float farZ)
@@ -145,7 +145,7 @@ DirectX::XMMATRIX Camera2D::GetWorldMatrix()
 {
 
 	XMMATRIX translationOffsetMatrix = XMMatrixTranslation(-pos.x, -pos.y, 0.0f); //z component irrelevant for 2d camera
-	XMMATRIX camRotationMatrix = XMMatrixRotationRollPitchYaw(rot.x, rot.y, rot.z);
+	XMMATRIX camRotationMatrix = XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z);
 	XMMATRIX worldMatrix = camRotationMatrix * translationOffsetMatrix;
 
 	return worldMatrix;

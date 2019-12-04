@@ -1,9 +1,7 @@
 #include "TestPlane.h"
 #include "Plane.h"
 #include "BindableCommon.h"
-#include "TransformPixelCbuf.h"
 #include "imgui/imgui.h"
-#include "Sampler.h"
 #include "StringHelper.h"
 
 TestPlane::TestPlane(Graphics& gfx, float size, DirectX::XMFLOAT4 color)

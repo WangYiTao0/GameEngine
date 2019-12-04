@@ -15,7 +15,7 @@ light Pos
 
 
 #include "ShaderOptions.hlsli"
-#include "LightVectorData.hlsli"
+#include "LightingUtil.hlsli"
 #include "CommonPSOption.hlsli"
 
 
@@ -44,21 +44,21 @@ float4 main(PS_INPUT input) : SV_Target
     //renormalize interpolatednormal
     input.viewNormal = normalize(input.viewNormal);
 
-    float3 viewLightPos = mul(float4(worldMatrixLightPos, 1.0f), viewMatrix);
+    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
 
     //fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuse, intensity, att, lv.dirToL, input.viewNormal);
 	// specular
-    const float3 specular = Speculate(diffuseColor, diffuseIntensity, input.viewNormal, lv.vToL, input.viewPixelPos, att, specularPower);
+    const float3 specular = Speculate(diffuse, intensity, input.viewNormal, lv.vToL, input.viewPixelPos, att, specularPower);
 	// final color
     float4 finalColor = 1.0f;
     float4 texColor = tex.Sample(sample0, input.texcoord);
     clip(texColor.a - 0.1f);
-    finalColor.rgb = texColor.rgb * saturate(ambient + diffuse) + specular;
+    finalColor.rgb = texColor.rgb * saturate(ambient + diff) + specular;
     finalColor.a = texColor.a;
 
 	// final color

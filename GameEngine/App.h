@@ -1,13 +1,10 @@
 #pragma once
 #include "Window.h"
 #include "GameTimer.h"
-
 #include "ImguiManager.h"
-#include "imgui/imgui_impl_dx11.h"
-#include "imgui/imgui_impl_win32.h"
-
 #include "Camera.h"
-#include "LightCommon.h"
+//#include "LightCommon.h"
+#include "PointLight.h"
 #include "BoundingSphere.h"
 #include "IntersectData.h"
 #include <set>
@@ -38,7 +35,6 @@ private:
 	void RenderScene();
 
 private:
-
 	const int screenWidth = 1600;
 	const int screenHeight = 900;
 	const float nearZ = 0.1f;
@@ -61,9 +57,12 @@ private:
 	std::vector <std::unique_ptr<Scene>> scenes;
 	std::vector <std::unique_ptr<Scene>>::iterator curScene;
 
+
+
+	bool enableRenderTarget = false;
 	Bind::RTT rtt;
 	//
-	Tex2D tex2{ wnd.Gfx(),screenWidth,screenHeight,
+	Tex2D smallScene{ wnd.Gfx(),screenWidth,screenHeight,
 		screenWidth/4,
 		screenHeight/4,rtt.GetShaderResourceView() };
 

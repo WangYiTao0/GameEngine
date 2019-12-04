@@ -22,9 +22,6 @@ private:
 		BOOL normalMappingEnabled = TRUE;
 		float padding;
 	} pmc;
-
-	
-
 	static IndexedTriangleList model;
 
 }; 

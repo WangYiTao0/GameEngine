@@ -7,7 +7,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "ConditionalNoexcept.h"
-#include "ConstantBuffers.h"
 #include <type_traits>
 #include <filesystem>
 #include "imgui/imgui.h"
