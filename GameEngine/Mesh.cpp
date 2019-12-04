@@ -276,6 +276,9 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	float shininess = 2.0f;
 	dx::XMFLOAT4 specularColor = { 0.18f,0.18f,0.18f,1.0f };
 	dx::XMFLOAT4 diffuseColor = { 0.45f,0.45f,0.85f,1.0f };
+
+	
+
 	if (mesh.mMaterialIndex >= 0)
 	{
 		auto& material = *pMaterials[mesh.mMaterialIndex];
@@ -310,6 +313,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 			material.Get(AI_MATKEY_SHININESS, shininess);
 		}
 
+
 		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS)
 		{
 			std::shared_ptr<Bind::Texture> tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 2);
@@ -322,6 +326,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 		{
 			bindablePtrs.push_back(Bind::Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSAnistropicWrap));
 		}
+		
 	}
 
 	const auto meshTag = path.string() + "%" + mesh.mName.C_Str();
@@ -379,14 +384,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 			bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpecNormalMap.cso", "PhongPSSpecNormalMap.hlsl"));
 		}
 
-		//bindablePtrs.push_back(PixelShader::Resolve(gfx,
-		//	hasAlphaDiffuse ? "PhongPSSpecNormalMask.cso", "PhongPSSpecNormalMask.hlsl" :
-		//	"PhongPSSpecNormalMask.cso", "PhongPSSpecNormalMask.hlsl"
-		//));
-
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
-
-		
 
 		Node::PSMaterialConstantFullmonte pmc;
 		pmc.specularPower = shininess;
