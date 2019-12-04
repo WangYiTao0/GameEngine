@@ -1,6 +1,85 @@
 #define MaxLight 16
 
+struct LightVectorData
+{
+    float3 vToL; // vector to light
+    float3 dirToL; // dir to light
+    float distToL; //distance to light
+};
 
+
+cbuffer PointLightCBuf : register(b1)
+{
+    float3 worldLightPos;
+    float diffuseIntensity;
+    float3 ambient;
+    float attConst;
+    float3 diffuseColor;
+    float attLin;
+    float3 specular;
+    float attQuad;
+    float3 cameraPos;
+    //float padding;
+};
+
+struct CommonMaterial
+{
+    float3 ambient;
+    float3 diffuseColor;
+    float diffuseIntensity;
+    float3 specularColor;
+    float specularIntensity;
+    float3 reflect;
+
+};
+
+LightVectorData CalculateLightVectorData(const in float3 lightPos, const in float3 fragPos)
+{
+    LightVectorData lv;
+    lv.vToL = lightPos - fragPos;
+    lv.distToL = length(lv.vToL);
+    lv.dirToL = lv.vToL / lv.distToL;
+    return lv;
+}
+
+
+
+float Attenuate(uniform float attConst, uniform float attLin, uniform float attQuad, const in float distFragToL)
+{
+    float dist = distFragToL;
+    float attenuate = 1.0f / (attConst + attLin * dist + attQuad * (dist * dist));
+    return attenuate;
+}
+
+float3 Diffuse(
+    uniform float3 diffuse,
+    uniform float intensity,
+    const in float att,
+    const in float3 worldDirFragToL,
+    const in float3 worldNormal)
+{
+    return diffuse * intensity * att * max(0.0f, dot(worldDirFragToL, worldNormal));
+}
+
+float3 Speculate(
+    const in float3 specularColor,
+    uniform float specularIntensity,
+    const in float3 worldNormal,
+    const in float3 worldFragToL,
+    const in float3 worldPos,
+    const in float3 cameraPos,
+    const in float att,
+    const in float specularPower)
+{
+    // calculate reflected light vector
+    const float3 w = worldNormal * dot(worldFragToL, worldNormal);
+    const float3 r = normalize(w * 2.0f - worldFragToL);
+    // vector from camera to fragment (in view space)
+    const float3 viewCamToFrag = normalize(cameraPos-worldPos);
+    // calculate specular component color based on angle between
+    // viewing vector and reflection vector, narrow with power function
+    return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, viewCamToFrag)), specularPower);
+}
 
 
 //Lambert's Cosine Law  

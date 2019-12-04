@@ -617,6 +617,9 @@
     <None Include="Shader\LightingUtil.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
+    <None Include="Shader\Phong.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PhongPS.hlsl">

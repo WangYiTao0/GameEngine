@@ -10,6 +10,8 @@ namespace Bind
 		struct Transforms
 		{
 			DirectX::XMMATRIX world;
+			DirectX::XMMATRIX worldInvTanspose;
+
 			//camera view pos
 			DirectX::XMMATRIX view;
 			//screen pos

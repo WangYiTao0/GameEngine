@@ -33,10 +33,10 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156.jpg"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156_norm.jpg", 2u));
-	//AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
-	//AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
+	//AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156.jpg"));
+	//AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156_norm.jpg", 2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
 	//auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");

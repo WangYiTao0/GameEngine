@@ -41,11 +41,11 @@ float4 main(PS_INPUT input) : SV_Target
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diff = Diffuse(diffuse, intensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
     // specular
     const float3 specular = Speculate(
         specularColor.rgb, 1.0f, input.viewNormal,
-        lv.vToL, input.viewPixelPos, att, specularPower
+        lv.vToL, input.viewPixelPos, cameraPos, att, specularPower
     );
 	// final color
     return float4(saturate((diff + ambient) * materialColor.rgb + specular), 1.0f);

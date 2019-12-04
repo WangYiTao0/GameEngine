@@ -14,6 +14,8 @@ struct PointLightCBuf
 	float attLin;
 	DirectX::XMFLOAT3 specular;
 	float attQuad;
+	DirectX::XMFLOAT3 cameraPos;
+	float padding;
 };
 
 struct DirectionLight

@@ -11,6 +11,8 @@ PointLight::PointLight(Graphics& gfx, float radius)
 
 void PointLight::SpawnControlWindow() noexcept
 {
+
+
 	if (ImGui::Begin("PointLight"))
 	{
 		ImGui::Text("Position");
@@ -36,6 +38,11 @@ void PointLight::SpawnControlWindow() noexcept
 		}
 	}
 	ImGui::End();
+}
+
+void PointLight::SetCameraPos(DirectX::XMFLOAT3 pos)
+{
+	cbData.cameraPos = pos;
 }
 
 void PointLight::Reset() noexcept

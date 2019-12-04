@@ -358,6 +358,7 @@
     <None Include="DXTrace.inl" />
     <None Include="Shader\BRDF.hlsli" />
     <None Include="Shader\CommonPSOption.hlsli" />
+    <None Include="Shader\Phong.hlsli" />
     <None Include="Shader\ShaderOptions.hlsli" />
     <None Include="Shader\LightingUtil.hlsli" />
     <None Include="Shader\ShadingMath.hlsli" />

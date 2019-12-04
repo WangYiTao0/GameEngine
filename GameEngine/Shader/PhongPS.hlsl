@@ -51,9 +51,9 @@ float4 main(PS_INPUT input) : SV_Target
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diff = Diffuse(diffuse, intensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
 	// specular
-    const float3 specular = Speculate(diffuse, intensity, input.viewNormal, lv.vToL, input.viewPixelPos, att, specularPower);
+    const float3 specular = Speculate(diffuseColor, specularIntensity, input.viewNormal, lv.vToL, input.viewPixelPos, cameraPos, att, specularPower);
 	// final color
     float4 finalColor = 1.0f;
     float4 texColor = tex.Sample(sample0, input.texcoord);

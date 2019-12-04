@@ -11,10 +11,10 @@ struct VS_INPUT
 
 struct VS_OUTPUT
 {
-    float3 viewPos : Position;
-    float3 viewNormal : Normal;
-    float3 tan : Tangent;
-    float3 bitan : Bitangent;
+    float3 worldPos : Position;
+    float3 worldNormal : Normal;
+    float3 worldTan : Tangent;
+    float3 worldBitan : Bitangent;
     float2 tc : Texcoord;
     float4 pos : SV_Position;
 };
@@ -25,10 +25,10 @@ struct VS_OUTPUT
     matrix modelView = mul(worldMatrix, viewMatrix);
     matrix modelViewprojMatrix = mul(modelView, projMatrix);
 
-    vso.viewPos = (float3) mul(float4(input.pos, 1.0f), modelView);
-    vso.viewNormal = mul(input.normal, (float3x3) modelView);
-    vso.tan = mul(input.tangent, (float3x3) modelView);
-    vso.bitan = mul(input.biTangent, (float3x3) modelView);
+    vso.worldPos = (float3) mul(float4(input.pos, 1.0f), worldMatrix);
+    vso.worldNormal = mul(input.normal, (float3x3) worldInvTranspose);
+    vso.worldTan = mul(input.tangent, (float3x3) worldMatrix);
+    vso.worldBitan = mul(input.biTangent, (float3x3) worldMatrix);
     vso.pos = mul(float4(input.pos, 1.0f), modelViewprojMatrix);
     vso.tc = input.texcoord;
     return vso;

@@ -1,6 +1,7 @@
 cbuffer TransformCBuf : register(b0)
 {
     matrix worldMatrix;
+    matrix worldInvTranspose;
     matrix viewMatrix;
     matrix projMatrix;
     matrix orthoMatrix;
