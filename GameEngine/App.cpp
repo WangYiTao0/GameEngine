@@ -36,7 +36,7 @@ App::App()
 		nearZ, farZ);
 	wnd.Gfx().SetProjection(cam.GetProj());
 
-	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
@@ -171,7 +171,7 @@ void App::Draw()
 
 	if (enableRenderTarget)
 	{
-		smallScene.Draw(wnd.Gfx());
+		smallScene.DrawIndexed(wnd.Gfx());
 	}
 }
 

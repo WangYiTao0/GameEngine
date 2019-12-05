@@ -15,7 +15,7 @@ public:
 	Drawable() = default;
 	Drawable(const Drawable&) = delete;
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
-	void Draw(Graphics& gfx) const noxnd;
+	void DrawIndexed(Graphics& gfx) const noxnd;
 	//virtual void Update(float dt) noexcept = 0;
 	virtual ~Drawable() = default;
 

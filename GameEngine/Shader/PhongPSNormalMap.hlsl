@@ -39,7 +39,6 @@ float4 main(PS_INPUT input) : SV_Target
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
-        //input.worldNormal = UnpackNormals(nmap, sample0, input.texcoord, input.worldNormal, input.worldTan);
        input.worldNormal = MapNormal(input.worldTan, input.worldBitan, input.worldNormal, input.texcoord, nmap, sample0);
     }
 	// fragment to light vector data

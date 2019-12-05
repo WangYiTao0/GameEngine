@@ -53,7 +53,7 @@ public:
 		DirectX::XMFLOAT4 materialColor = { 0.447970f,0.327254f,0.176283f,1.0f };
 		DirectX::XMFLOAT4 specularColor = { 0.65f,0.65f,0.65f,1.0f };
 		float specularPower = 120.0f;
-		float padding[3];
+		float padding[3] = { 0.0f,0.0f,0.0f };
 	};
 public:
 	Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noxnd;

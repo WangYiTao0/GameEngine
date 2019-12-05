@@ -60,7 +60,7 @@ void PointLight::Reset() noexcept
 void PointLight::Draw(Graphics& gfx) const noxnd
 {
 	mesh.SetPos(cbData.position);
-	mesh.Draw(gfx);
+	mesh.DrawIndexed(gfx);
 }
 
 void PointLight::Bind(Graphics& gfx) const noexcept

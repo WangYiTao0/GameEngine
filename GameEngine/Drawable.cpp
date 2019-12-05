@@ -6,7 +6,7 @@
 
 using namespace Bind;
 
-void Drawable::Draw(Graphics& gfx) const noxnd
+void Drawable::DrawIndexed(Graphics& gfx) const noxnd
 {
 	for (auto& b : binds)
 	{

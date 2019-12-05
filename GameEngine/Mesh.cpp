@@ -44,7 +44,7 @@ Mesh::Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs)
 void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
 {
 	DirectX::XMStoreFloat4x4(&transform, accumulatedTransform);
-	Drawable::Draw(gfx);
+	Drawable::DrawIndexed(gfx);
 }
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {

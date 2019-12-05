@@ -31,8 +31,8 @@ void ModelScene::Update(float dt)
 void ModelScene::Draw() 
 {
 	sponza.Draw(gfx);
-	redPlane.Draw(gfx);
-	bluePlane.Draw(gfx);
+	redPlane.DrawIndexed(gfx);
+	bluePlane.DrawIndexed(gfx);
 
 
 

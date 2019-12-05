@@ -17,10 +17,10 @@ private:
 private:
 	struct PSMaterialConstant
 	{
-		float specularIntensity = 0.1f;
-		float specularPower = 20.0f;
+		float specularIntensity = 0.5f;
+		float specularPower = 60.0f;
 		BOOL normalMappingEnabled = TRUE;
-		float padding;
+		float padding = 0.f;
 	} pmc;
 	static IndexedTriangleList model;
 

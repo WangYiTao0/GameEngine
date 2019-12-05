@@ -75,10 +75,10 @@ float3 Speculate(
     const float3 w = worldNormal * dot(worldFragToL, worldNormal);
     const float3 r = normalize(w * 2.0f - worldFragToL);
     // vector from camera to fragment (in view space)
-    const float3 viewCamToFrag = normalize(worldPos-cameraPos);
+    const float3 worldCamToFrag = normalize(worldPos-cameraPos);
     // calculate specular component color based on angle between
     // viewing vector and reflection vector, narrow with power function
-    return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, viewCamToFrag)), specularPower);
+    return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, worldCamToFrag)), specularPower);
 }
 
 

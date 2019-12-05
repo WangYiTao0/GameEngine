@@ -62,8 +62,8 @@ private:
 	bool enableRenderTarget = false;
 	Bind::RTT rtt;
 	//
-	Tex2D smallScene{ wnd.Gfx(),screenWidth,screenHeight,
-		screenWidth/4,
-		screenHeight/4,rtt.GetShaderResourceView() };
+	Tex2D smallScene{ wnd.Gfx(),static_cast<float>(screenWidth),static_cast<float>(screenHeight),
+		static_cast<float>(screenWidth/4),
+		static_cast<float>(screenHeight/4),rtt.GetShaderResourceView() };
 
 };

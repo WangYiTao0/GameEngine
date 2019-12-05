@@ -68,6 +68,7 @@ public:
 
 	void EndFrame();
 	void BeginFrame(float red, float green, float blue) noexcept;
+
 	void DrawIndexedInstance(UINT indexCount, UINT instanceCount)noexcept(!IS_DEBUG);
 	void DrawIndexed(UINT indexCount) noxnd;
 	//camera 3d

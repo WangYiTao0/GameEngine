@@ -20,8 +20,8 @@ void GeometryScene::Update(float dt)
 
 void GeometryScene::Draw()
 {
-	gridTerrain.Draw(gfx);
-	cube.Draw(gfx);
+	gridTerrain.DrawIndexed(gfx);
+	cube.DrawIndexed(gfx);
 
 
 
