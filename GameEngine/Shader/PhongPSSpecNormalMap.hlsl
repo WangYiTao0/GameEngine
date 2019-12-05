@@ -40,12 +40,16 @@ float4 main(PS_INPUT input) : SV_Target
     #ifdef HASMASK
     // bail if highly translucent
     clip(diffColor.a < 0.1f ? -1 : 1);
+
+    float3 toEye = input.worldPos - cameraPos;
+
     // flip normal when backface
-    if (dot(input.worldNormal,-lv.dirToL) >= 0.0f)
+    if (dot(input.worldNormal, lv.dirToL) >= 0.0f && dot(input.worldNormal, toEye) >= 0.0f)
     {
         input.worldNormal = -input.worldNormal;
     }
     #endif
+
     // normalize the mesh normal
     input.worldNormal = normalize(input.worldNormal);
     input.worldTan = normalize(input.worldTan);
