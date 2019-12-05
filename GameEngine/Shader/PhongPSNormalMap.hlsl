@@ -7,7 +7,7 @@
 struct PS_INPUT
 {
     //SV_Position describes the pixel location.
-    float3 worldPos : Position;
+    float3 worldPos      : Position;
     float3 worldNormal   : Normal;
     float3 worldTan      : Tangent;
     float3 worldBitan    : Bitangent;
@@ -36,12 +36,10 @@ float4 main(PS_INPUT input) : SV_Target
     input.worldTan = normalize(input.worldTan);
     input.worldBitan = normalize(input.worldBitan);
 
-  
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
         //input.worldNormal = UnpackNormals(nmap, sample0, input.texcoord, input.worldNormal, input.worldTan);
-
        input.worldNormal = MapNormal(input.worldTan, input.worldBitan, input.worldNormal, input.texcoord, nmap, sample0);
     }
 	// fragment to light vector data
