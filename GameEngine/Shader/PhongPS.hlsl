@@ -30,8 +30,8 @@ cbuffer ObjectCBuf : register(b2)
 struct PS_INPUT
 {
     //SV_Position describes the pixel location.
-    float3 viewPixelPos : Position;
-    float3 viewNormal : Normal;
+    float3 worldPos : Position;
+    float3 worldNormal : Normal;
     float2 texcoord : Texcoord;
 };
 
@@ -42,18 +42,18 @@ float4 main(PS_INPUT input) : SV_Target
 {
 
     //renormalize interpolatednormal
-    input.viewNormal = normalize(input.viewNormal);
+    input.worldNormal = normalize(input.worldNormal);
 
     float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
 
     //fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
+    const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.worldPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.worldNormal);
 	// specular
-    const float3 specular = Speculate(diffuseColor, specularIntensity, input.viewNormal, lv.vToL, input.viewPixelPos, cameraPos, att, specularPower);
+    const float3 specular = Speculate(diffuseColor, specularIntensity, input.worldNormal, lv.vToL, input.worldPos, cameraPos, att, specularPower);
 	// final color
     float4 finalColor = 1.0f;
     float4 texColor = tex.Sample(sample0, input.texcoord);

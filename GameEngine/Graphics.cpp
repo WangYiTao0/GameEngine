@@ -172,6 +172,11 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
+void Graphics::DrawIndexedInstance(UINT indexCount,UINT instanceCount) noexcept(!IS_DEBUG)
+{
+	pContext->DrawIndexedInstanced(indexCount, instanceCount, 0u, 0u, 0u);
+}
+
 void Graphics::DrawIndexed(UINT count) noxnd
 {
 	GFX_THROW_INFO_ONLY(pContext->DrawIndexed(count, 0u, 0u));

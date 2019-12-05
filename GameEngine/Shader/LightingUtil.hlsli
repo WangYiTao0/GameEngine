@@ -16,9 +16,9 @@ cbuffer PointLightCBuf : register(b1)
     float attConst;
     float3 diffuseColor;
     float attLin;
-    float3 specular;
-    float attQuad;
     float3 cameraPos;
+    float attQuad;
+
     //float padding;
 };
 
@@ -33,10 +33,10 @@ struct CommonMaterial
 
 };
 
-LightVectorData CalculateLightVectorData(const in float3 lightPos, const in float3 fragPos)
+LightVectorData CalculateLightVectorData(const in float3 lightPos, const in float3 worldPos)
 {
     LightVectorData lv;
-    lv.vToL = lightPos - fragPos;
+    lv.vToL = lightPos - worldPos;
     lv.distToL = length(lv.vToL);
     lv.dirToL = lv.vToL / lv.distToL;
     return lv;
@@ -53,12 +53,12 @@ float Attenuate(uniform float attConst, uniform float attLin, uniform float attQ
 
 float3 Diffuse(
     uniform float3 diffuse,
-    uniform float intensity,
+    uniform float diffuseIntensity,
     const in float att,
     const in float3 worldDirFragToL,
     const in float3 worldNormal)
 {
-    return diffuse * intensity * att * max(0.0f, dot(worldDirFragToL, worldNormal));
+    return diffuse * diffuseIntensity * att * max(0.0f, dot(worldDirFragToL, worldNormal));
 }
 
 float3 Speculate(
@@ -75,7 +75,7 @@ float3 Speculate(
     const float3 w = worldNormal * dot(worldFragToL, worldNormal);
     const float3 r = normalize(w * 2.0f - worldFragToL);
     // vector from camera to fragment (in view space)
-    const float3 viewCamToFrag = normalize(cameraPos-worldPos);
+    const float3 viewCamToFrag = normalize(worldPos-cameraPos);
     // calculate specular component color based on angle between
     // viewing vector and reflection vector, narrow with power function
     return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, viewCamToFrag)), specularPower);

@@ -8,8 +8,8 @@ struct VS_INPUT
 
 struct VSOut
 {
-    float3 viewPos : Position;
-    float3 viewNormal : Normal;
+    float3 worldPos : Position;
+    float3 worldNormal : Normal;
     float4 pos : SV_Position;
 };
 
@@ -18,8 +18,8 @@ VSOut main(VS_INPUT input)
     VSOut vso;
     matrix modelView = mul(worldMatrix, viewMatrix);
     matrix modelViewprojMatrix = mul(modelView, projMatrix);
-    vso.viewPos = (float3) mul(float4(input.pos, 1.0f), modelView);
-    vso.viewNormal = mul(input.normal, (float3x3) modelView);
+    vso.worldPos = (float3) mul(float4(input.pos, 1.0f), worldMatrix);
+    vso.worldNormal = mul(input.normal, (float3x3) worldInvTranspose);
     vso.pos = mul(float4(input.pos, 1.0f), modelViewprojMatrix);
     return vso;
 }

@@ -35,18 +35,18 @@ float4 main(PS_INPUT input) : SV_Target
     //alpha blender
     float4 diffColor = diff.Sample(sample0, input.texcoord);
 
-    float3 viewNormal = mul(input.worldNormal, (float3x3)viewMatrix);
-    float3 viewPos = mul(input.worldPos, (float3x3) viewMatrix);
-    #ifdef HASMASK
-    // bail if highly translucent
-    clip(diffColor.a < 0.1f ? -1 : 1);
-    // flip normal when backface
-    //if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
-    if (dot(viewNormal, viewPos) >= 0.0f)
-    {
-        input.worldNormal = -input.worldNormal;
-    }
-    #endif
+    //float3 viewNormal = mul(input.worldNormal, (float3x3)viewMatrix);
+    //float3 viewPos = mul(input.worldPos, (float3x3) viewMatrix);
+    //#ifdef HASMASK
+    //// bail if highly translucent
+    //clip(diffColor.a < 0.1f ? -1 : 1);
+    //// flip normal when backface
+    ////if (dot(input.viewNormal, input.viewPixelPos) >= 0.0f)
+    //if (dot(viewNormal, viewPos) >= 0.0f)
+    //{
+    //    input.worldNormal = -input.worldNormal;
+    //}
+    //#endif
     // normalize the mesh normal
     input.worldNormal = normalize(input.worldNormal);
     input.worldTan = normalize(input.worldTan);
@@ -54,9 +54,8 @@ float4 main(PS_INPUT input) : SV_Target
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
-        input.worldNormal = UnpackNormals(nmap, sample0, input.texcoord, input.worldNormal, input.worldTan);
-
-       // input.worldNormal = MapNormal(input.worldTan, input.worldBitan, input.worldNormal, input.texcoord, nmap, sample0);
+        //input.worldNormal = UnpackNormals(nmap, sample0, input.texcoord, input.worldNormal, input.worldTan);
+        input.worldNormal = MapNormal(input.worldTan, input.worldBitan, input.worldNormal, input.texcoord, nmap, sample0);
     }
     // fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(worldLightPos, input.worldPos);

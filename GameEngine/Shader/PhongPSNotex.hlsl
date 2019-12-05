@@ -19,8 +19,8 @@ light Pos
 struct PS_INPUT
 {
     //SV_Position describes the pixel location.
-    float3 viewPixelPos : Position;
-    float3 viewNormal : Normal;
+    float3 worldPos : Position;
+    float3 worldNormal : Normal;
 };
 
 cbuffer ObjectCBuf : register(b2)
@@ -34,18 +34,18 @@ cbuffer ObjectCBuf : register(b2)
 float4 main(PS_INPUT input) : SV_Target
 {
     // normalize the mesh normal
-    input.viewNormal = normalize(input.viewNormal);
+    input.worldNormal = normalize(input.worldNormal);
 	// fragment to light vector data
     float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
-    const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.viewPixelPos);
+    const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.worldPos);
 	// attenuation
     const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 	// diffuse
-    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.viewNormal);
+    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.worldNormal);
     // specular
     const float3 specular = Speculate(
-        specularColor.rgb, 1.0f, input.viewNormal,
-        lv.vToL, input.viewPixelPos, cameraPos, att, specularPower
+        specularColor.rgb, 1.0f, input.worldNormal,
+        lv.vToL, input.worldPos, cameraPos, att, specularPower
     );
 	// final color
     return float4(saturate((diff + ambient) * materialColor.rgb + specular), 1.0f);
