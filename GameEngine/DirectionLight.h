@@ -14,11 +14,10 @@ public:
 private:
 	struct DirectionLightCbuf
 	{
-		DirectX::XMFLOAT4 ambient;
-		DirectX::XMFLOAT4 diffuse;
-		DirectX::XMFLOAT4 specular;
-		DirectX::XMFLOAT3 direction;
-		float pad;
+		DirectX::XMFLOAT3 Dir;
+		float Intensity;
+		DirectX::XMFLOAT3 Color;
+		float padding;
 	};
 private:
 	DirectionLightCbuf cbData;

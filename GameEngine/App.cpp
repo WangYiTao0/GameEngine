@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <sstream>
 #include "MathHelper.h"
+#include "wytEnum.h"
 #include "imgui/imgui.h"
 #include "ModelScene.h"
 #include "GeometryScene.h"
@@ -16,11 +17,9 @@ namespace dx = DirectX;
 App::App()
 	:
 	wnd(screenWidth, screenHeight, "Game Engine"),
-	pointLight(wnd.Gfx()),
-	cam(wnd.Gfx()),
-	rtt(wnd.Gfx(), screenWidth, screenHeight)
+	pointLight(wnd.Gfx())
 {
-	smallScene.SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
+	
 	// Create the cpu object.
 	m_Cpu.Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
@@ -35,6 +34,16 @@ App::App()
 		static_cast<float>(screenWidth) / static_cast<float>(screenHeight),
 		nearZ, farZ);
 	wnd.Gfx().SetProjection(cam.GetProj());
+
+	mSrcRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
+	mSSRRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
+	//mGrayShadowMap = std::shared_ptr<Bind::RTT>(new Bind::RTT(screenWidth, screenHeight, TextureFormat::R32));
+	//mLightBuffer = std::shared_ptr<Bind::RTT>(new Bind::RTT(screenWidth, screenHeight, TextureFormat::R32));
+
+	smallScene = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+		static_cast<float>(screenWidth / 4),
+		static_cast<float>(screenHeight / 4), mSrcRT->GetShaderResourceView());
+	smallScene->SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
 
 	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
@@ -150,7 +159,7 @@ void App::update(float dt)
 
 
 	//update point light
-	pointLight.SetCameraPos(cam.GetPos());
+	pointLight.GetCamera(cam);
 	pointLight.Bind(wnd.Gfx());
 	//update Gpu frame
 	m_Cpu.Frame();
@@ -171,7 +180,7 @@ void App::Draw()
 
 	if (enableRenderTarget)
 	{
-		smallScene.DrawIndexed(wnd.Gfx());
+		smallScene->DrawIndexed(wnd.Gfx());
 	}
 }
 
@@ -246,7 +255,7 @@ void App::CycleScenes()
 
 void App::RenderToTexture()
 {
-	rtt.Bind(wnd.Gfx());
+	mSrcRT->Bind(wnd.Gfx());
 
 	RenderScene();
 

@@ -79,15 +79,6 @@
     <Filter Include="Shader\PS">
       <UniqueIdentifier>{fe8eab05-4d14-41fe-912c-d81d7a9f31d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Bindable\CommonTool">
-      <UniqueIdentifier>{843a03ae-79d1-4d17-a603-f3ea4108e407}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Bindable\CommonTool\imgui">
-      <UniqueIdentifier>{61b44ed0-4620-4934-8f4c-bfc62f217c24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Bindable\CommonTool\Macros">
-      <UniqueIdentifier>{12714e1a-204f-4931-a322-e71f40883252}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\GS">
       <UniqueIdentifier>{bcba5c6d-ad53-4c48-ac55-828d16298b81}</UniqueIdentifier>
     </Filter>
@@ -99,6 +90,15 @@
     </Filter>
     <Filter Include="Shader\CS">
       <UniqueIdentifier>{2607c1bb-a3fc-411b-9774-a326c98539e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CommonTool">
+      <UniqueIdentifier>{843a03ae-79d1-4d17-a603-f3ea4108e407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CommonTool\imgui">
+      <UniqueIdentifier>{61b44ed0-4620-4934-8f4c-bfc62f217c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CommonTool\Macros">
+      <UniqueIdentifier>{12714e1a-204f-4931-a322-e71f40883252}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -145,22 +145,22 @@
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_dx11.cpp">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_win32.cpp">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
@@ -203,9 +203,6 @@
     </ClCompile>
     <ClCompile Include="TestCube.cpp">
       <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="Frustum.cpp">
       <Filter>Source Files\Physics</Filter>
@@ -303,6 +300,12 @@
     <ClCompile Include="PBRScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyRender.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -321,10 +324,10 @@
       <Filter>Dxerr</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsThrowMacros.h">
-      <Filter>Header Files\Bindable\CommonTool\Macros</Filter>
+      <Filter>Header Files\CommonTool\Macros</Filter>
     </ClInclude>
     <ClInclude Include="WindowsThrowMacros.h">
-      <Filter>Header Files\Bindable\CommonTool\Macros</Filter>
+      <Filter>Header Files\CommonTool\Macros</Filter>
     </ClInclude>
     <ClInclude Include="Bindable.h">
       <Filter>Header Files\Bindable</Filter>
@@ -381,28 +384,28 @@
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_dx11.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_win32.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_rectpack.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_textedit.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
-      <Filter>Header Files\Bindable\CommonTool\imgui</Filter>
+      <Filter>Header Files\CommonTool\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
@@ -486,22 +489,22 @@
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="BaseException.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="ConditionalNoexcept.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="DxgiInfoManager.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="StringHelper.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="WindowHelper.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Header Files\Geometry</Filter>
@@ -513,10 +516,10 @@
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="CpuClass.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="DirectXMathHelper.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="CerTest.h">
       <Filter>Header Files</Filter>
@@ -531,7 +534,7 @@
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Common.hpp">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\ECS\Component</Filter>
@@ -543,7 +546,7 @@
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="ImguiManager.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="LightCommon.h">
       <Filter>Header Files\Lights</Filter>
@@ -555,7 +558,7 @@
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="d3dUtil.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="Waves.h">
       <Filter>Header Files\Drawable</Filter>
@@ -570,7 +573,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TexturePreprocessor.h">
-      <Filter>Header Files\Bindable\CommonTool</Filter>
+      <Filter>Header Files\CommonTool</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Drawable</Filter>
@@ -581,16 +584,17 @@
     <ClInclude Include="PBRScene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="wytEnum.h">
+      <Filter>Header Files\CommonTool</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyRender.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="GameEngine.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -676,11 +680,22 @@
     <FxCompile Include="Shader\ReflectionPS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\Foward_Phong_VS.hlsl">
+    <FxCompile Include="Shader\ShadowVS.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\Forward_Phong_PS.hlsl">
+    <FxCompile Include="Shader\ShadowPS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
+    <FxCompile Include="Shader\Sky_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Sky_PS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Data\Icon\void64x64.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

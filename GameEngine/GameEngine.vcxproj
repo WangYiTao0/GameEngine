@@ -194,6 +194,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="PBRScene.cpp" />
     <ClCompile Include="PlaneMirror.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -229,10 +230,10 @@
     <ClCompile Include="PhysicScene.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PixelShader.cpp" />
-    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RTT.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShapesScene.cpp" />
+    <ClCompile Include="SkyRender.cpp" />
     <ClCompile Include="SolidSphere.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="Surface.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="RTT.h" />
     <ClInclude Include="ShapesScene.h" />
+    <ClInclude Include="SkyRender.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Tex2D.h" />
     <ClInclude Include="TexturePreprocessor.h" />
@@ -345,12 +347,10 @@
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsThrowMacros.h" />
+    <ClInclude Include="wytEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="GameEngine.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl" />
@@ -364,7 +364,7 @@
     <None Include="Shader\ShadingMath.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\Forward_Phong_PS.hlsl">
+    <FxCompile Include="Shader\ShadowPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -374,7 +374,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shader\Foward_Phong_VS.hlsl">
+    <FxCompile Include="Shader\ShadowVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -457,6 +457,26 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shader\ReflectionVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\Sky_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\Sky_VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -590,6 +610,9 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Data\Icon\void64x64.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,7 +10,7 @@
 #include "Frustum.h"
 #include "GridTerrain.h"
 #include "WaterWave.h"
-#include "Tex2D.h"
+#include "SkyRender.h"
 
 class GeometryScene : public Scene
 {
@@ -32,6 +32,6 @@ private:
 
 	TestCube cube{ gfx,2};
 
-
+	std::unique_ptr<SkyRender> m_pSunset = nullptr;
 
 };

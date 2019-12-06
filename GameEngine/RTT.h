@@ -4,13 +4,14 @@
 #include <wrl/client.h>
 #include "Graphics.h"
 #include "Bindable.h"
+#include "WytEnum.h"
 
 namespace Bind
 {
 	class RTT : public Bindable
 	{
 	public:
-		RTT(Graphics& gfx, int TextureWidth, int TexureHeight);
+		RTT(Graphics& gfx, int textureWidth, int texureHeight, TextureFormat eTextureFormat = TextureFormat::R32G32B32A32);
 		RTT(const RTT& rhs) = default;
 		~RTT() = default;
 
@@ -24,13 +25,21 @@ namespace Bind
 		void SetRenderTarget(Graphics& gfx);
 		void ClearRenderTarget(Graphics& gfx);
 		ID3D11ShaderResourceView* GetShaderResourceView();
+		ID3D11RenderTargetView* GetRenderTargetView();
 
 	private:
 		int texWidth;
 		int texHeight;
 
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> mRenderTargetTexture;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mRenderTargetView;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mShaderResourceView;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pBackTexture;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pShaderResourceView;
+
+		//DepthBuffer
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pDepthTexture2D;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDephtStencilView;
+		D3D11_VIEWPORT m_ViewPort;
+
+
 	};
 }

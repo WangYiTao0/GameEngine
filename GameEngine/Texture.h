@@ -2,6 +2,7 @@
 #include "Bindable.h"
 #include "Color.h"
 #include <assimp/material.h>
+#include <DirectXTK/WICTextureLoader.h>
 
 namespace Bind
 {
@@ -20,6 +21,7 @@ namespace Bind
 	{
 	public:
 		Texture(Graphics& gfx, const std::string& filePath, UINT slot = 0, ID3D11ShaderResourceView* pTv = nullptr);
+		Texture(Graphics& gfx, std::vector<std::string>& filePaths, UINT slot = 0);
 		void Bind(Graphics& gfx) noexcept override;
 		static std::shared_ptr<Texture> Resolve(Graphics& gfx, const std::string& filePath, UINT slot = 0, ID3D11ShaderResourceView* pTv = nullptr);
 		static std::string GenerateUID(const std::string& filePath, UINT slot = 0, ID3D11ShaderResourceView* pTv = nullptr);
@@ -36,7 +38,7 @@ namespace Bind
 		bool hasAlpha = false;
 		std::string filePath;
 		Microsoft::WRL::ComPtr<ID3D11Resource> pTexture = nullptr;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureView = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureViewSRV = nullptr;
 		//Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2D =nullptr;
 		aiTextureType type = aiTextureType::aiTextureType_UNKNOWN;
 	};

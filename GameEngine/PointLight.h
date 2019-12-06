@@ -4,18 +4,24 @@
 #include "SolidSphere.h"
 #include "ConstantBuffers.h"
 #include "ConditionalNoexcept.h"
+#include "Camera.h"
 
 class PointLight
 {
 public:
 	PointLight(Graphics& gfx, float radius = 0.5f);
 	void SpawnControlWindow() noexcept;
-	void SetCameraPos(DirectX::XMFLOAT3 pos);
+	void GetCamera(Camera3D cam);
 	void Reset() noexcept;
 	void Draw(Graphics& gfx) const noxnd;
 	void Bind(Graphics& gfx) const noexcept;
 
+	void GenerateViewMatrix();
+	void GenerateProjectionMatrix();
+	DirectX::XMMATRIX GetWorldMatrix();
+
 private:
+	Camera3D cam3D;
 	PointLightCBuf cbData;
 	mutable SolidSphere mesh;
 	mutable Bind::PixelConstantBuffer<PointLightCBuf> cbuf;

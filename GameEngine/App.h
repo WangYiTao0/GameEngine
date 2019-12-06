@@ -60,10 +60,11 @@ private:
 
 
 	bool enableRenderTarget = false;
-	Bind::RTT rtt;
+	std::shared_ptr<Bind::RTT> mSrcRT;
+	std::shared_ptr<Bind::RTT> mSSRRT;
+	//std::shared_ptr<Bind::RTT> mLightBuffer;
+	//std::shared_ptr<Bind::RTT> mGrayShadowMap;
 	//
-	Tex2D smallScene{ wnd.Gfx(),static_cast<float>(screenWidth),static_cast<float>(screenHeight),
-		static_cast<float>(screenWidth/4),
-		static_cast<float>(screenHeight/4),rtt.GetShaderResourceView() };
+	std::unique_ptr <Tex2D> smallScene;
 
 };

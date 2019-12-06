@@ -4,18 +4,21 @@
 #include <DirectXMath.h>
 using namespace  DirectX;
 
-Camera3D::Camera3D(Graphics& gfx)
-	:
-	gfx(gfx)
+std::shared_ptr<Camera3D> Camera3D::m_pCamera = nullptr;
+
+Camera3D::Camera3D()
+
 {
 	Reset();
 }
 
 void Camera3D::Set3DProj(float fov, float aspec, float nearZ, float farZ)
 {
+	m_NearZ = nearZ;
+	m_FarZ = farZ;
 	proj = DirectX::XMMatrixPerspectiveFovLH(fov,
 		aspec,
-		nearZ, farZ);
+		m_NearZ, m_FarZ);
 }
 
 DirectX::XMMATRIX Camera3D::GetProj()
@@ -123,6 +126,15 @@ void Camera3D::Translate(DirectX::XMFLOAT3 translation) noexcept
 		pos.y + translation.y,
 		pos.z + translation.z
 	};
+}
+
+std::shared_ptr<Camera3D> Camera3D::Get()
+{
+	if (nullptr == m_pCamera)
+	{
+		m_pCamera = std::shared_ptr<Camera3D>(new Camera3D());
+	}
+	return m_pCamera;
 }
 
 Camera2D::Camera2D()

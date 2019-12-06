@@ -3,7 +3,7 @@
 #include "BindableCodex.h"
 #include "StringHelper.h"
 #include "Surface.h"
-#include <DirectXTK/WICTextureLoader.h>
+#include "d3dUtil.h"
 
 namespace Bind
 {
@@ -14,7 +14,7 @@ namespace Bind
 		filePath(filePath),
 		slot(slot),
 		type(type),
-		pTextureView(pTv)
+		pTextureViewSRV(pTv)
 	{
 		INFOMAN(gfx);
 
@@ -54,21 +54,44 @@ namespace Bind
 			srvDesc.Texture2D.MostDetailedMip = 0;
 			srvDesc.Texture2D.MipLevels = -1;
 			GFX_THROW_INFO(GetDevice(gfx)->CreateShaderResourceView(
-				pTexture.Get(), &srvDesc, &pTextureView
+				pTexture.Get(), &srvDesc, &pTextureViewSRV
 			));
 
 			// generate the mip chain using the gpu rendering pipeline
-			GetContext(gfx)->GenerateMips(pTextureView.Get());
+			GetContext(gfx)->GenerateMips(pTextureViewSRV.Get());
 		}
 		else
 		{
-			pTextureView = pTv;
+			pTextureViewSRV = pTv;
 		}
+	}
+
+	Texture::Texture(Graphics& gfx, std::vector<std::string>& filePaths, UINT slot )
+		:
+		slot(slot)
+	{
+		INFOMAN(gfx);
+		std::vector<std::wstring> wFilePaths;
+
+		for (auto it : filePaths)
+		{
+			wFilePaths.push_back(StringHelper::ToWide(it));
+		}
+
+	
+		GFX_THROW_INFO(CreateWICTexture2DCubeFromFile(
+			GetDevice(gfx),
+			GetContext(gfx),
+			wFilePaths,
+			nullptr,
+			pTextureViewSRV.GetAddressOf(),
+			true
+		));
 	}
 
 	void Texture::Bind(Graphics& gfx) noexcept
 	{
-		GetContext(gfx)->PSSetShaderResources(slot, 1u, pTextureView.GetAddressOf());
+		GetContext(gfx)->PSSetShaderResources(slot, 1u, pTextureViewSRV.GetAddressOf());
 	}
 
 	std::shared_ptr<Texture> Texture::Resolve(Graphics& gfx, const std::string& filePath, UINT slot, ID3D11ShaderResourceView* pTv)
@@ -83,7 +106,7 @@ namespace Bind
 	}
 	std::string Texture::GetUID() const noexcept
 	{
-		return GenerateUID(filePath, slot, pTextureView.Get());
+		return GenerateUID(filePath, slot, pTextureViewSRV.Get());
 	}
 	bool Texture::HasAlpha() const noexcept
 	{
@@ -107,7 +130,7 @@ namespace Bind
 		COM_ERROR_IF_FAILED(hr, "Failed to initialize texture from color data.");
 		pTexture = static_cast<ID3D11Texture2D*>(p2DTexture);
 		CD3D11_SHADER_RESOURCE_VIEW_DESC srvDesc(D3D11_SRV_DIMENSION_TEXTURE2D, textureDesc.Format);
-		hr = GetDevice(gfx)->CreateShaderResourceView(pTexture.Get(), &srvDesc, pTextureView.GetAddressOf());
+		hr = GetDevice(gfx)->CreateShaderResourceView(pTexture.Get(), &srvDesc, pTextureViewSRV.GetAddressOf());
 		COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view from texture generated from color data.");
 	}
 }

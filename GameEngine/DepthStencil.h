@@ -8,11 +8,14 @@ namespace Bind
 	public:
 		enum class DepthStencilState
 		{
+			DSSLessEqual,
 			DSSWriteStencil,
 			DSSDrawWithStencil,
 			DSSNoDoubleBlend,
 			DSSNoDepthTest,
 			DSSNoDepthWrite,
+			DSSNoDepthTestWithStencil,
+			DSSNoDepthWriteWithStencil,
 		};
 
 	public:

@@ -13,6 +13,28 @@ namespace Bind
 
 		switch (Dss)
 		{
+		case DepthStencilState::DSSLessEqual:
+			//mirror
+			//do not write depth message
+			dsDesc.DepthEnable = true;
+			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+			dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+			dsDesc.StencilEnable = true;
+			dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+			dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+
+			dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+			
+			dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+			dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			break;
 		case DepthStencilState::DSSWriteStencil:
 			//mirror
 			//do not write depth message
@@ -87,6 +109,44 @@ namespace Bind
 			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 			dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 			dsDesc.StencilEnable = false;
+			break;
+		case DepthStencilState::DSSNoDepthTestWithStencil:
+
+			dsDesc.DepthEnable = false;
+			dsDesc.StencilEnable = true;
+			dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+			dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+
+			dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+			// 
+			dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+			break;
+		case DepthStencilState::DSSNoDepthWriteWithStencil:
+			dsDesc.DepthEnable = true;
+			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+			dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+			dsDesc.StencilEnable = false;
+
+			dsDesc.StencilEnable = true;
+			dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+			dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+
+			dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+			
+			dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+
 			break;
 		default:
 			break;

@@ -1,18 +1,18 @@
 #include "PointLight.h"
 #include "imgui/imgui.h"
 
+
+
 PointLight::PointLight(Graphics& gfx, float radius)
 	:
 	mesh(gfx, radius),
-	cbuf(gfx,1u)
+	cbuf(gfx, 1u)
 {
 	Reset();
 }
 
 void PointLight::SpawnControlWindow() noexcept
 {
-
-
 	if (ImGui::Begin("PointLight"))
 	{
 		ImGui::Text("Position");
@@ -30,7 +30,6 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::SliderFloat("Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f", 8);
 		ImGui::SliderFloat("Quadratic", &cbData.attQuad, 0.0000001f, 10.0f, "%.7f", 10);
 
-
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
@@ -39,10 +38,13 @@ void PointLight::SpawnControlWindow() noexcept
 	ImGui::End();
 }
 
-void PointLight::SetCameraPos(DirectX::XMFLOAT3 pos)
+void PointLight::GetCamera(Camera3D cam)
 {
-	cbData.cameraPos = pos;
+	cbData.cameraPos = cam.GetPos();
+	//DirectX::XMMatrixShadow
 }
+
+
 
 void PointLight::Reset() noexcept
 {
@@ -67,4 +69,9 @@ void PointLight::Bind(Graphics& gfx) const noexcept
 {
 	cbuf.Update(gfx, cbData);
 	cbuf.Bind(gfx);
+}
+
+DirectX::XMMATRIX PointLight::GetWorldMatrix()
+{
+	return DirectX::XMMatrixTranslation(cbData.position.x, cbData.position.y, cbData.position.z);
 }

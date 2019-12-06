@@ -6,7 +6,15 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	gfx(gfx),
 	Scene("Geometry Scene")
 {
-	cube.SetPos({ 0.0f,2.0f,0.0f });
+	std::vector<std::string> filePath = {
+		"Data\\Images\\skybox\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset_negX.bmp",
+		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
+		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
+
+
+	cube.SetPos({ 0.0f,2.0f,0.0f });	
+	m_pSunset = std::make_unique<SkyRender>(gfx,filePath,10.0f);
+
 }
 
 void GeometryScene::Update(float dt)
@@ -22,6 +30,8 @@ void GeometryScene::Draw()
 {
 	gridTerrain.DrawIndexed(gfx);
 	cube.DrawIndexed(gfx);
+
+	m_pSunset->DrawIndexed(gfx);
 
 
 
