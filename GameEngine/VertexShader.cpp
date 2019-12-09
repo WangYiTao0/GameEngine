@@ -5,20 +5,19 @@
 #include <typeinfo>
 namespace Bind
 {
-	VertexShader::VertexShader(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
+	VertexShader::VertexShader(Graphics& gfx, const std::string& shaderName)
 		:
-		csoPath(csoPath),
-		hlslPath(hlslPath)
+		m_ShaderName(shaderName)
 	{
 		INFOMAN(gfx);
 
 		std::string csofolder = StringHelper::GetShaderRootPath();
-		auto m_csoPath = csofolder + csoPath;
-		auto m_WcsoPath = std::wstring{ m_csoPath.begin(), m_csoPath.end() };
+		auto m_csoPath = csofolder + shaderName + ".cso";
+		auto m_WcsoPath = StringHelper::ToWide(m_csoPath);
 
 		std::string hlslfolder = "Shader\\";
-		auto m_hlslPath = hlslfolder + hlslPath;
-		auto m_WhlslPath = std::wstring{ m_hlslPath.begin(),m_hlslPath.end() };
+		auto m_hlslPath = hlslfolder + shaderName + ".hlsl";
+		auto m_WhlslPath = StringHelper::ToWide(m_hlslPath);
 
 
 		//create vertex shader
@@ -66,17 +65,17 @@ namespace Bind
 		return pBytecodeBlob.Get();
 	}
 
-	std::shared_ptr<VertexShader> VertexShader::Resolve(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
+	std::shared_ptr<VertexShader> VertexShader::Resolve(Graphics& gfx, const std::string& shaderName)
 	{
-		return Codex::Resolve<VertexShader>(gfx, csoPath, hlslPath);
+		return Codex::Resolve<VertexShader>(gfx, shaderName);
 	}
-	std::string VertexShader::GenerateUID(const std::string& csoPath, const std::string& hlslPath)
+	std::string VertexShader::GenerateUID(const std::string& shaderName)
 	{
 		using namespace std::string_literals;
-		return typeid(VertexShader).name() + "#"s + csoPath + hlslPath;
+		return typeid(VertexShader).name() + "#"s + shaderName;
 	}
 	std::string VertexShader::GetUID() const noexcept
 	{
-		return GenerateUID(csoPath,hlslPath);
+		return GenerateUID(m_ShaderName);
 	}
 }

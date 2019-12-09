@@ -11,16 +11,18 @@ namespace Bind
 		{
 			DirectX::XMMATRIX world;
 			DirectX::XMMATRIX worldInvTanspose;
-
 			//camera view pos
 			DirectX::XMMATRIX view;
+			DirectX::XMMATRIX viewInv;
+
 			//screen pos
 			DirectX::XMMATRIX proj;
 			//Camera2D
 			DirectX::XMMATRIX ortho;
+			DirectX::XMMATRIX world2D;	
 
-			DirectX::XMMATRIX world2D;
-
+			DirectX::XMFLOAT3 camera3DPos;
+			float Padding;
 		};
 	public:
 		TransformCbuf(Graphics& gfx, const Drawable& parent, UINT slot = 0u);

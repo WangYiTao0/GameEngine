@@ -25,11 +25,11 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap.cso", "PhongPSNormalMap.hlsl"));
+	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));
 

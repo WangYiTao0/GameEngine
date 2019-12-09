@@ -1,4 +1,19 @@
-#define MaxLight 16
+#define MaxLights 16
+
+// Defaults for number of lights.
+#ifndef NUM_DIR_LIGHTS
+    #define NUM_DIR_LIGHTS 1
+#endif
+
+#ifndef NUM_POINT_LIGHTS
+    #define NUM_POINT_LIGHTS 1
+#endif
+
+#ifndef NUM_SPOT_LIGHTS
+    #define NUM_SPOT_LIGHTS 0
+#endif
+
+float4 gAmbientLight = { 0.25f, 0.25f, 0.35f, 1.0f };
 
 struct LightVectorData
 {
@@ -8,19 +23,37 @@ struct LightVectorData
 };
 
 
-cbuffer PointLightCBuf : register(b1)
+struct Light
 {
-    float3 worldLightPos;
-    float diffuseIntensity;
-    float3 ambient;
-    float attConst;
-    float3 diffuseColor;
-    float attLin;
-    float3 cameraPos;
-    float attQuad;
+    float3 position; //spot point
+    float attQuad; //point spot
 
-    //float padding;
+    float3 diffcolor; //  direct spot point 
+    float attLin; //point spot
+
+    float3 direction; //direct spot
+    float attConst; //point spot
+
+    float3 ambient; //direct spot point 
+    float spotPower; //spot
+
+    float3 specular;
+    float cutOff;//spot
+
+    float outerCutOff;//spot
+    float diffuseIntensity;//direct spot point
+    float2 LightPadding;
+
 };
+
+cbuffer LightCB : register(b1)
+{
+        // Indices [0, NUM_DIR_LIGHTS) are directional lights;
+    // indices [NUM_DIR_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHTS) are point lights;
+    // indices [NUM_DIR_LIGHTS+NUM_POINT_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHT+NUM_SPOT_LIGHTS)
+    // are spot lights for a maximum of MaxLights per object.
+    Light gLights[MaxLights];
+}
 
 struct CommonMaterial
 {
@@ -33,6 +66,13 @@ struct CommonMaterial
 
 };
 
+struct Material
+{
+    float4 diffuseAlbedo;
+    float3 fresnelR0;
+    float shininess;
+};
+
 LightVectorData CalculateLightVectorData(const in float3 lightPos, const in float3 worldPos)
 {
     LightVectorData lv;
@@ -43,12 +83,9 @@ LightVectorData CalculateLightVectorData(const in float3 lightPos, const in floa
 }
 
 
-
-float Attenuate(uniform float attConst, uniform float attLin, uniform float attQuad, const in float distFragToL)
+float CalcAttenuation(uniform float attConst, uniform float attLin, uniform float attQuad, const in float distFragToL)
 {
-    float dist = distFragToL;
-    float attenuate = 1.0f / (attConst + attLin * dist + attQuad * (dist * dist));
-    return attenuate;
+    return 1.0f / (attConst + attLin * distFragToL + attQuad * (distFragToL * distFragToL));
 }
 
 float3 Diffuse(
@@ -81,6 +118,153 @@ float3 Speculate(
     return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, worldCamToFrag)), specularPower);
 }
 
+// Schlick gives an approximation to Fresnel reflectance (see pg. 233 "Real-Time Rendering 3rd Ed.").
+// R0 = ( (n-1)/(n+1) )^2, where n is the index of refraction.
+float3 SchlickFresnel(float3 R0, float3 normal, float3 lightVec)
+{
+    float cosIncidentAngle = saturate(dot(normal, lightVec));
+
+    float f0 = 1.0f - cosIncidentAngle;
+    float3 reflectPercent = R0 + (1.0f - R0) * (f0 * f0 * f0 * f0 * f0);
+
+    return reflectPercent;
+}
+
+float3 FresnelWithRoughness(float cosTheta, float3 F0, float roughness)
+{
+     /* const float3 F0 = lerp(0.04f.xxx, s.diffuseColor, s.metalness);
+	
+     const float3 Ks = FresnelWithRoughness(max(dot(s.N, V), 0.0), F0, s.roughness);
+  */
+    return F0 + (max((1.0f - roughness).xxx, F0) - F0) * pow(1.0 - cosTheta, 5.0);
+}
+
+
+float3 BlinnPhong(float3 lightStrength, float3 lightVec, float3 normal, float3 toEye, Material mat)
+{
+    const float m = mat.shininess * 256.0f;
+    float3 halfVec = normalize(toEye + lightVec);
+
+    float roughnessFactor = (m + 8.0f) * pow(max(dot(halfVec, normal), 0.0f), m) / 8.0f;
+    float3 fresnelFactor = SchlickFresnel(mat.fresnelR0, halfVec, lightVec);
+
+    float3 specAlbedo = fresnelFactor * roughnessFactor;
+
+    // Our spec formula goes outside [0,1] range, but we are 
+    // doing LDR rendering.  So scale it down a bit.
+    specAlbedo = specAlbedo / (specAlbedo + 1.0f);
+
+    return (mat.diffuseAlbedo.rgb + specAlbedo) * lightStrength;
+}
+
+
+
+//---------------------------------------------------------------------------------------
+// Evaluates the lighting equation for directional lights.
+//---------------------------------------------------------------------------------------
+float3 ComputeDirectionalLight(Light L, Material mat, float3 normal, float3 toEye)
+{
+    // The light vector aims opposite the direction the light rays travel.
+    float3 lightVec = -L.direction;
+
+
+    // Scale light down by Lambert's cosine law.
+    float ndotl = max(dot(lightVec, normal), 0.0f);
+    float3 lightStrength = L.diffColor * ndotl;
+
+
+    return BlinnPhong(lightStrength, lightVec, normal, toEye, mat);
+}
+
+//---------------------------------------------------------------------------------------
+// Evaluates the lighting equation for point lights.
+//---------------------------------------------------------------------------------------
+float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNormal, float3 toEye)
+{
+    // The vector from the surface to the light.
+    float3 lightVec = L.position - worldPos;
+
+    // The distance from surface to light.
+    float d = length(lightVec);
+
+    // Range test.
+
+
+    // Normalize the light vector.
+    lightVec /= d;
+
+    // Scale light down by Lambert's cosine law.
+    float ndotl = max(dot(lightVec, worldNormal), 0.0f);
+    float3 lightStrength = L.diffColor * ndotl;
+
+    // Attenuate light by distance.
+    float att = CalcAttenuation(L.attConst, L.attLin, L.attQuad, d);
+    lightStrength *= att;
+
+
+    return BlinnPhong(lightStrength, lightVec, worldNormal, toEye, mat);
+}
+
+//---------------------------------------------------------------------------------------
+// Evaluates the lighting equation for spot lights.
+//---------------------------------------------------------------------------------------
+float3 ComputeSpotLight(Light L, Material mat, float3 pos, float3 normal, float3 toEye)
+{
+    // The vector from the surface to the light.
+    float3 lightVec = L.position - pos;
+
+    // The distance from surface to light.
+    float d = length(lightVec);
+
+    // Normalize the light vector.
+    lightVec /= d;
+
+    // Scale light down by Lambert's cosine law.
+    float ndotl = max(dot(lightVec, normal), 0.0f);
+    float3 lightStrength = L.diffColor * ndotl;
+
+    // Attenuate light by distance.
+    float att = CalcAttenuation(L.attConst, L.attLin, L.attQuad, d);
+    lightStrength *= att;
+
+    // Scale by spotlight
+    float spotFactor = pow(max(dot(-lightVec, L.direction), 0.0f), L.spotPower);
+    lightStrength *= spotFactor;
+
+    return BlinnPhong(lightStrength, lightVec, normal, toEye, mat);
+}
+
+
+float4 ComputeLighting(Light gLights[MaxLights], Material mat,
+                       float3 pos, float3 normal, float3 toEye,
+                       float3 shadowFactor)
+{
+    float3 result = 0.0f;
+    int i = 0;
+#if (NUM_DIR_LIGHTS > 0)
+    for (i = 0; i < NUM_DIR_LIGHTS; ++i)
+    {
+        result += shadowFactor[i] * ComputeDirectionalLight(gLights[i], mat, normal, toEye);
+    }
+#endif
+    
+#if (NUM_POINT_LIGHTS > 0)
+    for (i = NUM_DIR_LIGHTS; i < NUM_DIR_LIGHTS + NUM_POINT_LIGHTS; ++i)
+    {
+        result += ComputePointLight(gLights[i], mat, pos, normal, toEye);
+
+    }
+#endif
+
+#if (NUM_SPOT_LIGHTS > 0)
+    for(i = NUM_DIR_LIGHTS + NUM_POINT_LIGHTS; i < NUM_DIR_LIGHTS + NUM_POINT_LIGHTS + NUM_SPOT_LIGHTS; ++i)
+    {
+        result += ComputeSpotLight(gLights[i], mat, pos, normal, toEye);
+    }
+#endif 
+
+    return float4(result, 0.0f);
+}
 
 //Lambert's Cosine Law  
 //E2 = E1(max(dot(n,L),0);

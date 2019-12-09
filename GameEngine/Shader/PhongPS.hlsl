@@ -22,12 +22,12 @@ light Pos
 
 cbuffer ObjectCBuf : register(b2)
 {
-    float specularIntensity;
-    float specularPower;
-    float padding[2];
+    float4 gDiffuseAlbedo;
+    float3 gFresnelR0;
+    float gRoughness;
 };
 
-struct PS_INPUT
+struct PS_pIn
 {
     //SV_Position describes the pixel location.
     float3 worldPos : Position;
@@ -35,33 +35,36 @@ struct PS_INPUT
     float2 texcoord : Texcoord;
 };
 
-Texture2D tex : register(t0);
+Texture2D diffTex : register(t0);
 
 
-float4 main(PS_INPUT input) : SV_Target
+float4 main(PS_pIn pIn) : SV_Target
 {
 
     //renormalize interpolatednormal
-    input.worldNormal = normalize(input.worldNormal);
+    pIn.worldNormal = normalize(pIn.worldNormal);
 
-    float3 viewLightPos = mul(float4(worldLightPos, 1.0f), viewMatrix);
+    // Vector from point being lit to eye. 
+    float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-    //fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(viewLightPos, input.worldPos);
-	// attenuation
-    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
-	// diffuse
-    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.worldNormal);
-	// specular
-    const float3 specular = Speculate(diffuseColor, specularIntensity, input.worldNormal, lv.vToL, input.worldPos, cameraPos, att, specularPower);
-	// final color
+  	// Indirect lighting.
+    float4 ambient = gAmbientLight * gDiffuseAlbedo;
+
+
     float4 finalColor = 1.0f;
-    float4 texColor = tex.Sample(sample0, input.texcoord);
-    clip(texColor.a - 0.1f);
-    finalColor.rgb = texColor.rgb * saturate(ambient + diff) + specular;
-    finalColor.a = texColor.a;
+    float4 diffTexColor = diffTex.Sample(sample0, pIn.texcoord);
 
-	// final color
+    const float shininess = 1.0f - gRoughness;
+    Material mat = { gDiffuseAlbedo, gFresnelR0, shininess };
+    float3 shadowFactor = 1.0f;
+    float4 LightColor = ComputeLighting(gLights, mat, pIn.worldPos,
+        pIn.worldNormal, toEyeW, shadowFactor);
+
+    finalColor = diffTexColor * (ambient + LightColor);
+
+    // Common convention to take alpha from diffuse material.
+    finalColor.a = gDiffuseAlbedo.a;
+    // final color
     return finalColor;
     //return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(sample0,tc);
 }

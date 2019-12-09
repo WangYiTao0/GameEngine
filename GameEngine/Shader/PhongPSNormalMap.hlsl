@@ -4,7 +4,7 @@
 #include "ShadingMath.hlsli"
 
 
-struct PS_INPUT
+struct PS_pIn
 {
     //SV_Position describes the pixel location.
     float3 worldPos      : Position;
@@ -16,49 +16,46 @@ struct PS_INPUT
 
 cbuffer ObjectCBuf :register (b2)
 {
-    float specularIntensity;
-    float specularPower;
-    bool normalMapEnabled;
-    float padding[1];
+    float4 gDiffuseAlbedo;
+    float3 gFresnelR0;
+    float gRoughness;
 };
 
-Texture2D tex : register(t0);
+Texture2D diffTex : register(t0);
 Texture2D nmap : register(t2);
 
 
-
-
-float4 main(PS_INPUT input) : SV_Target
+float4 main(PS_pIn pIn) : SV_Target
 {
-    // normalize the mesh normal
+ 
 
-    input.worldNormal = normalize(input.worldNormal);
-    input.worldTan = normalize(input.worldTan);
-    input.worldBitan = normalize(input.worldBitan);
+    // normalize the mesh normal
+    pIn.worldNormal = normalize(pIn.worldNormal);
+    pIn.worldTan = normalize(pIn.worldTan);
+    pIn.worldBitan = normalize(pIn.worldBitan);
 
     // replace normal with mapped if normal mapping enabled
-    if (normalMapEnabled)
-    {
-       input.worldNormal = MapNormal(input.worldTan, input.worldBitan, input.worldNormal, input.texcoord, nmap, sample0);
-    }
-	// fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(worldLightPos, input.worldPos);
-	// attenuation
-    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
-	// diffuse
-    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.worldNormal);
-    // specular
-    const float3 specular = Speculate(
-        diffuseColor, specularIntensity, input.worldNormal,
-        lv.vToL, input.worldPos,cameraPos, att, specularPower
-    );
+    pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmap, sample0);
+    // Vector from point being lit to eye. 
+    float3 toEyeW = normalize(cameraPos - pIn.worldPos);
+
+  	// Indirect lighting.
+    float4 ambient = gAmbientLight * gDiffuseAlbedo;
+
+
     float4 finalColor = 1.0f;
-    float4 texColor = tex.Sample(sample0, input.texcoord);
+    float4 diffTexColor = diffTex.Sample(sample0, pIn.texcoord);
 
+    const float shininess = 1.0f - gRoughness;
+    Material mat = { gDiffuseAlbedo, gFresnelR0, shininess };
+    float3 shadowFactor = 1.0f;
+    float4 LightColor = ComputeLighting(gLights, mat, pIn.worldPos,
+        pIn.worldNormal, toEyeW, shadowFactor);
 
-    finalColor.rgb = texColor.rgb * saturate(ambient + diff) + specular;
-    //  finalColor.a = texColor.a;
-    finalColor.a = 1.0f;
+    finalColor = diffTexColor * (ambient + LightColor);
+
+    // Common convention to take alpha from diffuse material.
+    finalColor.a = gDiffuseAlbedo.a;
     // final color
     return finalColor;
 }

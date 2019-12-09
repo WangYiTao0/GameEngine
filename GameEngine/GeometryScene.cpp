@@ -11,9 +11,8 @@ GeometryScene::GeometryScene(Graphics& gfx)
 		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
 		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
 
-
 	cube.SetPos({ 0.0f,2.0f,0.0f });	
-	m_pSunset = std::make_unique<SkyRender>(gfx,filePath,10.0f);
+	m_pSunset = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
 
 }
 

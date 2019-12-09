@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "GameObject.h"
 
+
 class Camera3D : public GameObject
 {
 public:
@@ -41,11 +42,10 @@ class Camera2D : public GameObject
 public:
 	Camera2D();
 	void SetOrtho(float width, float height, float nearZ, float farZ);
-	void Translate(DirectX::XMFLOAT3 translation) noexcept;
 	const DirectX::XMMATRIX& GetOrthoMatrix() const;
 	DirectX::XMMATRIX GetWorldMatrix();
-
 private:
-
 	DirectX::XMMATRIX orthoMatrix;
 };
+
+#define	GCamera3D (Camera3D::Get())

@@ -162,3 +162,6 @@ DirectX::XMMATRIX Camera2D::GetWorldMatrix()
 
 	return worldMatrix;
 }
+
+
+

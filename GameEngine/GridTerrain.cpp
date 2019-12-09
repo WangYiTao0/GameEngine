@@ -38,13 +38,13 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_a_diff.png"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_ddn.jpg", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap.cso", "PhongVSNormalMap.hlsl");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVSTBN");
 	//auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");
 	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap.cso", "PhongPSNormalMap.hlsl"));
+	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap"));
 	//AddBind(PixelShader::Resolve(gfx, "WaterWavesPS.cso", "WaterWavesPS.hlsl"));
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));

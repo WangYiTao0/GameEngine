@@ -6,6 +6,8 @@ cbuffer TransformCBuf : register(b0)
     matrix projMatrix;
     matrix orthoMatrix;
     matrix worldMatrix2D;
+    float3 cameraPos;
+    float cameraPadding;
 };
 
 SamplerState sample0 : register(s0); //liner

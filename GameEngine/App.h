@@ -3,8 +3,7 @@
 #include "GameTimer.h"
 #include "ImguiManager.h"
 #include "Camera.h"
-//#include "LightCommon.h"
-#include "PointLight.h"
+#include "Light.h"
 #include "BoundingSphere.h"
 #include "IntersectData.h"
 #include <set>
@@ -47,16 +46,16 @@ private:
 
 	GameTimer timer;
 	float speed_factor = 1.0f;
-	Camera3D cam;
+
+	//Camera3D cam;
 	Camera2D cam2D;
-
-	PointLight pointLight;
-
+	//Light
+	std::unique_ptr<Light> m_Light;
+	
 	CpuClass m_Cpu;
 
 	std::vector <std::unique_ptr<Scene>> scenes;
 	std::vector <std::unique_ptr<Scene>>::iterator curScene;
-
 
 
 	bool enableRenderTarget = false;

@@ -4,58 +4,31 @@
 #include <DirectXMath.h>
 #include "MathHelper.h"
 
-struct PointLightCBuf
-{
-	DirectX::XMFLOAT3 position;
-	float Intensity;
-	DirectX::XMFLOAT3 ambient;
-	float attConst;
-	DirectX::XMFLOAT3 diffuse;
-	float attLin;
-	DirectX::XMFLOAT3 cameraPos;
-	float attQuad;
-};
-
-struct DirectionLight
-{
-	DirectX::XMFLOAT3 direction;
-	float intensity;
-};
-
-struct SpotLight
-{
-	DirectX::XMFLOAT3 position;
-	float intensity;
-	DirectX::XMFLOAT3 direction;
-	float spotAngle;
-	DirectX::XMFLOAT3 spotPower;
-};
-
-struct Material
-{
-	DirectX::XMFLOAT3 ambient;
-	float attConst;
-	DirectX::XMFLOAT3 diffuse;
-	float attLin;
-	DirectX::XMFLOAT3 specular;
-};
-
-struct Light
-{
-	DirectionLight directionLight;
-	PointLightCBuf pointLight;
-	SpotLight spotLight;
-};
-
 #define MaxLights 16
 
-struct MaterialConstants
+
+struct LightCB
+{
+	DirectX::XMFLOAT3 position;  //spot point
+	float attQuad;	 //spot point
+	DirectX::XMFLOAT3 diffColor; //  direct spot point 
+	float attLin;	 //spot point
+	DirectX::XMFLOAT3 direction; //direct spot
+	float attConst;	 //spot point
+	DirectX::XMFLOAT3 specColor;//  direct spot point 
+	float spotPower; //spot
+	DirectX::XMFLOAT3 ambient; //direct spot point 
+	float spotAngle; //spot
+	float diffuseIntensity;
+	float lightPadding[3];
+};
+
+
+struct CommonMaterial
 {
 	DirectX::XMFLOAT4 DiffuseAlbedo = { 1.0f, 1.0f, 1.0f, 1.0f };
 	DirectX::XMFLOAT3 FresnelR0 = { 0.01f, 0.01f, 0.01f };
 	float Roughness = 0.25f;
-
-
 };
 
 // Simple struct to represent a material for our demos.  A production 3D engine

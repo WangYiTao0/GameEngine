@@ -2,7 +2,7 @@
 #include "LightingUtil.hlsli"
 #include "CommonPSOption.hlsli"
 
-struct PS_INPUT
+struct PS_pIn
 {
     //SV_Position describes the pixel location.
     float3 worldPos : Position;
@@ -12,48 +12,53 @@ struct PS_INPUT
 
 cbuffer ObjectCBuf : register(b2)
 {
-    float specularPowerConst;
-    bool hasGloss;
-    float specularMapWeight;
+    //float specularPowerConst;
+    //bool hasGloss;
+    //float specularMapWeight;
+    float4 gDiffuseAlbedo;
+    float3 gFresnelR0;
+    float gRoughness;
 };
 
-Texture2D tex : register(t0);
+Texture2D diffTex : register(t0);
 Texture2D spec : register(t1);
 
 
 
-float4 main(PS_INPUT input) : SV_Target
+float4 main(PS_pIn pIn) : SV_Target
 {
     // normalize the mesh normal
-    input.worldNormal = normalize(input.worldNormal);
-	// fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(worldLightPos, input.worldPos);
-    // specular parameters
-    float specularPower = specularPowerConst;
-    const float4 specularSample = spec.Sample(sample0, input.texcoord);
-    const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
-    if (hasGloss)
-    {
-        specularPower = pow(2.0f, specularSample.a * 13.0f);
-    }
-	// attenuation
-    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
-	// diffuse light
-    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.worldNormal);
-    // specular reflected
-    const float3 specularReflected = Speculate(
-        specularReflectionColor, 1.0f, input.worldNormal,
-        lv.vToL, input.worldPos, cameraPos, att, specularPower
-    );
-	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
+    pIn.worldNormal = normalize(pIn.worldNormal);
+
+    //// specular parameters
+    //float specularPower = specularPowerConst;
+    //const float4 specularSample = spec.Sample(sample0, pIn.texcoord);
+    //const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
+    //if (hasGloss)
+    //{
+    //    specularPower = pow(2.0f, specularSample.a * 13.0f);
+    //}
+
+    // Vector from point being lit to eye. 
+    float3 toEyeW = normalize(cameraPos - pIn.worldPos);
+
+  	// Indirect lighting.
+    float4 ambient = gAmbientLight * gDiffuseAlbedo;
+
+
     float4 finalColor = 1.0f;
-    float4 texColor = tex.Sample(sample0, input.texcoord);
-      //clip(texColor.a - 0.1f);
-    clip(texColor.a < 0.1f ? -1 : 1);
+    float4 diffTexColor = diffTex.Sample(sample0, pIn.texcoord);
 
-    finalColor.rgb = texColor.rgb * saturate(ambient + diff) + specularReflected;
-    finalColor.a = texColor.a;
+    const float shininess = 1.0f - gRoughness;
+    Material mat = { gDiffuseAlbedo, gFresnelR0, shininess };
+    float3 shadowFactor = 1.0f;
+    float4 LightColor = ComputeLighting(gLights, mat, pIn.worldPos,
+        pIn.worldNormal, toEyeW, shadowFactor);
 
-	// final color
+    finalColor = diffTexColor * (ambient + LightColor);
+
+    // Common convention to take alpha from diffuse material.
+    finalColor.a = gDiffuseAlbedo.a;
+    // final color
     return finalColor;
 }

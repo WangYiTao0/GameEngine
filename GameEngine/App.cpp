@@ -16,10 +16,11 @@ namespace dx = DirectX;
 
 App::App()
 	:
-	wnd(screenWidth, screenHeight, "Game Engine"),
-	pointLight(wnd.Gfx())
+	wnd(screenWidth, screenHeight, "Game Engine")
 {
-	
+	// init Light
+	m_Light = std::make_unique<Light>(wnd.Gfx(), 1, 1, 1);
+
 	// Create the cpu object.
 	m_Cpu.Initialize();
 	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
@@ -30,10 +31,10 @@ App::App()
 		0.0f, 1.0f);
 	wnd.Gfx().SetOrtho(cam2D.GetOrthoMatrix());
 	//3D Camera
-	cam.Set3DProj(MathHelper::PI / 4.0f,
+	GCamera3D->Set3DProj(MathHelper::PI / 4.0f,
 		static_cast<float>(screenWidth) / static_cast<float>(screenHeight),
 		nearZ, farZ);
-	wnd.Gfx().SetProjection(cam.GetProj());
+	wnd.Gfx().SetProjection(GCamera3D->GetProj());
 
 	mSrcRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
 	mSSRRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
@@ -45,13 +46,15 @@ App::App()
 		static_cast<float>(screenHeight / 4), mSrcRT->GetShaderResourceView());
 	smallScene->SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
 
-	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
-	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
-	scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
+	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 	curScene = scenes.begin();
 	OutoutSceneName();
+
+
 }
 
 int App::Go()
@@ -117,27 +120,27 @@ void App::HandleInput(float dt)
 	{
 		if (wnd.kbd.KeyIsPressed('W'))
 		{
-			cam.Translate({ 0.0f,0.0f,dt });
+			GCamera3D->Translate({ 0.0f,0.0f,dt });
 		}
 		if (wnd.kbd.KeyIsPressed('A'))
 		{
-			cam.Translate({ -dt,0.0f,0.0f });
+			GCamera3D->Translate({ -dt,0.0f,0.0f });
 		}
 		if (wnd.kbd.KeyIsPressed('S'))
 		{
-			cam.Translate({ 0.0f,0.0f,-dt });
+			GCamera3D->Translate({ 0.0f,0.0f,-dt });
 		}
 		if (wnd.kbd.KeyIsPressed('D'))
 		{
-			cam.Translate({ dt,0.0f,0.0f });
+			GCamera3D->Translate({ dt,0.0f,0.0f });
 		}
 		if (wnd.kbd.KeyIsPressed('R'))
 		{
-			cam.Translate({ 0.0f,dt,0.0f });
+			GCamera3D->Translate({ 0.0f,dt,0.0f });
 		}
 		if (wnd.kbd.KeyIsPressed('F'))
 		{
-			cam.Translate({ 0.0f,-dt,0.0f });
+			GCamera3D->Translate({ 0.0f,-dt,0.0f });
 		}
 	}
 
@@ -145,24 +148,24 @@ void App::HandleInput(float dt)
 	{
 		if (!wnd.CursorEnabled())
 		{
-			cam.Rotate((float)delta->x, (float)delta->y);
+			GCamera3D->Rotate((float)delta->x, (float)delta->y);
 		}
 	}
 }
 
 void App::update(float dt)
-{
-	//update Matrix
-	wnd.Gfx().SetCamera2DWorldMatirx(cam2D.GetWorldMatrix());
-	wnd.Gfx().SetCameraViewMatirx(cam.GetViewMatrix());
-
-
-
-	//update point light
-	pointLight.GetCamera(cam);
-	pointLight.Bind(wnd.Gfx());
+{	
 	//update Gpu frame
 	m_Cpu.Frame();
+	//update Matrix
+	wnd.Gfx().SetCamera2DWorldMatirx(cam2D.GetWorldMatrix());
+	wnd.Gfx().SetCameraViewMatirx(GCamera3D->GetViewMatrix());
+
+	//update light
+	m_Light->Bind(wnd.Gfx());
+	
+
+	
 	// update scene
 	(*curScene)->Update(dt);
 	
@@ -174,9 +177,9 @@ void App::Draw()
 	RenderScene();
 
 	// imgui windows
-	cam.SpawnControlWindow();
+	GCamera3D->SpawnControlWindow();
 	SpawnEngineStateWindow();
-	pointLight.SpawnControlWindow();
+	m_Light->SpawnControlWindow();
 
 	if (enableRenderTarget)
 	{
@@ -264,7 +267,7 @@ void App::RenderToTexture()
 
 void App::RenderScene()
 {
-	pointLight.Draw(wnd.Gfx());
+	m_Light->Draw(wnd.Gfx());
 	// draw scene
 	(*curScene)->Draw();
 }

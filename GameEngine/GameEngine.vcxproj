@@ -194,7 +194,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="PBRScene.cpp" />
     <ClCompile Include="PlaneMirror.cpp" />
-    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -204,7 +204,6 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CpuClass.cpp" />
     <ClCompile Include="DepthStencil.cpp" />
-    <ClCompile Include="DirectionLight.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DxgiInfoManager.cpp" />
@@ -295,7 +294,6 @@
     <ClInclude Include="CpuClass.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DepthStencil.h" />
-    <ClInclude Include="DirectionLight.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgiInfoManager.h" />
@@ -327,14 +325,13 @@
     <ClInclude Include="PhysicScene.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />
-    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Prism.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TestCube.h" />
     <ClInclude Include="TestPlane.h" />
@@ -514,7 +511,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="Shader\PhongVSNormalMap.hlsl">
+    <FxCompile Include="Shader\PhongVSTBN.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

@@ -5,20 +5,20 @@
 
 namespace Bind
 {
-	PixelShader::PixelShader(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
+	PixelShader::PixelShader(Graphics& gfx, const std::string& shaderName)
 		:
-		csoPath(csoPath),
-		hlslPath(hlslPath)
+		m_ShaderName(shaderName)
 	{
 		INFOMAN(gfx);
 
 		std::string csofolder = StringHelper::GetShaderRootPath();
-		auto m_csoPath = csofolder + csoPath;
-		auto m_WcsoPath = std::wstring{ m_csoPath.begin(), m_csoPath.end() };
+		auto m_csoPath = csofolder + shaderName + ".cso";
+		auto m_WcsoPath = StringHelper::ToWide(m_csoPath);
 
 		std::string hlslfolder = "Shader\\";
-		auto m_hlslPath = hlslfolder + hlslPath;
-		auto m_WhlslPath = std::wstring{ m_hlslPath.begin(),m_hlslPath.end() };
+		auto m_hlslPath = hlslfolder + shaderName + ".hlsl";
+		auto m_WhlslPath = StringHelper::ToWide(m_hlslPath);
+
 
 
 		//create vertex shader
@@ -57,20 +57,19 @@ namespace Bind
 	{
 		//bind pixel shader
 		GetContext(gfx)->PSSetShader(pPixelShader.Get(), nullptr, 0u);
-
 	}
 
-	std::shared_ptr<PixelShader> PixelShader::Resolve(Graphics& gfx, const std::string& csoPath, const std::string& hlslPath)
+	std::shared_ptr<PixelShader> PixelShader::Resolve(Graphics& gfx, const std::string& shaderName)
 	{
-		return Codex::Resolve<PixelShader>(gfx, csoPath, hlslPath);
+		return Codex::Resolve<PixelShader>(gfx, shaderName);
 	}
-	std::string PixelShader::GenerateUID(const std::string& csoPath, const std::string& hlslPath)
+	std::string PixelShader::GenerateUID(const std::string& shaderName)
 	{
 		using namespace std::string_literals;
-		return typeid(PixelShader).name() + "#"s + csoPath + hlslPath;
+		return typeid(PixelShader).name() + "#"s + shaderName;
 	}
 	std::string PixelShader::GetUID() const noexcept
 	{
-		return GenerateUID(csoPath, hlslPath);
+		return GenerateUID(m_ShaderName);
 	}
 }

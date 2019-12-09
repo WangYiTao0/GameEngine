@@ -16,7 +16,7 @@ light Pos
 #include "LightingUtil.hlsli"
 #include "CommonPSOption.hlsli"
 
-struct PS_INPUT
+struct PS_pIn
 {
     //SV_Position describes the pixel location.
     float3 worldPos : Position;
@@ -26,26 +26,37 @@ struct PS_INPUT
 cbuffer ObjectCBuf : register(b2)
 {
     float4 materialColor;
-    float4 specularColor;
-    float specularPower;
+    float4 gDiffuseAlbedo;
+    float3 gFresnelR0;
+    float gRoughness;
 };
 
 
-float4 main(PS_INPUT input) : SV_Target
+float4 main(PS_pIn pIn) : SV_Target
 {
     // normalize the mesh normal
-    input.worldNormal = normalize(input.worldNormal);
+    pIn.worldNormal = normalize(pIn.worldNormal);
+    // Vector from point being lit to eye. 
+    float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-    const LightVectorData lv = CalculateLightVectorData(worldLightPos, input.worldPos);
-	// attenuation
-    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
-	// diffuse
-    const float3 diff = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, input.worldNormal);
-    // specular
-    const float3 specular = Speculate(
-        specularColor.rgb, 1.0f, input.worldNormal,
-        lv.vToL, input.worldPos, cameraPos, att, specularPower
-    );
-	// final color
-    return float4(saturate((diff + ambient) * materialColor.rgb + specular), 1.0f);
+  	// Indirect lighting.
+    float4 ambient = gAmbientLight * gDiffuseAlbedo;
+
+
+    float4 finalColor = 1.0f;
+   // float4 diffTexColor = diffTex.Sample(sample0, pIn.texcoord);
+
+    const float shininess = 1.0f - gRoughness;
+    Material mat = { gDiffuseAlbedo, gFresnelR0, shininess };
+    float3 shadowFactor = 1.0f;
+    float4 LightColor = ComputeLighting(gLights, mat, pIn.worldPos,
+        pIn.worldNormal, toEyeW, shadowFactor);
+
+    finalColor = materialColor * (ambient + LightColor);
+
+    // Common convention to take alpha from diffuse material.
+    finalColor.a = gDiffuseAlbedo.a;
+    // final color
+    return finalColor;
+
 }

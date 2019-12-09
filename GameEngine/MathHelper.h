@@ -58,6 +58,14 @@ namespace MathHelper
 		return rdist(rng);
 	}
 
+	static DirectX::XMMATRIX Inversse(DirectX::CXMMATRIX M)
+	{
+		DirectX::XMMATRIX A = M;
+		A.r[3] = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		DirectX::XMVECTOR det = DirectX::XMMatrixDeterminant(A);
+		return DirectX::XMMatrixInverse(&det, A);
+	}
+
 	static DirectX::XMMATRIX InverseTranspose(DirectX::CXMMATRIX M)
 	{
 		// Inverse-transpose is just applied to normals.  So zero out 
@@ -79,5 +87,19 @@ namespace MathHelper
 			0.0f, 0.0f, 0.0f, 1.0f);
 
 		return I;
+	}
+
+	static DirectX::XMFLOAT3 GetCameraPosFromViewMatrix(DirectX::XMMATRIX viewInv)
+	{
+		/*Inverse the view matrix by calling XMMatrixInverse or
+		D3DXMatrixInverse so you get the "CameraWorld" matrix.
+		Then its (_41,_42,_43) elements would be the position vector.
+
+			Inverse the view matrix (such as last time) but
+			instead of reading forth roe, use XMMatrixDecompose 
+			or D3DXMatrixDecompose to get camera position and orientation.*/
+		DirectX::XMFLOAT4X4 fViewInv;
+		DirectX::XMStoreFloat4x4(&fViewInv, viewInv);
+		return{ fViewInv._41, fViewInv._42, fViewInv._43 };
 	}
 }

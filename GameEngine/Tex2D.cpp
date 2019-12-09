@@ -19,11 +19,11 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
 	AddBind(Texture::Resolve(gfx, filePath));
 
-	auto pvs = VertexShader::Resolve(gfx, "VS_2D.cso", "VS_2D.hlsl");
+	auto pvs = VertexShader::Resolve(gfx, "VS_2D");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PS_2D.cso", "PS_2D.hlsl"));
+	AddBind(PixelShader::Resolve(gfx, "PS_2D"));
 
 	AddBind(InputLayout::Resolve(gfx, tex2D.vertices.GetLayout(), pvsbc));
 	AddBind(std::make_shared<TransformCbuf>(gfx, *this, 0u));
@@ -52,11 +52,11 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
 	//AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
 	AddBind(Texture::Resolve(gfx, "null", 0u, pSv));
-	auto pvs = VertexShader::Resolve(gfx, "VS_2D.cso", "VS_2D.hlsl");
+	auto pvs = VertexShader::Resolve(gfx, "VS_2D");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PS_2D.cso", "PS_2D.hlsl"));
+	AddBind(PixelShader::Resolve(gfx, "PS_2D"));
 
 	AddBind(InputLayout::Resolve(gfx, tex2D.vertices.GetLayout(), pvsbc));
 	AddBind(std::make_shared<TransformCbuf>(gfx, *this, 0u));

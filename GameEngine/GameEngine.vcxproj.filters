@@ -261,9 +261,6 @@
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Source Files\Binable</Filter>
     </ClCompile>
-    <ClCompile Include="DirectionLight.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
     <ClCompile Include="ImguiManager.cpp">
       <Filter>Source Files\CommonTool</Filter>
     </ClCompile>
@@ -300,11 +297,11 @@
     <ClCompile Include="PBRScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
     <ClCompile Include="SkyRender.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -458,15 +455,6 @@
     <ClInclude Include="GeometryScene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionLight.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicScene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
@@ -590,6 +578,9 @@
     <ClInclude Include="SkyRender.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">
@@ -650,9 +641,6 @@
     <FxCompile Include="Shader\PhongVS.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\PhongVSNormalMap.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\PhongVSNotex.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
@@ -691,6 +679,9 @@
     </FxCompile>
     <FxCompile Include="Shader\Sky_PS.hlsl">
       <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongVSTBN.hlsl">
+      <Filter>Shader\VS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
