@@ -40,18 +40,6 @@ Mesh::Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs)
 	}
 	AddBind(std::make_shared<Bind::TransformPixelCbuf>(gfx, *this, 0u, 0u));
 }
-void Mesh::AddPixelShader(Graphics& gfx,std::string PS_Name)
-{
-	AddBind(Bind::PixelShader::Resolve(gfx, PS_Name));
-}
-
-void Mesh::AddPBRTexture(Graphics& gfx, std::vector<std::string>& filePaths)
-{
-	AddBind(Bind::Texture::Resolve(gfx, filePaths[0]));
-	AddBind(Bind::Texture::Resolve(gfx, filePaths[1], 1u));
-	AddBind(Bind::Texture::Resolve(gfx, filePaths[2], 2u));
-	AddBind(Bind::Texture::Resolve(gfx, filePaths[3], 3u));
-}
 
 void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
 {
@@ -255,6 +243,8 @@ void Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept
 Model::~Model() noexcept
 {
 }
+
+
 void Model::Draw(Graphics& gfx) const noxnd
 {
 	if (auto node = pWindow->GetSelectedNode())
@@ -271,7 +261,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	using Dvtx::VertexLayout;
 	using namespace Bind;
 
-	std::vector<std::shared_ptr<Bindable>> bindablePtrs;
+	//std::vector<std::shared_ptr<Bindable>> bindablePtrs;
 
 	const std::string rootPath = path.parent_path().string() + "\\";
 
@@ -376,7 +366,14 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	auto pvsbc = pvs->GetBytecode();
 	bindablePtrs.push_back(std::move(pvs));
 
+	bindablePtrs.push_back((Bind::PixelShader::Resolve(gfx, "PhongPSSpecNormalMap")));
+
 	bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
+
+
+	Material pmc;
+
+	bindablePtrs.push_back(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
 
 	// anything with alpha diffuse is 2-sided IN SPONZA, need a better way
 	// of signalling 2-sidedness to be more general in the future
@@ -388,6 +385,22 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	bindablePtrs.push_back(Blender::Resolve(gfx, false));
 
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
+}
+
+void Model::AddPixelShader(Graphics& gfx, std::string PS_Name)
+{
+	bindablePtrs.push_back((Bind::PixelShader::Resolve(gfx, PS_Name)));
+	meshPtrs.push_back(std::make_unique<Mesh>(gfx, std::move(bindablePtrs)));
+}
+
+void Model::AddPBRTexture(Graphics& gfx, std::vector<std::string>& filePaths)
+{
+	bindablePtrs.push_back((Bind::Texture::Resolve(gfx, filePaths[0])));
+	bindablePtrs.push_back((Bind::Texture::Resolve(gfx, filePaths[1], 1u)));
+	bindablePtrs.push_back((Bind::Texture::Resolve(gfx, filePaths[2], 2u)));
+	bindablePtrs.push_back((Bind::Texture::Resolve(gfx, filePaths[3], 3u)));
+
+	meshPtrs.push_back(std::make_unique<Mesh>(gfx, std::move(bindablePtrs)));
 }
 std::unique_ptr<Node> Model::ParseNode(int& nextId, const aiNode& node)noexcept
 {

@@ -8,6 +8,8 @@ class Camera3D : public GameObject
 public:
 	Camera3D();
 	void Set3DProj(float fov, float aspec, float nearZ, float farZ);
+
+
 	DirectX::XMMATRIX GetProj();
 	DirectX::XMMATRIX GetViewMatrix() const noexcept;
 
@@ -26,8 +28,12 @@ public:
 private:
 	static std::shared_ptr<Camera3D> m_pCamera;
 
-	DirectX::XMMATRIX proj;
 
+	DirectX::XMFLOAT3 m_Up;
+	DirectX::XMFLOAT3 m_Target;
+	DirectX::XMFLOAT4X4 m_view;
+
+	DirectX::XMMATRIX proj;
 	DirectX::XMMATRIX m_reflectionViewMatrix;
 
 	float m_NearZ = 1.0f;

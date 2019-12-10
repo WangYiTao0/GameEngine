@@ -15,24 +15,20 @@ struct PS_pIn
 
 cbuffer ObjectCBuf : register(b2)
 {
-    //bool hasGloss;
-    //float specularPowerConst;
-    //float3 specularColor;
-    //float specularMapWeight;
-    float4 gDiffuseAlbedo;
-    float3 gFresnelR0;
-    float gRoughness;
+    float3 diff;
+    float shininess;
+    float3 spec;
+    float specPower;
 };
 
 Texture2D diffTex : register(t0);
-Texture2D spec : register(t1);
-Texture2D nmap : register(t2);
+Texture2D specTex : register(t1);
+Texture2D nmapTex : register(t2);
 
 
 
 float4 main(PS_pIn pIn) : SV_Target
 {
-    
     //alpha blender
     //float4 texDiffColor = diffTex.Sample(sample0, pIn.texcoord);
 
@@ -58,43 +54,19 @@ float4 main(PS_pIn pIn) : SV_Target
     // replace normal with mapped if normal mapping enabled
 
     //pIn.worldNormal = UnpackNormals(nmap, sample0, pIn.texcoord, pIn.worldNormal, pIn.worldTan);
-    pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmap, sample0);
+    pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmapTex, sample0);
 
-    //// specular parameter determination (mapped or uniform)
-    //float3 specularReflectionColor;
-    ////if doesn't has specularMap  using specularPowerConst
-    //float specularPower = specularPowerConst;
- 
-    //const float4 specularSample = spec.Sample(sample0, pIn.texcoord);
-    //specularReflectionColor = specularSample.rgb * specularMapWeight;
-
-    //specularSample.a is [0,1] need  be power scale
-    //specularPower = pow(2.0, 13.0 * shininessMap)
-    //if (hasGloss)
-    //{
-    //    specularPower = pow(2.0f, specularSample.a * 13.0f);
-    //}
- 
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-  	// Indirect lighting.
-    float4 ambient = gAmbientLight * gDiffuseAlbedo;
-
-
-    float4 finalColor = 1.0f;
-    float4 diffTexColor = diffTex.Sample(sample0, pIn.texcoord);
-
-    const float shininess = 1.0f - gRoughness;
-    Material mat = { gDiffuseAlbedo, gFresnelR0, shininess };
     float3 shadowFactor = 1.0f;
-    float4 LightColor = ComputeLighting(gLights, mat, pIn.worldPos,
+
+    float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
+    float3 texSpec = specTex.Sample(sample0, pIn.texcoord).rgb;
+    Material mat = { texDiff, shininess, texSpec, specPower };
+    float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
 
-    finalColor = diffTexColor * (ambient + LightColor);
-
-    // Common convention to take alpha from diffuse material.
-    finalColor.a = gDiffuseAlbedo.a;
     // final color
     return finalColor;
 }

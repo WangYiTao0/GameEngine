@@ -1,7 +1,7 @@
 #pragma once
 #include "Drawable.h"
 #include "GameObject.h"
-
+#include "LightCommon.h"
 #include <DirectXCollision.h>
 class TestCube : public Drawable, public GameObject
 {
@@ -13,13 +13,7 @@ public:
 private:
 	void CreateBoundingBox();
 private:
-	struct PSMaterialConstant
-	{
-		float specularIntensity = 0.5f;
-		float specularPower = 60.0f;
-		BOOL normalMappingEnabled = TRUE;
-		float padding = 0.0f;
-	} pmc;
+	Material pmc;
 	DirectX::BoundingBox boundingBox;
 
 };

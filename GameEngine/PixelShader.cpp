@@ -19,8 +19,6 @@ namespace Bind
 		auto m_hlslPath = hlslfolder + shaderName + ".hlsl";
 		auto m_WhlslPath = StringHelper::ToWide(m_hlslPath);
 
-
-
 		//create vertex shader
 		if (m_WcsoPath.c_str() && D3DReadFileToBlob(m_WcsoPath.c_str(), &pBlobOut) == S_OK)
 		{
@@ -29,6 +27,8 @@ namespace Bind
 		else
 		{
 			DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+			//allow to change global variablese in  shader
+			//dwShaderFlags |=D3DCOMPILE_ENABLE_BACKWARDS_COMPATIBILITY;
 #ifdef _DEBUG
 
 			dwShaderFlags |= D3DCOMPILE_DEBUG;

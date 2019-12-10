@@ -7,7 +7,7 @@
 #define MaxLights 16
 
 
-struct LightCB
+struct LightCommon
 {
 	DirectX::XMFLOAT3 position;  //spot point
 	float attQuad;	 //spot point
@@ -15,20 +15,27 @@ struct LightCB
 	float attLin;	 //spot point
 	DirectX::XMFLOAT3 direction; //direct spot
 	float attConst;	 //spot point
-	DirectX::XMFLOAT3 specColor;//  direct spot point 
+	DirectX::XMFLOAT3 ambient;//  direct spot point 
 	float spotPower; //spot
-	DirectX::XMFLOAT3 ambient; //direct spot point 
-	float spotAngle; //spot
+	DirectX::XMFLOAT3 specular; //direct spot point 
+	float cutOff;//spot
+
+	float outerCutOff;//spot
 	float diffuseIntensity;
-	float lightPadding[3];
+	float lightPadding[2];
 };
 
-
-struct CommonMaterial
+struct LightCB
 {
-	DirectX::XMFLOAT4 DiffuseAlbedo = { 1.0f, 1.0f, 1.0f, 1.0f };
-	DirectX::XMFLOAT3 FresnelR0 = { 0.01f, 0.01f, 0.01f };
-	float Roughness = 0.25f;
+	LightCommon L[MaxLights];
+};
+
+struct Material
+{
+	DirectX::XMFLOAT3 diff = { 1.0f, 1.0f, 1.0f};
+	float shinness = 0.5f;
+	DirectX::XMFLOAT3 spec = { 0.01f, 0.01f, 0.01f };
+	float specPower = 30.0f;
 };
 
 // Simple struct to represent a material for our demos.  A production 3D engine

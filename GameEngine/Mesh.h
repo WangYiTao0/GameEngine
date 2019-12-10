@@ -29,13 +29,6 @@ class Mesh : public Drawable
 {
 public:
 	Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs);
-	void AddPixelShader(Graphics& gfx, std::string PS_Name);
-	template<typename C>
-	void AddConstantBuffer(Graphics& gfx, C& c, int slot)
-	{
-		AddBind(Bind::PixelConstantBuffer<C>::Resolve(gfx, pmc, slot));
-	}
-	void AddPBRTexture(Graphics& gfx, std::vector<std::string>& filePaths);
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 
@@ -56,8 +49,6 @@ public:
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	int GetId() const noexcept;
 	void ShowTree(Node*& pSelectedNode) const noexcept;
-
-	CommonMaterial pcmc;
 
 private:
 	//only model  can add child to node
@@ -82,8 +73,19 @@ public:
 	void ShowWindow(Graphics& gfx,const char* windowName = nullptr) noexcept;
 	void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 	~Model() noexcept;
+
+	void AddPixelShader(Graphics& gfx, std::string PS_Name);
+	template<typename C>
+	void AddConstantBuffer(Graphics& gfx, C& c, int slot)
+	{
+		C pmc;
+		bindablePtrs.push_back((Bind::PixelConstantBuffer<C>::Resolve(gfx, pmc, slot)));
+		meshPtrs.push_back(std::make_unique<Mesh>(gfx, std::move(bindablePtrs)));
+	}
+	void AddPBRTexture(Graphics& gfx, std::vector<std::string>& filePaths);
+
 private:
-	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx,
+	std::unique_ptr<Mesh> ParseMesh(Graphics& gfx,
 		const aiMesh& mesh, const aiMaterial* const* pMaterials,
 		const std::filesystem::path& path, float scale);
 	//analize
@@ -96,5 +98,7 @@ private:
 	//load all mesh  store in 
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
 	std::unique_ptr<class ModelWindow> pWindow;
+
+	std::vector<std::shared_ptr<Bind::Bindable>> bindablePtrs;
 };
 

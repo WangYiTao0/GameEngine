@@ -2,6 +2,7 @@
 #include "imgui/imgui.h"
 #include "MathHelper.h"
 #include <DirectXMath.h>
+
 using namespace  DirectX;
 
 std::shared_ptr<Camera3D> Camera3D::m_pCamera = nullptr;
@@ -37,6 +38,7 @@ DirectX::XMMATRIX Camera3D::GetViewMatrix() const noexcept
 	// to camera position/orientation in world) from cam position and direction
 	// camera "top" always faces towards +Y (cannot do a barrel roll)
 	const auto camPosition = XMLoadFloat3(&pos);
+	
 	const auto camTarget = camPosition + lookVector;
 
 	//view matrix

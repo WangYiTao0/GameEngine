@@ -25,13 +25,13 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, "PhongVSNormalMap");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVSTBN");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
 	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap"));
 
-	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 2u));
+	AddBind(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
 
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
@@ -66,15 +66,15 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 		ImGui::SliderAngle("Pitch", &rollPitchYaw.y, -180.0f, 180.0f);
 		ImGui::SliderAngle("Yaw", &rollPitchYaw.z, -180.0f, 180.0f);
 
-		bool changed0 = ImGui::SliderFloat("Spec. Int.", &pmc.specularIntensity, 0.0f, 1.0f);
-		bool changed1 = ImGui::SliderFloat("Spec. Power", &pmc.specularPower, 0.0f, 100.0f);
-		bool checkState = pmc.normalMappingEnabled == TRUE;
-		bool changed2 = ImGui::Checkbox("Enable Normal Map", &checkState);
-		pmc.normalMappingEnabled = checkState ? TRUE : FALSE;
-		if (changed0 || changed1 || changed2)
-		{
-			QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);
-		}	
+		//bool changed0 = ImGui::SliderFloat("Spec. Int.", &pmc.specularIntensity, 0.0f, 1.0f);
+		//bool changed1 = ImGui::SliderFloat("Spec. Power", &pmc.specularPower, 0.0f, 100.0f);
+		//bool checkState = pmc.normalMappingEnabled == TRUE;
+		//bool changed2 = ImGui::Checkbox("Enable Normal Map", &checkState);
+		//pmc.normalMappingEnabled = checkState ? TRUE : FALSE;
+		//if (changed0 || changed1 || changed2)
+		//{
+		//	QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update(gfx, pmc);
+		//}	
 		ImGui::Text("Shading");
 		auto pBlender = QueryBindable<Bind::Blender>();
 		float factor = pBlender->GetFactor();
