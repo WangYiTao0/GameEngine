@@ -15,7 +15,7 @@ cbuffer ObjectCBuf : register(b2)
     float3 diff;
     float shininess;
     float3 spec;
-    float specPower;
+    float padding;
 };
 
 
@@ -45,7 +45,7 @@ float4 main(PS_pIn pIn) : SV_Target
 
     float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
 
-    Material mat = { texDiff, shininess, spec, specPower };
+    Material mat = { texDiff, shininess, spec };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
 

@@ -33,9 +33,9 @@ struct LightCB
 struct Material
 {
 	DirectX::XMFLOAT3 diff = { 1.0f, 1.0f, 1.0f};
-	float shinness = 0.5f;
+	float shinness = 30.0f;
 	DirectX::XMFLOAT3 spec = { 0.01f, 0.01f, 0.01f };
-	float specPower = 30.0f;
+	float padding;
 };
 
 // Simple struct to represent a material for our demos.  A production 3D engine

@@ -67,11 +67,10 @@ void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
 		ImGui::SliderAngle("Yaw", &rollPitchYaw.z, -180.0f, 180.0f);
 
 		ImGui::Text("Material");
-		bool changed0 = ImGui::SliderFloat("Spec. shinness.", &pmc.shinness, 0.0f, 1.0f);
-		bool changed1 = ImGui::SliderFloat("Spec. Power", &pmc.specPower, 0.0f, 100.0f);
-		bool changed2 = ImGui::ColorEdit3("diff.", &pmc.diff.x);
-		bool changed3 = ImGui::ColorEdit3("Spec", &pmc.spec.x);
-		if (changed0 || changed1 || changed2 || changed3)
+		bool changed0 = ImGui::SliderFloat("Spec. shinness.", &pmc.shinness, 0.0f, 100.0f);
+		bool changed1 = ImGui::ColorEdit3("diff.", &pmc.diff.x);
+		bool changed2 = ImGui::ColorEdit3("Spec", &pmc.spec.x);
+		if (changed0 || changed1 || changed2)
 		{
 			QueryBindable<Bind::PixelConstantBuffer<Material>>()->Update(gfx, pmc);
 		}

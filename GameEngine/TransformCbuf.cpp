@@ -1,5 +1,6 @@
 #include "TransformCbuf.h"
 #include "MathHelper.h"
+#include "Camera.h"
 namespace Bind
 {
 	TransformCbuf::TransformCbuf(Graphics& gfx,
@@ -31,10 +32,14 @@ namespace Bind
 		const auto worldInv = MathHelper::Inversse(world);
 		const auto view = gfx.GetCameraViewMatrix();
 		const auto viewInv = MathHelper::Inversse(view);
+
 		const auto proj = gfx.GetProjection();
+
 		const auto ortho = gfx.GetOrtho();
 		const auto world2D = gfx.GetCamera2DWorldMatrix();
-		const auto cameraPos = MathHelper::GetCameraPosFromViewMatrix(viewInv);
+		//const auto cameraPos = MathHelper::GetCameraPosFromViewInvMatrix(viewInv);
+
+		const auto cameraPos = GCamera3D->GetPos();
 
 		//DirectX  are row matrix need transpose to column transpose for HLSL
 		return{
@@ -46,7 +51,7 @@ namespace Bind
 			DirectX::XMMatrixTranspose(ortho),
 			DirectX::XMMatrixTranspose(world2D),
 			cameraPos,
-			1.0f,
+			0.0f,
 		};
 	}
 

@@ -28,7 +28,7 @@ cbuffer ObjectCBuf : register(b2)
     float3 diff;
     float shininess;
     float3 spec;
-    float specPower;
+    float padding;
 };
 
 
@@ -43,7 +43,7 @@ float4 main(PS_pIn pIn) : SV_Target
     float3 shadowFactor = 1.0f;
 
 
-    Material mat = { diff, shininess, spec, specPower };
+    Material mat = { diff, shininess, spec };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
 

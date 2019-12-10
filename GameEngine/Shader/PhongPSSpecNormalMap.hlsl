@@ -18,7 +18,7 @@ cbuffer ObjectCBuf : register(b2)
     float3 diff;
     float shininess;
     float3 spec;
-    float specPower;
+    float padding;
 };
 
 Texture2D diffTex : register(t0);
@@ -30,18 +30,18 @@ Texture2D nmapTex : register(t2);
 float4 main(PS_pIn pIn) : SV_Target
 {
     //alpha blender
-    //float4 texDiffColor = diffTex.Sample(sample0, pIn.texcoord);
-
+    float4 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgba;
+    clip(texDiff.a < 0.1f ? -1 : 1);
+    
     //// fragment to light vector data
-    //const LightVectorData lv = CalculateLightVectorData(pL.worldPos, pIn.worldPos);
     //#ifdef HASMASK
     //// bail if highly translucent
-    //clip(texDiffColor.a < 0.1f ? -1 : 1);
+    //clip(texDiff.a < 0.1f ? -1 : 1);
 
-    //float3 toEye = pIn.worldPos - cameraPos;
+    //float3 toEye = cameraPos-pIn.worldPos;
 
     //// flip normal when backface
-    //if (dot(pIn.worldNormal, lv.dirToL) >= 0.0f && dot(pIn.worldNormal, toEye) >= 0.0f)
+    //if (dot(pIn.worldNormal, lv.dirToL) >= 0.0f && dot(pIn.worldNormal, -toEye) >= 0.0f)
     //{
     //    pIn.worldNormal = -pIn.worldNormal;
     //}
@@ -61,12 +61,12 @@ float4 main(PS_pIn pIn) : SV_Target
 
     float3 shadowFactor = 1.0f;
 
-    float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
+    //float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
     float3 texSpec = specTex.Sample(sample0, pIn.texcoord).rgb;
-    Material mat = { texDiff, shininess, texSpec, specPower };
+    Material mat = { texDiff.rgb, shininess, texSpec };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
-
+    finalColor.a = texDiff.a;
     // final color
     return finalColor;
 }
