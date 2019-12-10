@@ -1,5 +1,6 @@
 #include "Light.h"
 #include "imgui/imgui.h"
+#include "Camera.h"
 
 Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	:
@@ -101,43 +102,42 @@ void Light::Reset() noexcept
 	}
 }
 
-
-
 void Light::ResetDirectionLight(int lightID) noexcept
 {
-	lightData.L[lightID].direction = { -0.2f, -1.0f, -0.3f };
-	lightData.L[lightID].diffColor = { 0.6f, 0.6f, 0.6f };
-	lightData.L[lightID].specular = { 1.0f,1.0f,1.0f };
+	lightData.L[lightID].direction = { -0.2f, -1.0f, 0.3f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
-	lightData.L[lightID].diffuseIntensity = 1.0f;
+	lightData.L[lightID].diffColor = { 0.4f, 0.4f, 0.4f };
+	lightData.L[lightID].specular = { 0.5f,0.5f,0.5f };
 }
 
 void Light::ResetPointLight(int lightID) noexcept
 {
-	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
+	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };	
+	lightData.L[lightID].diffColor = { 0.8f, 0.8f, 0.8f };
 	lightData.L[lightID].specular = { 1.0f,1.0f,1.0f };
-	lightData.L[lightID].diffColor = { 0.6f, 0.6f, 0.6f };
+
 	lightData.L[lightID].attConst = 1.0f;
 	lightData.L[lightID].attLin = 0.045f;
 	lightData.L[lightID].attQuad = 0.0075f;
-	lightData.L[lightID].diffuseIntensity = 1.0f;
+
 
 }
 void Light::ResetSpotLight(int lightID) noexcept
-{
-	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
+{	
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
-	lightData.L[lightID].direction = { 0.57735f, -0.57735f, 0.57735f };
+	lightData.L[lightID].direction = { 0.0f, 0.0f, 1.0f };
+	lightData.L[lightID].ambient = { 0.0f,0.0f,0.0f };
+	lightData.L[lightID].diffColor = { 1.0f, 1.0f, 1.0f };
 	lightData.L[lightID].specular = { 1.0f,1.0f,1.0f };
-	lightData.L[lightID].diffColor = { 0.6f, 0.6f, 0.6f };
+
 	lightData.L[lightID].attConst = 1.0f;
 	lightData.L[lightID].attLin = 0.045f;
-	lightData.L[lightID].attQuad = 0.0075f;
-	lightData.L[lightID].spotPower = 0.045f;
-	lightData.L[lightID].cutOff = DirectX::XMConvertToRadians(12.5f);
-	lightData.L[lightID].outerCutOff = DirectX::XMConvertToRadians(15.f);
-	lightData.L[lightID].diffuseIntensity = 1.0f;
+	lightData.L[lightID].attQuad = 0.09f;
+	lightData.L[lightID].spotPower = 0.032f;
+	lightData.L[lightID].cutOff = std::cos(DirectX::XMConvertToRadians(12.5f));
+	lightData.L[lightID].outerCutOff = std::cos(DirectX::XMConvertToRadians(15.f));
+
 }
 
 bool Light::SpawnDirLightWindow(int lightId) noexcept
@@ -148,10 +148,11 @@ bool Light::SpawnDirLightWindow(int lightId) noexcept
 	if (ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
 	{
 		ImGui::Text("Direction");
-		ImGui::SliderFloat3("Direction", &lightData.L[lightId].direction.x, -180.0f, 180.0f);
+		ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
+		ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
+		ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
 
-		ImGui::Text("Intensity/Color");
-		ImGui::SliderFloat("Diffuse Intensity", &lightData.L[lightId].diffuseIntensity, 0.01f, 2.0f, "%.2f", 2);
+		ImGui::Text("Light Color");
 		ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].diffColor.x);
 		ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
 		ImGui::ColorEdit3("Specular", &lightData.L[lightId].specular.x);
@@ -177,8 +178,7 @@ bool Light::SpawnPointLightWindow(int lightId) noexcept
 		ImGui::SliderFloat("Y", &lightData.L[lightId].position.y, -60.0f, 60.0f, "%.1f");
 		ImGui::SliderFloat("Z", &lightData.L[lightId].position.z, -60.0f, 60.0f, "%.1f");
 
-		ImGui::Text("Intensity/Color");
-		ImGui::SliderFloat("Diffuse Intensity", &lightData.L[lightId].diffuseIntensity, 0.01f, 2.0f, "%.2f", 2);
+		ImGui::Text("Light Color");
 		ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].diffColor.x);
 		ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
 		ImGui::ColorEdit3("Specular", &lightData.L[lightId].specular.x);
@@ -205,15 +205,17 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 	if (ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
 	{
 		ImGui::Text("Direction");
-		ImGui::SliderFloat3("Direction", &lightData.L[lightId].direction.x, -180.0f, 180.0f);
+		ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
+		ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
+		ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
+
 
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &lightData.L[lightId].position.x, -60.0f, 60.0f, "%.1f");
 		ImGui::SliderFloat("Y", &lightData.L[lightId].position.y, -60.0f, 60.0f, "%.1f");
 		ImGui::SliderFloat("Z", &lightData.L[lightId].position.z, -60.0f, 60.0f, "%.1f");
 
-		ImGui::Text("Intensity/Color");
-		ImGui::SliderFloat("Diffuse Intensity", &lightData.L[lightId].diffuseIntensity, 0.01f, 2.0f, "%.2f", 2);
+		ImGui::Text("Light Color");
 		ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].diffColor.x);
 		ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
 		ImGui::ColorEdit3("Specular", &lightData.L[lightId].specular.x);

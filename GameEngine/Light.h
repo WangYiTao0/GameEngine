@@ -18,9 +18,38 @@ public:
 	~Light() = default;
 	void SpawnLightManagerWindow(Graphics& gfx)noexcept;
 	
+	//ëÆê´ Attributes
+	template<typename T>
+	void SetLightAttributes(int lightID,T& lightData)
+	{
+		lightData.L[lightID].position = lightData.position ? lightData.position : DirectX::XMFLOAT3(0.0f, 9.0f, 0.0f);
+		lightData.L[lightID].direction = { 0.0f, 0.0f, 1.0f };
+		lightData.L[lightID].ambient = { 0.0f,0.0f,0.0f };
+		lightData.L[lightID].diffColor = { 1.0f, 1.0f, 1.0f };
+		lightData.L[lightID].specular = { 1.0f,1.0f,1.0f };
+
+		lightData.L[lightID].attConst = 1.0f;
+		lightData.L[lightID].attLin = 0.045f;
+		lightData.L[lightID].attQuad = 0.09f;
+		lightData.L[lightID].spotPower = 0.032f;
+		lightData.L[lightID].cutOff = std::cos(DirectX::XMConvertToRadians(12.5f));
+		lightData.L[lightID].outerCutOff = std::cos(DirectX::XMConvertToRadians(15.f));
+		lightData.L[lightID].diffuseIntensity = 1.0f;
+	}
+
 	void Reset() noexcept;
 	void Draw(Graphics& gfx) const noxnd;
 	void Bind(Graphics& gfx) const noexcept;
+
+	DirectX::XMMATRIX GetLightViewMatrix(int lightID)
+	{
+		float fFarPlane = GCamera3D->GetFarZ();
+		DirectX::XMFLOAT3 eyePos = lightData.L[lightID].position;
+		DirectX::XMVECTOR eyePosVec = DirectX::XMVectorSet(eyePos.x, eyePos.y, eyePos.z, 1.0f);
+		DirectX::XMVECTOR normalizeLightDir = DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&lightData.L[lightID].direction));
+	
+	}
+
 
 private:
 	void ResetDirectionLight(int lightID) noexcept;
@@ -33,6 +62,11 @@ private:
 	bool SpawnSpotLightWindow( int lightId)noexcept;
 
 private:
+	struct LightCB
+	{
+		LightCommon L[MaxLights];
+	};
+
 	 int m_DirLightNum;
 	 int m_PointLightNum;
 	 int m_SpotLightNum;

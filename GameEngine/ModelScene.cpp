@@ -10,6 +10,13 @@ ModelScene::ModelScene(Graphics& gfx)
 	gfx(gfx),
 	Scene("Model Scene")
 {
+	std::vector<std::string> filePath = {
+	"Data\\Images\\skybox\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset_negX.bmp",
+	"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
+	"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
+	m_pSunset = std::make_unique<SkyRender>(gfx, filePath, 1000.0f);
+
+
 	//bluePlane.SetPos({0.0f,0.0f,5.0f});
 	//redPlane.SetPos({ 0.0f,0.0f,6.0f });
 	sponza.AddPixelShader(gfx, "PhongPSSpecNormalMap");
@@ -35,5 +42,5 @@ void ModelScene::Draw()
 	//bluePlane.DrawIndexed(gfx);
 
 
-
+	m_pSunset->DrawIndexed(gfx);
 }

@@ -19,7 +19,7 @@ App::App()
 	wnd(screenWidth, screenHeight, "Game Engine")
 {
 	// init Light
-	m_Light = std::make_unique<Light>(wnd.Gfx(), 0, 1, 0);
+	m_Light = std::make_unique<Light>(wnd.Gfx(), 1,2, 2);
 
 	// Create the cpu object.
 	m_Cpu.Initialize();
@@ -46,7 +46,7 @@ App::App()
 		static_cast<float>(screenHeight / 4), mSrcRT->GetShaderResourceView());
 	smallScene->SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
 
-	scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));

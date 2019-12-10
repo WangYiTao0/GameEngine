@@ -15,6 +15,8 @@ Camera3D::Camera3D()
 
 void Camera3D::Set3DProj(float fov, float aspec, float nearZ, float farZ)
 {
+	m_FovY = fov;
+	m_Aspect = aspec;
 	m_NearZ = nearZ;
 	m_FarZ = farZ;
 	proj = DirectX::XMMatrixPerspectiveFovLH(fov,
@@ -27,7 +29,7 @@ DirectX::XMMATRIX Camera3D::GetProj()
 	return proj;
 }
 
-DirectX::XMMATRIX Camera3D::GetViewMatrix() const noexcept
+DirectX::XMMATRIX Camera3D::GetViewMatrix() noexcept
 {
 	const XMVECTOR forwardBaseVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	// apply the camera rotations to a base vector
@@ -39,11 +41,13 @@ DirectX::XMMATRIX Camera3D::GetViewMatrix() const noexcept
 	// camera "top" always faces towards +Y (cannot do a barrel roll)
 	const auto camPosition = XMLoadFloat3(&pos);
 	
-	const auto camTarget = camPosition + lookVector;
+	//const auto camTarget = camPosition + lookVector;
+
+	DirectX::XMStoreFloat3(&m_Look, camPosition + lookVector);
 
 	//view matrix
 	//Builds a view matrix for a left-handed coordinate system using a camera position, an up direction, and a focal point.
-	return XMMatrixLookAtLH(camPosition, camTarget, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
+	return XMMatrixLookAtLH(camPosition, DirectX::XMLoadFloat3(&m_Look), DirectX::XMLoadFloat3(&m_Up));
 }
 
 void Camera3D::RenderReflection(float height)

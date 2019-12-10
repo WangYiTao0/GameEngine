@@ -21,14 +21,10 @@ struct LightCommon
 	float cutOff;//spot
 
 	float outerCutOff;//spot
-	float diffuseIntensity;
-	float lightPadding[2];
+	float lightPadding[3];
 };
 
-struct LightCB
-{
-	LightCommon L[MaxLights];
-};
+
 
 struct Material
 {

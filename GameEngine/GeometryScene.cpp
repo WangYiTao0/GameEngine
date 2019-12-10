@@ -31,9 +31,6 @@ void GeometryScene::Draw()
 	cube.DrawIndexed(gfx);
 
 	m_pSunset->DrawIndexed(gfx);
-
-
-
 }
 
 void GeometryScene::SpownFrustumControl()

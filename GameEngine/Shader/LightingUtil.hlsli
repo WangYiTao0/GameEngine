@@ -2,15 +2,15 @@
 
 // Defaults for number of lights.
 #ifndef NUM_DIR_LIGHTS
-    #define NUM_DIR_LIGHTS 0
+    #define NUM_DIR_LIGHTS 1
 #endif
 
 #ifndef NUM_POINT_LIGHTS
-    #define NUM_POINT_LIGHTS 1
+    #define NUM_POINT_LIGHTS 2
 #endif
 
 #ifndef NUM_SPOT_LIGHTS
-    #define NUM_SPOT_LIGHTS 0
+    #define NUM_SPOT_LIGHTS 2
 #endif
 
 float4 gAmbientLight = { 0.25f, 0.25f, 0.35f, 1.0f };
@@ -41,8 +41,7 @@ struct Light
     float cutOff;//spot
 
     float outerCutOff;//spot
-    float diffuseIntensity;//direct spot point
-    float2 LightPadding;
+    float3 LightPadding;
 
 };
 
@@ -135,7 +134,7 @@ float3 ComputeDirectionalLight(Light L, Material mat, float3 normal, float3 toEy
     float spec = pow(max(dot(toEye, reflectDir), 0.0f), mat.shininess);
     //combine results
     float3 ambient = L.ambient * mat.diff;
-    float3 diffuse = L.diffColor * L.diffuseIntensity * diff * mat.diff;
+    float3 diffuse = L.diffColor  * diff * mat.diff;
     float3 specular = L.specular  * spec * mat.spec;
 
     return saturate(ambient + diffuse) + specular;
@@ -168,7 +167,7 @@ float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNor
     float attenuation = CalcAttenuation(L.attConst, L.attLin, L.attQuad, distance);
     // combine results
     float3 ambient = L.ambient * mat.diff;
-    float3 diffuse = L.diffColor * L.diffuseIntensity * diff * mat.diff;
+    float3 diffuse = L.diffColor * diff * mat.diff;
     float3 specular = L.specular * spec * mat.spec;
     ambient *= attenuation;
     diffuse *= attenuation;
@@ -201,7 +200,7 @@ float3 ComputeSpotLight(Light L, Material mat, float3 worldPos, float3 normal, f
     float intensity = clamp((theta - L.outerCutOff) / epsilon, 0.0, 1.0);
     // combine results
     float3 ambient = L.ambient * mat.diff;
-    float3 diffuse = L.diffColor * L.diffuseIntensity * diff * mat.diff;
+    float3 diffuse = L.diffColor * diff * mat.diff;
     float3 specular = L.specular * spec * mat.spec;
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
