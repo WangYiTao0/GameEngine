@@ -15,12 +15,12 @@ Camera3D::Camera3D()
 
 void Camera3D::Set3DProj(float fov, float aspec, float nearZ, float farZ)
 {
-	m_FovY = fov;
+	m_Fov = fov;
 	m_Aspect = aspec;
 	m_NearZ = nearZ;
 	m_FarZ = farZ;
-	proj = DirectX::XMMatrixPerspectiveFovLH(fov,
-		aspec,
+	proj = DirectX::XMMatrixPerspectiveFovLH(m_Fov,
+		m_Aspect,
 		m_NearZ, m_FarZ);
 }
 
@@ -67,7 +67,7 @@ void Camera3D::RenderReflection(float height)
 	position.z = pos.z;
 
 	// Calculate the rotation in radians.
-	radians = rollPitchYaw.y * MathHelper::oneRad;
+	radians = rollPitchYaw.y * MH::oneRad;
 
 	// Setup where the camera is looking.
 	lookAt.x = sinf(radians) + pos.x;
@@ -116,8 +116,8 @@ void Camera3D::Reset() noexcept
 
 void Camera3D::Rotate(float dx, float dy) noexcept
 {
-	rollPitchYaw.y = MathHelper::wrap_angle(rollPitchYaw.y + dx * rotationSpeed);
-	rollPitchYaw.x = std::clamp(rollPitchYaw.x + dy * rotationSpeed, 0.995f * -MathHelper::PI / 2.0f, 0.995f * MathHelper::PI / 2.0f);
+	rollPitchYaw.y = MH::wrap_angle(rollPitchYaw.y + dx * rotationSpeed);
+	rollPitchYaw.x = std::clamp(rollPitchYaw.x + dy * rotationSpeed, 0.995f * -MH::PI / 2.0f, 0.995f * MH::PI / 2.0f);
 }
 
 void Camera3D::Translate(DirectX::XMFLOAT3 translation) noexcept

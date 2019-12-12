@@ -1,4 +1,4 @@
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 struct PS_IN
 {
@@ -6,6 +6,8 @@ struct PS_IN
 };
 
 TextureCube texCube : register(t4);
+
+SamplerState sample0 : register(s0);
 
 float4 main(PS_IN pIn) : SV_Target
 {

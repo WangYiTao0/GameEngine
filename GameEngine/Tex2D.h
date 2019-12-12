@@ -8,9 +8,9 @@ class Tex2D :public Drawable ,public GameObject
 {
 public:
 	Tex2D(Graphics& gfx,float screenWidth,float screenHeight, float texWidth, float texHeight, std::string filePath);
-	Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float width, float height, ID3D11ShaderResourceView* pSv);
+	Tex2D(Graphics& gfx, float screenWidth, float screenHeight,
+		float width, float height, std::string VS_Name, std::string PS_Name,ID3D11ShaderResourceView* pSv);
 
-	
 
 	void Update(Graphics& gfx);
 	

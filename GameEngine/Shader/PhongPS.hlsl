@@ -16,7 +16,7 @@ light Pos
 
 #include "ShaderOptions.hlsli"
 #include "LightingUtil.hlsli"
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 
 
@@ -28,6 +28,8 @@ cbuffer ObjectCBuf : register(b2)
     float padding;
 };
 
+
+
 struct PS_pIn
 {
     //SV_Position describes the pixel location.
@@ -37,7 +39,7 @@ struct PS_pIn
 };
 
 Texture2D diffTex : register(t0);
-
+SamplerState sample0 : register(s0);
 
 float4 main(PS_pIn pIn) : SV_Target
 {

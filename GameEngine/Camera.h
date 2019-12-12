@@ -21,6 +21,7 @@ public:
 	inline DirectX::XMFLOAT3 GetLook()const { return m_Look; }
 	inline float GetNearZ() { return m_NearZ; }
 	inline float GetFarZ() { return m_FarZ; }
+	inline float GetFov() { return m_Fov; }
 
 
 	void SpawnControlWindow() noexcept;
@@ -41,7 +42,7 @@ private:
 	DirectX::XMMATRIX proj;
 	DirectX::XMMATRIX m_reflectionViewMatrix;
 
-	float m_FovY = 0.0f;
+	float m_Fov = 0.0f;
 	float m_Aspect = 0.0f;
 	float m_NearZ = 1.0f;
 	float m_FarZ = 100.0f;
@@ -64,6 +65,7 @@ public:
 	DirectX::XMMATRIX GetWorldMatrix();
 private:
 	DirectX::XMMATRIX orthoMatrix;
+	
 };
 
 #define	GCamera3D (Camera3D::Get())

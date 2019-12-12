@@ -2,7 +2,7 @@
 #include<cmath>
 #include<random>
 
-namespace MathHelper
+namespace MH
 {
 	constexpr float PI = 3.14159265f;
 	constexpr double PI_D = 3.1415926535897932;
@@ -109,4 +109,224 @@ namespace MathHelper
 		DirectX::XMStoreFloat3(&trans3f, trans);
 		return	trans3f;
 	}
+
+	class Vec3 : public DirectX::XMFLOAT3
+	{
+	public:
+		Vec3() = default;
+		Vec3(const float x, const float y, const float z)
+			:
+			DirectX::XMFLOAT3(x, y, z)
+		{}
+		Vec3(const DirectX::XMFLOAT3& src)
+		{
+			x = src.x;
+			y = src.y;
+			z = src.z;
+		}
+		Vec3(const DirectX::XMVECTOR v)
+		{
+			DirectX::XMStoreFloat3(this, v);
+		}
+
+		Vec3& operator=(const DirectX::XMFLOAT3& src)
+		{
+			x = src.x;
+			y = src.y;
+			z = src.z;
+
+			return *this;
+		}
+		Vec3 operator*(float scalar) const
+		{
+			Vec3 res;
+			res.x = x * scalar;
+			res.y = y * scalar;
+			res.z = z * scalar;
+
+			return res;
+		}
+		Vec3 operator-() const
+		{
+			Vec3 res;
+			res.x = -x;
+			res.y = -y;
+			res.z = -z;
+
+			return res;
+		}
+		Vec3 operator+(const Vec3& rhs) const
+		{
+			Vec3 res;
+			res.x = x + rhs.x;
+			res.y = y + rhs.y;
+			res.z = z + rhs.z;
+
+			return res;
+		}
+		Vec3 operator-(const Vec3& rhs) const
+		{
+			Vec3 res;
+			res.x = x - rhs.x;
+			res.y = y - rhs.y;
+			res.z = z - rhs.z;
+
+			return res;
+		}
+		Vec3& operator+=(const Vec3& rhs)
+		{
+			x += rhs.x;
+			y += rhs.y;
+			z += rhs.z;
+
+			return *this;
+		}
+		Vec3& operator-=(const Vec3& rhs)
+		{
+			x -= rhs.x;
+			y -= rhs.y;
+			z -= rhs.z;
+
+			return *this;
+		}
+
+		float LengthSq() const
+		{
+			return x * x + y * y + z * z;
+		}
+
+		float Length() const
+		{
+			return sqrt(LengthSq());
+		}
+
+		Vec3& Normalize()
+		{
+			float length = Length();
+			x /= length;
+			y /= length;
+			z /= length;
+
+			return *this;
+		}
+
+		Vec3 Normalized() const
+		{
+			float length = Length();
+
+			return { x / length, y / length, z / length };
+		}
+
+		operator DirectX::XMVECTOR() const
+		{
+			return DirectX::XMLoadFloat3(this);
+		}
+	};
+
+	class Vec4 : public DirectX::XMFLOAT4
+	{
+	public:
+		Vec4() = default;
+		Vec4(const float x, const float y, const float z, const float w)
+			:
+			DirectX::XMFLOAT4(x, y, z, w)
+		{}
+		Vec4(const Vec3& v3, const float vw)
+		{
+			x = v3.x;
+			y = v3.y;
+			z = v3.z;
+			w = vw;
+		}
+
+		Vec4(const DirectX::XMFLOAT4& src)
+		{
+			x = src.x;
+			y = src.y;
+			z = src.z;
+			w = src.w;
+		}
+		Vec4(const DirectX::XMVECTOR v)
+		{
+			DirectX::XMStoreFloat4(this, v);
+		}
+
+		Vec4& operator=(const DirectX::XMFLOAT4& src)
+		{
+			x = src.x;
+			y = src.y;
+			z = src.z;
+			w = src.w;
+
+			return *this;
+		}
+		Vec4& operator=(const DirectX::XMFLOAT3& src)
+		{
+			x = src.x;
+			y = src.y;
+			z = src.z;
+			w = 1.0f;
+
+			return *this;
+		}
+		Vec4 operator*(float scalar) const
+		{
+			Vec4 res;
+			res.x = x * scalar;
+			res.y = y * scalar;
+			res.z = z * scalar;
+			res.w = w * scalar;
+
+			return res;
+		}
+		Vec4 operator/(float scalar) const
+		{
+			Vec4 res;
+			res.x = x / scalar;
+			res.y = y / scalar;
+			res.z = z / scalar;
+			res.w = w / scalar;
+
+			return res;
+		}
+		Vec4 operator-() const
+		{
+			Vec4 res;
+			res.x = -x;
+			res.y = -y;
+			res.z = -z;
+			res.w = -w;
+
+			return res;
+		}
+
+		Vec4& operator*=(float scalar)
+		{
+			x = x * scalar;
+			y = y * scalar;
+			z = z * scalar;
+			w = w * scalar;
+
+			return *this;
+		}
+		Vec4& operator/=(float scalar)
+		{
+			x = x / scalar;
+			y = y / scalar;
+			z = z / scalar;
+			w = w / scalar;
+
+			return *this;
+		}
+
+		operator DirectX::XMVECTOR() const
+		{
+			return DirectX::XMLoadFloat4(this);
+		}
+
+		static float Dot(const Vec4& a, const Vec4& b)
+		{
+			return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+		}
+	};
 }

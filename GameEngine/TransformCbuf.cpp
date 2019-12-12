@@ -29,15 +29,15 @@ namespace Bind
 	TransformCbuf::Transforms TransformCbuf::GetTransforms(Graphics& gfx) noexcept
 	{
 		const auto world = parent.GetTransformXM();
-		const auto worldInv = MathHelper::Inversse(world);
+		const auto worldInv = MH::Inversse(world);
 		const auto view = gfx.GetCameraViewMatrix();
-		const auto viewInv = MathHelper::Inversse(view);
+		const auto viewInv = MH::Inversse(view);
 
 		const auto proj = gfx.GetProjection();
 
 		const auto ortho = gfx.GetOrtho();
 		const auto world2D = gfx.GetCamera2DWorldMatrix();
-		//const auto cameraPos = MathHelper::GetCameraPosFromViewInvMatrix(viewInv);
+		//const auto cameraPos = MH::GetCameraPosFromViewInvMatrix(viewInv);
 
 		const auto cameraPos = GCamera3D->GetPos();
 

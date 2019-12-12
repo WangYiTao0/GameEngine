@@ -32,12 +32,16 @@ private:
 
 	void RenderToTexture();
 	void RenderScene();
+	void RenderShadowTexture();
 
 private:
 	const int screenWidth = 1600;
 	const int screenHeight = 900;
 	const float nearZ = 0.1f;
 	const float farZ = 4000.0f;
+
+	const int shadowWidth = 1024;
+	const int shadowHeight = 1024;
 
 	bool showDemoWindow = false;
 	int x = 0, y = 0;
@@ -59,12 +63,11 @@ private:
 
 
 	bool enableRenderTarget = false;
-	std::shared_ptr<Bind::RTT> mSrcRT;
-	std::shared_ptr<Bind::RTT> mSSRRT;
+	std::shared_ptr<Bind::RTT> mSrceenRTT;
+	std::shared_ptr<Bind::RTT> mDepthRTT;
 	//std::shared_ptr<Bind::RTT> mLightBuffer;
 	//std::shared_ptr<Bind::RTT> mGrayShadowMap;
 	//
 	std::unique_ptr <Tex2D> smallScene;
 	std::unique_ptr <Tex2D> shadowMap;
-
 };

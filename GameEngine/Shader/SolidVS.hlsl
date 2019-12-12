@@ -1,4 +1,4 @@
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 float4 main(float3 pos : Position) : SV_Position
 {

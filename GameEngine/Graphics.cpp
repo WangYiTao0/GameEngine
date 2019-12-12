@@ -16,6 +16,9 @@ namespace dx = DirectX;
 
 
 Graphics::Graphics(HWND hWnd, int width, int height)
+	:
+	screenWidth(width),
+	screenHeight(height)
 {
 
 	DXGI_SWAP_CHAIN_DESC sd = {};
@@ -103,14 +106,13 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 	
 
 	// configure viewport
-	D3D11_VIEWPORT vp;
-	vp.Width = (float)width;
-	vp.Height = (float)height;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0.0f;
-	vp.TopLeftY = 0.0f;
-	pContext->RSSetViewports(1u, &vp);
+	m_Viewport.Width = (float)width;
+	m_Viewport.Height = (float)height;
+	m_Viewport.MinDepth = 0.0f;
+	m_Viewport.MaxDepth = 1.0f;
+	m_Viewport.TopLeftX = 0.0f;
+	m_Viewport.TopLeftY = 0.0f;
+	pContext->RSSetViewports(1u, &m_Viewport);
 
 	// init imgui d3d impl
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
@@ -169,7 +171,7 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 	color[3] = 1.0f;
 
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
-	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 }
 
 void Graphics::DrawIndexedInstance(UINT indexCount,UINT instanceCount) noexcept(!IS_DEBUG)
@@ -231,6 +233,11 @@ void Graphics::SetBackBufferRenderTarget()
 {
 	// bind depth stensil view to OM
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
+}
+
+void Graphics::ResetViewport()
+{
+	pContext->RSSetViewports(1, &m_Viewport);
 }
 
 void Graphics::EnableImgui() noexcept

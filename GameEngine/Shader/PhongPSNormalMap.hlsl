@@ -1,6 +1,6 @@
 #include "ShaderOptions.hlsli"
 #include "LightingUtil.hlsli"
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 #include "ShadingMath.hlsli"
 
 
@@ -25,6 +25,8 @@ cbuffer ObjectCBuf : register(b2)
 Texture2D diffTex : register(t0);
 Texture2D nmapTex : register(t2);
 
+
+SamplerState sample0 : register(s0);
 
 float4 main(PS_pIn pIn) : SV_Target
 {

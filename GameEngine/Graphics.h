@@ -62,13 +62,9 @@ public:
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics();
-
-	
 	ID3D11DepthStencilView* GetDepthStencilView();
-
 	void EndFrame();
 	void BeginFrame(float red, float green, float blue) noexcept;
-
 	void DrawIndexedInstance(UINT indexCount, UINT instanceCount)noexcept(!IS_DEBUG);
 	void DrawIndexed(UINT indexCount) noxnd;
 	//camera 3d
@@ -81,19 +77,33 @@ public:
 	DirectX::XMMATRIX GetOrtho() const noexcept;
 	void SetCamera2DWorldMatirx(DirectX::FXMMATRIX cam) noexcept;
 	DirectX::XMMATRIX GetCamera2DWorldMatrix() const noexcept;
-
 	float* GetClearColor();
-
 	void SetBackBufferRenderTarget();
+	void ResetViewport();
 
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
 	bool IsImguiEnabled() const noexcept;
+
+	inline int GetScreenWidth() { return screenWidth; }
+	inline int GetScreenHeight() { return screenHeight; }	
+	inline float GetAspect() {return static_cast<float>(screenWidth) / static_cast<float>(screenHeight);}
+
+	//inline float GetNearZ() {return nearZ;}
+	//inline float GetFarZ() { return farZ; }
+	//inline float GetFov() { return fov; }
+
 private:
 	DirectX::XMMATRIX projection;
 	DirectX::XMMATRIX Ortho;
 	DirectX::XMMATRIX camera2D;
 	DirectX::XMMATRIX camera3D;
+
+	int screenWidth = 1600;
+	int screenHeight = 900;
+	//float nearZ = 0.1f;
+	//float farZ = 4000.0f;
+	//float fov = MH::PI / 4.0f;
 
 	float color[4] = {1.0f,1.0f,1.0f,1.0f};
 
@@ -106,7 +116,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDSV;
-
+	D3D11_VIEWPORT m_Viewport;
 	UINT      m_4xMsaaQuality;   // MSAA
 
 

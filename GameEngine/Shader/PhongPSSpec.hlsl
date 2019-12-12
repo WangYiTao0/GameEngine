@@ -1,6 +1,6 @@
 #include "ShaderOptions.hlsli"
 #include "LightingUtil.hlsli"
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 struct PS_pIn
 {
@@ -22,6 +22,7 @@ Texture2D diffTex : register(t0);
 Texture2D specTex : register(t1);
 
 
+SamplerState sample0 : register(s0);
 
 float4 main(PS_pIn pIn) : SV_Target
 {

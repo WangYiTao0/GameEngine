@@ -5,12 +5,27 @@
 #include "ConstantBuffers.h"
 #include "ConditionalNoexcept.h"
 #include "Camera.h"
+#include "ViewPoint.h"
 #include <array>
 #include <set>
 #include <optional>
 
 class Light
 {
+private:
+	struct LightCB
+	{
+		LightCommon L[MaxLights];
+	};
+	struct ShadowCB
+	{
+		DirectX::XMMATRIX ShadowViewMatrix;
+		DirectX::XMMATRIX ShadowProjMatrix;
+		DirectX::XMMATRIX ShadowOrthoMatrix;
+		INT lightID;
+		float padding[3];
+	};
+
 public:
 	//DirectlightNum,PointLightNum,SpotLightNum
 	Light(Graphics& gfx, int numD = 1, int numP = 1, int numS = 1);
@@ -38,24 +53,12 @@ public:
 	}
 
 	void Reset() noexcept;
+	void Update(Graphics& gfx);
 	void Draw(Graphics& gfx) const noxnd;
 	void Bind(Graphics& gfx) const noexcept;
 
-	DirectX::XMMATRIX GetLightViewMatrix(int lightID)
-	{
-		float fFarPlane = GCamera3D->GetFarZ();
-		DirectX::XMFLOAT3 eyePos = lightData.L[lightID].position;
-		DirectX::XMVECTOR eyePosVec = DirectX::XMVectorSet(eyePos.x, eyePos.y, eyePos.z, 1.0f);
-		DirectX::XMVECTOR normalizeLightDir = DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&lightData.L[lightID].direction));
-		DirectX::XMVECTOR targetPosVec = DirectX::XMVectorSet(eyePos.x + DirectX::XMVectorGetX(normalizeLightDir),
-			eyePos.y + DirectX::XMVectorGetY(normalizeLightDir), eyePos.z + DirectX::XMVectorGetZ(normalizeLightDir), 1.0f);
-		DirectX::XMVECTOR upVec = DirectX::XMVectorSet(0.0, 1.0f, 0.0f, 0.0f);
-		DirectX::XMMATRIX lightViewMatrix = DirectX::XMMatrixLookAtLH(eyePosVec, targetPosVec, upVec);
-
-		return lightViewMatrix;
-	}
-
-
+	void GenerateShadowMatrix(Graphics& gfx, int lightID);
+	ShadowCB GetShadowMatrix();
 private:
 	void ResetDirectionLight(int lightID) noexcept;
 	void ResetPointLight(int lightID) noexcept;
@@ -71,31 +74,23 @@ private:
 	bool SpawnSpotLightWindow( int lightId)noexcept;
 
 private:
-	struct LightCB
-	{
-		LightCommon L[MaxLights];
-	};
 	int LightIndex = 0;
 	int lightId = 0;
 
 	std::set<int> lightControlIds;
-
+	std::unordered_map<int, std::string> lightMap;
 	LightCommon lastState[MaxLights];
 	bool isTurnoff[MaxLights] = { false };
-
-	DirectX::XMMATRIX LightViewMatrix;
-	DirectX::XMMATRIX LightProjViewMatrix;
-	DirectX::XMMATRIX LightOrthoMatrix;
 
 	int m_DirLightNum;
 	int m_PointLightNum;
 	int m_SpotLightNum;
 
 	LightCB lightData;
-	//LightCB lightData[MaxLights];
-	mutable Bind::PixelConstantBuffer<LightCB> cbuf;
+	ShadowCB shadowMatrix;
+	mutable Bind::VertexConstantBuffer<ShadowCB> shadowCB;
+	mutable Bind::PixelConstantBuffer<LightCB> lightCB;
 	mutable std::vector<std::shared_ptr<SolidSphere>> mesh;
-	//mutable SolidSphere *mesh[];
-
-	std::unordered_map<int, std::string> lightMap;
+	
+	ViewPoint m_ViewPoint;
 };

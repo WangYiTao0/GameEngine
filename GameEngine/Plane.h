@@ -69,7 +69,7 @@ public:
 		}
 
 		std::vector<unsigned short> indices;
-		indices.reserve(MathHelper::sq(divisions_x * divisions_y) * 6);
+		indices.reserve(MH::sq(divisions_x * divisions_y) * 6);
 		{
 			const auto vxy2i = [nVertices_x](size_t x, size_t y)
 			{

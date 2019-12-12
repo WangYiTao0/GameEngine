@@ -8,6 +8,7 @@ namespace Bind
 		enum class SamplerState
 		{
 			SSLinearWrap,
+			SSLinearClamp,
 			SSAnistropicWrap,
 		};
 

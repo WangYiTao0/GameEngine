@@ -14,7 +14,7 @@ light Pos
 */ 
 #include "ShaderOptions.hlsli"
 #include "LightingUtil.hlsli"
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 struct PS_pIn
 {

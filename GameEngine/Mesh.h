@@ -3,9 +3,6 @@
 #include "BindableCommon.h"
 #include "Vertex.h"
 #include <optional>
-//#include <assimp/scene.h>
-//#include <assimp/postprocess.h>
-//#include <assimp/Importer.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -18,6 +15,11 @@
 #include "DirectXMathHelper.h"
 #include "StringHelper.h"
 #include "LightCommon.h"
+
+struct MeshParamters
+{
+
+};
 
 class ModelException : public BaseException
 {
@@ -39,7 +41,6 @@ public:
 
 private:
 	mutable DirectX::XMFLOAT4X4 transform;
-
 };
 
 class Node
@@ -103,7 +104,6 @@ private:
 	//load all mesh  store in 
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
 	std::unique_ptr<class ModelWindow> pWindow;
-
 	std::vector<std::shared_ptr<Bind::Bindable>> bindablePtrs;
 };
 

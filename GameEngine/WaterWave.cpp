@@ -39,7 +39,7 @@ void WaterWave::Update(float dt)
 		DWORD i = 5 + rand() % 190;
 		DWORD j = 5 + rand() % 190;
 
-		float r = MathHelper::RandT(1.0f, 2.0f);
+		float r = MH::RandT(1.0f, 2.0f);
 
 		mWaves.Disturb(i, j, r);
 	}

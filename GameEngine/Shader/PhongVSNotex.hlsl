@@ -1,4 +1,4 @@
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 struct VS_INPUT
 {

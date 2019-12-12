@@ -14,8 +14,8 @@ public:
 
 		constexpr float radius = 1.0f;
 		const auto base = dx::XMVectorSet(0.0f, 0.0f, radius, 0.0f);
-		const float lattitudeAngle = MathHelper::PI / latDiv;
-		const float longitudeAngle = 2.0f * MathHelper::PI / longDiv;
+		const float lattitudeAngle = MH::PI / latDiv;
+		const float longitudeAngle = 2.0f * MH::PI / longDiv;
 
 		//without 0
 		Dvtx::VertexBuffer vb(std::move(layout));

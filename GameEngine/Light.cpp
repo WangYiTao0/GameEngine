@@ -8,16 +8,16 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	m_DirLightNum(numD),
 	m_PointLightNum(numP),
 	m_SpotLightNum(numS),
-	cbuf(gfx, 1u)
-{
-	for (int i = 0; i < m_PointLightNum + m_SpotLightNum; i++)
+	lightCB(gfx, 1u),
+	shadowCB(gfx,1u)//VB
+{	
+	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
+	for (int i = 0; i < LightIndex; i++)
 	{
 		mesh.push_back(std::make_shared<SolidSphere>(gfx, 0.5f));
 	}
 
 
-
-	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
 	for (lightId = 0; lightId < LightIndex; lightId++)
 	{
 		if (lightId < m_DirLightNum)
@@ -103,8 +103,16 @@ void Light::Reset() noexcept
 		ResetSpotLight(i);
 	}
 }
+void Light::Update(Graphics& gfx)
+{
+	GenerateShadowMatrix(gfx, 0);
+	shadowMatrix = GetShadowMatrix();
+}
 void Light::ResetDirectionLight(int lightID) noexcept
 {
+	//for shadow Calculate 
+	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
+
 	lightData.L[lightID].direction = { -0.2f, -1.0f, 0.3f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
 	lightData.L[lightID].diffColor = { 0.4f, 0.4f, 0.4f };
@@ -113,6 +121,9 @@ void Light::ResetDirectionLight(int lightID) noexcept
 }
 void Light::ResetPointLight(int lightID) noexcept
 {
+	//for shadow Calculate 
+	lightData.L[lightID].direction = { 0.0f, DirectX::XMConvertToRadians(-90.0f), 0.0f };
+
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };	
 	lightData.L[lightID].diffColor = { 0.8f, 0.8f, 0.8f };
@@ -178,9 +189,9 @@ bool Light::SpawnDirLightWindow(int lightId) noexcept
 		else 
 		{
 			ImGui::Text("Direction");
-			ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
-			ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
-			ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
+			ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, -180*MH::oneRad, 180*MH::oneRad);
+			ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, -180*MH::oneRad, 180*MH::oneRad);
+			ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, -180*MH::oneRad, 180*MH::oneRad);
 
 			ImGui::Text("Light Color");
 			ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].diffColor.x);
@@ -259,9 +270,9 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 	else
 	{
 		ImGui::Text("Direction");
-		ImGui::SliderFloat("Dir Pitch", &lightData.L[lightId].direction.x, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
-		ImGui::SliderFloat("Dir Yaw", &lightData.L[lightId].direction.y, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
-		ImGui::SliderFloat("Dir Roll", &lightData.L[lightId].direction.z, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
+		ImGui::SliderFloat("Dir Pitch", &lightData.L[lightId].direction.x, -180*MH::oneRad, 180*MH::oneRad);
+		ImGui::SliderFloat("Dir Yaw", &lightData.L[lightId].direction.y, -180*MH::oneRad, 180*MH::oneRad);
+		ImGui::SliderFloat("Dir Roll", &lightData.L[lightId].direction.z, -180*MH::oneRad, 180*MH::oneRad);
 
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &lightData.L[lightId].position.x, -60.0f, 60.0f, "%.1f");
@@ -300,19 +311,60 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 
 void Light::Bind(Graphics& gfx) const noexcept
 {
-	cbuf.Update(gfx, lightData);
-	cbuf.Bind(gfx);
+	lightCB.Update(gfx, lightData);
+	lightCB.Bind(gfx);
+
+	shadowCB.Update(gfx, shadowMatrix);
+	shadowCB.Bind(gfx);
 }
+
+void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
+{	
+	m_ViewPoint.SetPostion(lightData.L[lightID].position);
+	m_ViewPoint.SetLookAt(lightData.L[lightID].direction);
+	m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
+	m_ViewPoint.SetProjectionParameters(GCamera3D->GetFov(), gfx.GetAspect(), GCamera3D->GetNearZ(), GCamera3D->GetFarZ());
+	m_ViewPoint.GenerateViewMatrix();
+	m_ViewPoint.GenerateProjMatrix();
+	m_ViewPoint.GenerateOrthoMatrix();
+}
+
+Light::ShadowCB Light::GetShadowMatrix()
+{
+	using namespace DirectX;
+	const auto s_view = m_ViewPoint.GetViewMatrix();
+	const auto s_proj = m_ViewPoint.GetProjMatrix();
+	const auto s_ortho = m_ViewPoint.GetOrthoMatrix();
+	
+	return {
+		XMMatrixTranspose(s_view),
+		XMMatrixTranspose(s_proj),
+		XMMatrixTranspose(s_ortho)	};
+}
+
+//ShadowCB Light::GetShadowMatrix(int lightID)
+//{
+//	float fFarPlane = GCamera3D->GetFarZ();
+//	DirectX::XMFLOAT3 eyePos = lightData.L[lightID].position;
+//	DirectX::XMVECTOR eyePosVec = DirectX::XMVectorSet(eyePos.x, eyePos.y, eyePos.z, 1.0f);
+//	DirectX::XMVECTOR normalizeLightDir = DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&lightData.L[lightID].direction));
+//	DirectX::XMVECTOR targetPosVec = DirectX::XMVectorSet(eyePos.x + DirectX::XMVectorGetX(normalizeLightDir),
+//		eyePos.y + DirectX::XMVectorGetY(normalizeLightDir), eyePos.z + DirectX::XMVectorGetZ(normalizeLightDir), 1.0f);
+//	DirectX::XMVECTOR upVec = DirectX::XMVectorSet(0.0, 1.0f, 0.0f, 0.0f);
+//	DirectX::XMMATRIX lightViewMatrix = DirectX::XMMatrixLookAtLH(eyePosVec, targetPosVec, upVec);
+//
+//	return lightViewMatrix;
+//}
 
 void Light::Draw(Graphics& gfx) const noxnd
 {
 
-	for (int i = m_DirLightNum; i < LightIndex; i++)
+	for (int i = 0; i < LightIndex; i++)
 	{
 		if (!isTurnoff[i])
 		{
-			mesh[i- m_DirLightNum]->SetPos(lightData.L[i].position);
-			mesh[i- m_DirLightNum]->DrawIndexed(gfx);
+			mesh[i]->SetPos(lightData.L[i].position);
+			mesh[i]->DrawIndexed(gfx);
 		}
 
 

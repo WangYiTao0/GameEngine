@@ -23,7 +23,6 @@ App::App()
 
 	// Create the cpu object.
 	m_Cpu.Initialize();
-	// makeshift cli for doing some preprocessing bullshit (so many hacks here)
 
 	//2D Camera
 	cam2D.SetOrtho(static_cast<float>(screenWidth), 
@@ -31,20 +30,23 @@ App::App()
 		0.0f, 1.0f);
 	wnd.Gfx().SetOrtho(cam2D.GetOrthoMatrix());
 	//3D Camera
-	GCamera3D->Set3DProj(MathHelper::PI / 4.0f,
+	GCamera3D->Set3DProj(MH::PI / 4.0f,
 		static_cast<float>(screenWidth) / static_cast<float>(screenHeight),
 		nearZ, farZ);
 	wnd.Gfx().SetProjection(GCamera3D->GetProj());
-
-	mSrcRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
-	mSSRRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
-	//mGrayShadowMap = std::shared_ptr<Bind::RTT>(new Bind::RTT(screenWidth, screenHeight, TextureFormat::R32));
-	//mLightBuffer = std::shared_ptr<Bind::RTT>(new Bind::RTT(screenWidth, screenHeight, TextureFormat::R32));
-
-	smallScene = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+	//Screen Scene Small
+	mSrceenRTT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
+	smallScene = std::make_unique<Tex2D>(wnd.Gfx(), 
+		static_cast<float>(screenWidth), static_cast<float>(screenHeight),
 		static_cast<float>(screenWidth / 4),
-		static_cast<float>(screenHeight / 4), mSrcRT->GetShaderResourceView());
+		static_cast<float>(screenHeight / 4),"VS_2D","PS_2D", mSrceenRTT->GetShaderResourceView());
 	smallScene->SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
+	//Depth shadow Map
+	mDepthRTT = std::make_shared<Bind::RTT>(wnd.Gfx(), shadowWidth, shadowHeight);
+	shadowMap = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+		static_cast<float>(screenWidth / 4),
+		static_cast<float>(screenHeight / 4), "VS_2D", "PS_2D", mDepthRTT->GetShaderResourceView());
+	shadowMap->SetPos({ screenWidth / 4.0f ,screenHeight * 3.0f / 4.0f,0.0f });
 
 	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
@@ -162,6 +164,7 @@ void App::update(float dt)
 	wnd.Gfx().SetCameraViewMatirx(GCamera3D->GetViewMatrix());
 
 	//update light
+	m_Light->Update(wnd.Gfx());
 	m_Light->Bind(wnd.Gfx());
 	
 	// update scene
@@ -182,6 +185,7 @@ void App::Draw()
 	if (enableRenderTarget)
 	{
 		smallScene->DrawIndexed(wnd.Gfx());
+		shadowMap->DrawIndexed(wnd.Gfx());
 	}
 }
 
@@ -194,6 +198,10 @@ void App::DoFrame()
 		//render scene to texture
 		RenderToTexture();
 	}
+
+	wnd.Gfx().SetProjection(GCamera3D->GetProj());
+	wnd.Gfx().SetCameraViewMatirx(GCamera3D->GetViewMatrix());
+
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 
 	HandleInput(dt);
@@ -254,16 +262,34 @@ void App::CycleScenes()
 
 void App::RenderToTexture()
 {
-	mSrcRT->Bind(wnd.Gfx());
-
+	//SetRenderTarget();ClearRenderTarget();
+	mSrceenRTT->Bind(wnd.Gfx());
+	//RenderScene Save  into mScreenRTT .SRV
 	RenderScene();
+	wnd.Gfx().SetBackBufferRenderTarget();
+	wnd.Gfx().ResetViewport();
+
+	//SetRenderTarget();ClearRenderTarget();
+	mDepthRTT->Bind(wnd.Gfx());
+	//Render Depth Texture into mDepth .SRV
+	RenderShadowTexture();
 
 	wnd.Gfx().SetBackBufferRenderTarget();
+	wnd.Gfx().ResetViewport();
 }
 
 void App::RenderScene()
 {
 	m_Light->Draw(wnd.Gfx());
+	// draw scene
+	(*curScene)->Draw();
+}
+
+void App::RenderShadowTexture()
+{
+	wnd.Gfx().SetCameraViewMatirx(m_Light->GetShadowMatrix().ShadowViewMatrix);
+	wnd.Gfx().SetProjection(m_Light->GetShadowMatrix().ShadowProjMatrix);
+
 	// draw scene
 	(*curScene)->Draw();
 }

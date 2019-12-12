@@ -39,7 +39,8 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 	SetScale({ texWidth, texHeight, 1.0f });
 }
 
-Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidth, float texHeight,ID3D11ShaderResourceView* pSv)
+Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, 
+	float texWidth, float texHeight, std::string VS_Name, std::string PS_Name, ID3D11ShaderResourceView* pSv)
 {
 	using namespace Bind;
 
@@ -52,11 +53,11 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
 	//AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
 	AddBind(Texture::Resolve(gfx, "null", 0u, pSv));
-	auto pvs = VertexShader::Resolve(gfx, "VS_2D");
+	auto pvs = VertexShader::Resolve(gfx, VS_Name);
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PS_2D"));
+	AddBind(PixelShader::Resolve(gfx, PS_Name));
 
 	AddBind(InputLayout::Resolve(gfx, tex2D.vertices.GetLayout(), pvsbc));
 	AddBind(std::make_shared<TransformCbuf>(gfx, *this, 0u));
@@ -71,6 +72,8 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 	SetRotation({ 0.0f, 0.0f, 0.0f });
 	SetScale({ texWidth, texHeight, 1.0f });
 }
+
+
 
 void Tex2D::Update(Graphics& gfx)
 {

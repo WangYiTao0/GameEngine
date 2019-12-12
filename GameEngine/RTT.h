@@ -31,12 +31,12 @@ namespace Bind
 		int texWidth;
 		int texHeight;
 
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pBackTexture;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pBackBufferTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pShaderResourceView;
 
 		//DepthBuffer
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pDepthTexture2D;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pDepthBackBufferTexture2D;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDephtStencilView;
 		D3D11_VIEWPORT m_ViewPort;
 

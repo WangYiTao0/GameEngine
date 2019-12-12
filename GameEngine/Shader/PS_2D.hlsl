@@ -1,4 +1,4 @@
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 struct PS_INPUT
 {
@@ -8,6 +8,7 @@ struct PS_INPUT
 
 Texture2D objTexture : TEXTURE : register(t0);
 
+SamplerState sample0 : register(s0);
 
 float4 main(PS_INPUT input) : SV_TARGET
 {

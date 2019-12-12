@@ -1,4 +1,4 @@
-#include "CommonPSOption.hlsli"
+#include "CommonCbuf.hlsli"
 
 Texture2D shaderTexture;
 Texture2D reflectionTexture;
@@ -9,6 +9,9 @@ struct PS_IN
     float2 tex : TEXCOORD0;
     float4 reflectionPosition : TEXCOORD1;
 };
+
+
+SamplerState sample0 : register(s0);
 
 float4 main(PS_IN pIn):SV_TARGET
 {

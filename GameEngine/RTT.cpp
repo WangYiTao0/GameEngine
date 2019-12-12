@@ -1,4 +1,4 @@
-#include "RTT.h"
+﻿#include "RTT.h"
 #include "GraphicsThrowMacros.h"
 #include "BindableCodex.h"
 #include "StringHelper.h"
@@ -40,14 +40,14 @@ namespace Bind
 		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 		textureDesc.CPUAccessFlags = 0;
 		textureDesc.MiscFlags = 0;
-		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&textureDesc, NULL, &m_pBackTexture));
+		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&textureDesc, NULL, &m_pBackBufferTexture));
 
-		//2�Ccreate render target view
+		//2，create render target view
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
 		renderTargetViewDesc.Format = textureDesc.Format;
 		renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		renderTargetViewDesc.Texture2D.MipSlice = 0;
-		GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(m_pBackTexture.Get(), &renderTargetViewDesc, m_RenderTargetView.GetAddressOf()));
+		GFX_THROW_INFO(GetDevice(gfx)->CreateRenderTargetView(m_pBackBufferTexture.Get(), &renderTargetViewDesc, m_RenderTargetView.GetAddressOf()));
 
 
 		//3 create shader resource view
@@ -57,10 +57,11 @@ namespace Bind
 		shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
 		shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
-		GFX_THROW_INFO(GetDevice(gfx)->CreateShaderResourceView(m_pBackTexture.Get(), &shaderResourceViewDesc, m_pShaderResourceView.GetAddressOf()));
+		GFX_THROW_INFO(GetDevice(gfx)->CreateShaderResourceView(m_pBackBufferTexture.Get(), &shaderResourceViewDesc, m_pShaderResourceView.GetAddressOf()));
 
 		//4 create depthstencilDesc
-		depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		//depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
 		depthStencilDesc.Width = textureWidth;
 		depthStencilDesc.Height = texureHeight;
 		depthStencilDesc.MipLevels = 1;
@@ -68,18 +69,19 @@ namespace Bind
 		depthStencilDesc.SampleDesc.Count = 1;
 		depthStencilDesc.SampleDesc.Quality = 0;
 		depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-		depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 		depthStencilDesc.CPUAccessFlags = 0;
 		depthStencilDesc.MiscFlags = 0;
-		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&depthStencilDesc,0,&m_pDepthTexture2D));
+		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&depthStencilDesc,0,&m_pDepthBackBufferTexture2D));
 
 		//create depthStencilViewDesc
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
+		depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 		GFX_THROW_INFO(GetDevice(gfx)->CreateDepthStencilView(
-			m_pDepthTexture2D.Get(), 
+			m_pDepthBackBufferTexture2D.Get(), 
 			&depthStencilViewDesc,
 			m_pDephtStencilView.GetAddressOf()));
 
@@ -96,8 +98,39 @@ namespace Bind
 	void RTT::Bind(Graphics& gfx) noexcept
 	{
 		SetRenderTarget(gfx);
-		GetContext(gfx)->RSSetViewports(1, &m_ViewPort);
 		ClearRenderTarget(gfx);
+	}
+
+
+
+	void RTT::SetRenderTarget(Graphics& gfx)
+	{
+		//设置渲染目标视图为NULL 可以大大提高我们3D程序的性能
+		ID3D11RenderTargetView* renderTarget[1] = { 0 };
+
+
+		GetContext(gfx)->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), m_pDephtStencilView.Get());
+		GetContext(gfx)->RSSetViewports(1, &m_ViewPort);
+	
+	}
+	void RTT::ClearRenderTarget(Graphics& gfx)
+	{
+		auto color = gfx.GetClearColor();
+
+		//如果仅仅进行深度写(DepthWrite)，而不进行颜色写(ColorWrite)
+		//可以不用清除背后缓存,因为不需要进颜色写(ColorWrite),仅仅进行深度写
+		GetContext(gfx)->ClearRenderTargetView(m_RenderTargetView.Get(), color);
+
+		GetContext(gfx)->ClearDepthStencilView(m_pDephtStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	}
+	ID3D11ShaderResourceView* RTT::GetShaderResourceView()
+	{
+		return m_pShaderResourceView.Get();
+	}
+	ID3D11RenderTargetView* RTT::GetRenderTargetView()
+	{
+		return m_RenderTargetView.Get();
 	}
 
 	std::shared_ptr<RTT> RTT::Resolve(Graphics& gfx, int TextureWidth, int TexureHeight)
@@ -115,28 +148,5 @@ namespace Bind
 	std::string RTT::GetUID() const noexcept
 	{
 		return GenerateUID(texWidth, texHeight);
-	}
-
-	void RTT::SetRenderTarget(Graphics& gfx)
-	{
-		GetContext(gfx)->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), m_pDephtStencilView.Get());
-	}
-	void RTT::ClearRenderTarget(Graphics& gfx)
-	{
-		auto color = gfx.GetClearColor();
-
-
-		GetContext(gfx)->ClearRenderTargetView(m_RenderTargetView.Get(), color);
-
-		GetContext(gfx)->ClearDepthStencilView(m_pDephtStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-	}
-	ID3D11ShaderResourceView* RTT::GetShaderResourceView()
-	{
-		return m_pShaderResourceView.Get();
-	}
-	ID3D11RenderTargetView* RTT::GetRenderTargetView()
-	{
-		return m_RenderTargetView.Get();
 	}
 }

@@ -1,3 +1,4 @@
+//VS stage PS stage
 cbuffer TransformCBuf : register(b0)
 {
     matrix worldMatrix;
@@ -13,5 +14,13 @@ cbuffer TransformCBuf : register(b0)
     float cameraPadding;
 };
 
-SamplerState sample0 : register(s0); //liner
-//sampler sample1 : register(s1); //ANISOTROPIC
+//VS stage
+cbuffer ShadowCB :register(b1)
+{
+    matrix s_View;
+    matrix s_Proj;
+    matrix s_Ortho;
+    int lightID;
+}
+
+
