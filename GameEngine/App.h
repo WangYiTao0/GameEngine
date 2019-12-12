@@ -65,5 +65,6 @@ private:
 	//std::shared_ptr<Bind::RTT> mGrayShadowMap;
 	//
 	std::unique_ptr <Tex2D> smallScene;
+	std::unique_ptr <Tex2D> shadowMap;
 
 };

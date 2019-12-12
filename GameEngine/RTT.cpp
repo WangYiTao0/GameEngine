@@ -23,7 +23,6 @@ namespace Bind
 		{
 		case R32G32B32A32:
 			textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-
 			break;
 		case R32:
 			textureDesc.Format = DXGI_FORMAT_R32_FLOAT;

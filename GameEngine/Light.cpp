@@ -1,6 +1,7 @@
 #include "Light.h"
 #include "imgui/imgui.h"
 #include "Camera.h"
+#include "MathHelper.h"
 
 Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	:
@@ -14,8 +15,9 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 		mesh.push_back(std::make_shared<SolidSphere>(gfx, 0.5f));
 	}
 
-	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
 
+
+	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
 	for (lightId = 0; lightId < LightIndex; lightId++)
 	{
 		if (lightId < m_DirLightNum)
@@ -58,19 +60,20 @@ void Light::SpawnLightManagerWindow(Graphics& gfx) noexcept
 			}
 			ImGui::EndCombo();
 		}
+
 		if (ImGui::Button("Spawn Control Window") && lightId)
 		{
-
+			lightControlIds.insert(lightId);
 		}
-
 	}
 	ImGui::End();
 
-	SpawnLightControlWindow();
+	SpawnLightControlWindow(lightId);
+	
 }
-
-void Light::SpawnLightControlWindow() noexcept
+void Light::SpawnLightControlWindow(int lightId) noexcept
 {
+
 	if (lightId < m_DirLightNum)
 	{
 		SpawnDirLightWindow(lightId);
@@ -83,14 +86,13 @@ void Light::SpawnLightControlWindow() noexcept
 	{
 		SpawnSpotLightWindow(lightId);
 	}
-
 }
-
 void Light::Reset() noexcept
 {
 	for (int i = 0; i < m_DirLightNum; i++)
 	{
 		ResetDirectionLight(i);
+
 	}
 	for (int i = m_DirLightNum; i < m_DirLightNum + m_PointLightNum; i++)
 	{
@@ -101,15 +103,14 @@ void Light::Reset() noexcept
 		ResetSpotLight(i);
 	}
 }
-
 void Light::ResetDirectionLight(int lightID) noexcept
 {
 	lightData.L[lightID].direction = { -0.2f, -1.0f, 0.3f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
 	lightData.L[lightID].diffColor = { 0.4f, 0.4f, 0.4f };
 	lightData.L[lightID].specular = { 0.5f,0.5f,0.5f };
+	isTurnoff[lightId] = false;
 }
-
 void Light::ResetPointLight(int lightID) noexcept
 {
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
@@ -120,13 +121,12 @@ void Light::ResetPointLight(int lightID) noexcept
 	lightData.L[lightID].attConst = 1.0f;
 	lightData.L[lightID].attLin = 0.045f;
 	lightData.L[lightID].attQuad = 0.0075f;
-
-
+	isTurnoff[lightId] = false;
 }
 void Light::ResetSpotLight(int lightID) noexcept
 {	
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
-	lightData.L[lightID].direction = { 0.0f, 0.0f, 1.0f };
+	lightData.L[lightID].direction = { 0.0f, DirectX::XMConvertToRadians(-90.0f), 0.0f };
 	lightData.L[lightID].ambient = { 0.0f,0.0f,0.0f };
 	lightData.L[lightID].diffColor = { 1.0f, 1.0f, 1.0f };
 	lightData.L[lightID].specular = { 1.0f,1.0f,1.0f };
@@ -137,33 +137,72 @@ void Light::ResetSpotLight(int lightID) noexcept
 	lightData.L[lightID].spotPower = 0.032f;
 	lightData.L[lightID].cutOff = std::cos(DirectX::XMConvertToRadians(12.5f));
 	lightData.L[lightID].outerCutOff = std::cos(DirectX::XMConvertToRadians(15.f));
+	isTurnoff[lightId] = false;
+}
 
+void Light::TurnOffLight(int lightID) noexcept
+{
+	if (!isTurnoff[lightId])
+	{
+		lastState[lightID] = lightData.L[lightID];
+		lightData.L[lightID].ambient = { 0.0f,0.0f,0.0f };
+		lightData.L[lightID].diffColor = { 0.f, 0.f, 0.f };
+		lightData.L[lightID].specular = { 0.f,0.f,0.f };
+		isTurnoff[lightId] = true;
+	}
+	
+
+
+	
+}
+
+void Light::TurnOnLight(int lightID) noexcept
+{
+	if (isTurnoff[lightId])
+	{
+		lightData.L[lightID] = lastState[lightID];
+		isTurnoff[lightId] = false;
+	}
 }
 
 bool Light::SpawnDirLightWindow(int lightId) noexcept
 {
 	bool dirty = false;
 	bool open = true;
-
-	if (ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
+	if (open)
 	{
-		ImGui::Text("Direction");
-		ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
-		ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
-		ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
-
-		ImGui::Text("Light Color");
-		ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].diffColor.x);
-		ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
-		ImGui::ColorEdit3("Specular", &lightData.L[lightId].specular.x);
-
-		if (ImGui::Button("Reset"))
+		if (!ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
 		{
-			ResetDirectionLight(lightId);
+			ImGui::End();
 		}
-	}
-	ImGui::End();
+		else 
+		{
+			ImGui::Text("Direction");
+			ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
+			ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
+			ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
 
+			ImGui::Text("Light Color");
+			ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].diffColor.x);
+			ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
+			ImGui::ColorEdit3("Specular", &lightData.L[lightId].specular.x);
+
+			if (ImGui::Button("Reset"))
+			{
+				ResetDirectionLight(lightId);
+			}
+			if (ImGui::Button("Turn Off"))
+			{
+				TurnOffLight(lightId);
+			}
+			if (ImGui::Button("Turn On"))
+			{
+				TurnOnLight(lightId);
+			}
+			ImGui::End();
+		}
+	
+	}
 	return open;
 }
 
@@ -171,7 +210,11 @@ bool Light::SpawnPointLightWindow(int lightId) noexcept
 {
 	bool dirty = false;
 	bool open = true;
-	if (ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
+	if (!ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
+	{
+		ImGui::End();
+	}
+	else
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &lightData.L[lightId].position.x, -60.0f, 60.0f, "%.1f");
@@ -192,9 +235,16 @@ bool Light::SpawnPointLightWindow(int lightId) noexcept
 		{
 			ResetPointLight(lightId);
 		}
+		if (ImGui::Button("Turn Off"))
+		{
+			TurnOffLight(lightId);
+		}
+		if (ImGui::Button("Turn On"))
+		{
+			TurnOnLight(lightId);
+		}
 	}
 	ImGui::End();
-
 	return open;
 }
 
@@ -202,13 +252,16 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 {
 	bool dirty = false;
 	bool open = true;
-	if (ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
+	if (!ImGui::Begin(lightMap.find(lightId)->second.c_str(), &open))
+	{
+		ImGui::End();
+	}
+	else
 	{
 		ImGui::Text("Direction");
-		ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
-		ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
-		ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, DirectX::XMConvertToRadians(-180.0f), DirectX::XMConvertToRadians(180.0f));
-
+		ImGui::SliderFloat("Dir Pitch", &lightData.L[lightId].direction.x, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
+		ImGui::SliderFloat("Dir Yaw", &lightData.L[lightId].direction.y, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
+		ImGui::SliderFloat("Dir Roll", &lightData.L[lightId].direction.z, -180*MathHelper::oneRad, 180*MathHelper::oneRad);
 
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &lightData.L[lightId].position.x, -60.0f, 60.0f, "%.1f");
@@ -231,6 +284,14 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 		{
 			ResetSpotLight(lightId);
 		}
+		if (ImGui::Button("Turn Off"))
+		{
+			TurnOffLight(lightId);
+		}
+		if (ImGui::Button("Turn On"))
+		{
+			TurnOnLight(lightId);
+		}
 	}
 	ImGui::End();
 
@@ -239,20 +300,21 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 
 void Light::Bind(Graphics& gfx) const noexcept
 {
-	//for (int i = 0; i < m_DirLightNum + m_PointLightNum + m_SpotLightNum; i++)
-	//{
-	//
-	//}	
 	cbuf.Update(gfx, lightData);
 	cbuf.Bind(gfx);
-
 }
 
 void Light::Draw(Graphics& gfx) const noxnd
 {
-	for (int i = 0; i < m_PointLightNum + m_SpotLightNum; i++)
+
+	for (int i = m_DirLightNum; i < LightIndex; i++)
 	{
-		mesh[i]->SetPos(lightData.L[m_DirLightNum + i].position);
-		mesh[i]->DrawIndexed(gfx);
+		if (!isTurnoff[i])
+		{
+			mesh[i- m_DirLightNum]->SetPos(lightData.L[i].position);
+			mesh[i- m_DirLightNum]->DrawIndexed(gfx);
+		}
+
+
 	}
 }

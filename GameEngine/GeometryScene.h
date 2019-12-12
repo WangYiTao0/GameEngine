@@ -11,6 +11,7 @@
 #include "GridTerrain.h"
 #include "WaterWave.h"
 #include "SkyRender.h"
+#include "ModelScene.h"
 
 class GeometryScene : public Scene
 {
@@ -26,11 +27,10 @@ private:
 	Graphics& gfx;
 
 	bool EnableFrustumCulling = true;
-
-
 	GridTerrain gridTerrain{ gfx,160,160,50,50,20 };
 
-	TestCube cube{ gfx,2};
+	Model role{ gfx,"Data\\Models\\Role\\ascendant_one_iris\\iris.obj",2.0f };
+	//TestCube cube{ gfx,2};
 
 	std::unique_ptr<SkyRender> m_pSunset = nullptr;
 

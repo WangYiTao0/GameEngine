@@ -11,7 +11,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
 		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
 
-	cube.SetPos({ 0.0f,2.0f,0.0f });	
+	//cube.SetPos({ 0.0f,2.0f,0.0f });	
 	m_pSunset = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
 
 }
@@ -22,13 +22,15 @@ void GeometryScene::Update(float dt)
 
 
 	gridTerrain.SpawnControlWindow(gfx);
-	cube.SpawnControlWindow(gfx);
+	//cube.SpawnControlWindow(gfx);
 }
 
 void GeometryScene::Draw()
 {
 	gridTerrain.DrawIndexed(gfx);
-	cube.DrawIndexed(gfx);
+	//cube.DrawIndexed(gfx);
+	role.Draw(gfx);
+
 
 	m_pSunset->DrawIndexed(gfx);
 }

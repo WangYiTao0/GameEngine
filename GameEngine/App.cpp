@@ -164,8 +164,6 @@ void App::update(float dt)
 	//update light
 	m_Light->Bind(wnd.Gfx());
 	
-
-	
 	// update scene
 	(*curScene)->Update(dt);
 	
@@ -196,8 +194,6 @@ void App::DoFrame()
 		//render scene to texture
 		RenderToTexture();
 	}
-	
-
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 
 	HandleInput(dt);

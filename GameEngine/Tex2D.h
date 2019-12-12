@@ -10,6 +10,8 @@ public:
 	Tex2D(Graphics& gfx,float screenWidth,float screenHeight, float texWidth, float texHeight, std::string filePath);
 	Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float width, float height, ID3D11ShaderResourceView* pSv);
 
+	
+
 	void Update(Graphics& gfx);
 	
 	DirectX::XMMATRIX GetTransformXM() const noexcept;
