@@ -3,9 +3,14 @@
 #include "BindableCommon.h"
 #include "Vertex.h"
 #include <optional>
+//#include <assimp/scene.h>
+//#include <assimp/postprocess.h>
+//#include <assimp/Importer.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+
 #include "ConditionalNoexcept.h"
 #include <type_traits>
 #include <filesystem>

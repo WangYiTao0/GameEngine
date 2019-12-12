@@ -100,6 +100,9 @@
     <Filter Include="Header Files\CommonTool\Macros">
       <UniqueIdentifier>{12714e1a-204f-4931-a322-e71f40883252}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Animation">
+      <UniqueIdentifier>{bd2ed77a-6581-475b-b65a-ad388f4869e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
