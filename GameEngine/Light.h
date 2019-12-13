@@ -22,7 +22,7 @@ private:
 		DirectX::XMMATRIX ShadowViewMatrix;
 		DirectX::XMMATRIX ShadowProjMatrix;
 		DirectX::XMMATRIX ShadowOrthoMatrix;
-		INT lightID;
+		INT lightID = 1;
 		float padding[3];
 	};
 

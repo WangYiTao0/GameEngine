@@ -33,6 +33,7 @@ private:
 	void RenderToTexture();
 	void RenderScene();
 	void RenderShadowTexture();
+	void InitDebugWindow();
 
 private:
 	const int screenWidth = 1600;
@@ -69,5 +70,6 @@ private:
 	//std::shared_ptr<Bind::RTT> mGrayShadowMap;
 	//
 	std::unique_ptr <Tex2D> smallScene;
+	std::unique_ptr <Tex2D> DepthMap;
 	std::unique_ptr <Tex2D> shadowMap;
 };

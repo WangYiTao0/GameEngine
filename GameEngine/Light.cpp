@@ -122,7 +122,7 @@ void Light::ResetDirectionLight(int lightID) noexcept
 void Light::ResetPointLight(int lightID) noexcept
 {
 	//for shadow Calculate 
-	lightData.L[lightID].direction = { 0.0f, DirectX::XMConvertToRadians(-90.0f), 0.0f };
+	lightData.L[lightID].direction = { 0.0f, DirectX::XMConvertToRadians(-70.0f), 0.0f };
 
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };	

@@ -29,7 +29,7 @@ float4 main(PS_IN pIn) : SV_Target
  
     TexColor = shaderTexture.Sample(WrapSampleType, pIn.Tex);
  
-    color = float4(gLights[0].ambient, 1.0f);
+    color = float4(gLights[1].ambient, 1.0f);
  
     ShadowTex.x = (pIn.ProjPos.x / pIn.ProjPos.w) * 0.5f + 0.5f;
     ShadowTex.y = (pIn.ProjPos.y / pIn.ProjPos.w) * (-0.5f) + 0.5f;
@@ -58,7 +58,7 @@ float4 main(PS_IN pIn) : SV_Target
  
             DiffuseFactor = saturate(dot(InvseDiffuseDir, pIn.W_Normal));
 		
-            DiffuseLight = DiffuseFactor * float4(gLights[0].diffColor, 1.0f) * LightIntensity;
+            DiffuseLight = DiffuseFactor * float4(gLights[1].diffColor, 1.0f) * LightIntensity;
  
             color += DiffuseLight;
 		

@@ -10,6 +10,7 @@ struct VS_INPUT
 struct VS_OUTPUT
 {
     float3 worldPos : Position;
+    float3 LightSpacePos:POSITION1;
     float3 worldNormal : Normal;
     float2 tc : Texcoord;
     //SV_Position describes the pixel location.
@@ -23,11 +24,12 @@ VS_OUTPUT main(VS_INPUT input)
     matrix modelView = mul(worldMatrix, viewMatrix);
     matrix modelViewprojMatrix = mul(modelView , projMatrix);
 
-    //Camera view Positon
+    matrix lightView = mul(worldMatrix, s_View);
+    matrix lightSpaceMatrix = mul(lightView, s_Proj);
+
     vso.worldPos = (float3) mul(float4(input.pos, 1.0f), worldMatrix);
-    //Camera view Normal
+    vso.LightSpacePos = mul(float4(input.pos, 1.0f), lightSpaceMatrix);
     vso.worldNormal = mul(input.normal, (float3x3) worldInvTranspose);
-    //worldMatrix pos
     vso.pos = mul(float4(input.pos, 1.0f), modelViewprojMatrix);
     vso.tc = input.texcoord;
     return vso;

@@ -1,18 +1,13 @@
 #include "ShaderOptions.hlsli"
 #include "LightingUtil.hlsli"
 #include "CommonCbuf.hlsli"
-#include "ShadingMath.hlsli"
-
 
 struct PS_pIn
 {
     //SV_Position describes the pixel location.
-    float3 worldPos      : Position;
-    float3 lightSpacePos : POSITION1;
-    float3 worldNormal   : Normal;
-    float3 worldTan      : Tangent;
-    float3 worldBitan    : Bitangent;
-    float2 texcoord      : Texcoord;
+    float3 worldPos : Position;
+    float3 worldNormal : Normal;
+    float2 texcoord : Texcoord;
 };
 
 cbuffer ObjectCBuf : register(b2)
@@ -23,6 +18,7 @@ cbuffer ObjectCBuf : register(b2)
     float padding;
 };
 
+
 Texture2D diffTex : register(t0);
 Texture2D nmapTex : register(t2);
 
@@ -31,29 +27,29 @@ SamplerState sample0 : register(s0);
 
 float4 main(PS_pIn pIn) : SV_Target
 {
+    matrix modelView = mul(worldMatrix, viewMatrix);
+    matrix modelViewprojMatrix = mul(modelView, projMatrix);
+
     // normalize the mesh normal
     pIn.worldNormal = normalize(pIn.worldNormal);
-    pIn.worldTan = normalize(pIn.worldTan);
-    pIn.worldBitan = normalize(pIn.worldBitan);
+	// sample normal from map if normal mapping enabled
 
-    // replace normal with mapped if normal mapping enabled
-    pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmapTex, sample0);
-    
-    // Vector from point being lit to eye. 
+     // sample and unpack normal data
+    const float3 normalSample = nmapTex.Sample(sample0, pIn.texcoord).xyz;
+     const float3 objectNormal = normalSample * 2.0f - 1.0f;
+     // bring normal from object space into view space
+     pIn.worldNormal = normalize(mul(objectNormal, (float3x3) modelView));
+
+   // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-   float3 shadowFactor[MaxLights];
+    float3 shadowFactor[MaxLights];
     for (int i = 0; i < MaxLights; i++)
     {
         shadowFactor[i] = 1.0f;
     }
-   
 
-    //vector<float, MaxLights> shadowFactor;
-
-    //using texture material 
-    //if doesn't have texture material using common material
-        float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
+    float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
 
     Material mat = { texDiff, shininess, spec };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,

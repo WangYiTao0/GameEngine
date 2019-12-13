@@ -41,12 +41,14 @@ App::App()
 		static_cast<float>(screenWidth / 4),
 		static_cast<float>(screenHeight / 4),"VS_2D","PS_2D", mSrceenRTT->GetShaderResourceView());
 	smallScene->SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
-	//Depth shadow Map
+	//shadow Map
 	mDepthRTT = std::make_shared<Bind::RTT>(wnd.Gfx(), shadowWidth, shadowHeight);
 	shadowMap = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
 		static_cast<float>(screenWidth / 4),
-		static_cast<float>(screenHeight / 4), "VS_2D", "PS_2D", mDepthRTT->GetShaderResourceView());
+		static_cast<float>(screenHeight / 4), "SimpleDepth_VS", "SimpleDepth_PS", mDepthRTT->GetShaderResourceView());
 	shadowMap->SetPos({ screenWidth / 4.0f ,screenHeight * 3.0f / 4.0f,0.0f });
+
+
 
 	//scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
@@ -292,6 +294,10 @@ void App::RenderShadowTexture()
 
 	// draw scene
 	(*curScene)->Draw();
+}
+
+void App::InitDebugWindow()
+{
 }
 
 

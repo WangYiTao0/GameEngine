@@ -7,6 +7,7 @@ struct PS_pIn
 {
     //SV_Position describes the pixel location.
     float3 worldPos : Position;
+    float3 lightSpacePos : POSITION1;
     float3 worldNormal : Normal;
     float3 worldTan : Tangent;
     float3 worldBitan : Bitangent;
@@ -60,7 +61,11 @@ float4 main(PS_pIn pIn) : SV_Target
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-    float3 shadowFactor = 1.0f;
+    float3 shadowFactor[MaxLights];
+    for (int i = 0; i < MaxLights; i++)
+    {
+        shadowFactor[i] = 1.0f;
+    }
 
     //float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
     float3 texSpec = specTex.Sample(sample0, pIn.texcoord).rgb;

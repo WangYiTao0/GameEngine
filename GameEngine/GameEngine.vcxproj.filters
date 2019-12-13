@@ -310,7 +310,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shadow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -632,32 +632,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\PhongPS.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\PhongPSNormalMap.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongPSNormalMapObject.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongPSNotex.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongPSSpec.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSSpecNormalMap.hlsl">
       <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongPSSpecNormalMask.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongVS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\PhongVSNotex.hlsl">
-      <Filter>Shader\VS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\SolidPS.hlsl">
       <Filter>Shader\PS</Filter>
@@ -665,22 +644,10 @@
     <FxCompile Include="Shader\SolidVS.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\WaterWavesPS.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\WaterWavesVS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\VS_2D.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PS_2D.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\ReflectionVS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\ReflectionPS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\Sky_VS.hlsl">
@@ -692,17 +659,23 @@
     <FxCompile Include="Shader\PhongVSTBN.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\Depth_VS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Depth_PS.hlsl">
+    <FxCompile Include="Shader\DepthDraw_PS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\ShadowPS.hlsl">
+    <FxCompile Include="Shader\DepthDraw_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\SimpleDepth_PS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\ShadowVS.hlsl">
+    <FxCompile Include="Shader\SimpleDepth_VS.hlsl">
       <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DebugDepth_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DebugDepth_PS.hlsl">
+      <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
