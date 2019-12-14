@@ -50,16 +50,18 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	AddBind(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
 
 
-	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+	AddBind(InputLayout::Resolve(gfx, layout, pvsbc));
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCull));
 
 	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
-	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 0u));
+	AddBind(std::make_shared<TransformVertexAndPixelCbuf>(gfx, *this, 0u, 0u));
+
+	AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 
 
 }

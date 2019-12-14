@@ -321,6 +321,15 @@
     <ClCompile Include="RTT.cpp">
       <Filter>Source Files\Binable\RTT</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicConstant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutCodex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestDCB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -608,6 +617,18 @@
     <ClInclude Include="DepthBufferRT.h">
       <Filter>Header Files\Bindable\RTT</Filter>
     </ClInclude>
+    <ClInclude Include="DynamicConstant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LayoutCodex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestDCB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffersEx.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">
@@ -691,6 +712,9 @@
     </FxCompile>
     <FxCompile Include="Shader\PhongVS.hlsl">
       <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongPS.hlsl">
+      <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

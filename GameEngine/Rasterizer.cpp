@@ -4,7 +4,7 @@
 
 namespace Bind
 {
-	Rasterizer::Rasterizer(Graphics& gfx, RasterizerState Rs)
+	Rasterizer::Rasterizer(Graphics& gfx, Mode Rs)
 		:
 		Rs(Rs)
 	{
@@ -14,31 +14,31 @@ namespace Bind
 
 		switch (Rs)
 		{
-		case Bind::Rasterizer::RasterizerState::RSWireframe:
+		case Bind::Rasterizer::Mode::RSWireframe:
 			rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
 			rasterDesc.CullMode = D3D11_CULL_NONE;
 			rasterDesc.FrontCounterClockwise = false;
 			rasterDesc.DepthClipEnable = true;
 			break;
-		case Bind::Rasterizer::RasterizerState::RSNoCull:
+		case Bind::Rasterizer::Mode::RSNoCull:
 			rasterDesc.FillMode = D3D11_FILL_SOLID;
 			rasterDesc.CullMode = D3D11_CULL_NONE;
 			rasterDesc.FrontCounterClockwise = false;
 			rasterDesc.DepthClipEnable = true;
 			break;
-		case Bind::Rasterizer::RasterizerState::RSCullClockWise:
+		case Bind::Rasterizer::Mode::RSCullClockWise:
 			rasterDesc.FillMode = D3D11_FILL_SOLID;
 			rasterDesc.CullMode = D3D11_CULL_BACK;
 			rasterDesc.FrontCounterClockwise = true;
 			rasterDesc.DepthClipEnable = true;
 			break;
-		case RasterizerState::RSCull:
+		case Mode::RSCull:
 			rasterDesc.FillMode = D3D11_FILL_SOLID;
 			rasterDesc.CullMode = D3D11_CULL_BACK;
 			rasterDesc.FrontCounterClockwise = false;
 			rasterDesc.DepthClipEnable = true;
 			break;
-		case RasterizerState::RSDepthDisable:
+		case Mode::RSDepthDisable:
 			rasterDesc.FillMode = D3D11_FILL_SOLID;
 			rasterDesc.CullMode = D3D11_CULL_BACK;
 			rasterDesc.FrontCounterClockwise = false;
@@ -58,11 +58,11 @@ namespace Bind
 		GetContext(gfx)->RSSetState(pRasterizer.Get());
 	}
 
-	std::shared_ptr<Rasterizer> Rasterizer::Resolve(Graphics& gfx, RasterizerState Rs)
+	std::shared_ptr<Rasterizer> Rasterizer::Resolve(Graphics& gfx, Mode Rs)
 	{
 		return Codex::Resolve<Rasterizer>(gfx, Rs);
 	}
-	std::string Rasterizer::GenerateUID(RasterizerState Rs)
+	std::string Rasterizer::GenerateUID(Mode Rs)
 	{
 		using namespace std::string_literals;
 		return typeid(Rasterizer).name() + "#"s + std::to_string(int(Rs));

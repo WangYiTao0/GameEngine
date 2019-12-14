@@ -11,6 +11,7 @@
 #include "ShapesScene.h"
 #include "PhysicScene.h"
 #include "PBRScene.h"
+#include "TestDCB.h"
 
 namespace dx = DirectX;
 
@@ -18,6 +19,7 @@ App::App()
 	:
 	wnd(screenWidth, screenHeight, "Game Engine")
 {
+	TestDynamicConstant();
 	// init Light
 	m_Light = std::make_unique<Light>(wnd.Gfx(), 1,2, 2);
 

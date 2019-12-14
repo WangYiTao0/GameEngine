@@ -38,7 +38,7 @@ Mesh::Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs)
 	{
 		AddBind(std::move(pb));
 	}
-	AddBind(std::make_shared<Bind::TransformPixelCbuf>(gfx, *this, 0u, 0u));
+	AddBind(std::make_shared<Bind::TransformVertexAndPixelCbuf>(gfx, *this, 0u, 0u));
 }
 
 void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
@@ -365,12 +365,14 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 	// anything with alpha diffuse is 2-sided IN SPONZA, need a better way
 	// of signalling 2-sidedness to be more general in the future
-	auto ras = hasAlphaDiffuse ? Rasterizer::RasterizerState::RSNoCull : Rasterizer::RasterizerState::RSCull;
+	auto ras = hasAlphaDiffuse ? Rasterizer::Mode::RSNoCull : Rasterizer::Mode::RSCull;
 
 	bindablePtrs.push_back(Rasterizer::Resolve(gfx, ras));
 
 	//turn off alpha blender
 	bindablePtrs.push_back(Blender::Resolve(gfx, false));
+
+	bindablePtrs.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }

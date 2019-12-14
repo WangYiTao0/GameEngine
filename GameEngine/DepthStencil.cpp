@@ -3,17 +3,31 @@
 #include "BindableCodex.h"
 namespace Bind
 {
-	DepthStencil::DepthStencil(Graphics& gfx, DepthStencilState Dss)
+	DepthStencil::DepthStencil(Graphics& gfx, Mode Dss)
 		:
 		Dss(Dss)
 	{
 		INFOMAN(gfx);
 
-			D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+		D3D11_DEPTH_STENCIL_DESC dsDesc = CD3D11_DEPTH_STENCIL_DESC{ CD3D11_DEFAULT{} };
 
 		switch (Dss)
 		{
-		case DepthStencilState::DSSLessEqual:
+		case Mode::DSSWrite:
+			dsDesc.StencilEnable = TRUE;
+			dsDesc.StencilWriteMask = 0xFF;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+			break;
+		case Mode::DSSMask:
+			dsDesc.DepthEnable = FALSE;
+			dsDesc.StencilEnable = TRUE;
+			dsDesc.StencilReadMask = 0xFF;
+			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
+			dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			break;
+
+		case Mode::DSSLessEqual:
 			//mirror
 			//do not write depth message
 			dsDesc.DepthEnable = true;
@@ -22,7 +36,7 @@ namespace Bind
 			dsDesc.StencilEnable = false;
 
 			break;
-		case DepthStencilState::DSSWriteStencil:
+		case Mode::DSSWriteStencil:
 			//mirror
 			//do not write depth message
 			dsDesc.DepthEnable = true;
@@ -44,7 +58,7 @@ namespace Bind
 			dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 		
 			break;
-		case DepthStencilState::DSSDrawWithStencil:
+		case Mode::DSSDrawWithStencil:
 
 			dsDesc.DepthEnable = true;
 			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
@@ -65,7 +79,7 @@ namespace Bind
 			dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 
 			break;
-		case DepthStencilState::DSSNoDoubleBlend:
+		case Mode::DSSNoDoubleBlend:
 
 			dsDesc.DepthEnable = true;
 			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
@@ -85,19 +99,19 @@ namespace Bind
 			dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 
 			break;
-		case DepthStencilState::DSSNoDepthTest:
+		case Mode::DSSNoDepthTest:
 
 			dsDesc.DepthEnable = false;
 			dsDesc.StencilEnable = false;
 			break;
-		case DepthStencilState::DSSNoDepthWrite:
+		case Mode::DSSNoDepthWrite:
 
 			dsDesc.DepthEnable = true;
 			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 			dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 			dsDesc.StencilEnable = false;
 			break;
-		case DepthStencilState::DSSNoDepthTestWithStencil:
+		case Mode::DSSNoDepthTestWithStencil:
 
 			dsDesc.DepthEnable = false;
 			dsDesc.StencilEnable = true;
@@ -114,7 +128,7 @@ namespace Bind
 			dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 			dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 			break;
-		case DepthStencilState::DSSNoDepthWriteWithStencil:
+		case Mode::DSSNoDepthWriteWithStencil:
 			dsDesc.DepthEnable = true;
 			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 			dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
@@ -145,15 +159,15 @@ namespace Bind
 
 	void Bind::DepthStencil::Bind(Graphics& gfx) noexcept
 	{
-		GetContext(gfx)->OMSetDepthStencilState(DStencil.Get(), 0);
+		GetContext(gfx)->OMSetDepthStencilState(DStencil.Get(), 0xFF);
 	}
 
-	std::shared_ptr<DepthStencil> Bind::DepthStencil::Resolve(Graphics& gfx, DepthStencilState Dss)
+	std::shared_ptr<DepthStencil> Bind::DepthStencil::Resolve(Graphics& gfx, Mode Dss)
 	{
 		return Codex::Resolve<DepthStencil>(gfx, Dss);
 	}
 
-	std::string Bind::DepthStencil::GenerateUID(DepthStencilState Dss)
+	std::string Bind::DepthStencil::GenerateUID(Mode Dss)
 	{
 		using namespace std::string_literals;
 		return typeid(DepthStencil).name() + "#"s + std::to_string((int)Dss);

@@ -33,9 +33,9 @@ SkyRender::SkyRender(Graphics& gfx, std::vector<std::string>& filePaths, float s
 
 	AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSNoCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSNoCull));
 
-	AddBind(DepthStencil::Resolve(gfx, DepthStencil::DepthStencilState::DSSLessEqual));
+	AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSLessEqual));
 
 	AddBind(Blender::Resolve(gfx, false));
 }

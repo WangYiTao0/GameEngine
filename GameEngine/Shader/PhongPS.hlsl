@@ -34,6 +34,7 @@ struct PS_pIn
 {
     //SV_Position describes the pixel location.
     float3 worldPos : Position;
+    float3 LightSpacePos : POSITION1;
     float3 worldNormal : Normal;
     float2 texcoord : Texcoord;
 };

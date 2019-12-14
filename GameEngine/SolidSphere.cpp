@@ -38,7 +38,8 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 
 	AddBind(Blender::Resolve(gfx, false));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCull));
+	AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 }
 
 DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept

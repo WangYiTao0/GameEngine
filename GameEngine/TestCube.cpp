@@ -14,7 +14,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	auto model = Cube::MakeIndependentTextured();
 	model.Transform(dx::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
-	model.ComputeTangentBiTtngent();
+	//model.ComputeTangentBiTtngent();
 	const auto geometryTag = "$cube." + std::to_string(size);
 
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
@@ -23,13 +23,13 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
+	//AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
 
-	auto pvs = VertexShader::Resolve(gfx, "PhongVSTBN");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVS");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap"));
+	AddBind(PixelShader::Resolve(gfx, "PhongPS"));
 
 	AddBind(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
 
@@ -37,25 +37,62 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-	AddBind(std::make_shared<TransformPixelCbuf>(gfx, *this, 0u, 0u));
+	auto tfbvp =  std::make_shared<TransformVertexAndPixelCbuf>(gfx, *this, 0u, 0u);
+	AddBind(tfbvp);
 
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCull));
+	AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSWrite));
+
+
+	outlineEffect.push_back(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
+	outlineEffect.push_back(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
+	pvs = VertexShader::Resolve(gfx, "SolidVS");
+	pvsbc = pvs->GetBytecode();
+	outlineEffect.push_back(std::move(pvs));
+	outlineEffect.push_back(PixelShader::Resolve(gfx, "SolidPS"));
+	struct SolidColorBuffer
+	{
+		DirectX::XMFLOAT4 color = { 1.0f,0.4f,0.4f,1.0f };
+	} scb;
+	outlineEffect.push_back(PixelConstantBuffer<SolidColorBuffer>::Resolve(gfx, scb, 3u));
+	outlineEffect.push_back(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+	outlineEffect.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	outlineEffect.push_back(std::move(tfbvp));
+	outlineEffect.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSMask));
 }
 
 
 
 DirectX::XMMATRIX TestCube::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z) *
+	auto xf = DirectX::XMMatrixRotationRollPitchYaw(rollPitchYaw.x, rollPitchYaw.y, rollPitchYaw.z) *
 		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z)*
 		DirectX::XMMatrixScaling(scale.x,scale.y,scale.z);
+
+	if (outlining)
+	{
+		xf = DirectX::XMMatrixScaling(1.03f, 1.03f, 1.03f) * xf;
+	}
+	return xf;
 }
 
-void TestCube::SpawnControlWindow(Graphics& gfx) noexcept
+
+void TestCube::DrawOutline(Graphics& gfx) noxnd
 {
-	if (ImGui::Begin("Cube"))
+	outlining = true;
+	for (auto& b : outlineEffect)
+	{
+		b->Bind(gfx);
+	}
+	gfx.DrawIndexed(QueryBindable<Bind::IndexBuffer>()->GetCount());
+	outlining = false;
+}
+
+void TestCube::SpawnControlWindow(Graphics& gfx, const char* name) noexcept
+{
+	if (ImGui::Begin(name))
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");

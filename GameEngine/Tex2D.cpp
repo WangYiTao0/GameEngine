@@ -31,7 +31,7 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidt
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	AddBind(std::make_shared<Blender>(gfx, false, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSDepthDisable));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSDepthDisable));
 
 
 	SetPos({ 0.0f, 0.0f, 0.0f });
@@ -65,7 +65,7 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight,
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	AddBind(std::make_shared<Blender>(gfx, false, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::RasterizerState::RSDepthDisable));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSDepthDisable));
 
 
 	SetPos({ 0.0f, 0.0f, 0.0f });
