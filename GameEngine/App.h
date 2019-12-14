@@ -12,6 +12,7 @@
 #include "CpuClass.h"
 #include "Tex2D.h"
 #include "RTT.h"
+#include "DepthBufferRT.h"
 
 class App
 {
@@ -53,23 +54,22 @@ private:
 	float speed_factor = 1.0f;
 
 	//Camera3D cam;
-	Camera2D cam2D;
+	Camera2D m_Camera2D;
 	//Light
 	std::unique_ptr<Light> m_Light;
 	
 	CpuClass m_Cpu;
 
-	std::vector <std::unique_ptr<Scene>> scenes;
-	std::vector <std::unique_ptr<Scene>>::iterator curScene;
+	std::vector <std::unique_ptr<Scene>> m_Scenes;
+	std::vector <std::unique_ptr<Scene>>::iterator m_CurScene;
 
 
 	bool enableRenderTarget = false;
-	std::shared_ptr<Bind::RTT> mSrceenRTT;
-	std::shared_ptr<Bind::RTT> mDepthRTT;
-	//std::shared_ptr<Bind::RTT> mLightBuffer;
-	//std::shared_ptr<Bind::RTT> mGrayShadowMap;
+	std::shared_ptr<Bind::RTT> m_SrceenRT;
+
+	std::shared_ptr<Bind::DepthBufferRT> m_DepthRT;
 	//
-	std::unique_ptr <Tex2D> smallScene;
-	std::unique_ptr <Tex2D> DepthMap;
-	std::unique_ptr <Tex2D> shadowMap;
+	std::unique_ptr <Tex2D> m_SmallScene;
+	std::unique_ptr <Tex2D> m_DepthMap;
+
 };

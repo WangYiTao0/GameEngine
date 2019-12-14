@@ -6,6 +6,8 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	gfx(gfx),
 	Scene("Geometry Scene")
 {
+	role = std::make_unique<Model>(gfx, "Data\\Models\\Role\\ascendant_one_iris\\iris.obj", 2.0f);
+	role->AddShader(gfx, "PhongVSTBN", "PhongPSSpecNormalMap");
 	std::vector<std::string> filePath = {
 		"Data\\Images\\skybox\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset_negX.bmp",
 		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
@@ -22,14 +24,14 @@ void GeometryScene::Update(float dt)
 
 
 	gridTerrain.SpawnControlWindow(gfx);
-	cube.SpawnControlWindow(gfx);
+	//cube.SpawnControlWindow(gfx);
 }
 
 void GeometryScene::Draw()
 {
 	gridTerrain.DrawIndexed(gfx);
-	cube.DrawIndexed(gfx);
-	//role.Draw(gfx);
+	///cube.DrawIndexed(gfx);
+	role->Draw(gfx);
 
 
 	m_pSunset->DrawIndexed(gfx);

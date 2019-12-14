@@ -103,6 +103,12 @@
     <Filter Include="Header Files\Animation">
       <UniqueIdentifier>{bd2ed77a-6581-475b-b65a-ad388f4869e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Bindable\RTT">
+      <UniqueIdentifier>{832db00d-5e06-45ae-abe6-3b0abc8a59f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Binable\RTT">
+      <UniqueIdentifier>{fb533278-a843-4b94-8f93-38c145daf88d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -285,9 +291,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="RTT.cpp">
-      <Filter>Source Files\Binable</Filter>
-    </ClCompile>
     <ClCompile Include="Tex2D.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -311,6 +314,12 @@
     </ClCompile>
     <ClCompile Include="Shadow.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthBufferRT.cpp">
+      <Filter>Source Files\Binable\RTT</Filter>
+    </ClCompile>
+    <ClCompile Include="RTT.cpp">
+      <Filter>Source Files\Binable\RTT</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -563,9 +572,6 @@
     <ClInclude Include="WaterWave.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="RTT.h">
-      <Filter>Header Files\Bindable</Filter>
-    </ClInclude>
     <ClInclude Include="Surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -595,6 +601,12 @@
     </ClInclude>
     <ClInclude Include="Shadow.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="RTT.h">
+      <Filter>Header Files\Bindable\RTT</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthBufferRT.h">
+      <Filter>Header Files\Bindable\RTT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -676,6 +688,9 @@
     </FxCompile>
     <FxCompile Include="Shader\DebugDepth_PS.hlsl">
       <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongVS.hlsl">
+      <Filter>Shader\VS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

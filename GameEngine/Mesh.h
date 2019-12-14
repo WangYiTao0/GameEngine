@@ -80,7 +80,7 @@ public:
 	void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 	~Model() noexcept;
 
-	void AddPixelShader(Graphics& gfx, std::string PS_Name);
+	void AddShader(Graphics& gfx, std::string VS_Name,std::string PS_Name);
 	template<typename C>
 	void AddConstantBuffer(Graphics& gfx, C& c, int slot)
 	{
@@ -94,6 +94,7 @@ private:
 	std::unique_ptr<Mesh> ParseMesh(Graphics& gfx,
 		const aiMesh& mesh, const aiMaterial* const* pMaterials,
 		const std::filesystem::path& path, float scale);
+	//std::unique_ptr<Mesh> ParseMaterial(Graphics& gfx)
 	//analize
 	// take reference node struct from assimp
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node)noexcept;
@@ -105,5 +106,6 @@ private:
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
 	std::unique_ptr<class ModelWindow> pWindow;
 	std::vector<std::shared_ptr<Bind::Bindable>> bindablePtrs;
+	Dvtx::VertexBuffer vbuf;
 };
 

@@ -1,5 +1,11 @@
-float4 main(float4 pos : Position) : SV_TARGET
+struct PS_IN
 {
-    float depth = pos.z;
-    return (depth, depth, depth, 1.0f);       
+    float4 position : SV_POSITION;
+};
+
+
+float4 main(PS_IN pIn) : SV_TARGET
+{
+    return (0.0f, 0.0f, 0.0f, 0.0f);
+	// if discard is called, depth buffer won't have any data     
 }

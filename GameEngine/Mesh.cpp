@@ -64,7 +64,6 @@ Node::Node(int id, const std::string& name,std::vector<Mesh*> meshPtrs, const Di
 	dx::XMStoreFloat4x4(&transform, transform_in);
 	dx::XMStoreFloat4x4(&appliedTransform, dx::XMMatrixIdentity());
 }
-
 void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd
 {
 	const auto built = 	
@@ -80,7 +79,6 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const no
 		pc->Draw(gfx, built);
 	}
 }
-
 //recursively remder the nodes
 void Node::ShowTree(Node*& pSelectedNode) const noexcept
 {
@@ -327,7 +325,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 	const auto meshTag = path.string() + "%" + mesh.mName.C_Str();
 
-	Dvtx::VertexBuffer vbuf(std::move(
+	vbuf = (std::move(
 		VertexLayout{}
 		.Append(VertexLayout::Position3D)
 		.Append(VertexLayout::Normal)
@@ -362,17 +360,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 
 	bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-	auto pvs = VertexShader::Resolve(gfx, "PhongVSTBN");
-	auto pvsbc = pvs->GetBytecode();
-	bindablePtrs.push_back(std::move(pvs));
-
-	bindablePtrs.push_back((Bind::PixelShader::Resolve(gfx, "PhongPSSpecNormalMap")));
-
-	bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
-
-
 	Material pmc;
-
 	bindablePtrs.push_back(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
 
 	// anything with alpha diffuse is 2-sided IN SPONZA, need a better way
@@ -387,9 +375,16 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh,const a
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }
 
-void Model::AddPixelShader(Graphics& gfx, std::string PS_Name)
+void Model::AddShader(Graphics& gfx, std::string VS_Name, std::string PS_Name)
 {
+	auto pvs = Bind::VertexShader::Resolve(gfx, VS_Name);
+	auto pvsbc = pvs->GetBytecode();
+	bindablePtrs.push_back(std::move(pvs));
+
 	bindablePtrs.push_back((Bind::PixelShader::Resolve(gfx, PS_Name)));
+
+	bindablePtrs.push_back(Bind::InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
+
 	meshPtrs.push_back(std::make_unique<Mesh>(gfx, std::move(bindablePtrs)));
 }
 

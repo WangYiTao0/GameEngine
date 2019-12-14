@@ -190,6 +190,7 @@
     <ClCompile Include="Blender.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="d3dUtil.cpp" />
+    <ClCompile Include="DepthBufferRT.cpp" />
     <ClCompile Include="ECS\EcsSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="PBRScene.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="d3dUtil.h" />
+    <ClInclude Include="DepthBufferRT.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LightCommon.h" />
     <ClInclude Include="PBRScene.h" />
@@ -418,6 +420,16 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shader\PS_2D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
