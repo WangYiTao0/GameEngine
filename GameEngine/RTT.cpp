@@ -106,7 +106,7 @@ namespace Bind
 
 	void RTT::SetRenderTarget(Graphics& gfx)
 	{
-		GetContext(gfx)->OMSetRenderTargets(0, m_pRTV.GetAddressOf(), m_pDSV.Get());
+		GetContext(gfx)->OMSetRenderTargets(1, m_pRTV.GetAddressOf(), m_pDSV.Get());
 		GetContext(gfx)->RSSetViewports(1, &m_ViewPort);
 
 		ClearRenderTarget(gfx);

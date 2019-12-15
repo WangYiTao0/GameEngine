@@ -6,6 +6,7 @@
 #include "TransformPixelCbuf.h"
 #include "Grid.h"
 #include "imgui/imgui.h"
+#include "App.h"
 
 IndexedTriangleList GridTerrain::model ;
 
@@ -29,7 +30,8 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	model.ComputeTangentBiTtngent();
 
 	const auto geometryTag = "$Grid." + std::to_string(width);
-	AddBind(Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSAnistropicWrap));
+	AddBind(Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSLinearWrap));
+	AddBind(Sampler::Resolve(gfx, 1u, Sampler::SamplerState::SSLinearClamp));
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
@@ -37,6 +39,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156_norm.jpg", 2u));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_a_diff.png"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_ddn.jpg", 2u));
+	AddBind(std::make_shared<Texture>(gfx, "null", 3u, App::m_DepthRT->GetShaderResourceView()));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVSTBN");
 	//auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");
@@ -56,13 +59,12 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
 
 	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
 	AddBind(std::make_shared<TransformVertexAndPixelCbuf>(gfx, *this, 0u, 0u));
 
 	AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
-
 
 }
 

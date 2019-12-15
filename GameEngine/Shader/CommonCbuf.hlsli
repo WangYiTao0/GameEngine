@@ -20,7 +20,8 @@ cbuffer ShadowCB :register(b1)
     matrix s_View;
     matrix s_Proj;
     matrix s_Ortho;
-    int lightID;
+    float s_nearZ;
+    float s_farZ;
 }
 
 

@@ -16,12 +16,12 @@ public:
 	void RenderReflection(float height);
 	DirectX::XMMATRIX GetReflectionViewMatrix();
 	
-	inline DirectX::XMFLOAT3 GetUp()const { return m_Up; }
-	inline DirectX::XMFLOAT3 GetRight()const { return m_Right; }
-	inline DirectX::XMFLOAT3 GetLook()const { return m_Look; }
-	inline float GetNearZ() { return m_NearZ; }
-	inline float GetFarZ() { return m_FarZ; }
-	inline float GetFov() { return m_Fov; }
+	 DirectX::XMFLOAT3 GetUp()const;
+	 DirectX::XMFLOAT3 GetRight()const;
+	 DirectX::XMFLOAT3 GetLook()const;
+	float GetNearZ();
+	float GetFarZ();
+	float GetFov();
 
 
 	void SpawnControlWindow() noexcept;

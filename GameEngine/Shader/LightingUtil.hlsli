@@ -10,7 +10,7 @@
 #endif
 
 #ifndef NUM_SPOT_LIGHTS
-    #define NUM_SPOT_LIGHTS 2
+    #define NUM_SPOT_LIGHTS 1
 #endif
 
 float4 gAmbientLight = { 0.25f, 0.25f, 0.35f, 1.0f };
@@ -72,14 +72,7 @@ struct Material
     float3 spec;
 };
 
-LightVectorData CalculateLightVectorData(const in float3 lightPos, const in float3 worldPos)
-{
-    LightVectorData lv;
-    lv.vToL = lightPos - worldPos;
-    lv.distToL = length(lv.vToL);
-    lv.dirToL = lv.vToL / lv.distToL;
-    return lv;
-}
+
 
 
 float CalcAttenuation(uniform float attConst, uniform float attLin, uniform float attQuad, const in float distFragToL)
@@ -117,10 +110,51 @@ float3 Speculate(
     return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, worldCamToFrag)), specularPower);
 }
 
+float ShadowCalculation(float4 fragPosLightSpace, Texture2D shadowMap, SamplerState sample,float3 lightPos,float3 worldPos,float3 worldNormal)
+{
+    // perform perspective divide
+    float3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = shadowMap.Sample(sample, projCoords.xy).r;
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+
+    // Calculate bias (based on depth map resolution and slope)
+    float3 normal = normalize(worldNormal);
+    float3 lightDir = normalize(lightPos - worldPos);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+
+        // Check whether current frag pos is in shadow
+    // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+    // PCF
+    float shadow = 0.0;
+    float width, height;
+    shadowMap.GetDimensions(width, height);
+    float2 texelSize = 1.0 / float2(width, height);
+    for (int x = -1; x <= 1; ++x)
+    {
+        for (int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = shadowMap.Sample(sample, projCoords.xy + float2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+        }
+    }
+    shadow /= 9.0;
+    
+    // Keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+    if (projCoords.z > 1.0)
+        shadow = 0.0;
+
+    return shadow;
+}
+
+
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for directional lights.
 //---------------------------------------------------------------------------------------
-float3 ComputeDirectionalLight(Light L, Material mat, float3 normal, float3 toEye)
+float3 ComputeDirectionalLight(Light L, Material mat, float3 normal, float3 toEye, float shadowFactor)
 {
     // The light vector aims opposite the direction the light rays travel.
     float3 lightDir = normalize(-L.direction);
@@ -137,13 +171,13 @@ float3 ComputeDirectionalLight(Light L, Material mat, float3 normal, float3 toEy
     float3 diffuse = L.diffColor  * diff * mat.diff;
     float3 specular = L.specular  * spec * mat.spec;
 
-    return saturate(ambient + diffuse) + specular;
+    return ambient + shadowFactor*(diffuse + specular);
 }
 
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for point lights.
 //---------------------------------------------------------------------------------------
-float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNormal, float3 toEye)
+float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNormal, float3 toEye,float shadowFactor)
 {
     // The vector from the surface to the light.
     float3 lightDir = normalize(L.position - worldPos);
@@ -172,13 +206,14 @@ float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNor
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
-    return saturate(ambient + diffuse) + specular;
+    return ambient + shadowFactor * (diffuse + specular);
 }
+
 
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for spot lights.
 //---------------------------------------------------------------------------------------
-float3 ComputeSpotLight(Light L, Material mat, float3 worldPos, float3 normal, float3 toEye)
+float3 ComputeSpotLight(Light L, Material mat, float3 worldPos, float3 normal, float3 toEye, float shadowFactor)
 {
     float3 lightDir = normalize(L.position - worldPos);
     // diffuse shading
@@ -205,27 +240,30 @@ float3 ComputeSpotLight(Light L, Material mat, float3 worldPos, float3 normal, f
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
-    return saturate(ambient + diffuse) + specular;
+    return ambient + shadowFactor * (diffuse + specular);
 }
+
 
 
 float4 ComputeLighting(Light gLights[MaxLights], Material mat,
                        float3 pos, float3 normal, float3 toEye,
-                       float3 shadowFactor[MaxLights])
+                       float shadowFactor[MaxLights])
 {
+
+
     float3 result = 0.0f;
     int i = 0;
 #if (NUM_DIR_LIGHTS > 0)
     for (i = 0; i < NUM_DIR_LIGHTS; ++i)
     {
-        result += shadowFactor[i] * ComputeDirectionalLight(gLights[i], mat, normal, toEye);
+        result += ComputeDirectionalLight(gLights[i], mat, normal, toEye, shadowFactor[i]);
     }
 #endif
     
 #if (NUM_POINT_LIGHTS > 0)
     for (i = NUM_DIR_LIGHTS; i < NUM_DIR_LIGHTS + NUM_POINT_LIGHTS; ++i)
     {
-        result += shadowFactor[i] * ComputePointLight(gLights[i], mat, pos, normal, toEye);
+        result +=  ComputePointLight(gLights[i], mat, pos, normal, toEye, shadowFactor[i]);
 
     }
 #endif
@@ -233,7 +271,7 @@ float4 ComputeLighting(Light gLights[MaxLights], Material mat,
 #if (NUM_SPOT_LIGHTS > 0)
     for(i = NUM_DIR_LIGHTS + NUM_POINT_LIGHTS; i < NUM_DIR_LIGHTS + NUM_POINT_LIGHTS + NUM_SPOT_LIGHTS; ++i)
     {
-        result += shadowFactor[i] * ComputeSpotLight(gLights[i], mat, pos, normal, toEye);
+        result += ComputeSpotLight(gLights[i], mat, pos, normal, toEye, shadowFactor[i]);
     }
 #endif 
 

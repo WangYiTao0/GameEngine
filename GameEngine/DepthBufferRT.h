@@ -18,7 +18,6 @@ namespace Bind
 
 		void SetRenderTarget(Graphics& gfx) noexcept;
 		void ClearDepth(Graphics& gfx);
-		//void ClearRenderTarget(Graphics& gfx);
 		ID3D11ShaderResourceView* GetShaderResourceView();
 
 
@@ -30,7 +29,6 @@ namespace Bind
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pDepthBackBufferTexture2D;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDephtStencilView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_SRV;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRTV;
 		D3D11_VIEWPORT m_ViewPort;
 
 

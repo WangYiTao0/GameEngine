@@ -43,7 +43,7 @@ void ViewPoint::GenerateViewMatrix()
 	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	//
-	m_View = XMMatrixLookAtLH(EyePostion, EyePostion + LookAt, Up);
+	m_View = XMMatrixLookAtLH(EyePostion, LookAt, Up);
 
 }
 

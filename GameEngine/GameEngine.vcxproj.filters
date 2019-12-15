@@ -755,18 +755,6 @@
     <FxCompile Include="Shader\PhongVSTBN.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\DepthDraw_PS.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\DepthDraw_VS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\SimpleDepth_PS.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\SimpleDepth_VS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\DebugDepth_VS.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
@@ -777,6 +765,18 @@
       <Filter>Shader\VS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ProjDepth_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ProjDepth_PS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ProjDepthDraw_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ProjDepthDraw_PS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>

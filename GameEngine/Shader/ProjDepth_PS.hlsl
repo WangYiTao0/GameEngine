@@ -4,10 +4,10 @@ struct PS_IN
 };
 
 
-float4 main(PS_IN pIn) : SV_TARGET0
+float4 main(PS_IN pIn) : SV_TARGET
 {
     
-    //return (0.0f, 0.0f, 0.0f, 0.0f);
-    return pIn.position.zzzz;
+    return (0.0f, 0.0f, 0.0f, 0.0f);
+    //return pIn.position.zzzz;
 	// if discard is called, depth buffer won't have any data     
 }

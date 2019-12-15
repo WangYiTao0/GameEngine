@@ -52,7 +52,8 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight,
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, tex2D.indices));
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
 	//AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
-	AddBind(Texture::Resolve(gfx, "null", 0u, pSv));
+	//AddBind(Texture::Resolve(gfx, "null", 0u, pSv));
+	AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
 	auto pvs = VertexShader::Resolve(gfx, VS_Name);
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));

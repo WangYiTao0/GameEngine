@@ -84,6 +84,18 @@ DirectX::XMMATRIX Camera3D::GetReflectionViewMatrix()
 	return m_reflectionViewMatrix;
 }
 
+DirectX::XMFLOAT3 Camera3D::GetUp() const { return m_Up; }
+
+DirectX::XMFLOAT3 Camera3D::GetRight() const { return m_Right; }
+
+DirectX::XMFLOAT3 Camera3D::GetLook() const { return m_Look; }
+
+float Camera3D::GetNearZ() { return m_NearZ; }
+
+float Camera3D::GetFarZ() { return m_FarZ; }
+
+float Camera3D::GetFov() { return m_Fov; }
+
 void Camera3D::SpawnControlWindow() noexcept
 {
 	if (ImGui::Begin("Camera"))

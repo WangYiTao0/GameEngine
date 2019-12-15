@@ -12,8 +12,12 @@
 #include "PhysicScene.h"
 #include "PBRScene.h"
 #include "TestDCB.h"
+#include "DepthStencil.h"
+
 
 namespace dx = DirectX;
+
+std::shared_ptr<Bind::DepthBufferRT> App:: m_DepthRT = nullptr;
 
 App::App()
 	:
@@ -21,7 +25,7 @@ App::App()
 {
 	TestDynamicConstant();
 	// init Light
-	m_Light = std::make_unique<Light>(wnd.Gfx(), 1,2, 2);
+	m_Light = std::make_unique<Light>(wnd.Gfx(), 1,2, 1);
 
 	// Create the cpu object.
 	m_Cpu.Initialize();
@@ -47,7 +51,7 @@ App::App()
 	m_DepthRT = std::make_shared<Bind::DepthBufferRT>(wnd.Gfx(), shadowWidth, shadowHeight);
 	m_DepthMap = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
 		static_cast<float>(screenWidth / 4),
-		static_cast<float>(screenHeight / 4), "VS_2D", "PS_2D", m_DepthRT->GetShaderResourceView());
+		static_cast<float>(screenHeight / 4), "VS_2D", "ProjDepthDraw_PS", m_DepthRT->GetShaderResourceView());
 	m_DepthMap->SetPos({ screenWidth / 4.0f ,screenHeight * 3.0f / 4.0f,0.0f });
 
 
@@ -85,11 +89,11 @@ void App::DoFrame()
 {
 	const auto dt = timer.Mark() * speed_factor;
 
-	if (enableRenderTarget)
-	{
+	//if (enableRenderTarget)
+	//{
 		//render scene to texture
 		RenderToTexture();
-	}
+	//}
 	wnd.Gfx().SetProjection(GCamera3D->GetProj());
 	wnd.Gfx().SetCameraViewMatirx(GCamera3D->GetViewMatrix());
 
@@ -265,15 +269,17 @@ void App::CycleScenes()
 void App::RenderToTexture() 
 {
 	//SetRenderTarget();ClearDepth();
-	m_SrceenRT->SetRenderTarget(wnd.Gfx());
-	//RenderScene Save  into mScreenRTT .SRV
-	RenderScene();
-	wnd.Gfx().SetBackBufferRenderTarget();
-
-	//SetRenderTarget();ClearDepth();
 	m_DepthRT->SetRenderTarget(wnd.Gfx());
 	//Render Depth Texture into mDepth .SRV
 	RenderDepthTexture();
+	
+	//SetRenderTarget();ClearDepth();
+	m_SrceenRT->SetRenderTarget(wnd.Gfx());
+	//RenderScene Save  into mScreenRTT .SRV
+	RenderScene();
+	//wnd.Gfx().SetBackBufferRenderTarget();
+
+
 
 	wnd.Gfx().SetBackBufferRenderTarget();
 	wnd.Gfx().ResetViewport();
@@ -289,7 +295,7 @@ void App::RenderScene()
 void App::RenderDepthTexture()
 {
 	// draw scene
-	//(*m_CurScene)->Draw();
+	(*m_CurScene)->DrawDepth();
 }
 
 void App::InitDebugWindow()

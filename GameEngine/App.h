@@ -67,9 +67,10 @@ private:
 	bool enableRenderTarget = false;
 	std::shared_ptr<Bind::RTT> m_SrceenRT;
 
-	std::shared_ptr<Bind::DepthBufferRT> m_DepthRT;
+
 	//
 	std::unique_ptr <Tex2D> m_SmallScene;
 	std::unique_ptr <Tex2D> m_DepthMap;
-
+public:
+	static std::shared_ptr<Bind::DepthBufferRT> m_DepthRT;
 };

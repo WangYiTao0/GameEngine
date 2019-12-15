@@ -11,8 +11,6 @@ namespace Bind
 	{
 		INFOMAN(gfx);
 
-	
-
 		//第一,填充深度视图的2D纹理形容结构体,并创建2D渲染纹理
 		D3D11_TEXTURE2D_DESC depthBufferDesc;
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));

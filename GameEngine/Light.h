@@ -22,8 +22,9 @@ private:
 		DirectX::XMMATRIX ShadowViewMatrix;
 		DirectX::XMMATRIX ShadowProjMatrix;
 		DirectX::XMMATRIX ShadowOrthoMatrix;
-		INT lightID = 1;
-		float padding[3];
+		float nearZ;
+		float farZ;
+		float padding[2];
 	};
 
 public:
@@ -72,6 +73,11 @@ private:
 	bool SpawnDirLightWindow( int lightId)noexcept;
 	bool SpawnPointLightWindow( int lightId)noexcept;
 	bool SpawnSpotLightWindow( int lightId)noexcept;
+
+	void DrawLightRange(Graphics& gfx, int lightId)noexcept;
+	void DrawDirLighRange(Graphics& gfx, int lightId)noexcept;
+	void DrawPointLightRange(Graphics& gfx, int lightId)noexcept;
+	void DrawSpotLightRange(Graphics& gfx, int lightId)noexcept;
 
 private:
 	int LightIndex = 0;

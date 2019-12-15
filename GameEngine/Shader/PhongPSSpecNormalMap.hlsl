@@ -61,7 +61,7 @@ float4 main(PS_pIn pIn) : SV_Target
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-    float3 shadowFactor[MaxLights];
+    float shadowFactor[MaxLights];
     for (int i = 0; i < MaxLights; i++)
     {
         shadowFactor[i] = 1.0f;

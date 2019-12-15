@@ -32,9 +32,15 @@ namespace Bind
 			rasterDesc.FrontCounterClockwise = true;
 			rasterDesc.DepthClipEnable = true;
 			break;
-		case Mode::RSCull:
+		case Mode::RSCullBack:
 			rasterDesc.FillMode = D3D11_FILL_SOLID;
 			rasterDesc.CullMode = D3D11_CULL_BACK;
+			rasterDesc.FrontCounterClockwise = false;
+			rasterDesc.DepthClipEnable = true;
+			break;
+		case Mode::RSCullFront:
+			rasterDesc.FillMode = D3D11_FILL_SOLID;
+			rasterDesc.CullMode = D3D11_CULL_FRONT;
 			rasterDesc.FrontCounterClockwise = false;
 			rasterDesc.DepthClipEnable = true;
 			break;

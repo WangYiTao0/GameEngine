@@ -111,7 +111,7 @@ void Light::Update(Graphics& gfx)
 void Light::ResetDirectionLight(int lightID) noexcept
 {
 	//for shadow Calculate 
-	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
+	lightData.L[lightID].position = { 4.0f,15.0f,0.0f };
 
 	lightData.L[lightID].direction = { -0.2f, -1.0f, 0.3f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
@@ -188,10 +188,15 @@ bool Light::SpawnDirLightWindow(int lightId) noexcept
 		}
 		else 
 		{
+			ImGui::Text("Position");
+			ImGui::SliderFloat("X", &lightData.L[lightId].position.x, -60.0f, 60.0f, "%.1f");
+			ImGui::SliderFloat("Y", &lightData.L[lightId].position.y, -60.0f, 60.0f, "%.1f");
+			ImGui::SliderFloat("Z", &lightData.L[lightId].position.z, -60.0f, 60.0f, "%.1f");
+
 			ImGui::Text("Direction");
-			ImGui::SliderFloat("Direction roll", &lightData.L[lightId].direction.x, -180*MH::oneRad, 180*MH::oneRad);
-			ImGui::SliderFloat("Direction pitch", &lightData.L[lightId].direction.y, -180*MH::oneRad, 180*MH::oneRad);
-			ImGui::SliderFloat("Direction yaw", &lightData.L[lightId].direction.z, -180*MH::oneRad, 180*MH::oneRad);
+			ImGui::SliderFloat("Dir X", &lightData.L[lightId].direction.x, -180 * MH::oneRad, 180 * MH::oneRad);
+			ImGui::SliderFloat("Dir Y", &lightData.L[lightId].direction.y, -180 * MH::oneRad, 180 * MH::oneRad);
+			ImGui::SliderFloat("Dir Z", &lightData.L[lightId].direction.z, -180 * MH::oneRad, 180 * MH::oneRad);
 
 			ImGui::Text("Light Color");
 			ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].diffColor.x);
@@ -270,9 +275,9 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 	else
 	{
 		ImGui::Text("Direction");
-		ImGui::SliderFloat("Dir Pitch", &lightData.L[lightId].direction.x, -180*MH::oneRad, 180*MH::oneRad);
-		ImGui::SliderFloat("Dir Yaw", &lightData.L[lightId].direction.y, -180*MH::oneRad, 180*MH::oneRad);
-		ImGui::SliderFloat("Dir Roll", &lightData.L[lightId].direction.z, -180*MH::oneRad, 180*MH::oneRad);
+		ImGui::SliderFloat("Dir X", &lightData.L[lightId].direction.x, -180*MH::oneRad, 180*MH::oneRad);
+		ImGui::SliderFloat("Dir Y", &lightData.L[lightId].direction.y, -180*MH::oneRad, 180*MH::oneRad);
+		ImGui::SliderFloat("Dir Z", &lightData.L[lightId].direction.z, -180*MH::oneRad, 180*MH::oneRad);
 
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &lightData.L[lightId].position.x, -60.0f, 60.0f, "%.1f");
@@ -309,6 +314,38 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 	return open;
 }
 
+void Light::DrawLightRange(Graphics& gfx, int lightId) noexcept
+{
+	for (int i = 0; i < m_DirLightNum; i++)
+	{
+		DrawDirLighRange(gfx,i);
+
+	}
+	for (int i = m_DirLightNum; i < m_DirLightNum + m_PointLightNum; i++)
+	{
+		DrawPointLightRange(gfx, i);
+	}
+	for (int i = m_DirLightNum + m_PointLightNum; i < m_DirLightNum + m_PointLightNum + m_SpotLightNum; i++)
+	{
+		DrawSpotLightRange(gfx, i);
+	}
+}
+
+void Light::DrawDirLighRange(Graphics& gfx, int lightId) noexcept
+{
+
+}
+
+void Light::DrawPointLightRange(Graphics& gfx, int lightId) noexcept
+{
+
+}
+
+void Light::DrawSpotLightRange(Graphics& gfx, int lightId) noexcept
+{
+
+}
+
 void Light::Bind(Graphics& gfx) const noexcept
 {
 	lightCB.Update(gfx, lightData);
@@ -322,7 +359,8 @@ void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
 {	
 	m_ViewPoint.SetPostion(lightData.L[lightID].position);
 	m_ViewPoint.SetLookAt(lightData.L[lightID].direction);
-	m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
+	//m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
+	m_ViewPoint.SetScreen(100,100);
 	m_ViewPoint.SetProjectionParameters(GCamera3D->GetFov(), gfx.GetAspect(), GCamera3D->GetNearZ(), GCamera3D->GetFarZ());
 	m_ViewPoint.GenerateViewMatrix();
 	m_ViewPoint.GenerateProjMatrix();
@@ -336,10 +374,13 @@ Light::ShadowCB Light::GetShadowMatrix()
 	const auto s_proj = m_ViewPoint.GetProjMatrix();
 	const auto s_ortho = m_ViewPoint.GetOrthoMatrix();
 	
+	
 	return {
 		XMMatrixTranspose(s_view),
 		XMMatrixTranspose(s_proj),
-		XMMatrixTranspose(s_ortho)	};
+		XMMatrixTranspose(s_ortho),
+		GCamera3D->GetNearZ(),
+		GCamera3D->GetFarZ() };
 }
 
 //ShadowCB Light::GetShadowMatrix(int lightID)

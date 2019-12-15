@@ -32,7 +32,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	auto tfbvp =  std::make_shared<TransformVertexAndPixelCbuf>(gfx, *this, 0u, 0u);
 	AddBind(tfbvp);
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
 	AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSWrite));
 
 
@@ -53,19 +53,21 @@ TestCube::TestCube(Graphics& gfx, float size)
 	outlineEffect.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSMask));
 
 
+	depth.push_back(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullFront));
+
 	depth.push_back(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	depth.push_back(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
-	pvs = VertexShader::Resolve(gfx, "SimpleDepth_VS");
+	pvs = VertexShader::Resolve(gfx, "ProjDepth_VS");
 	pvsbc = pvs->GetBytecode();
 	depth.push_back(std::move(pvs));
-	depth.push_back(PixelShader::Resolve(gfx, "SimpleDepth_PS"));
+	depth.push_back(PixelShader::Resolve(gfx, "ProjDepth_PS"));
 	depth.push_back(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 	depth.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 	depth.push_back(std::make_shared<TransformCbuf>(gfx, *this));
 	depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 
-
+	depth.push_back(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
 
 	//depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSMask));
 }

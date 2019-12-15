@@ -243,7 +243,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 	// anything with alpha diffuse is 2-sided IN SPONZA, need a better way
 	// of signalling 2-sidedness to be more general in the future
-	auto ras = hasAlphaDiffuse ? Rasterizer::Mode::RSNoCull : Rasterizer::Mode::RSCull;
+	auto ras = hasAlphaDiffuse ? Rasterizer::Mode::RSNoCull : Rasterizer::Mode::RSCullBack;
 
 	bindablePtrs.push_back(Rasterizer::Resolve(gfx, ras));
 

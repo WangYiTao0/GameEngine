@@ -38,7 +38,7 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 
 	AddBind(Blender::Resolve(gfx, false));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCull));
+	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
 	AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 }
 
