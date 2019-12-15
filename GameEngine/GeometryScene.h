@@ -21,6 +21,7 @@ public:
 	virtual void Update(float dt) override;
 
 	virtual void Draw()  override;
+	virtual void DrawDepth() override;
 private:
 	void SpownFrustumControl();
 private:

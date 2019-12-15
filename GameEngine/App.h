@@ -33,7 +33,7 @@ private:
 
 	void RenderToTexture();
 	void RenderScene();
-	void RenderShadowTexture();
+	void RenderDepthTexture();
 	void InitDebugWindow();
 
 private:

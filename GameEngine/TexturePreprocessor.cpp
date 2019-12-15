@@ -1,7 +1,8 @@
 #include "TexturePreprocessor.h"
 #include <filesystem>
 #include <sstream>
-#include "Mesh.h"
+#include "Model.h"
+#include "ModelException.h"
 #include "MathHelper.h"
 
 

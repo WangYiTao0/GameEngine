@@ -181,7 +181,8 @@ void Graphics::DrawIndexedInstance(UINT indexCount,UINT instanceCount) noexcept(
 
 void Graphics::DrawIndexed(UINT count) noxnd
 {
-	GFX_THROW_INFO_ONLY(pContext->DrawIndexed(count, 0u, 0u));
+	pContext->DrawIndexed(count, 0u, 0u);
+	//GFX_THROW_INFO_ONLY(pContext->DrawIndexed(count, 0u, 0u));
 }
 
 void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept

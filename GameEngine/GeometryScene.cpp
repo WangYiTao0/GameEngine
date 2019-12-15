@@ -14,7 +14,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
 
 	cube.SetPos({ 0.0f,2.0f,0.0f });	
-	//m_pSunset = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
+	m_pSunset = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
 
 }
 
@@ -35,7 +35,12 @@ void GeometryScene::Draw()
 	//role->Draw(gfx);
 
 
-	//m_pSunset->DrawIndexed(gfx);
+	m_pSunset->DrawIndexed(gfx);
+}
+
+void GeometryScene::DrawDepth()
+{
+	cube.DrawDepth(gfx);
 }
 
 void GeometryScene::SpownFrustumControl()

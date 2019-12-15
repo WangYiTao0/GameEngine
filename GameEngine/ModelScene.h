@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "Mesh.h"
+#include "Model.h"
 #include "TestPlane.h"
 #include "SkyRender.h"
 

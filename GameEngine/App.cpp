@@ -273,7 +273,7 @@ void App::RenderToTexture()
 	//SetRenderTarget();ClearDepth();
 	m_DepthRT->SetRenderTarget(wnd.Gfx());
 	//Render Depth Texture into mDepth .SRV
-	RenderShadowTexture();
+	RenderDepthTexture();
 
 	wnd.Gfx().SetBackBufferRenderTarget();
 	wnd.Gfx().ResetViewport();
@@ -286,7 +286,7 @@ void App::RenderScene()
 	(*m_CurScene)->Draw();
 }
 
-void App::RenderShadowTexture()
+void App::RenderDepthTexture()
 {
 	// draw scene
 	//(*m_CurScene)->Draw();

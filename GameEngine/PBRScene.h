@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Graphics.h"
-#include "Mesh.h"
+#include "Model.h"
 
 class PBRScene :public Scene
 {

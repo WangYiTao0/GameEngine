@@ -11,6 +11,8 @@ namespace Bind
 	{
 		INFOMAN(gfx);
 
+	
+
 		//第一,填充深度视图的2D纹理形容结构体,并创建2D渲染纹理
 		D3D11_TEXTURE2D_DESC depthBufferDesc;
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
@@ -26,7 +28,6 @@ namespace Bind
 		depthBufferDesc.CPUAccessFlags = 0;
 		depthBufferDesc.MiscFlags = 0;
 		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&depthBufferDesc, NULL, m_pDepthBackBufferTexture2D.GetAddressOf()));
-
 
 		//第二,填充深度缓存视图形容结构体,并创建深度缓存视图
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
@@ -62,7 +63,7 @@ namespace Bind
 		//设置渲染目标视图为NULL 可以大大提高我们3D程序的性能
 		ID3D11RenderTargetView* renderTarget[1] = { nullptr };
 		//绑定渲染目标视图和深度模板视图到输出渲染管线
-		GetContext(gfx)->OMSetRenderTargets(0, renderTarget, m_pDephtStencilView.Get());
+		GetContext(gfx)->OMSetRenderTargets(1, renderTarget, m_pDephtStencilView.Get());
 
 		//设置视口
 		GetContext(gfx)->RSSetViewports(1, &m_ViewPort);
@@ -75,6 +76,7 @@ namespace Bind
 	{
 		GetContext(gfx)->ClearDepthStencilView(m_pDephtStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
+
 	ID3D11ShaderResourceView* DepthBufferRT::GetShaderResourceView()
 	{
 		return m_SRV.Get();

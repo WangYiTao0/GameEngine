@@ -18,30 +18,20 @@ TestCube::TestCube(Graphics& gfx, float size)
 	const auto geometryTag = "$cube." + std::to_string(size);
 
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
-
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
-
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
-
 	auto pvs = VertexShader::Resolve(gfx, "PhongVS");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
-
 	AddBind(PixelShader::Resolve(gfx, "PhongPS"));
-
 	AddBind(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
-
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
-
 	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-
 	auto tfbvp =  std::make_shared<TransformVertexAndPixelCbuf>(gfx, *this, 0u, 0u);
 	AddBind(tfbvp);
-
 	AddBind(std::make_shared<Blender>(gfx, true, 1.0f));
-
 	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCull));
 	AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSWrite));
 
@@ -61,6 +51,23 @@ TestCube::TestCube(Graphics& gfx, float size)
 	outlineEffect.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	outlineEffect.push_back(std::move(tfbvp));
 	outlineEffect.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSMask));
+
+
+	depth.push_back(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
+	depth.push_back(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
+	pvs = VertexShader::Resolve(gfx, "SimpleDepth_VS");
+	pvsbc = pvs->GetBytecode();
+	depth.push_back(std::move(pvs));
+	depth.push_back(PixelShader::Resolve(gfx, "SimpleDepth_PS"));
+	depth.push_back(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+	depth.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+
+	depth.push_back(std::make_shared<TransformCbuf>(gfx, *this));
+	depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
+
+
+
+	//depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSMask));
 }
 
 
@@ -88,6 +95,15 @@ void TestCube::DrawOutline(Graphics& gfx) noxnd
 	}
 	gfx.DrawIndexed(QueryBindable<Bind::IndexBuffer>()->GetCount());
 	outlining = false;
+}
+
+void TestCube::DrawDepth(Graphics& gfx)noexcept
+{
+	for (auto& b : depth)
+	{
+		b->Bind(gfx);
+	}
+	gfx.DrawIndexed(QueryBindable<Bind::IndexBuffer>()->GetCount());
 }
 
 void TestCube::SpawnControlWindow(Graphics& gfx, const char* name) noexcept
