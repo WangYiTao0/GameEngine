@@ -22,6 +22,7 @@ cbuffer ShadowCB :register(b1)
     matrix s_Ortho;
     float s_nearZ;
     float s_farZ;
+    float2 s_padding;
 }
 
 

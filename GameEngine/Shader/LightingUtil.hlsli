@@ -13,16 +13,6 @@
     #define NUM_SPOT_LIGHTS 1
 #endif
 
-float4 gAmbientLight = { 0.25f, 0.25f, 0.35f, 1.0f };
-
-struct LightVectorData
-{
-    float3 vToL; // vector to light
-    float3 dirToL; // dir to light
-    float distToL; //distance to light
-};
-
-
 struct Light
 {
     float3 position; //spot point

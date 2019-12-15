@@ -1,6 +1,6 @@
 ﻿#include "GeometryScene.h"
 #include "DirectXMathHelper.h"
-
+#include "MathHelper.h"
 GeometryScene::GeometryScene(Graphics& gfx)
 	:
 	gfx(gfx),
@@ -9,7 +9,8 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 {
 	std::uniform_real_distribution<float> rdist(-20.0f, 20.0f);
-
+	std::uniform_real_distribution<float> rdistY(0.0f, 20.0f);
+	std::uniform_real_distribution<float> rRot(-MH::PI,MH::PI);
 
 	//role = std::make_unique<Model>(gfx, "Data\\Models\\Role\\ascendant_one_iris\\iris.obj", 2.0f);
 	//role->AddShader(gfx, "PhongVSTBN", "PhongPSSpecNormalMap");
@@ -18,15 +19,16 @@ GeometryScene::GeometryScene(Graphics& gfx)
 		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
 		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
 
-	for (auto i = 0; i < 1; i++)
+	for (auto i = 0; i < 40; i++)
 	{
 		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));
 	}
 
 	for (auto& c : cubes)
 	{
-		//c->SetPos({ rdist(rng),rdist(rng),rdist(rng) });
-		c->SetPos({ 0,1,0 });
+		c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
+		c->SetRotation({ rRot(rng),rRot(rng) ,rRot(rng) });
+		//c->SetPos({ 0,1,0 });
 		//BoxData.push_back(c->GetLocalBoundingBox());
 		//m_InstancedData.push_back(c->GetTransformXM());
 

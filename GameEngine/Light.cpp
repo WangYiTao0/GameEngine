@@ -9,7 +9,8 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	m_PointLightNum(numP),
 	m_SpotLightNum(numS),
 	lightCB(gfx, 1u),
-	shadowCB(gfx,1u)//VB
+	shadowVSCB(gfx,1u)//VB
+
 {	
 	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
 	for (int i = 0; i < LightIndex; i++)
@@ -351,8 +352,8 @@ void Light::Bind(Graphics& gfx) const noexcept
 	lightCB.Update(gfx, lightData);
 	lightCB.Bind(gfx);
 
-	shadowCB.Update(gfx, shadowMatrix);
-	shadowCB.Bind(gfx);
+	shadowVSCB.Update(gfx, shadowMatrix);
+	shadowVSCB.Bind(gfx);
 }
 
 void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
@@ -378,9 +379,7 @@ Light::ShadowCB Light::GetShadowMatrix()
 	return {
 		XMMatrixTranspose(s_view),
 		XMMatrixTranspose(s_proj),
-		XMMatrixTranspose(s_ortho),
-		GCamera3D->GetNearZ(),
-		GCamera3D->GetFarZ() };
+		XMMatrixTranspose(s_ortho),};
 }
 
 //ShadowCB Light::GetShadowMatrix(int lightID)

@@ -22,10 +22,9 @@ private:
 		DirectX::XMMATRIX ShadowViewMatrix;
 		DirectX::XMMATRIX ShadowProjMatrix;
 		DirectX::XMMATRIX ShadowOrthoMatrix;
-		float nearZ;
-		float farZ;
-		float padding[2];
+	
 	};
+
 
 public:
 	//DirectlightNum,PointLightNum,SpotLightNum
@@ -94,7 +93,7 @@ private:
 
 	LightCB lightData;
 	ShadowCB shadowMatrix;
-	mutable Bind::VertexConstantBuffer<ShadowCB> shadowCB;
+	mutable Bind::VertexConstantBuffer<ShadowCB> shadowVSCB;
 	mutable Bind::PixelConstantBuffer<LightCB> lightCB;
 	mutable std::vector<std::shared_ptr<SolidSphere>> mesh;
 	
