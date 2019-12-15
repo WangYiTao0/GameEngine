@@ -70,7 +70,7 @@ private:
 
 	//
 	std::unique_ptr <Tex2D> m_SmallScene;
-	std::unique_ptr <Tex2D> m_DepthMap;
+	std::unique_ptr <Tex2D> m_ProjDepthMap;
 public:
-	static std::shared_ptr<Bind::DepthBufferRT> m_DepthRT;
+	static std::shared_ptr<Bind::DepthBufferRT> m_ProjDepthRT;
 };

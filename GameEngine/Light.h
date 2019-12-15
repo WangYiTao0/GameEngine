@@ -22,7 +22,6 @@ private:
 		DirectX::XMMATRIX ShadowViewMatrix;
 		DirectX::XMMATRIX ShadowProjMatrix;
 		DirectX::XMMATRIX ShadowOrthoMatrix;
-	
 	};
 
 
@@ -85,7 +84,7 @@ private:
 	std::set<int> lightControlIds;
 	std::unordered_map<int, std::string> lightMap;
 	LightCommon lastState[MaxLights];
-	bool isTurnoff[MaxLights] = { false };
+	bool isTurnoff[MaxLights] = { true };
 
 	int m_DirLightNum;
 	int m_PointLightNum;

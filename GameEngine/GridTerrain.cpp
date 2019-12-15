@@ -39,7 +39,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156_norm.jpg", 2u));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_a_diff.png"));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_ddn.jpg", 2u));
-	AddBind(std::make_shared<Texture>(gfx, "null", 3u, App::m_DepthRT->GetShaderResourceView()));
+	AddBind(std::make_shared<Texture>(gfx, "null", 3u, App::m_ProjDepthRT->GetShaderResourceView()));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVSTBN");
 	//auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");

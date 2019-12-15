@@ -10,15 +10,12 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	m_SpotLightNum(numS),
 	lightCB(gfx, 1u),
 	shadowVSCB(gfx,1u)//VB
-
 {	
 	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
 	for (int i = 0; i < LightIndex; i++)
 	{
 		mesh.push_back(std::make_shared<SolidSphere>(gfx, 0.5f));
 	}
-
-
 	for (lightId = 0; lightId < LightIndex; lightId++)
 	{
 		if (lightId < m_DirLightNum)
@@ -36,7 +33,49 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	}
 	Reset();
 }
+void Light::Reset() noexcept
+{
+	for (int i = 0; i < m_DirLightNum; i++)
+	{
+		ResetDirectionLight(i);
 
+	}
+	for (int i = m_DirLightNum; i < m_DirLightNum + m_PointLightNum; i++)
+	{
+		ResetPointLight(i);
+	}
+	for (int i = m_DirLightNum + m_PointLightNum; i < m_DirLightNum + m_PointLightNum + m_SpotLightNum; i++)
+	{
+		ResetSpotLight(i);
+	}
+}
+void Light::Update(Graphics& gfx)
+{
+	GenerateShadowMatrix(gfx, 0);
+	shadowMatrix = GetShadowMatrix();
+}
+void Light::Bind(Graphics& gfx) const noexcept
+{
+	lightCB.Update(gfx, lightData);
+	lightCB.Bind(gfx);
+
+	shadowVSCB.Update(gfx, shadowMatrix);
+	shadowVSCB.Bind(gfx);
+}
+void Light::Draw(Graphics& gfx) const noxnd
+{
+
+	for (int i = 0; i < LightIndex; i++)
+	{
+		if (!isTurnoff[i])
+		{
+			mesh[i]->SetPos(lightData.L[i].position);
+			mesh[i]->DrawIndexed(gfx);
+		}
+
+
+	}
+}
 void Light::SpawnLightManagerWindow(Graphics& gfx) noexcept
 {
 	if (ImGui::Begin("Light"))
@@ -88,31 +127,11 @@ void Light::SpawnLightControlWindow(int lightId) noexcept
 		SpawnSpotLightWindow(lightId);
 	}
 }
-void Light::Reset() noexcept
-{
-	for (int i = 0; i < m_DirLightNum; i++)
-	{
-		ResetDirectionLight(i);
 
-	}
-	for (int i = m_DirLightNum; i < m_DirLightNum + m_PointLightNum; i++)
-	{
-		ResetPointLight(i);
-	}
-	for (int i = m_DirLightNum + m_PointLightNum; i < m_DirLightNum + m_PointLightNum + m_SpotLightNum; i++)
-	{
-		ResetSpotLight(i);
-	}
-}
-void Light::Update(Graphics& gfx)
-{
-	GenerateShadowMatrix(gfx, 0);
-	shadowMatrix = GetShadowMatrix();
-}
 void Light::ResetDirectionLight(int lightID) noexcept
 {
 	//for shadow Calculate 
-	lightData.L[lightID].position = { 4.0f,15.0f,0.0f };
+	lightData.L[lightID].position = { 4.0f,100.0f,0.0f };
 
 	lightData.L[lightID].direction = { -0.2f, -1.0f, 0.3f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
@@ -162,10 +181,6 @@ void Light::TurnOffLight(int lightID) noexcept
 		lightData.L[lightID].specular = { 0.f,0.f,0.f };
 		isTurnoff[lightId] = true;
 	}
-	
-
-
-	
 }
 
 void Light::TurnOnLight(int lightID) noexcept
@@ -347,14 +362,7 @@ void Light::DrawSpotLightRange(Graphics& gfx, int lightId) noexcept
 
 }
 
-void Light::Bind(Graphics& gfx) const noexcept
-{
-	lightCB.Update(gfx, lightData);
-	lightCB.Bind(gfx);
 
-	shadowVSCB.Update(gfx, shadowMatrix);
-	shadowVSCB.Bind(gfx);
-}
 
 void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
 {	
@@ -396,17 +404,4 @@ Light::ShadowCB Light::GetShadowMatrix()
 //	return lightViewMatrix;
 //}
 
-void Light::Draw(Graphics& gfx) const noxnd
-{
 
-	for (int i = 0; i < LightIndex; i++)
-	{
-		if (!isTurnoff[i])
-		{
-			mesh[i]->SetPos(lightData.L[i].position);
-			mesh[i]->DrawIndexed(gfx);
-		}
-
-
-	}
-}

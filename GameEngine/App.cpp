@@ -17,7 +17,7 @@
 
 namespace dx = DirectX;
 
-std::shared_ptr<Bind::DepthBufferRT> App:: m_DepthRT = nullptr;
+std::shared_ptr<Bind::DepthBufferRT> App:: m_ProjDepthRT = nullptr;
 
 App::App()
 	:
@@ -25,7 +25,7 @@ App::App()
 {
 	TestDynamicConstant();
 	// init Light
-	m_Light = std::make_unique<Light>(wnd.Gfx(), 1,2, 1);
+	m_Light = std::make_unique<Light>(wnd.Gfx(), 1,1,0);
 
 	// Create the cpu object.
 	m_Cpu.Initialize();
@@ -40,30 +40,17 @@ App::App()
 		static_cast<float>(screenWidth) / static_cast<float>(screenHeight),
 		nearZ, farZ);
 	wnd.Gfx().SetProjection(GCamera3D->GetProj());
-	//Screen Scene Small
-	m_SrceenRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
-	m_SmallScene = std::make_unique<Tex2D>(wnd.Gfx(), 
-		static_cast<float>(screenWidth), static_cast<float>(screenHeight),
-		static_cast<float>(screenWidth / 4),
-		static_cast<float>(screenHeight / 4),"VS_2D","PS_2D", m_SrceenRT->GetShaderResourceView());
-	m_SmallScene->SetPos({ 0.0f,screenHeight*3.0f / 4.0f,0.0f });
-	//shadow Map
-	m_DepthRT = std::make_shared<Bind::DepthBufferRT>(wnd.Gfx(), shadowWidth, shadowHeight);
-	m_DepthMap = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
-		static_cast<float>(screenWidth / 4),
-		static_cast<float>(screenHeight / 4), "VS_2D", "ProjDepthDraw_PS", m_DepthRT->GetShaderResourceView());
-	m_DepthMap->SetPos({ screenWidth / 4.0f ,screenHeight * 3.0f / 4.0f,0.0f });
 
-
+	InitDebugWindow();
 
 	//m_Scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
+
 	m_CurScene = m_Scenes.begin();
 	OutoutSceneName();
-
 
 }
 
@@ -214,7 +201,7 @@ void App::Draw()
 	if (enableRenderTarget)
 	{
 		m_SmallScene->DrawIndexed(wnd.Gfx());
-		m_DepthMap->DrawIndexed(wnd.Gfx());
+		m_ProjDepthMap->DrawIndexed(wnd.Gfx());
 	}
 }
 
@@ -269,7 +256,7 @@ void App::CycleScenes()
 void App::RenderToTexture() 
 {
 	//SetRenderTarget();ClearDepth();
-	m_DepthRT->SetRenderTarget(wnd.Gfx());
+	m_ProjDepthRT->SetRenderTarget(wnd.Gfx());
 	//Render Depth Texture into mDepth .SRV
 	RenderDepthTexture();
 	
@@ -300,6 +287,19 @@ void App::RenderDepthTexture()
 
 void App::InitDebugWindow()
 {
+	//Screen Scene Small
+	m_SrceenRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
+	m_SmallScene = std::make_unique<Tex2D>(wnd.Gfx(),
+		static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+		static_cast<float>(screenWidth / 6),
+		static_cast<float>(screenHeight / 6), "VS_2D", "PS_2D", m_SrceenRT->GetShaderResourceView());
+	m_SmallScene->SetPos({ 0.0f,screenHeight * 5.0f / 6.0f,0.0f });
+	//shadow Map
+	m_ProjDepthRT = std::make_shared<Bind::DepthBufferRT>(wnd.Gfx(), shadowWidth, shadowHeight);
+	m_ProjDepthMap = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+		static_cast<float>(screenWidth / 6),
+		static_cast<float>(screenHeight / 6), "VS_2D", "ProjDepthDraw_PS", m_ProjDepthRT->GetShaderResourceView());
+	m_ProjDepthMap->SetPos({ screenWidth / 6.0f ,screenHeight * 5.0f / 6.0f,0.0f });
 }
 
 

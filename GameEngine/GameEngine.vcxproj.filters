@@ -755,12 +755,6 @@
     <FxCompile Include="Shader\PhongVSTBN.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\DebugDepth_VS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\DebugDepth_PS.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\PhongVS.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
@@ -778,6 +772,12 @@
     </FxCompile>
     <FxCompile Include="Shader\ProjDepthDraw_PS.hlsl">
       <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\OrthoDepth_PS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\OrthoDepth_VS.hlsl">
+      <Filter>Shader\VS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
