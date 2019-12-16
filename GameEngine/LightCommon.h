@@ -11,17 +11,15 @@ struct LightCommon
 {
 	DirectX::XMFLOAT3 position;  //spot point
 	float attQuad;	 //spot point
-	DirectX::XMFLOAT3 diffColor; //  direct spot point 
+	DirectX::XMFLOAT3 Color; //  direct spot point 
 	float attLin;	 //spot point
 	DirectX::XMFLOAT3 direction; //direct spot
 	float attConst;	 //spot point
 	DirectX::XMFLOAT3 ambient;//  direct spot point 
 	float spotPower; //spot
-	DirectX::XMFLOAT3 specular; //direct spot point 
 	float cutOff;//spot
-
 	float outerCutOff;//spot
-	float lightPadding[3];
+	float lightPadding[2];
 };
 
 

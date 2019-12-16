@@ -9,6 +9,8 @@
 #include <array>
 #include <set>
 #include <optional>
+#include "DynamicConstant.h"
+#include "ConstantBuffersEx.h"
 
 class Light
 {
@@ -23,7 +25,6 @@ private:
 		DirectX::XMMATRIX ShadowProjMatrix;
 		DirectX::XMMATRIX ShadowOrthoMatrix;
 	};
-
 
 public:
 	//DirectlightNum,PointLightNum,SpotLightNum
@@ -77,6 +78,8 @@ private:
 	void DrawPointLightRange(Graphics& gfx, int lightId)noexcept;
 	void DrawSpotLightRange(Graphics& gfx, int lightId)noexcept;
 
+
+
 private:
 	int LightIndex = 0;
 	int lightId = 0;
@@ -96,5 +99,9 @@ private:
 	mutable Bind::PixelConstantBuffer<LightCB> lightCB;
 	mutable std::vector<std::shared_ptr<SolidSphere>> mesh;
 	
+	Dcb::RawLayout lightCBLayout;
+	Dcb::RawLayout ShadowConst;
+	//Dcb::Buffer buf;
+
 	ViewPoint m_ViewPoint;
 };

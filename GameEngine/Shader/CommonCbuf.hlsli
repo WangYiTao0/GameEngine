@@ -1,3 +1,4 @@
+
 //VS stage PS stage
 cbuffer TransformCBuf : register(b0)
 {
@@ -20,9 +21,6 @@ cbuffer ShadowCB :register(b1)
     matrix s_View;
     matrix s_Proj;
     matrix s_Ortho;
-    float s_nearZ;
-    float s_farZ;
-    float2 s_padding;
 }
 
 

@@ -695,6 +695,9 @@
     <ClInclude Include="TransformComponent.h">
       <Filter>Source Files\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="PBRBall.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">

@@ -6,11 +6,11 @@
 #endif
 
 #ifndef NUM_POINT_LIGHTS
-    #define NUM_POINT_LIGHTS 1
+    #define NUM_POINT_LIGHTS 2
 #endif
 
 #ifndef NUM_SPOT_LIGHTS
-    #define NUM_SPOT_LIGHTS 0
+    #define NUM_SPOT_LIGHTS 2
 #endif
 
 struct Light
@@ -18,7 +18,7 @@ struct Light
     float3 position; //spot point
     float attQuad; //point spot
 
-    float3 diffColor; //  direct spot point 
+    float3 Color; //  direct spot point 
     float attLin; //point spot
 
     float3 direction; //direct spot
@@ -27,11 +27,9 @@ struct Light
     float3 ambient; //direct spot point 
     float spotPower; //spot
 
-    float3 specular;
     float cutOff;//spot
-
     float outerCutOff;//spot
-    float3 LightPadding;
+    float2 LightPadding;
 
 };
 
@@ -163,8 +161,8 @@ float shadowFactor)
     float spec = pow(max(dot(toEye, reflectDir), 0.0f), mat.specularPower);
     //combine results
     float3 ambient = L.ambient * mat.materialColor;
-    float3 diffuse = L.diffColor * diff * mat.materialColor;
-    float3 specular = L.specular * spec * mat.specularColor;
+    float3 diffuse = L.Color * diff * mat.materialColor;
+    float3 specular =spec * mat.specularColor;
 
     return saturate(ambient + shadowFactor * (diffuse + specular));
 }
@@ -199,8 +197,8 @@ float3 toEye,float shadowFactor)
     float attenuation = CalcAttenuation(L.attConst, L.attLin, L.attQuad, distance);
     // combine results
     float3 ambient = L.ambient * mat.materialColor;
-    float3 diffuse = L.diffColor * diff * mat.materialColor;
-    float3 specular = L.specular * spec * mat.specularColor;
+    float3 diffuse = L.Color * diff * mat.materialColor;
+    float3 specular = spec * mat.specularColor;
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
@@ -235,8 +233,8 @@ float3 toEye, float shadowFactor)
     float intensity = clamp((theta - L.outerCutOff) / epsilon, 0.0, 1.0);
     // combine results
     float3 ambient = L.ambient * mat.materialColor;
-    float3 diffuse = L.diffColor * diff * mat.materialColor;
-    float3 specular = L.specular * spec * mat.specularColor;
+    float3 diffuse = L.Color * diff * mat.materialColor;
+    float3 specular =  spec * mat.specularColor;
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;

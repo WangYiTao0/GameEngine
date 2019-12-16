@@ -1,4 +1,3 @@
-
 struct ObjectMatrices
 {
     matrix worldViewProj;
@@ -21,7 +20,6 @@ cbuffer frame
     float fovH;
     float panini;
 };
-
 
 struct VSIn
 {

@@ -39,11 +39,11 @@ Texture2D shadowTex : register(t3);
 
 
 SamplerState sampleAn : register(s0);
-SamplerState sampleClamp : register(s1);
+//SamplerState sampleClamp : register(s1);
 float4 main(PS_pIn pIn) : SV_Target
 {
     //alpha blender
-    float4 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgba;
+    float4 texDiff = diffTex.Sample(sampleAn, pIn.texcoord).rgba;
     clip(texDiff.a < 0.1f ? -1 : 1);
     
     //// fragment to light vector data
@@ -79,14 +79,14 @@ float4 main(PS_pIn pIn) : SV_Target
         shadowFactor[i] = 1.0f;
     }
 
-    shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
+   // shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
 
 
     float3 specularReflectionColor;
     float specularPower = specularPowerConst;
     if (specularMapEnabled)
     {
-        const float4 specularSample = specTex.Sample(sample0, pIn.texcoord);
+        const float4 specularSample = specTex.Sample(sampleAn, pIn.texcoord);
         specularReflectionColor = specularSample.rgb * specularMapWeight;
         if (hasGloss)
         {
@@ -99,7 +99,7 @@ float4 main(PS_pIn pIn) : SV_Target
     }
 
     //float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
-    float3 texSpec = specTex.Sample(sample0, pIn.texcoord).rgb;
+    float3 texSpec = specTex.Sample(sampleAn, pIn.texcoord).rgb;
 
     Material mat = { texDiff.rgb, specularReflectionColor, specularPower };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,

@@ -291,6 +291,7 @@
     <ClInclude Include="ModelException.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pass.h" />
+    <ClInclude Include="PBRBall.h" />
     <ClInclude Include="PBRScene.h" />
     <ClInclude Include="PlaneMirror.h" />
     <ClInclude Include="Rasterizer.h" />
