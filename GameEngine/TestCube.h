@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "LightCommon.h"
 #include <DirectXCollision.h>
+
+
 class TestCube : public Drawable, public GameObject
 {
 public:

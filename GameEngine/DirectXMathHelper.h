@@ -11,7 +11,7 @@ namespace DirectX
 }
 
 
-static class DXMathHelper
+static class DXMH
 {
 public:
 	static DirectX::XMFLOAT3 ExtractEulerAngles(const DirectX::XMFLOAT4X4& matrix);

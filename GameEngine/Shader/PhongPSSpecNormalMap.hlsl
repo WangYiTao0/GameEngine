@@ -14,21 +14,32 @@ struct PS_pIn
     float2 texcoord : Texcoord;
 };
 
+//cbuffer ObjectCBuf : register(b2)
+//{
+//    float3 diff;
+//    float shininess;
+//    float3 spec;
+//    float padding;
+//};
+
 cbuffer ObjectCBuf : register(b2)
 {
-    float3 diff;
-    float shininess;
-    float3 spec;
-    float padding;
+    bool normalMapEnabled;
+    bool specularMapEnabled;
+    bool hasGloss;
+    float specularPowerConst;
+    float3 specularColor;
+    float specularMapWeight;
 };
 
 Texture2D diffTex : register(t0);
 Texture2D specTex : register(t1);
 Texture2D nmapTex : register(t2);
+Texture2D shadowTex : register(t3);
 
 
-SamplerState sample0 : register(s0);
-
+SamplerState sampleAn : register(s0);
+SamplerState sampleClamp : register(s1);
 float4 main(PS_pIn pIn) : SV_Target
 {
     //alpha blender
@@ -54,10 +65,11 @@ float4 main(PS_pIn pIn) : SV_Target
     pIn.worldTan = normalize(pIn.worldTan);
     pIn.worldBitan = normalize(pIn.worldBitan);
     // replace normal with mapped if normal mapping enabled
-
+    if (normalMapEnabled)
+    {
     //pIn.worldNormal = UnpackNormals(nmap, sample0, pIn.texcoord, pIn.worldNormal, pIn.worldTan);
-    pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmapTex, sample0);
-
+        pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmapTex, sampleAn);
+    }
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
@@ -67,9 +79,29 @@ float4 main(PS_pIn pIn) : SV_Target
         shadowFactor[i] = 1.0f;
     }
 
+    shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
+
+
+    float3 specularReflectionColor;
+    float specularPower = specularPowerConst;
+    if (specularMapEnabled)
+    {
+        const float4 specularSample = specTex.Sample(sample0, pIn.texcoord);
+        specularReflectionColor = specularSample.rgb * specularMapWeight;
+        if (hasGloss)
+        {
+            specularPower = pow(2.0f, specularSample.a * 13.0f);
+        }
+    }
+    else
+    {
+        specularReflectionColor = specularColor;
+    }
+
     //float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
     float3 texSpec = specTex.Sample(sample0, pIn.texcoord).rgb;
-    Material mat = { texDiff.rgb, shininess, texSpec };
+
+    Material mat = { texDiff.rgb, specularReflectionColor, specularPower };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
     finalColor.a = texDiff.a;

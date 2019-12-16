@@ -57,9 +57,10 @@ struct CommonMaterial
 
 struct Material
 {
-    float3 diff;
-    float shininess;
-    float3 spec;
+    float3 materialColor;//diffuseColor
+    float3 specularColor;
+    //float specularIntensity;
+    float specularPower;
 };
 
 
@@ -144,7 +145,11 @@ float ShadowCalculation(float4 fragPosLightSpace, Texture2D shadowMap, SamplerSt
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for directional lights.
 //---------------------------------------------------------------------------------------
-float3 ComputeDirectionalLight(Light L, Material mat, float3 normal, float3 toEye, float shadowFactor)
+float3 ComputeDirectionalLight(Light L, 
+Material mat, 
+float3 normal,
+float3 toEye, 
+float shadowFactor)
 {
     // The light vector aims opposite the direction the light rays travel.
     float3 lightDir = normalize(-L.direction);
@@ -155,19 +160,23 @@ float3 ComputeDirectionalLight(Light L, Material mat, float3 normal, float3 toEy
 
     //specular shading
     float3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(toEye, reflectDir), 0.0f), mat.shininess);
+    float spec = pow(max(dot(toEye, reflectDir), 0.0f), mat.specularPower);
     //combine results
-    float3 ambient = L.ambient * mat.diff;
-    float3 diffuse = L.diffColor  * diff * mat.diff;
-    float3 specular = L.specular  * spec * mat.spec;
+    float3 ambient = L.ambient * mat.materialColor;
+    float3 diffuse = L.diffColor * diff * mat.materialColor;
+    float3 specular = L.specular * spec * mat.specularColor;
 
-    return ambient + shadowFactor*(diffuse + specular);
+    return saturate(ambient + shadowFactor * (diffuse + specular));
 }
 
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for point lights.
 //---------------------------------------------------------------------------------------
-float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNormal, float3 toEye,float shadowFactor)
+float3 ComputePointLight(Light L, 
+Material mat, 
+float3 worldPos,
+float3 worldNormal,
+float3 toEye,float shadowFactor)
 {
     // The vector from the surface to the light.
     float3 lightDir = normalize(L.position - worldPos);
@@ -176,11 +185,10 @@ float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNor
     float diff = max(dot(worldNormal, lightDir), 0.0);
     // specular shading
     
-    
     float spec = 0.0;
     //blinn
     float3 halfwayDir = normalize(lightDir + toEye);
-    spec = pow(max(dot(worldNormal, halfwayDir), 0.0f), mat.shininess);
+    spec = pow(max(dot(worldNormal, halfwayDir), 0.0f), mat.specularPower);
     //phongshader
     //float3 reflectDir = reflect(-lightDir, worldNormal);
     //v = i - 2 * n * dot(i n) 
@@ -190,20 +198,22 @@ float3 ComputePointLight(Light L, Material mat, float3 worldPos, float3 worldNor
     float distance = length(L.position - worldPos);
     float attenuation = CalcAttenuation(L.attConst, L.attLin, L.attQuad, distance);
     // combine results
-    float3 ambient = L.ambient * mat.diff;
-    float3 diffuse = L.diffColor * diff * mat.diff;
-    float3 specular = L.specular * spec * mat.spec;
+    float3 ambient = L.ambient * mat.materialColor;
+    float3 diffuse = L.diffColor * diff * mat.materialColor;
+    float3 specular = L.specular * spec * mat.specularColor;
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
-    return ambient + shadowFactor * (diffuse + specular);
+    return saturate(ambient + shadowFactor * (diffuse + specular));
 }
 
 
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for spot lights.
 //---------------------------------------------------------------------------------------
-float3 ComputeSpotLight(Light L, Material mat, float3 worldPos, float3 normal, float3 toEye, float shadowFactor)
+float3 ComputeSpotLight(Light L, Material mat, 
+float3 worldPos, float3 normal,
+float3 toEye, float shadowFactor)
 {
     float3 lightDir = normalize(L.position - worldPos);
     // diffuse shading
@@ -212,7 +222,7 @@ float3 ComputeSpotLight(Light L, Material mat, float3 worldPos, float3 normal, f
 
     //blinn phong
     float3 halfwayDir = normalize(lightDir + toEye);
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), mat.shininess);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), mat.specularPower);
     //phong shader
     //float3 reflectDir = reflect(-lightDir, normal);
     //float spec = pow(max(dot(toEye, reflectDir), 0.0), mat.shininess);
@@ -224,13 +234,13 @@ float3 ComputeSpotLight(Light L, Material mat, float3 worldPos, float3 normal, f
     float epsilon = L.cutOff - L.outerCutOff;
     float intensity = clamp((theta - L.outerCutOff) / epsilon, 0.0, 1.0);
     // combine results
-    float3 ambient = L.ambient * mat.diff;
-    float3 diffuse = L.diffColor * diff * mat.diff;
-    float3 specular = L.specular * spec * mat.spec;
+    float3 ambient = L.ambient * mat.materialColor;
+    float3 diffuse = L.diffColor * diff * mat.materialColor;
+    float3 specular = L.specular * spec * mat.specularColor;
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
-    return ambient + shadowFactor * (diffuse + specular);
+    return saturate(ambient + shadowFactor * (diffuse + specular));
 }
 
 

@@ -1,11 +1,9 @@
 #pragma once
 #include "Mesh.h"
-
+#include "DynamicConstant.h"
 class Node
 {
 	friend class Model;
-public:
-
 public:
 	Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noxnd;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noxnd;
@@ -14,6 +12,8 @@ public:
 	int GetId() const noexcept;
 	void ShowTree(Node*& pSelectedNode) const noexcept;
 
+	const Dcb::Buffer* GetMaterialConstants() const noxnd;
+	void SetMaterialConstants(const Dcb::Buffer&) noxnd;
 private:
 	//only model  can add child to node
 	void AddChild(std::unique_ptr<Node> pChild) noxnd;
@@ -28,3 +28,4 @@ private:
 	//transform from user
 	DirectX::XMFLOAT4X4 appliedTransform;
 };
+

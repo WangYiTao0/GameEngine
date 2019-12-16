@@ -15,7 +15,6 @@ namespace Bind
 
 		const auto d3dLayout = layout.GetD3DLayout();
 
-
 		GFX_THROW_INFO(GetDevice(gfx)->CreateInputLayout(
 			d3dLayout.data(), (UINT)d3dLayout.size(),
 			pVertexShaderBytecode->GetBufferPointer(),

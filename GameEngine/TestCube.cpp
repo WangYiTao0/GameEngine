@@ -57,10 +57,10 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 	depth.push_back(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	depth.push_back(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
-	pvs = VertexShader::Resolve(gfx, "ProjDepth_VS");
+	pvs = VertexShader::Resolve(gfx, "OrthoDepth_VS");
 	pvsbc = pvs->GetBytecode();
 	depth.push_back(std::move(pvs));
-	depth.push_back(PixelShader::Resolve(gfx, "ProjDepth_PS"));
+	depth.push_back(PixelShader::Resolve(gfx, "OrthoDepth_PS"));
 	depth.push_back(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 	depth.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 

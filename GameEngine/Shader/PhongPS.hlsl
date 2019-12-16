@@ -28,6 +28,13 @@ cbuffer ObjectCBuf : register(b2)
     float padding;
 };
 
+//cbuffer ObjectCBuf
+//{
+//    float specularIntensity;
+//    float specularPower;
+//    float padding[2];
+//};
+
 
 
 struct PS_pIn

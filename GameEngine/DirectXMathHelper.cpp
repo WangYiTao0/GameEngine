@@ -30,7 +30,7 @@ namespace DirectX
 	}
 }
 
-DirectX::XMFLOAT3 DXMathHelper::ExtractEulerAngles(const DirectX::XMFLOAT4X4& mat)
+DirectX::XMFLOAT3 DXMH::ExtractEulerAngles(const DirectX::XMFLOAT4X4& mat)
 {
 	DirectX::XMFLOAT3 euler;
 
@@ -49,14 +49,14 @@ DirectX::XMFLOAT3 DXMathHelper::ExtractEulerAngles(const DirectX::XMFLOAT4X4& ma
 	return euler;
 }
 
-DirectX::XMFLOAT3 DXMathHelper::ExtractTranslation(const DirectX::XMFLOAT4X4& matrix)
+DirectX::XMFLOAT3 DXMH::ExtractTranslation(const DirectX::XMFLOAT4X4& matrix)
 {
 	return { matrix._41,matrix._42,matrix._43 };
 }
 
 
 
-float DXMathHelper::Distance(const XMFLOAT3& v1, const XMFLOAT3& v2)
+float DXMH::Distance(const XMFLOAT3& v1, const XMFLOAT3& v2)
 {
 	XMVECTOR vector1 = XMLoadFloat3(&v1);
 	XMVECTOR vector2 = XMLoadFloat3(&v2);
@@ -67,7 +67,7 @@ float DXMathHelper::Distance(const XMFLOAT3& v1, const XMFLOAT3& v2)
 	XMStoreFloat(&Distance, length);
 	return Distance;
 }
-float DXMathHelper::DistanceSqaured(const XMFLOAT3& v1, const XMFLOAT3& v2)
+float DXMH::DistanceSqaured(const XMFLOAT3& v1, const XMFLOAT3& v2)
 {
 	XMVECTOR vector1 = XMLoadFloat3(&v1);
 	XMVECTOR vector2 = XMLoadFloat3(&v2);
@@ -78,7 +78,7 @@ float DXMathHelper::DistanceSqaured(const XMFLOAT3& v1, const XMFLOAT3& v2)
 	XMStoreFloat(&Distance, length);
 	return Distance;
 }
-float DXMathHelper::DistanceEstimated(const XMFLOAT3& v1, const XMFLOAT3& v2)
+float DXMH::DistanceEstimated(const XMFLOAT3& v1, const XMFLOAT3& v2)
 {
 	XMVECTOR vector1 = XMLoadFloat3(&v1);
 	XMVECTOR vector2 = XMLoadFloat3(&v2);
@@ -89,12 +89,12 @@ float DXMathHelper::DistanceEstimated(const XMFLOAT3& v1, const XMFLOAT3& v2)
 	XMStoreFloat(&Distance, length);
 	return Distance;
 }
-XMFLOAT3 DXMathHelper::getVectorHalfWayPoint(const XMFLOAT3& a, const XMFLOAT3& b)
+XMFLOAT3 DXMH::getVectorHalfWayPoint(const XMFLOAT3& a, const XMFLOAT3& b)
 {
 	return XMFLOAT3((a.x + b.x) * 0.5f, (a.y + b.y) * 0.5f, (a.z + b.z) * 0.5f);
 }
 
-bool DXMathHelper::Collision(const XMFLOAT2& hitBox1Pos, const XMFLOAT2& hitBox1Siz, const XMFLOAT2& hitBox2Pos, const XMFLOAT2& hitBox2Siz)
+bool DXMH::Collision(const XMFLOAT2& hitBox1Pos, const XMFLOAT2& hitBox1Siz, const XMFLOAT2& hitBox2Pos, const XMFLOAT2& hitBox2Siz)
 {
 	if (hitBox1Pos.x + hitBox1Siz.x < hitBox2Pos.x)
 		return false;
@@ -110,36 +110,36 @@ bool DXMathHelper::Collision(const XMFLOAT2& hitBox1Pos, const XMFLOAT2& hitBox1
 
 
 
-float DXMathHelper::Lerp(const float& value1, const float& value2, const float& amount)
+float DXMH::Lerp(const float& value1, const float& value2, const float& amount)
 {
 	return value1 + (value2 - value1) * amount;
 }
-XMFLOAT2 DXMathHelper::Lerp(const XMFLOAT2& a, const XMFLOAT2& b, const float& i)
+XMFLOAT2 DXMH::Lerp(const XMFLOAT2& a, const XMFLOAT2& b, const float& i)
 {
 	return XMFLOAT2(Lerp(a.x, b.x, i), Lerp(a.y, b.y, i));
 }
-XMFLOAT3 DXMathHelper::Lerp(const XMFLOAT3& a, const XMFLOAT3& b, const float& i)
+XMFLOAT3 DXMH::Lerp(const XMFLOAT3& a, const XMFLOAT3& b, const float& i)
 {
 	return XMFLOAT3(Lerp(a.x, b.x, i), Lerp(a.y, b.y, i), Lerp(a.z, b.z, i));
 }
-XMFLOAT4 DXMathHelper::Lerp(const XMFLOAT4& a, const XMFLOAT4& b, const float& i)
+XMFLOAT4 DXMH::Lerp(const XMFLOAT4& a, const XMFLOAT4& b, const float& i)
 {
 	return XMFLOAT4(Lerp(a.x, b.x, i), Lerp(a.y, b.y, i), Lerp(a.z, b.z, i), Lerp(a.w, b.w, i));
 }
-XMFLOAT3 DXMathHelper::Max(const XMFLOAT3& a, const XMFLOAT3& b) {
+XMFLOAT3 DXMH::Max(const XMFLOAT3& a, const XMFLOAT3& b) {
 	return XMFLOAT3(std::max(a.x, b.x), std::max(a.y, b.y), std::max(a.z, b.z));
 }
-XMFLOAT3 DXMathHelper::Min(const XMFLOAT3& a, const XMFLOAT3& b) {
+XMFLOAT3 DXMH::Min(const XMFLOAT3& a, const XMFLOAT3& b) {
 	return XMFLOAT3(std::min(a.x, b.x), std::min(a.y, b.y), std::min(a.z, b.z));
 }
-float DXMathHelper::Clamp(float val, float min, float max)
+float DXMH::Clamp(float val, float min, float max)
 {
 	if (val < min) return min;
 	else if (val > max) return max;
 	return val;
 }
 
-XMFLOAT3 DXMathHelper::getCubicHermiteSplinePos(const XMFLOAT3& startPos, const XMFLOAT3& endPos
+XMFLOAT3 DXMH::getCubicHermiteSplinePos(const XMFLOAT3& startPos, const XMFLOAT3& endPos
 	, const XMFLOAT3& startTangent, const XMFLOAT3& endTangent
 	, const float& atInterval) {
 	float x, y, z, t; float r1 = 1.0f, r4 = 1.0f;
@@ -149,7 +149,7 @@ XMFLOAT3 DXMathHelper::getCubicHermiteSplinePos(const XMFLOAT3& startPos, const 
 	z = (2 * t * t * t - 3 * t * t + 1) * startPos.z + (-2 * t * t * t + 3 * t * t) * endPos.z + (t * t * t - 2 * t * t + 1) * startTangent.z + (t * t * t - t * t) * endTangent.z;
 	return XMFLOAT3(x, y, z);
 }
-XMFLOAT3 DXMathHelper::getQuadraticBezierPos(const XMFLOAT3& a, const XMFLOAT3& b, const XMFLOAT3& c, const float& t) {
+XMFLOAT3 DXMH::getQuadraticBezierPos(const XMFLOAT3& a, const XMFLOAT3& b, const XMFLOAT3& c, const float& t) {
 	float param0, param1, param2;
 	param0 = pow(1 - t, 2);
 	param1 = 2 * (1 - t) * t;
@@ -159,6 +159,6 @@ XMFLOAT3 DXMathHelper::getQuadraticBezierPos(const XMFLOAT3& a, const XMFLOAT3& 
 	float z = param0 * a.z + param1 * b.z + param2 * c.z;
 	return XMFLOAT3(x, y, z);
 }
-XMFLOAT3 DXMathHelper::getQuadraticBezierPos(const XMFLOAT4& a, const XMFLOAT4& b, const XMFLOAT4& c, const float& t) {
+XMFLOAT3 DXMH::getQuadraticBezierPos(const XMFLOAT4& a, const XMFLOAT4& b, const XMFLOAT4& c, const float& t) {
 	return getQuadraticBezierPos(XMFLOAT3(a.x, a.y, a.z), XMFLOAT3(b.x, b.y, b.z), XMFLOAT3(c.x, c.y, c.z), t);
 }

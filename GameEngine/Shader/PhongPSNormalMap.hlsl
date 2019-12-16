@@ -15,12 +15,20 @@ struct PS_pIn
     float2 texcoord      : Texcoord;
 };
 
+//cbuffer objectcbuf : register(b2)
+//{
+//    float3 diff;
+//    float shininess;
+//    float3 spec;
+//    float padding;
+//};
+
 cbuffer ObjectCBuf : register(b2)
 {
-    float3 diff;
-    float shininess;
-    float3 spec;
-    float padding;
+    float specularIntensity;
+    float specularPower;
+    bool normalMapEnabled;
+    float padding[1];
 };
 
 Texture2D diffTex : register(t0);
@@ -60,7 +68,7 @@ float4 main(PS_pIn pIn) : SV_Target
     //if doesn't have texture material using common material
     float3 texDiff = diffTex.Sample(sampleWrap, pIn.texcoord).rgb;
 
-    Material mat = { texDiff, shininess, spec };
+    Material mat = { texDiff, specularIntensity.rrr, specularPower };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
 

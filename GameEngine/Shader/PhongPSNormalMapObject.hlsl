@@ -10,12 +10,20 @@ struct PS_pIn
     float2 texcoord : Texcoord;
 };
 
+//cbuffer ObjectCBuf : register(b2)
+//{
+//    float3 diff;
+//    float shininess;
+//    float3 spec;
+//    float padding;
+//};
+
 cbuffer ObjectCBuf : register(b2)
 {
-    float3 diff;
-    float shininess;
-    float3 spec;
-    float padding;
+    float specularIntensity;
+    float specularPower;
+    bool normalMapEnabled;
+    float padding[1];
 };
 
 
@@ -33,17 +41,18 @@ float4 main(PS_pIn pIn) : SV_Target
     // normalize the mesh normal
     pIn.worldNormal = normalize(pIn.worldNormal);
 	// sample normal from map if normal mapping enabled
-
+    if (normalMapEnabled)
+    {
      // sample and unpack normal data
-    const float3 normalSample = nmapTex.Sample(sample0, pIn.texcoord).xyz;
-     const float3 objectNormal = normalSample * 2.0f - 1.0f;
+        const float3 normalSample = nmapTex.Sample(sample0, pIn.texcoord).xyz;
+        const float3 objectNormal = normalSample * 2.0f - 1.0f;
      // bring normal from object space into view space
-     pIn.worldNormal = normalize(mul(objectNormal, (float3x3) modelView));
-
+        pIn.worldNormal = normalize(mul(objectNormal, (float3x3) modelView));
+    }
    // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-    float3 shadowFactor[MaxLights];
+    float shadowFactor[MaxLights];
     for (int i = 0; i < MaxLights; i++)
     {
         shadowFactor[i] = 1.0f;
@@ -51,7 +60,8 @@ float4 main(PS_pIn pIn) : SV_Target
 
     float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
 
-    Material mat = { texDiff, shininess, spec };
+    Material mat = { texDiff, specularIntensity.rrr, specularPower };
+
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
 

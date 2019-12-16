@@ -54,6 +54,24 @@ void Node::ShowTree(Node*& pSelectedNode) const noexcept
 		ImGui::TreePop();
 	}
 }
+
+const Dcb::Buffer* Node::GetMaterialConstants() const noxnd
+{
+	if (meshPtrs.size() == 0)
+	{
+		return nullptr;
+	}
+	auto pBindable = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
+	return &pBindable->GetBuffer();
+}
+
+void Node::SetMaterialConstants(const Dcb::Buffer& buf_in) noxnd
+{
+	auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
+	assert(pcb != nullptr);
+	pcb->SetBuffer(buf_in);
+}
+
 void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 {
 	dx::XMStoreFloat4x4(&appliedTransform, transform);

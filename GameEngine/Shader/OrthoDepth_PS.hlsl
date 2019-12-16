@@ -1,17 +1,13 @@
-#include "CommonCbuf.hlsli"
-
-struct PS_INPUT
+struct PS_IN
 {
-    float4 inPosition : SV_POSITION;
-    float2 inTexCoord : Texcoord;
+    float4 position : SV_POSITION;
 };
 
-Texture2D depthTex : TEXTURE : register(t0);
 
-SamplerState sample0 : register(s0);
-
-float4 main(PS_INPUT input) : SV_TARGET
+float4 main(PS_IN pIn) : SV_TARGET
 {
-    float4 sampleColor = (depthTex.Sample(sample0, input.inTexCoord).www,1.0f);
-    return sampleColor;
+    
+    return (0.0f, 0.0f, 0.0f, 0.0f);
+    //return pIn.position.zzzz;
+	// if discard is called, depth buffer won't have any data     
 }

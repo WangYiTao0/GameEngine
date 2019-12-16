@@ -9,7 +9,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 {
 	std::uniform_real_distribution<float> rdist(-20.0f, 20.0f);
-	std::uniform_real_distribution<float> rdistY(2.0f, 4.0f);
+	std::uniform_real_distribution<float> rdistY(2.0f, 10.f);
 	std::uniform_real_distribution<float> rRot(-MH::PI,MH::PI);
 
 	//role = std::make_unique<Model>(gfx, "Data\\Models\\Role\\ascendant_one_iris\\iris.obj", 2.0f);

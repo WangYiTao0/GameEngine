@@ -692,6 +692,9 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Source Files\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">
@@ -724,6 +727,12 @@
       <Filter>Shader\Common</Filter>
     </None>
     <None Include="Shader\CommonCbuf.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="Shader\PaniniProjection.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="Shader\LightingCommon.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
   </ItemGroup>
@@ -778,6 +787,30 @@
     </FxCompile>
     <FxCompile Include="Shader\OrthoDepth_VS.hlsl">
       <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\OrthoDepthDraw_PS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Forward_BRDF_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Forward_BRDF_PS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongVSNotex.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongPSNormalMapObject.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongPSNotex.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongPSSpec.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongPSSpecNormalMask.hlsl">
+      <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

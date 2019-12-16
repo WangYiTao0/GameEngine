@@ -10,14 +10,14 @@ ModelScene::ModelScene(Graphics& gfx)
 	gfx(gfx),
 	Scene("Model Scene")
 {
-	sponza=std::make_unique<Model>( gfx, "Data\\Models\\sponza\\sponza.obj", 1.0f / 20.0f );
+	sponza=std::make_unique<Model>( gfx, "Data\\Models\\sponza\\sponza.obj", 1.0f / 10.0f );
 
 	bluePlane.SetPos({0.0f,0.0f,5.0f});
 	redPlane.SetPos({ 0.0f,0.0f,6.0f });
 
-	sponza->AddShader(gfx,"PhongVSTBN", "PhongPSSpecNormalMap");
-	sponza->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f)
-		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f));	
+	//sponza->AddShader(gfx,"PhongVSTBN", "PhongPSSpecNormalMap");
+	//sponza->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f)
+	//	* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f));	
 
 	std::vector<std::string> filePath = {
 	"Data\\Images\\skybox\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset_negX.bmp",
@@ -39,6 +39,7 @@ void ModelScene::Update(float dt)
 void ModelScene::Draw() 
 {
 	sponza->Draw(gfx);
+
 	redPlane.DrawIndexed(gfx);
 	bluePlane.DrawIndexed(gfx);
 

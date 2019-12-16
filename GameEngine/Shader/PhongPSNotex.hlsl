@@ -23,13 +23,21 @@ struct PS_pIn
     float3 worldNormal : Normal;
 };
 
-cbuffer ObjectCBuf : register(b2)
+//cbuffer ObjectCBuf : register(b2)
+//{
+//    float3 diff;
+//    float shininess;
+//    float3 spec;
+//    float padding;
+//};
+
+cbuffer ObjectCBuf
 {
-    float3 diff;
-    float shininess;
-    float3 spec;
-    float padding;
+    float4 materialColor;
+    float4 specularColor;
+    float specularPower;
 };
+
 
 
 float4 main(PS_pIn pIn) : SV_Target
@@ -40,14 +48,14 @@ float4 main(PS_pIn pIn) : SV_Target
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
-    float3 shadowFactor[MaxLights];
+    float shadowFactor[MaxLights];
     for (int i = 0; i < MaxLights; i++)
     {
         shadowFactor[i] = 1.0f;
     }
 
 
-    Material mat = { diff, shininess, spec };
+    Material mat = { materialColor.rab, specularColor.rgb, specularPower };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
         pIn.worldNormal, toEyeW, shadowFactor);
 
