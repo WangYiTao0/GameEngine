@@ -11,7 +11,7 @@
 #include "GridTerrain.h"
 #include "WaterWave.h"
 #include "SkyRender.h"
-#include "ModelScene.h"
+#include "SponzaScene.h"
 
 class GeometryScene : public Scene
 {

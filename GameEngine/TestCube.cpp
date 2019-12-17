@@ -18,8 +18,6 @@ TestCube::TestCube(Graphics& gfx, float size)
 	auto layout = Dvtx::VertexLayout{}
 		.Append(Element::Position3D)
 		.Append(Element::Normal)
-		.Append(Element::Tangent)
-		.Append(Element::Bitangent)
 		.Append(Element::Texture2D);
 
 	auto model = Cube::MakeIndependentTextured(layout);

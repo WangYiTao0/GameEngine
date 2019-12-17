@@ -11,13 +11,13 @@ namespace Bind
 	{
 		INFOMAN(gfx);
 
-		std::string csofolder = StringHelper::GetShaderRootPath();
+		std::string csofolder = StrH::GetShaderRootPath();
 		auto m_csoPath = csofolder + shaderName + ".cso";
-		auto m_WcsoPath = StringHelper::ToWide(m_csoPath);
+		auto m_WcsoPath = StrH::ToWide(m_csoPath);
 
 		std::string hlslfolder = "Shader\\";
 		auto m_hlslPath = hlslfolder + shaderName + ".hlsl";
-		auto m_WhlslPath = StringHelper::ToWide(m_hlslPath);
+		auto m_WhlslPath = StrH::ToWide(m_hlslPath);
 
 		//create vertex shader
 		if (m_WcsoPath.c_str() && D3DReadFileToBlob(m_WcsoPath.c_str(), &pBlobOut) == S_OK)

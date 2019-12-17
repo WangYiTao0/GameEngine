@@ -19,7 +19,7 @@ PBRBall::PBRBall(Graphics& gfx, float radius)
 		.Append(Element::Bitangent)
 		.Append(Element::Texture2D);
 
-	auto model = Sphere::MakeTesselated(layout,48,92);
+	auto model = Sphere::MakeSphereTexture(layout,48,92);
 	//auto model = Cube::MakeIndependentTextured(layout);
 	model.Transform(dx::XMMatrixScaling(radius, radius, radius));
 	model.SetNormalsIndependentFlat();

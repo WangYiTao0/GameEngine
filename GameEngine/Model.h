@@ -42,4 +42,6 @@ private:
 	std::unique_ptr<class ModelWindow> pWindow;
 	std::vector<std::shared_ptr<Bind::Bindable>> bindablePtrs;
 	Dvtx::VertexBuffer vbuf;
+
+	std::vector<std::shared_ptr<Bind::Bindable>> DepthPtrs;
 };

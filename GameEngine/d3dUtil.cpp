@@ -7,7 +7,6 @@ HRESULT CreateShaderFromFile(const WCHAR* csoFileNameInOut, const WCHAR* hlslFil
 	return hr;
 }
 
-
 HRESULT CreateWICTexture2DCubeFromFile(
 	ID3D11Device* d3dDevice,
 	ID3D11DeviceContext* d3dDeviceContext,

@@ -78,8 +78,17 @@ const Surface::Color* Surface::GetBufferPtrConst() const noexcept
 
 Surface Surface::FromFile( const std::string& name )
 {
+	HRESULT hr;
 	DirectX::ScratchImage scratch;
-	HRESULT hr = DirectX::LoadFromWICFile(StringHelper::ToWide( name ).c_str(),DirectX::WIC_FLAGS_NONE,nullptr,scratch );
+	if (StrH::GetFileExtension(name) == ".hdr")
+	{
+		 hr = DirectX::LoadFromHDRFile(StrH::ToWide(name).c_str(), nullptr, scratch);
+	}
+	else
+	{
+		 hr = DirectX::LoadFromWICFile(StrH::ToWide(name).c_str(),
+			DirectX::WIC_FLAGS_NONE, nullptr, scratch);
+	}
 
 	if( FAILED( hr ) )
 	{
@@ -132,7 +141,7 @@ void Surface::Save( const std::string& filename ) const
 		*scratch.GetImage( 0,0,0 ),
 		DirectX::WIC_FLAGS_NONE,
 		GetWICCodec( GetCodecID( filename ) ),
-		StringHelper::ToWide( filename ).c_str()
+		StrH::ToWide( filename ).c_str()
 	);
 	if( FAILED( hr ) )
 	{

@@ -1,11 +1,11 @@
-#include "ModelScene.h"
+#include "SponzaScene.h"
 #include "App.h"
 #include <DirectXTex.h>
 
 
 namespace dx = DirectX;
 
-ModelScene::ModelScene(Graphics& gfx)
+SponzaScene::SponzaScene(Graphics& gfx)
 	:
 	gfx(gfx),
 	Scene("Model Scene")
@@ -26,7 +26,7 @@ ModelScene::ModelScene(Graphics& gfx)
 	m_pSunset = std::make_unique<SkyRender>(gfx, filePath, 1000.0f);
 }
 
-void ModelScene::Update(float dt)
+void SponzaScene::Update(float dt)
 {
 	//imgui window in update 
 	//conflict with RTT
@@ -35,7 +35,7 @@ void ModelScene::Update(float dt)
 	redPlane.SpawnControlWindow(gfx, "Red Plane");
 }
 
-void ModelScene::Draw() 
+void SponzaScene::Draw() 
 {
 	sponza->Draw(gfx);
 

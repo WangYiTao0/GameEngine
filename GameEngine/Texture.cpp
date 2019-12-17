@@ -75,7 +75,7 @@ namespace Bind
 
 		for (auto it : filePaths)
 		{
-			wFilePaths.push_back(StringHelper::ToWide(it));
+			wFilePaths.push_back(StrH::ToWide(it));
 		}
 
 	

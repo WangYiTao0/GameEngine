@@ -235,7 +235,7 @@
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="ModelScene.cpp" />
+    <ClCompile Include="SponzaScene.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PhysicScene.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
@@ -338,7 +338,7 @@
     <ClInclude Include="GeometryScene.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
-    <ClInclude Include="ModelScene.h" />
+    <ClInclude Include="SponzaScene.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

@@ -2,7 +2,7 @@
 #include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
 #include "Sphere.h"
-//#include "StringHelper.h"
+//#include "StrH.h"
 
 
 SolidSphere::SolidSphere(Graphics& gfx, float radius)

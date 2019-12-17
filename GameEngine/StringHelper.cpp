@@ -4,7 +4,7 @@
 #include <iomanip>
 
 
-std::vector<std::string> StringHelper::TokenizeQuoted(const std::string& input)
+std::vector<std::string> StrH::TokenizeQuoted(const std::string& input)
 {
 	std::istringstream stream;
 	stream.str(input);
@@ -18,21 +18,21 @@ std::vector<std::string> StringHelper::TokenizeQuoted(const std::string& input)
 	return tokens;
 }
 
-std::string StringHelper::ToNarrow(const std::wstring& wide)
+std::string StrH::ToNarrow(const std::wstring& wide)
 {
 	char narrow[512];
 	wcstombs_s(nullptr, narrow, wide.c_str(), _TRUNCATE);
 	return narrow;
 }
 
-std::wstring StringHelper::ToWide(const std::string& narrow)
+std::wstring StrH::ToWide(const std::string& narrow)
 {
 	wchar_t wide[512];
 	mbstowcs_s(nullptr, wide, narrow.c_str(), _TRUNCATE);
 	return wide;
 }
 
-std::string StringHelper::GetDirectoryFromPath(const std::string& filepath)
+std::string StrH::GetDirectoryFromPath(const std::string& filepath)
 {
 	size_t off1 = filepath.find_last_of('\\');
 	size_t off2 = filepath.find_last_of('/');
@@ -52,7 +52,7 @@ std::string StringHelper::GetDirectoryFromPath(const std::string& filepath)
 	return filepath.substr(0, std::max(off1, off2));
 }
 
-std::string StringHelper::GetFileExtension(const std::string& filename)
+std::string StrH::GetFileExtension(const std::string& filename)
 {
 	size_t off = filename.find_last_of('.');
 	if (off == std::string::npos)			//max  size_t
@@ -62,7 +62,7 @@ std::string StringHelper::GetFileExtension(const std::string& filename)
 	return std::string(filename.substr(off + 1));
 }
 
-std::string StringHelper::GetShaderRootPath()
+std::string StrH::GetShaderRootPath()
 {
 	std::string shaderfolder = "";
 #pragma region DetermineShaderPath

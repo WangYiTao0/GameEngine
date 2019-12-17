@@ -5,10 +5,10 @@
 #include "SkyRender.h"
 
 
-class ModelScene : public Scene
+class SponzaScene : public Scene
 {
 public:
-	ModelScene(Graphics& gfx);
+	SponzaScene(Graphics& gfx);
 
 	virtual void Update(float dt) override;
 

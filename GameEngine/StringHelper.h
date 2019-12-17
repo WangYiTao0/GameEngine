@@ -3,7 +3,7 @@
 #include <vector>
 #include "WindowHelper.h"
 
-class StringHelper
+class StrH
 {
 public:
 
