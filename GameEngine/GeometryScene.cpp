@@ -8,7 +8,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	Scene("Geometry Scene")
 
 {
-	std::uniform_real_distribution<float> rdist(-20.0f, 20.0f);
+	std::uniform_real_distribution<float> rdist(-10.0f, 10.0f);
 	std::uniform_real_distribution<float> rdistY(2.0f, 10.f);
 	std::uniform_real_distribution<float> rRot(-MH::PI,MH::PI);
 
@@ -19,16 +19,17 @@ GeometryScene::GeometryScene(Graphics& gfx)
 		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
 		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
 
-	for (auto i = 0; i < 40; i++)
+	for (auto i = 0; i < 1; i++)
 	{
 		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));
 	}
 
 	for (auto& c : cubes)
 	{
-		c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
-		c->SetRotation({ rRot(rng),rRot(rng) ,rRot(rng) });
-		//c->SetPos({ 0,1,0 });
+		//c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
+		//c->SetRotation({ rRot(rng),rRot(rng) ,rRot(rng) });
+		//c->SetPos({ rdist(rng),1,rdist(rng) });
+		c->SetPos({ 0,1,0 });
 		//BoxData.push_back(c->GetLocalBoundingBox());
 		//m_InstancedData.push_back(c->GetTransformXM());
 
@@ -43,7 +44,11 @@ void GeometryScene::Update(float dt)
 
 
 	gridTerrain.SpawnControlWindow(gfx);
-	//cube.SpawnControlWindow(gfx,"cube");
+
+	for (auto& c : cubes)
+	{
+		c->SpawnControlWindow(gfx, "cube");
+	}
 }
 
 void GeometryScene::Draw()

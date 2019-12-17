@@ -21,13 +21,11 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	auto layout = Dvtx::VertexLayout{}
 		.Append(Element::Position3D)
 		.Append(Element::Normal)
-		.Append(Element::Tangent)
-		.Append(Element::Bitangent)
 		.Append(Element::Texture2D);
 
     model = Grid::MakeGrid(layout, width, depth, m, n, gridSize);
-	model.SetNormalsIndependentFlat();
-	model.ComputeTangentBiTtngent();
+	//model.SetNormalsIndependentFlat();
+	//model.ComputeTangentBiTtngent();
 
 	const auto geometryTag = "$Grid." + std::to_string(width);
 	AddBind(Sampler::Resolve(gfx,0u,Sampler::SamplerState::SSLinearWrap));
@@ -38,20 +36,19 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156.jpg"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156_norm.jpg", 2u));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_a_diff.png"));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_ddn.jpg", 2u));
-	AddBind(std::make_shared<Texture>(gfx, "null", 3u, App::m_ProjDepthRT->GetShaderResourceView()));
+	//AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_ddn.jpg", 2u));
+	AddBind(Texture::Resolve(gfx, "null", 3u, App::m_ProjDepthRT->GetShaderResourceView()));
 
-	auto pvs = VertexShader::Resolve(gfx, "PhongVSTBN");
+	auto pvs = VertexShader::Resolve(gfx, "PhongVS");
 	//auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");
-	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
+	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode(
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PhongPSNormalMap"));
+	AddBind(PixelShader::Resolve(gfx, "PhongPS"));
 	//AddBind(PixelShader::Resolve(gfx, "WaterWavesPS.cso", "WaterWavesPS.hlsl"));
 
 	AddBind(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
-
 
 	AddBind(InputLayout::Resolve(gfx, layout, pvsbc));
 
@@ -93,10 +90,9 @@ void GridTerrain::SpawnControlWindow(Graphics& gfx) noexcept
 		ImGui::SliderAngle("Pitch", &rollPitchYaw.y, -180.0f, 180.0f);
 		ImGui::SliderAngle("Yaw", &rollPitchYaw.z, -180.0f, 180.0f);
 		ImGui::Text("Material");
-		bool changed0 = ImGui::SliderFloat("Spec. shinness.", &pmc.shinness, 0.0f, 100.0f);
-		bool changed1 = ImGui::ColorEdit3("diff.", &pmc.diff.x);
-		bool changed2 = ImGui::ColorEdit3("Spec", &pmc.spec.x);
-		if (changed0 || changed1 || changed2)
+		bool changed0 = ImGui::SliderFloat("Specintensity.", &pmc.specularIntensity, 0.0f, 3.0f);
+		bool changed1 = ImGui::SliderFloat("SpecPower.", &pmc.specularPower, 0.0f, 100.0f);
+		if (changed0 || changed1)
 		{
 			QueryBindable<Bind::PixelConstantBuffer<Material>>()->Update(gfx, pmc);
 		}

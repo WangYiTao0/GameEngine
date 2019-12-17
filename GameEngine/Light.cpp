@@ -11,20 +11,23 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	lightCB(gfx, 1u),
 	shadowVSCB(gfx,1u)//VB
 {	
-	//using namespace std::string_literals;
-	//lightCBLayout.Add<Dcb::Struct>("LightCB"s);
-	//lightCBLayout["LightCB"s].Set<Dcb::Array>(MaxLights);
-	//lightCBLayout["LightCB"s].T().Set<Dcb::Struct>("lightCommon"s);
-	////lightCBLayout["lightCB"]["lightCommon"s].Set<Dcb::Struct>(MaxLights);
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float3>("Position");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float3>("Direction");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float3>("Color");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float>("AttQuad");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float>("AttLin");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float>("AttConst");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float>("SpotPower");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float>("CutOff");
-	//lightCBLayout["lightCB"]["lightCommon"s].T().Add<Dcb::Float>("OuterCutOff");
+	using namespace std::string_literals;
+
+	//lightCBLayout.Add<Dcb::Struct>("LightCB");
+	//lightCBLayout["LightCB"].Add<Dcb::Array>("LightCommon");
+	//lightCBLayout["LightCB"]["LightCommon"].Set<Dcb::Struct>(MaxLights);
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float3>("position");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float3>("direction");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float3>("color");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("attQuad");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("attLin");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("attConst");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("spotPower");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("cutOff");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("outerCutOff");
+	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("brightness");
+
+	//auto buf = Dcb::Buffer(std::move(lightCBLayout));
 
 	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
 	for (int i = 0; i < LightIndex; i++)
@@ -69,6 +72,31 @@ void Light::Update(Graphics& gfx)
 	GenerateShadowMatrix(gfx, 0);
 	shadowMatrix = GetShadowMatrix();
 }
+void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
+{
+	m_ViewPoint.SetPostion(lightData.L[lightID].position);
+	m_ViewPoint.SetLookAt(lightData.L[lightID].direction);
+	//m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
+	m_ViewPoint.SetScreen(200, 200);
+	m_ViewPoint.SetProjectionParameters(GCamera3D->GetFov(), gfx.GetAspect(), GCamera3D->GetNearZ(), GCamera3D->GetFarZ());
+	m_ViewPoint.GenerateViewMatrix();
+	m_ViewPoint.GenerateProjMatrix();
+	m_ViewPoint.GenerateOrthoMatrix();
+}
+
+Light::ShadowCB Light::GetShadowMatrix()
+{
+	using namespace DirectX;
+	const auto s_view = m_ViewPoint.GetViewMatrix();
+	const auto s_proj = m_ViewPoint.GetProjMatrix();
+	const auto s_ortho = m_ViewPoint.GetOrthoMatrix();
+
+
+	return {
+		XMMatrixTranspose(s_view),
+		XMMatrixTranspose(s_proj),
+		XMMatrixTranspose(s_ortho), };
+}
 void Light::Bind(Graphics& gfx) const noexcept
 {
 	lightCB.Update(gfx, lightData);
@@ -82,13 +110,11 @@ void Light::Draw(Graphics& gfx) const noxnd
 
 	for (int i = 0; i < LightIndex; i++)
 	{
+		mesh[i]->SetPos(lightData.L[i].position);
 		if (!isTurnoff[i])
 		{
-			mesh[i]->SetPos(lightData.L[i].position);
 			mesh[i]->DrawIndexed(gfx);
 		}
-
-
 	}
 }
 void Light::SpawnLightManagerWindow(Graphics& gfx) noexcept
@@ -146,11 +172,13 @@ void Light::SpawnLightControlWindow(int lightId) noexcept
 void Light::ResetDirectionLight(int lightID) noexcept
 {
 	//for shadow Calculate 
-	lightData.L[lightID].position = { 0.0f,50.0f,0.0f };
+	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
 
-	lightData.L[lightID].direction = { -0.5f, -1.0f, 0.0f };
+	lightData.L[lightID].direction = { -0.2f, -1.0f, -0.3f };
+
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
 	lightData.L[lightID].Color = { 0.4f, 0.4f, 0.4f };
+	lightData.L[lightID].brightness = 1.0f;
 	isTurnoff[lightId] = false;
 }
 void Light::ResetPointLight(int lightID) noexcept
@@ -161,6 +189,7 @@ void Light::ResetPointLight(int lightID) noexcept
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };	
 	lightData.L[lightID].Color = { 0.8f, 0.8f, 0.8f };
+	lightData.L[lightID].brightness = 1.0f;
 
 	lightData.L[lightID].attConst = 1.0f;
 	lightData.L[lightID].attLin = 0.045f;
@@ -170,9 +199,10 @@ void Light::ResetPointLight(int lightID) noexcept
 void Light::ResetSpotLight(int lightID) noexcept
 {	
 	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
-	lightData.L[lightID].direction = { 0.0f, DirectX::XMConvertToRadians(-90.0f), 0.0f };
+	lightData.L[lightID].direction = { 0.0f, -90.0f * MH::oneRad, 0.0f };
 	lightData.L[lightID].ambient = { 0.0f,0.0f,0.0f };
 	lightData.L[lightID].Color = { 1.0f, 1.0f, 1.0f };
+	lightData.L[lightID].brightness = 1.0f;
 
 	lightData.L[lightID].attConst = 1.0f;
 	lightData.L[lightID].attLin = 0.045f;
@@ -228,6 +258,7 @@ bool Light::SpawnDirLightWindow(int lightId) noexcept
 			ImGui::Text("Light Color");
 			ImGui::ColorEdit3("Color", &lightData.L[lightId].Color.x);
 			ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
+			ImGui::SliderFloat("Brightness", &lightData.L[lightId].brightness, 0.0f, 10.0f, "%.1f");
 
 			if (ImGui::Button("Reset"))
 			{
@@ -264,8 +295,9 @@ bool Light::SpawnPointLightWindow(int lightId) noexcept
 		ImGui::SliderFloat("Z", &lightData.L[lightId].position.z, -60.0f, 60.0f, "%.1f");
 
 		ImGui::Text("Light Color");
-		ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].Color.x);
+		ImGui::ColorEdit3("Color", &lightData.L[lightId].Color.x);
 		ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
+		ImGui::SliderFloat("Brightness", &lightData.L[lightId].brightness, 0.0f, 10.0f, "%.1f");
 
 		ImGui::Text("Falloff");
 		ImGui::SliderFloat("Constant", &lightData.L[lightId].attConst, 0.05f, 10.0f, "%.2f", 4);
@@ -310,8 +342,9 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 		ImGui::SliderFloat("Z", &lightData.L[lightId].position.z, -60.0f, 60.0f, "%.1f");
 
 		ImGui::Text("Light Color");
-		ImGui::ColorEdit3("Diffuse Color", &lightData.L[lightId].Color.x);
+		ImGui::ColorEdit3("Color", &lightData.L[lightId].Color.x);
 		ImGui::ColorEdit3("Ambient", &lightData.L[lightId].ambient.x);
+		ImGui::SliderFloat("Brightness", &lightData.L[lightId].brightness, 0.0f, 10.0f, "%.1f");
 
 		ImGui::Text("Falloff");
 		ImGui::SliderFloat("Constant", &lightData.L[lightId].attConst, 0.05f, 10.0f, "%.2f", 4);
@@ -370,31 +403,7 @@ void Light::DrawSpotLightRange(Graphics& gfx, int lightId) noexcept
 
 }
 
-void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
-{	
-	m_ViewPoint.SetPostion(lightData.L[lightID].position);
-	m_ViewPoint.SetLookAt(lightData.L[lightID].direction);
-	//m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
-	m_ViewPoint.SetScreen(100,100);
-	m_ViewPoint.SetProjectionParameters(GCamera3D->GetFov(), gfx.GetAspect(), GCamera3D->GetNearZ(), GCamera3D->GetFarZ());
-	m_ViewPoint.GenerateViewMatrix();
-	m_ViewPoint.GenerateProjMatrix();
-	m_ViewPoint.GenerateOrthoMatrix();
-}
 
-Light::ShadowCB Light::GetShadowMatrix()
-{
-	using namespace DirectX;
-	const auto s_view = m_ViewPoint.GetViewMatrix();
-	const auto s_proj = m_ViewPoint.GetProjMatrix();
-	const auto s_ortho = m_ViewPoint.GetOrthoMatrix();
-	
-	
-	return {
-		XMMatrixTranspose(s_view),
-		XMMatrixTranspose(s_proj),
-		XMMatrixTranspose(s_ortho),};
-}
 
 //ShadowCB Light::GetShadowMatrix(int lightID)
 //{

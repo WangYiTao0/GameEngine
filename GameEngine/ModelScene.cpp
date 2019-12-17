@@ -10,7 +10,7 @@ ModelScene::ModelScene(Graphics& gfx)
 	gfx(gfx),
 	Scene("Model Scene")
 {
-	sponza=std::make_unique<Model>( gfx, "Data\\Models\\sponza\\sponza.obj", 1.0f / 10.0f );
+	sponza=std::make_unique<Model>( gfx, "Data\\Models\\sponza\\sponza.obj", 1.0f / 20.0f );
 
 	bluePlane.SetPos({0.0f,0.0f,5.0f});
 	redPlane.SetPos({ 0.0f,0.0f,6.0f });
@@ -28,7 +28,6 @@ ModelScene::ModelScene(Graphics& gfx)
 
 void ModelScene::Update(float dt)
 {
-	
 	//imgui window in update 
 	//conflict with RTT
 	sponza->ShowWindow(gfx, "Sponza");

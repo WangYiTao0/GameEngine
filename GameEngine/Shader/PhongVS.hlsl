@@ -10,7 +10,7 @@ struct VS_INPUT
 struct VS_OUTPUT
 {
     float3 worldPos : Position;
-    float3 LightSpacePos:POSITION1;
+    float4 LightSpacePos:POSITION1;
     float3 worldNormal : Normal;
     float2 tc : Texcoord;
     //SV_Position describes the pixel location.

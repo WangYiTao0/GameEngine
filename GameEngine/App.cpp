@@ -25,7 +25,7 @@ App::App()
 {
 	TestDynamicConstant();
 	// init Light
-	m_Light = std::make_unique<Light>(wnd.Gfx(), 1, 2, 2);
+	m_Light = std::make_unique<Light>(wnd.Gfx(), 1, 1, 0);
 
 	// Create the cpu object.
 	m_Cpu.Initialize();
@@ -43,7 +43,7 @@ App::App()
 
 	InitDebugWindow();
 
-	m_Scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
+	//m_Scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
 	m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
@@ -298,7 +298,7 @@ void App::InitDebugWindow()
 	m_ProjDepthRT = std::make_shared<Bind::DepthBufferRT>(wnd.Gfx(), shadowWidth, shadowHeight);
 	m_ProjDepthMap = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
 		static_cast<float>(screenWidth / 6),
-		static_cast<float>(screenHeight / 6), "VS_2D", "OrthoDepthDraw_PS", m_ProjDepthRT->GetShaderResourceView());
+		static_cast<float>(screenHeight / 6), "VS_2D", "DepthDraw_PS", m_ProjDepthRT->GetShaderResourceView());
 	m_ProjDepthMap->SetPos({ screenWidth / 6.0f ,screenHeight * 5.0f / 6.0f,0.0f });
 }
 

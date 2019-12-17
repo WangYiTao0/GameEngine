@@ -44,21 +44,21 @@ float4 main(PS_pIn pIn) : SV_Target
 {
     //alpha blender
     float4 texDiff = diffTex.Sample(sampleAn, pIn.texcoord).rgba;
-    clip(texDiff.a < 0.1f ? -1 : 1);
     
-    //// fragment to light vector data
-    //#ifdef HASMASK
-    //// bail if highly translucent
-    //clip(texDiff.a < 0.1f ? -1 : 1);
+    // fragment to light vector data
+    #ifdef HASMASK
+    // bail if highly translucent
+    clip(texDiff.a < 0.1f ? -1 : 1);
 
-    //float3 toEye = cameraPos-pIn.worldPos;
+    float3 toEye = cameraPos-pIn.worldPos;
+    float3 dirToL = gLights[0].position-pIn.worldPos;
 
-    //// flip normal when backface
-    //if (dot(pIn.worldNormal, lv.dirToL) >= 0.0f && dot(pIn.worldNormal, -toEye) >= 0.0f)
-    //{
-    //    pIn.worldNormal = -pIn.worldNormal;
-    //}
-    //#endif
+    // flip normal when backface
+    if (dot(pIn.worldNormal, dirToL) >= 0.0f && dot(pIn.worldNormal, -toEye) >= 0.0f)
+    {
+        pIn.worldNormal = -pIn.worldNormal;
+    }
+    #endif
 
     // normalize the mesh normal
     pIn.worldNormal = normalize(pIn.worldNormal);

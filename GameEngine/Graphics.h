@@ -2,8 +2,8 @@
 #include "WindowHelper.h"
 #include "BaseException.h"
 #include <d3d11.h>
-#include <wrl.h>
-#include <vector>
+#include <wrl/client.h>
+#include <vector> 
 #include "DxgiInfoManager.h"
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
@@ -119,5 +119,6 @@ private:
 	D3D11_VIEWPORT m_Viewport;
 	UINT      m_4xMsaaQuality;   // MSAA
 
-
+	//std::vector<AdapterData> adapters;
 };
+

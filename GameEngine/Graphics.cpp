@@ -20,12 +20,29 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 	screenWidth(width),
 	screenHeight(height)
 {
+	// for checking results of d3d functions
+	HRESULT hr;
+
+	//Microsoft::WRL::ComPtr<IDXGIFactory> pFactory;
+
+	//std::vector<AdapterData> adapters; 
+	//// Create a DXGIFactory object.
+	//GFX_THROW_INFO(CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(pFactory.GetAddressOf())));
+	//IDXGIAdapter* pAdapter;
+	//UINT index = 0;
+	//DXGI_ADAPTER_DESC description;
+	//while (SUCCEEDED(pFactory->EnumAdapters(index, &pAdapter)))
+	//{
+	//	adapters.push_back(AdapterData(pAdapter));
+	//	index += 1;
+	//}
+
 
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = width;
 	sd.BufferDesc.Height = height;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 0;
+	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 0;
 	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
@@ -43,8 +60,8 @@ Graphics::Graphics(HWND hWnd, int width, int height)
 	swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	// for checking results of d3d functions
-	HRESULT hr;
+
+
 
 	// create device and front/back buffers, and swap chain and rendering context
 	GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(

@@ -39,24 +39,22 @@ void ViewPoint::GenerateViewMatrix()
 {
 	using namespace DirectX;
 	XMVECTOR EyePostion = XMLoadFloat3(&m_Position);
-	XMVECTOR LookAt = XMVector3Normalize(XMLoadFloat3(&m_LookAt));
+	XMVECTOR LookAt = XMLoadFloat3(&m_LookAt);
 	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	//
-	m_View = XMMatrixLookAtLH(EyePostion, LookAt, Up);
+	m_View = XMMatrixLookToLH(EyePostion, LookAt, Up);
 
 }
 
 void ViewPoint::GenerateProjMatrix()
 {
-	using namespace DirectX;
-	m_Proj = XMMatrixPerspectiveFovLH(m_Fov, m_AspectRatio, m_NearPlane, m_FarPlane);
+	m_Proj = DirectX::XMMatrixPerspectiveFovLH(m_Fov, m_AspectRatio, m_NearPlane, m_FarPlane);
 }
 
 void ViewPoint::GenerateOrthoMatrix()
 {
-	using namespace DirectX;
-	m_Ortho = XMMatrixOrthographicLH(m_ScreenWidth, m_ScreenHeight, m_NearPlane, m_FarPlane);
+	m_Ortho = DirectX::XMMatrixOrthographicLH(100, 100, m_NearPlane, m_FarPlane);
 }
 
 DirectX::XMMATRIX ViewPoint::GetViewMatrix()

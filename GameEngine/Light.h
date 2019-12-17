@@ -87,7 +87,7 @@ private:
 	std::set<int> lightControlIds;
 	std::unordered_map<int, std::string> lightMap;
 	LightCommon lastState[MaxLights];
-	bool isTurnoff[MaxLights] = { true };
+	bool isTurnoff[MaxLights] = { false };
 
 	int m_DirLightNum;
 	int m_PointLightNum;
@@ -102,6 +102,7 @@ private:
 	Dcb::RawLayout lightCBLayout;
 	Dcb::RawLayout ShadowConst;
 	//Dcb::Buffer buf;
+	//	buf(Dcb::Buffer(layout));
 
 	ViewPoint m_ViewPoint;
 };

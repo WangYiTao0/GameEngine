@@ -318,9 +318,6 @@
     <ClCompile Include="ViewPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shadow.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="DepthBufferRT.cpp">
       <Filter>Source Files\Binable\RTT</Filter>
     </ClCompile>
@@ -641,9 +638,6 @@
     <ClInclude Include="ViewPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shadow.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="RTT.h">
       <Filter>Header Files\Bindable\RTT</Filter>
     </ClInclude>
@@ -723,9 +717,6 @@
     <None Include="Shader\BRDF.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
-    <None Include="Shader\LightingUtil.hlsli">
-      <Filter>Shader\Common</Filter>
-    </None>
     <None Include="Shader\Phong.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
@@ -736,6 +727,9 @@
       <Filter>Shader\Common</Filter>
     </None>
     <None Include="Shader\LightingCommon.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="Shader\LightingUtil.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
   </ItemGroup>
@@ -785,15 +779,6 @@
     <FxCompile Include="Shader\ProjDepthDraw_PS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\OrthoDepth_PS.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\OrthoDepth_VS.hlsl">
-      <Filter>Shader\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\OrthoDepthDraw_PS.hlsl">
-      <Filter>Shader\PS</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\Forward_BRDF_VS.hlsl">
       <Filter>Shader\VS</Filter>
     </FxCompile>
@@ -813,6 +798,15 @@
       <Filter>Shader\PS</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongPSSpecNormalMask.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Depth_PS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Depth_VS.hlsl">
+      <Filter>Shader\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DepthDraw_PS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
   </ItemGroup>

@@ -4,6 +4,7 @@
 #include "TransformPixelCbuf.h"
 #include "imgui/imgui.h"
 #include "StringHelper.h"
+#include "App.h"
 
 TestCube::TestCube(Graphics& gfx, float size)
 {
@@ -22,6 +23,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
+	//AddBind(Texture::Resolve(gfx,"null",3u,App::m_ProjDepthRT->GetShaderResourceView()));
 	auto pvs = VertexShader::Resolve(gfx, "PhongVS");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
@@ -54,13 +56,12 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 
 	depth.push_back(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullFront));
-
 	depth.push_back(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	depth.push_back(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
-	pvs = VertexShader::Resolve(gfx, "OrthoDepth_VS");
+	pvs = VertexShader::Resolve(gfx, "Depth_VS");
 	pvsbc = pvs->GetBytecode();
 	depth.push_back(std::move(pvs));
-	depth.push_back(PixelShader::Resolve(gfx, "OrthoDepth_PS"));
+	depth.push_back(PixelShader::Resolve(gfx, "Depth_PS"));
 	depth.push_back(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 	depth.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
@@ -68,8 +69,6 @@ TestCube::TestCube(Graphics& gfx, float size)
 	depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 
 	depth.push_back(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
-
-	//depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSMask));
 }
 
 
@@ -122,10 +121,9 @@ void TestCube::SpawnControlWindow(Graphics& gfx, const char* name) noexcept
 		ImGui::SliderAngle("Yaw", &rollPitchYaw.z, -180.0f, 180.0f);
 
 		ImGui::Text("Material");
-		bool changed0 = ImGui::SliderFloat("Spec. shinness.", &pmc.shinness, 0.0f, 100.0f);
-		bool changed1 = ImGui::ColorEdit3("diff.", &pmc.diff.x);
-		bool changed2 = ImGui::ColorEdit3("Spec", &pmc.spec.x);
-		if (changed0 || changed1 || changed2)
+		bool changed0 = ImGui::SliderFloat("SpecularIntensity.", &pmc.specularIntensity, 0.0f, 3.0f);
+		bool changed1 = ImGui::SliderFloat("SpecularPower.", &pmc.specularPower, 0.0f, 100.0f);
+		if (changed0 || changed1)
 		{
 			QueryBindable<Bind::PixelConstantBuffer<Material>>()->Update(gfx, pmc);
 		}

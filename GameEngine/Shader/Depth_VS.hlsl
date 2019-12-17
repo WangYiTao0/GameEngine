@@ -37,9 +37,11 @@ VS_OUT main(VS_IN vIn) : SV_POSITION
 #ifdef INSTANCED
 	vOut.position = mul(ObjMats[In.instanceID].wvp, float4(vIn.position, 1));
 #else
-    matrix lightView = mul(worldMatrix, s_View);
-    matrix lightViewProj = mul(lightView, s_Ortho);
-    vOut.position = mul(float4(vIn.position, 1.0f), lightViewProj);
+    //matrix lightView = mul(worldMatrix, s_View);
+    //matrix lightViewProj = mul(lightView, s_Ortho);
+    vOut.position = mul(float4(vIn.position, 1.0f), worldMatrix);
+    vOut.position = mul(vOut.position, s_View);
+    vOut.position = mul(vOut.position, s_Ortho);
 #endif
 
     return vOut;

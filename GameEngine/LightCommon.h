@@ -19,18 +19,27 @@ struct LightCommon
 	float spotPower; //spot
 	float cutOff;//spot
 	float outerCutOff;//spot
-	float lightPadding[2];
+	float brightness;//  direct spot point 
+	float lightPadding[1];
 };
 
 
+
+//struct Material
+//{
+//	DirectX::XMFLOAT3 diff = { 1.0f, 1.0f, 1.0f};
+//	float shinness = 30.0f;
+//	DirectX::XMFLOAT3 spec = { 0.01f, 0.01f, 0.01f };
+//	float padding;
+//};
 
 struct Material
 {
-	DirectX::XMFLOAT3 diff = { 1.0f, 1.0f, 1.0f};
-	float shinness = 30.0f;
-	DirectX::XMFLOAT3 spec = { 0.01f, 0.01f, 0.01f };
-	float padding;
+	float specularIntensity = 0.1f;
+	float specularPower = 40;
+	float padding[2];
 };
+
 
 // Simple struct to represent a material for our demos.  A production 3D engine
 // would likely create a class hierarchy of Materials.
