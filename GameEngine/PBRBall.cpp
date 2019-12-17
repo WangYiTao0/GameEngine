@@ -57,6 +57,17 @@ PBRBall::PBRBall(Graphics& gfx, float radius)
 	AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 }
 
+void PBRBall::AddPBRTexture(Graphics& gfx,std::vector<std::string>& paths)
+{
+	using namespace Bind;
+	AddBind(Texture::Resolve(gfx, paths[0],0u));
+	AddBind(Texture::Resolve(gfx, paths[1],1u));
+	AddBind(Texture::Resolve(gfx, paths[2], 2u));
+	AddBind(Texture::Resolve(gfx, paths[3], 3u));
+	AddBind(Texture::Resolve(gfx, paths[4], 4u));
+
+}
+
 DirectX::XMMATRIX PBRBall::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);

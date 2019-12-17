@@ -3,14 +3,25 @@
 #include "Camera.h"
 #include "MathHelper.h"
 
-Light::Light(Graphics& gfx, int numD, int numP, int numS)
+Light::Light(Graphics& gfx, std::string sceneName, int numD, int numP, int numS)
 	:
 	m_DirLightNum(numD),
 	m_PointLightNum(numP),
 	m_SpotLightNum(numS),
 	lightCB(gfx, 1u),
+	fileRead("Data\\"+ sceneName +"LightData.dat", std::ios::out | std::ios::binary),
 	shadowVSCB(gfx,1u)//VB
 {	
+	
+	if (!fileRead)
+	{
+		return;
+	}
+	else
+	{
+		fileRead.read((char*)&lightData, sizeof(LightCB));
+		fileRead.read((char*)&lightState, sizeof(LightState));
+	}
 	//using namespace std::string_literals;
 	//lightCBLayout.Add<Dcb::Struct>("LightCB");
 	//lightCBLayout["LightCB"].Add<Dcb::Array>("LightCommon");
@@ -47,7 +58,7 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 			lightMap.insert({ lightId, "SpotLight" + std::to_string(lightId - m_DirLightNum - m_PointLightNum + 1) });
 		}
 	}
-	Reset();
+	//Reset();
 }
 void Light::Reset() noexcept
 {
@@ -109,11 +120,25 @@ void Light::Draw(Graphics& gfx) const noxnd
 	for (int i = 0; i < LightIndex; i++)
 	{
 		mesh[i]->SetPos(lightData.L[i].position);
-		if (!isTurnoff[i])
+		if (!lightState.isTurnOff[i])
 		{
 			mesh[i]->DrawIndexed(gfx);
 		}
 	}
+}
+Light::~Light()
+{
+	std::ofstream fileOut("Data\\LightData.dat", std::ios::out | std::ios::binary);
+	if (!fileOut)
+	{
+		return;
+	}
+	else
+	{
+		fileOut.write((char*)&lightData, sizeof(LightCB));
+		fileOut.write((char*)&lightState, sizeof(LightState));
+	}
+	fileOut.close();
 }
 void Light::SpawnLightManagerWindow(Graphics& gfx) noexcept
 {
@@ -177,7 +202,7 @@ void Light::ResetDirectionLight(int lightID) noexcept
 	lightData.L[lightID].ambient = { 0.05f,0.05f,0.05f };
 	lightData.L[lightID].Color = { 0.4f, 0.4f, 0.4f };
 	lightData.L[lightID].brightness = 1.0f;
-	isTurnoff[lightId] = false;
+	lightState.isTurnOff[lightId] = false;
 }
 void Light::ResetPointLight(int lightID) noexcept
 {
@@ -192,7 +217,7 @@ void Light::ResetPointLight(int lightID) noexcept
 	lightData.L[lightID].attConst = 1.0f;
 	lightData.L[lightID].attLin = 0.045f;
 	lightData.L[lightID].attQuad = 0.0075f;
-	isTurnoff[lightId] = false;
+	lightState.isTurnOff[lightId] = false;
 }
 void Light::ResetSpotLight(int lightID) noexcept
 {	
@@ -208,26 +233,26 @@ void Light::ResetSpotLight(int lightID) noexcept
 	lightData.L[lightID].spotPower = 0.032f;
 	lightData.L[lightID].cutOff = std::cos(DirectX::XMConvertToRadians(12.5f));
 	lightData.L[lightID].outerCutOff = std::cos(DirectX::XMConvertToRadians(15.f));
-	isTurnoff[lightId] = false;
+	lightState.isTurnOff[lightId] = false;
 }
 
 void Light::TurnOffLight(int lightID) noexcept
 {
-	if (!isTurnoff[lightId])
+	if (!lightState.isTurnOff[lightId])
 	{
-		lastState[lightID] = lightData.L[lightID];
+		lightState.lastState[lightID] = lightData.L[lightID];
 		lightData.L[lightID].ambient = { 0.0f,0.0f,0.0f };
 		lightData.L[lightID].Color = { 0.f, 0.f, 0.f };
-		isTurnoff[lightId] = true;
+		lightState.isTurnOff[lightId] = true;
 	}
 }
 
 void Light::TurnOnLight(int lightID) noexcept
 {
-	if (isTurnoff[lightId])
+	if (lightState.isTurnOff[lightId])
 	{
-		lightData.L[lightID] = lastState[lightID];
-		isTurnoff[lightId] = false;
+		lightData.L[lightID] = lightState.lastState[lightID];
+		lightState.isTurnOff[lightId] = false;
 	}
 }
 

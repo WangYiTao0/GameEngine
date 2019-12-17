@@ -7,11 +7,12 @@ PBRScene::PBRScene(Graphics& gfx)
 	Scene("PBRScene")
 {
 
+    // init Light
+    m_Light = std::make_unique<Light>(gfx, "PBRScene", 1, 4, 4);
 
     for (int i = 0; i < nrRows * nrColumns; i++)
     {
         pbrBall.push_back(std::make_unique<PBRBall>(gfx, 1.0f));
-    
     }
     
     int i = 0;
@@ -30,14 +31,13 @@ PBRScene::PBRScene(Graphics& gfx)
         }
     }
 
-    // render light source (simply re-render sphere at light positions)
-    // this looks a bit off as we use the same shader, but it'll make their positions obvious and 
-    // keeps the codeprint small.
-    for (unsigned int i = 0; i < 4; ++i)
-    {
-        
-   
-    }
+    std::vector<std::string> filePath = {
+    "Data\\Images\\skybox\\Yokohama3\\posx.jpg", "Data\\Images\\skybox\\Yokohama3\\negx.jpg",
+    "Data\\Images\\skybox\\Yokohama3\\posy.jpg", "Data\\Images\\skybox\\Yokohama3\\negy.jpg",
+    "Data\\Images\\skybox\\Yokohama3\\posz.jpg", "Data\\Images\\skybox\\Yokohama3\\negz.jpg" };
+
+
+    skyHdr = std::make_unique<SkyRender>(gfx, filePath, 1000);
 
 }
 
@@ -47,13 +47,23 @@ PBRScene::~PBRScene()
 
 void PBRScene::Update(float dt)
 {
+    //update light
+    m_Light->Update(gfx);
+    m_Light->Bind(gfx);
+
     light.Bind(gfx);
+
+    m_Light->SpawnLightManagerWindow(gfx);
 }
 
 void PBRScene::Draw()
 {
+    m_Light->Draw(gfx);
+
     for (auto& p : pbrBall)
     {
         p->DrawIndexed(gfx);
     }
+
+    skyHdr->DrawIndexed(gfx);
 }

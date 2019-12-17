@@ -117,7 +117,7 @@ float4 main(PS_IN pIn) : SV_Target
         float3 H = normalize(V + L);
         float distance = length(LightPosition[i].xyz - pIn.worldPos);
         float attenuation = 1.0 / (distance * distance);
-        float3 radiance = LightColor[i].xyz * attenuation;
+        float3 radiance = LightColor[i].xyz * 300 * attenuation;
 
         // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);

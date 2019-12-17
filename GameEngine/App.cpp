@@ -24,8 +24,6 @@ App::App()
 	wnd(screenWidth, screenHeight, "Game Engine")
 {
 	//TestDynamicConstant();
-	// init Light
-	m_Light = std::make_unique<Light>(wnd.Gfx(), 1, 4, 4);
 
 	// Create the cpu object.
 	m_Cpu.Initialize();
@@ -180,9 +178,7 @@ void App::update(float dt)
 	wnd.Gfx().SetCamera2DWorldMatirx(m_Camera2D.GetWorldMatrix());
 	wnd.Gfx().SetCameraViewMatirx(GCamera3D->GetViewMatrix());
 
-	//update light
-	m_Light->Update(wnd.Gfx());
-	m_Light->Bind(wnd.Gfx());
+
 	
 	// update scene
 	(*m_CurScene)->Update(dt);
@@ -196,7 +192,7 @@ void App::Draw()
 	// imgui windows
 	GCamera3D->SpawnControlWindow();
 	SpawnEngineStateWindow();
-	m_Light->SpawnLightManagerWindow(wnd.Gfx());
+
 
 	if (enableRenderTarget)
 	{
@@ -274,7 +270,7 @@ void App::RenderToTexture()
 
 void App::RenderScene()
 {
-	m_Light->Draw(wnd.Gfx());
+
 	// draw scene
 	(*m_CurScene)->Draw();
 }

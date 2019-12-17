@@ -15,9 +15,9 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	//role = std::make_unique<Model>(gfx, "Data\\Models\\nano_textured\\nanosuit.obj", 1.0f);
 	//role->AddShader(gfx, "PhongVSTBN", "PhongPSSpecNormalMap");
 	std::vector<std::string> filePath = {
-		"Data\\Images\\skybox\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset_negX.bmp",
-		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
-		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
+		"Data\\Images\\skybox\\sunset\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset\\sunset_negX.bmp",
+		"Data\\Images\\skybox\\sunset\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset\\sunset_negY.bmp",
+		"Data\\Images\\skybox\\sunset\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset\\sunset_negZ.bmp" };
 
 	for (auto i = 0; i < 10; i++)
 	{
@@ -26,13 +26,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 	for (auto& c : cubes)
 	{
-		//c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
-		//c->SetRotation({ rRot(rng),rRot(rng) ,rRot(rng) });
 		c->SetPos({ rdist(rng),2,rdist(rng) });
-		//c->SetPos({ 0,1,0 });
-		//BoxData.push_back(c->GetLocalBoundingBox());
-		//m_InstancedData.push_back(c->GetTransformXM());
-
 	}
 	m_pSunset = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
 

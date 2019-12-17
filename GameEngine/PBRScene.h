@@ -6,7 +6,8 @@
 #include "GridTerrain.h"
 #include "PBRBall.h"
 #include "PBRLight.h"
-
+#include "SkyRender.h"
+#include "Light.h"
 
 class PBRScene :public Scene
 {
@@ -20,7 +21,11 @@ private:
 
 	Graphics& gfx;
 	PBRLight light;
+	//Light
+	std::unique_ptr<Light> m_Light;
 	std::vector<std::unique_ptr<PBRBall>> pbrBall;
+
+	std::unique_ptr<SkyRender> skyHdr;
 
 	int nrRows = 7;
 	int nrColumns = 7;

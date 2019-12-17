@@ -11,7 +11,7 @@
 #include <optional>
 #include "DynamicConstant.h"
 #include "ConstantBuffersEx.h"
-
+#include <fstream>
 class Light
 {
 private:
@@ -19,6 +19,13 @@ private:
 	{
 		LightCommon L[MaxLights];
 	};
+
+	struct LightState
+	{
+		LightCommon lastState[MaxLights];
+		bool isTurnOff[MaxLights] = { false };
+	};
+
 	struct ShadowCB
 	{
 		DirectX::XMMATRIX ShadowViewMatrix;
@@ -28,30 +35,11 @@ private:
 
 public:
 	//DirectlightNum,PointLightNum,SpotLightNum
-	Light(Graphics& gfx, int numD = 1, int numP = 1, int numS = 1);
+	Light(Graphics& gfx, std::string nasceneNameme, int numD = 1, int numP = 1, int numS = 1);
 	Light(const Light& rhs) = default;
-	~Light() = default;
+	~Light();
 	void SpawnLightManagerWindow(Graphics& gfx)noexcept;
 	
-	//ëÆê´ Attributes
-	template<typename T>
-	void SetLightAttributes(int lightID,T& lightData)
-	{
-		lightData.L[lightID].position = lightData.position ? lightData.position : DirectX::XMFLOAT3(0.0f, 9.0f, 0.0f);
-		lightData.L[lightID].direction = { 0.0f, 0.0f, 1.0f };
-		lightData.L[lightID].ambient = { 0.0f,0.0f,0.0f };
-		lightData.L[lightID].diffColor = { 1.0f, 1.0f, 1.0f };
-		lightData.L[lightID].specular = { 1.0f,1.0f,1.0f };
-
-		lightData.L[lightID].attConst = 1.0f;
-		lightData.L[lightID].attLin = 0.045f;
-		lightData.L[lightID].attQuad = 0.09f;
-		lightData.L[lightID].spotPower = 0.032f;
-		lightData.L[lightID].cutOff = std::cos(DirectX::XMConvertToRadians(12.5f));
-		lightData.L[lightID].outerCutOff = std::cos(DirectX::XMConvertToRadians(15.f));
-		lightData.L[lightID].diffuseIntensity = 1.0f;
-	}
-
 	void Reset() noexcept;
 	void Update(Graphics& gfx);
 	void Draw(Graphics& gfx) const noxnd;
@@ -86,14 +74,15 @@ private:
 
 	std::set<int> lightControlIds;
 	std::unordered_map<int, std::string> lightMap;
-	LightCommon lastState[MaxLights];
-	bool isTurnoff[MaxLights] = { false };
+	
+	//bool isTurnoff[MaxLights] = { false };
 
 	int m_DirLightNum;
 	int m_PointLightNum;
 	int m_SpotLightNum;
 
 	LightCB lightData;
+	LightState lightState;
 	ShadowCB shadowMatrix;
 	mutable Bind::VertexConstantBuffer<ShadowCB> shadowVSCB;
 	mutable Bind::PixelConstantBuffer<LightCB> lightCB;
@@ -105,4 +94,7 @@ private:
 	//	buf(Dcb::Buffer(layout));
 
 	ViewPoint m_ViewPoint;
+
+
+	std::ifstream fileRead;
 };

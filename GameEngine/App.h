@@ -55,9 +55,7 @@ private:
 
 	//Camera3D cam;
 	Camera2D m_Camera2D;
-	//Light
-	std::unique_ptr<Light> m_Light;
-	
+
 	CpuClass m_Cpu;
 
 	std::vector <std::unique_ptr<Scene>> m_Scenes;

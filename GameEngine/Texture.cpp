@@ -89,6 +89,21 @@ namespace Bind
 		));
 	}
 
+	Texture::Texture(Graphics& gfx, std::string& filePaths, UINT slot)
+		:
+		slot(slot)
+	{
+		INFOMAN(gfx);
+		GFX_THROW_INFO(CreateWICTexture2DCubeFromFile(
+			GetDevice(gfx),
+			GetContext(gfx),
+			StrH::ToWide(filePaths),
+			nullptr,
+			pTextureViewSRV.GetAddressOf(),
+			true
+		));
+	}
+
 	void Texture::Bind(Graphics& gfx) noexcept
 	{
 		GetContext(gfx)->PSSetShaderResources(slot, 1u, pTextureViewSRV.GetAddressOf());

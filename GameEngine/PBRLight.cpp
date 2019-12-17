@@ -9,7 +9,7 @@ PBRLight::PBRLight(Graphics& gfx)
 		lightData.position[i] = { 5.0f * (i-2),0.0f,-10.0f,1.0f };
 
 	
-		lightData.color[i] = { 300.0f, 300.0f, 300.0f,300.0f };
+		lightData.color[i] = { 1.0f, 1.0f, 1.0f,1.0f };
 	}
 }
 

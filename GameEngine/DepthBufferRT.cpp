@@ -27,6 +27,7 @@ namespace Bind
 		depthBufferDesc.MiscFlags = 0;
 		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(&depthBufferDesc, NULL, m_pDepthBackBufferTexture2D.GetAddressOf()));
 
+
 		//第二,填充深度缓存视图形容结构体,并创建深度缓存视图
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
