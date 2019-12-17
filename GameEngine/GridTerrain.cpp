@@ -37,7 +37,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\OpenArt\\156_norm.jpg", 2u));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_a_diff.png"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\sponza_floor_ddn.jpg", 2u));
-	AddBind(Texture::Resolve(gfx, "null", 3u, App::m_ProjDepthRT->GetShaderResourceView()));
+	AddBind(Texture::Resolve(gfx, "null", 3u, App::m_DepthRT->GetShaderResourceView()));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVS");
 	//auto pvs = VertexShader::Resolve(gfx, "WaterWavesVS.cso", "WaterWavesVS.hlsl");
@@ -63,6 +63,22 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 
 	AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
 
+
+	depths.push_back(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullFront));
+	depths.push_back(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
+	depths.push_back(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
+	pvs = VertexShader::Resolve(gfx, "Depth_VS");
+	pvsbc = pvs->GetBytecode();
+	depths.push_back(std::move(pvs));
+	depths.push_back(PixelShader::Resolve(gfx, "Depth_PS"));
+	depths.push_back(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+	depths.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+
+	depths.push_back(std::make_shared<TransformCbuf>(gfx, *this));
+	depths.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
+
+	depths.push_back(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
+
 }
 
 
@@ -75,6 +91,15 @@ DirectX::XMMATRIX GridTerrain::GetTransformXM() const noexcept
 
 void GridTerrain::Update(Graphics& gfx,float dt)
 {
+}
+
+void GridTerrain::DrawDepth(Graphics& gfx) noexcept
+{
+	for (auto& b : depths)
+	{
+		b->Bind(gfx);
+	}
+	gfx.DrawIndexed(QueryBindable<Bind::IndexBuffer>()->GetCount());
 }
 
 void GridTerrain::SpawnControlWindow(Graphics& gfx) noexcept

@@ -105,45 +105,53 @@ float3 Speculate(
     return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, worldCamToFrag)), specularPower);
 }
 
-float ShadowCalculation(float4 fragPosLightSpace, Texture2D shadowMap, SamplerState sample,
+float ShadowCalculation(float4 fragPosLightSpace, Texture2D shadowMap, SamplerState clampSample,
 float3 lightPos, float3 worldPos, float3 worldNormal)
 {
+
     // perform perspective divide
     float3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
-    projCoords = projCoords * 0.5 + 0.5;
+    //[0.0,1.0]  u=0.5*x+0.5;   v=-0.5*y+0.5;
+    projCoords.x = projCoords.x * 0.5f + 0.5f;
+    projCoords.y = projCoords.y * (-0.5f) + 0.5f;
+
+    if (saturate(projCoords.x) == projCoords.x && saturate(projCoords.y) == projCoords.y)
+    {
     // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = shadowMap.Sample(sample, projCoords.xy).r;
+        float closestDepth = shadowMap.Sample(clampSample, projCoords.xy).r;
     // get depth of current fragment from light's perspective
-    float currentDepth = projCoords.z;
+        float currentDepth = projCoords.z;
 
     // Calculate bias (based on depth map resolution and slope)
-    float3 normal = normalize(worldNormal);
-    float3 lightDir = normalize(lightPos - worldPos);
-    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+        float3 normal = normalize(worldNormal);
+        float3 lightDir = normalize(lightPos - worldPos);
+        float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
 
         // Check whether current frag pos is in shadow
     // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
     // PCF
-    float shadow = 0.0;
-    float width, height;
-    shadowMap.GetDimensions(width, height);
-    float2 texelSize = 1.0 / float2(width, height);
-    for (int x = -1; x <= 1; ++x)
-    {
-        for (int y = -1; y <= 1; ++y)
+        float shadow = 0.0;
+        float width, height;
+        shadowMap.GetDimensions(width, height);
+        float2 texelSize = 1.0 / float2(width, height);
+        for (int x = -1; x <= 1; ++x)
         {
-            float pcfDepth = shadowMap.Sample(sample, projCoords.xy + float2(x, y) * texelSize).r;
-            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+            for (int y = -1; y <= 1; ++y)
+            {
+                float pcfDepth = shadowMap.Sample(clampSample, projCoords.xy + float2(x, y) * texelSize).r;
+                shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+            }
         }
-    }
-    shadow /= 9.0;
+        shadow /= 9.0;
     
     // Keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-    if (projCoords.z > 1.0)
-        shadow = 0.0;
+        if (projCoords.z > 1.0)
+            shadow = 0.0;
 
-    return shadow;
+        return shadow;
+    }
+    return 0.0f;
 }
 
 

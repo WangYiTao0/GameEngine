@@ -19,7 +19,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 		"Data\\Images\\skybox\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset_negY.bmp",
 		"Data\\Images\\skybox\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset_negZ.bmp" };
 
-	for (auto i = 0; i < 1; i++)
+	for (auto i = 0; i < 10; i++)
 	{
 		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));
 	}
@@ -28,8 +28,8 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	{
 		//c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
 		//c->SetRotation({ rRot(rng),rRot(rng) ,rRot(rng) });
-		//c->SetPos({ rdist(rng),1,rdist(rng) });
-		c->SetPos({ 0,1,0 });
+		c->SetPos({ rdist(rng),2,rdist(rng) });
+		//c->SetPos({ 0,1,0 });
 		//BoxData.push_back(c->GetLocalBoundingBox());
 		//m_InstancedData.push_back(c->GetTransformXM());
 
@@ -58,7 +58,7 @@ void GeometryScene::Draw()
 	for (auto& b : cubes)
 	{
 		b->DrawIndexed(gfx);
-	//	b->DrawOutline(gfx);
+		//b->DrawOutline(gfx);
 	}
 //	role->Draw(gfx);
 
@@ -72,6 +72,7 @@ void GeometryScene::DrawDepth()
 	{
 		b->DrawDepth(gfx);
 	}
+	gridTerrain.DrawDepth(gfx);
 }
 
 void GeometryScene::SpownFrustumControl()
