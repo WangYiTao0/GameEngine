@@ -2,6 +2,8 @@
 #include "CommonCbuf.hlsli"
 
 #define PI 3.14159265359f
+// constants
+#define EPSILON 0.000000000001f
 
 cbuffer Pbrlight
 {
@@ -40,12 +42,14 @@ float DistributionGGX(float3 N, float3 H, float roughness)
 
     float a = roughness * roughness;
     float a2 = a * a;
-    float NdotH = max(dot(N, H), 0.0);
+    float NdotH = max(dot(N, H), 0);
     float NdotH2 = NdotH * NdotH;
 
     float nom = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = PI * denom * denom;
+    if (denom < EPSILON)//
+        return 1.0f;
 
     return nom / denom;
 }
@@ -56,7 +60,7 @@ float GeometrySchlickGGX(float NdotV, float roughness)
     float k = (r * r) / 8.0;
 
     float nom = NdotV;
-    float denom = NdotV * (1.0 - k) + k;
+    float denom = NdotV * (1.0 - k) + k + 0.0001f;//
 
     return nom / denom;
 }
@@ -73,7 +77,7 @@ float GeometrySmith(float3 N, float3 V, float3 L, float roughness)
 // ----------------------------------------------------------------------------
 float3 fresnelSchlick(float cosTheta, float3 F0)
 {
-    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+    return F0 + (float3(1, 1, 1) - F0) * pow(1.0 - cosTheta, 5.0);
 }
 // ----------------------------------------------------------------------------
 

@@ -23,8 +23,9 @@ PBRBall::PBRBall(Graphics& gfx, float radius)
 	//auto model = Cube::MakeIndependentTextured(layout);
 	model.Transform(dx::XMMatrixScaling(radius, radius, radius));
 	model.SetNormalsIndependentFlat();
-	model.ComputeTangentBiTtngent();
 	model.ComputeSphereUV();
+	model.ComputeTangentBiTtngent();
+
 
 	const auto geometryTag = "$sphere." + std::to_string(radius);
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
