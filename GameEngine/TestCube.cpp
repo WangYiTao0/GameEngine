@@ -19,11 +19,12 @@ TestCube::TestCube(Graphics& gfx, float size)
 	const auto geometryTag = "$cube." + std::to_string(size);
 
 	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
+	AddBind(Sampler::Resolve(gfx, 1u, Sampler::SamplerState::SSLinearClamp));
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 	AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_diff.png"));
 	//AddBind(Texture::Resolve(gfx, "Data\\Images\\spnza_bricks_a_ddn.png", 2u));
-	//AddBind(Texture::Resolve(gfx,"null",3u,App::m_ProjDepthRT->GetShaderResourceView()));
+	AddBind(Texture::Resolve(gfx,"null",3u,nullptr));
 	auto pvs = VertexShader::Resolve(gfx, "PhongVS");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));

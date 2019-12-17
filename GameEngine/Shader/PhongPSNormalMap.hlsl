@@ -44,19 +44,17 @@ float4 main(PS_pIn pIn) : SV_Target
     pIn.worldNormal = normalize(pIn.worldNormal);
     pIn.worldTan = normalize(pIn.worldTan);
     pIn.worldBitan = normalize(pIn.worldBitan);
-
+    if (normalMapEnabled)
+    {
     // replace normal with mapped if normal mapping enabled
-    pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmapTex, sampleWrap);
-    
+        pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, nmapTex, sampleWrap);
+    }
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
-
-
 
    float shadowFactor[MaxLights];
     for (int i = 0; i < MaxLights; i++)
     {
-        //ShadowCalculation(pIn.lightSpacePos, shadowTex, sample0);
         shadowFactor[i] = 1.0f;
     }
 

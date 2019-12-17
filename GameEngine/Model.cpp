@@ -516,6 +516,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 		Dcb::RawLayout lay;
 		lay.Add<Dcb::Float>("specularIntensity");
 		lay.Add<Dcb::Float>("specularPower");
+		lay.Add<Dcb::Float>("specularMapWeight");
 
 		auto buf = Dcb::Buffer(std::move(lay));
 		buf["specularIntensity"] = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;

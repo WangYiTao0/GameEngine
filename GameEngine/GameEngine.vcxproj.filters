@@ -800,6 +800,9 @@
     <FxCompile Include="Shader\DepthDraw_PS.hlsl">
       <Filter>Shader\PS</Filter>
     </FxCompile>
+    <FxCompile Include="Shader\PhongShadow_PS.hlsl">
+      <Filter>Shader\PS</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Data\Icon\void64x64.ico">

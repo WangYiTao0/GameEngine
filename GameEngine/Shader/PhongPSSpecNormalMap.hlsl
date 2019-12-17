@@ -7,7 +7,7 @@ struct PS_pIn
 {
     //SV_Position describes the pixel location.
     float3 worldPos : Position;
-    float3 lightSpacePos : POSITION1;
+    float4 lightSpacePos : POSITION1;
     float3 worldNormal : Normal;
     float3 worldTan : Tangent;
     float3 worldBitan : Bitangent;
@@ -39,7 +39,7 @@ Texture2D shadowTex : register(t3);
 
 
 SamplerState sampleAn : register(s0);
-//SamplerState sampleClamp : register(s1);
+SamplerState sampleClamp : register(s1);
 float4 main(PS_pIn pIn) : SV_Target
 {
     //alpha blender
@@ -79,7 +79,7 @@ float4 main(PS_pIn pIn) : SV_Target
         shadowFactor[i] = 1.0f;
     }
 
-   // shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
+    shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
 
 
     float3 specularReflectionColor;

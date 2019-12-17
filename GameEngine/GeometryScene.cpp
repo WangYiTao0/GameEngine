@@ -12,7 +12,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	std::uniform_real_distribution<float> rdistY(2.0f, 10.f);
 	std::uniform_real_distribution<float> rRot(-MH::PI,MH::PI);
 
-	//role = std::make_unique<Model>(gfx, "Data\\Models\\Role\\ascendant_one_iris\\iris.obj", 2.0f);
+	//role = std::make_unique<Model>(gfx, "Data\\Models\\nano_textured\\nanosuit.obj", 1.0f);
 	//role->AddShader(gfx, "PhongVSTBN", "PhongPSSpecNormalMap");
 	std::vector<std::string> filePath = {
 		"Data\\Images\\skybox\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset_negX.bmp",
@@ -44,7 +44,7 @@ void GeometryScene::Update(float dt)
 
 
 	gridTerrain.SpawnControlWindow(gfx);
-
+//	role->ShowWindow(gfx, "role");
 	for (auto& c : cubes)
 	{
 		c->SpawnControlWindow(gfx, "cube");
@@ -60,7 +60,7 @@ void GeometryScene::Draw()
 		b->DrawIndexed(gfx);
 	//	b->DrawOutline(gfx);
 	}
-	//role->Draw(gfx);
+//	role->Draw(gfx);
 
 
 	m_pSunset->DrawIndexed(gfx);

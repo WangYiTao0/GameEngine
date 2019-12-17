@@ -10,7 +10,7 @@
 #endif
 
 #ifndef NUM_POINT_LIGHTS
-#define NUM_POINT_LIGHTS 0
+#define NUM_POINT_LIGHTS 1
 #endif
 
 #ifndef NUM_SPOT_LIGHTS
@@ -41,7 +41,7 @@ struct Light
 
 cbuffer LightCB : register(b1)
 {
-        // Indices [0, NUM_DIR_LIGHTS) are directional lights;
+    // Indices [0, NUM_DIR_LIGHTS) are directional lights;
     // indices [NUM_DIR_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHTS) are point lights;
     // indices [NUM_DIR_LIGHTS+NUM_POINT_LIGHTS, NUM_DIR_LIGHTS+NUM_POINT_LIGHT+NUM_SPOT_LIGHTS)
     // are spot lights for a maximum of MaxLights per object.
@@ -209,7 +209,7 @@ float3 toEye, float shadowFactor)
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
-    return ambient + shadowFactor * (diffuse + specular);
+    return ambient + 1.0f * (diffuse + specular);
 }
 
 
@@ -245,7 +245,7 @@ float3 toEye, float shadowFactor)
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
-    return ambient + shadowFactor * (diffuse + specular);
+    return ambient + 1.0f * (diffuse + specular);
 }
 
 

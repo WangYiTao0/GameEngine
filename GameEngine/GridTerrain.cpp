@@ -45,7 +45,7 @@ GridTerrain::GridTerrain(Graphics& gfx, float width , float depth ,
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PhongPS"));
+	AddBind(PixelShader::Resolve(gfx, "PhongShadow_PS"));
 	//AddBind(PixelShader::Resolve(gfx, "WaterWavesPS.cso", "WaterWavesPS.hlsl"));
 
 	AddBind(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));

@@ -170,7 +170,7 @@ void Light::SpawnLightControlWindow(int lightId) noexcept
 void Light::ResetDirectionLight(int lightID) noexcept
 {
 	//for shadow Calculate 
-	lightData.L[lightID].position = { -2.0f, 9.0f, -1.0f };
+	lightData.L[lightID].position = { -5.0f, 9.0f, -1.0f };
 
 	lightData.L[lightID].direction = { -0.2f, -1.0f, -0.3f };
 
