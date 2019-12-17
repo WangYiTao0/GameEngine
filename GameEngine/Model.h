@@ -9,7 +9,7 @@
 class Model
 {
 public:
-	Model(Graphics& gfx, const std::string& pathString, float scale = 1.0f);
+	Model(Graphics& gfx, const std::string& pathString, float scale = 1.0f, std::vector<std::string> filePaths = { " " });
 	void Draw(Graphics& gfx) const noxnd;
 	void ShowWindow(Graphics& gfx, const char* windowName = nullptr) noexcept;
 	void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
@@ -23,7 +23,7 @@ public:
 		bindablePtrs.push_back((Bind::PixelConstantBuffer<C>::Resolve(gfx, pmc, slot)));
 		meshPtrs.push_back(std::make_unique<Mesh>(gfx, std::move(bindablePtrs)));
 	}
-	void AddPBRTexture(Graphics& gfx, std::vector<std::string>& filePaths);
+	void AddPBRTexture(std::vector<std::string>& filePaths);
 
 private:
 	std::unique_ptr<Mesh> ParseMesh(Graphics& gfx,
@@ -43,5 +43,6 @@ private:
 	std::vector<std::shared_ptr<Bind::Bindable>> bindablePtrs;
 	Dvtx::VertexBuffer vbuf;
 
+	std::vector<std::string> textures;
 	std::vector<std::shared_ptr<Bind::Bindable>> DepthPtrs;
 };

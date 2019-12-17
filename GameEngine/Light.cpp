@@ -9,10 +9,11 @@ Light::Light(Graphics& gfx, std::string sceneName, int numD, int numP, int numS)
 	m_PointLightNum(numP),
 	m_SpotLightNum(numS),
 	lightCB(gfx, 1u),
+	sceneName(sceneName),
 	fileRead("Data\\"+ sceneName +"LightData.dat", std::ios::out | std::ios::binary),
 	shadowVSCB(gfx,1u)//VB
 {	
-	
+	Reset();
 	if (!fileRead)
 	{
 		return;
@@ -58,7 +59,6 @@ Light::Light(Graphics& gfx, std::string sceneName, int numD, int numP, int numS)
 			lightMap.insert({ lightId, "SpotLight" + std::to_string(lightId - m_DirLightNum - m_PointLightNum + 1) });
 		}
 	}
-	//Reset();
 }
 void Light::Reset() noexcept
 {
@@ -128,7 +128,7 @@ void Light::Draw(Graphics& gfx) const noxnd
 }
 Light::~Light()
 {
-	std::ofstream fileOut("Data\\LightData.dat", std::ios::out | std::ios::binary);
+	std::ofstream fileOut("Data\\" + sceneName + "LightData.dat", std::ios::out | std::ios::binary);
 	if (!fileOut)
 	{
 		return;

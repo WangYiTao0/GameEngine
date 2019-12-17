@@ -95,6 +95,7 @@ private:
 
 	ViewPoint m_ViewPoint;
 
-
+	std::string sceneName;
 	std::ifstream fileRead;
+
 };

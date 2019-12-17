@@ -26,6 +26,7 @@ private:
 	void SpownFrustumControl();
 private:
 	Graphics& gfx;
+	std::unique_ptr<Light> m_Light;
 
 	bool EnableFrustumCulling = true;
 	GridTerrain gridTerrain{ gfx,160,160,50,50,20 };
@@ -33,6 +34,6 @@ private:
 	std::unique_ptr<Model> role;
 	std::vector<std::unique_ptr<TestCube>> cubes;
 	std::mt19937 rng;
-	std::unique_ptr<SkyRender> m_pSunset = nullptr;
+	std::unique_ptr<SkyRender> sky = nullptr;
 
 };

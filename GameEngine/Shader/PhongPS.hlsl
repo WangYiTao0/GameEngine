@@ -46,7 +46,7 @@ struct PS_pIn
 };
 
 Texture2D diffTex : register(t0);
-Texture2D nmapTex : register(t2);
+//Texture2D nmapTex : register(t2);
 
 
 SamplerState sampleWarp : register(s0);

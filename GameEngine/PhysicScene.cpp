@@ -9,11 +9,6 @@ PhysicScene::PhysicScene(Graphics& gfx)
 {
 
 
-	//Create Component 
-
-	//Create Enetity
-
-	//Create the system
 }
 
 PhysicScene::~PhysicScene()

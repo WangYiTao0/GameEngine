@@ -22,7 +22,7 @@ namespace Bind
 	public:
 		Texture(Graphics& gfx, const std::string& filePath, UINT slot = 0, ID3D11ShaderResourceView* pTv = nullptr);
 		Texture(Graphics& gfx, std::vector<std::string>& filePaths, UINT slot = 0);
-		Texture(Graphics& gfx, std::string& filePaths, UINT slot = 0);
+		Texture(Graphics& gfx, std::string& filePaths, UINT slot = 0, bool generateMips = true);
 		void Bind(Graphics& gfx) noexcept override;
 		static std::shared_ptr<Texture> Resolve(Graphics& gfx, const std::string& filePath, UINT slot = 0, ID3D11ShaderResourceView* pTv = nullptr);
 		static std::string GenerateUID(const std::string& filePath, UINT slot = 0, ID3D11ShaderResourceView* pTv = nullptr);
@@ -38,8 +38,8 @@ namespace Bind
 	protected:
 		bool hasAlpha = false;
 		std::string filePath;
-		Microsoft::WRL::ComPtr<ID3D11Resource> pTexture = nullptr;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureViewSRV = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11Resource> pSrcTex = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pSRV = nullptr;
 		//Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2D =nullptr;
 		aiTextureType type = aiTextureType::aiTextureType_UNKNOWN;
 	};

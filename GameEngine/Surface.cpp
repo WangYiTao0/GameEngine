@@ -80,7 +80,7 @@ Surface Surface::FromFile( const std::string& name )
 {
 	HRESULT hr;
 	DirectX::ScratchImage scratch;
-	if (StrH::GetFileExtension(name) == ".hdr")
+	if (StrH::GetFileExtension(name) == "hdr")
 	{
 		 hr = DirectX::LoadFromHDRFile(StrH::ToWide(name).c_str(), nullptr, scratch);
 	}

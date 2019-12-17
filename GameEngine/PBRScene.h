@@ -8,6 +8,7 @@
 #include "PBRLight.h"
 #include "SkyRender.h"
 #include "Light.h"
+#include "Model.h"
 
 class PBRScene :public Scene
 {
@@ -23,11 +24,12 @@ private:
 	PBRLight light;
 	//Light
 	std::unique_ptr<Light> m_Light;
-	std::vector<std::unique_ptr<PBRBall>> pbrBall;
+	//std::vector<std::unique_ptr<PBRBall>> pbrBall;
 
 	std::unique_ptr<SkyRender> skyHdr;
+	std::vector<std::unique_ptr<Model>> shaderBall;
 
-	int nrRows = 7;
-	int nrColumns = 7;
-	float spacing = 2.5;
+	int nrRows = 3;
+	int nrColumns = 3;
+	float spacing = 5.0f;
 };

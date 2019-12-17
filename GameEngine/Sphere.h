@@ -231,6 +231,57 @@ public:
 		return { std::move(vb),std::move(indices) };
 	}
 
+	static IndexedTriangleList MakeUVSphere(Dvtx::VertexLayout layout,
+		int X_SEGMENTS = 64, int Y_SEGMENTS = 64)
+	{
+
+		Dvtx::VertexBuffer vb{ std::move(layout) };
+		const float PI = 3.14159265359;
+		for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
+		{
+			for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+			{
+				float xSegment = (float)x / (float)X_SEGMENTS;
+				float ySegment = (float)y / (float)Y_SEGMENTS;
+				float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+				float yPos = std::cos(ySegment * PI);
+				float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+
+				vb.EmplaceBack(
+					DirectX::XMFLOAT3(xPos, yPos, zPos),
+					DirectX::XMFLOAT3(xPos, yPos, zPos),
+					DirectX::XMFLOAT3(xPos, yPos, zPos),
+					DirectX::XMFLOAT3(xPos, yPos, zPos),
+					DirectX::XMFLOAT2(xSegment, ySegment));
+			}
+		}
+
+		std::vector<unsigned short> indices;
+		bool oddRow = false;
+		for (int y = 0; y < Y_SEGMENTS; ++y)
+		{
+			if (!oddRow) // even rows: y == 0, y == 2; and so on
+			{
+				for (int x = 0; x <= X_SEGMENTS; ++x)
+				{
+					indices.push_back(y * (X_SEGMENTS + 1) + x);
+					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+				}
+			}
+			else
+			{
+				for (int x = X_SEGMENTS; x >= 0; --x)
+				{
+					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+					indices.push_back(y * (X_SEGMENTS + 1) + x);
+				}
+			}
+			oddRow = !oddRow;
+		}
+		return { std::move(vb),std::move(indices) };
+	}
+
+
 	static IndexedTriangleList Make(std::optional<Dvtx::VertexLayout> layout = std::nullopt)
 	{
 		using Element = Dvtx::VertexLayout::ElementType;
