@@ -12,7 +12,17 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 	using namespace Bind;
 	namespace dx = DirectX;
-	auto model = Cube::MakeIndependentTextured();
+
+	using Element = Dvtx::VertexLayout::ElementType;
+
+	auto layout = Dvtx::VertexLayout{}
+		.Append(Element::Position3D)
+		.Append(Element::Normal)
+		.Append(Element::Tangent)
+		.Append(Element::Bitangent)
+		.Append(Element::Texture2D);
+
+	auto model = Cube::MakeIndependentTextured(layout);
 	model.Transform(dx::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
 	//model.ComputeTangentBiTtngent();

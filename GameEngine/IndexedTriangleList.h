@@ -2,6 +2,7 @@
 #include "Vertex.h"
 #include <vector>
 #include <DirectXMath.h>
+#include "MathHelper.h"
 
 class IndexedTriangleList
 {
@@ -111,6 +112,24 @@ public:
 		}
 	}
 
+
+	void ComputeSphereUV() noxnd
+	{
+		using namespace DirectX;
+		using Type = Dvtx::VertexLayout::ElementType;
+		for (int i = 0; i < vertices.Size(); i++)
+		{
+			auto v0 = vertices[i];
+			// Shortcuts for vertices
+			const auto p0 = v0.Attr<Type::Position3D>();
+			
+			float u = std::asin(p0.z / 1.0) / MH::PI + 0.5f;
+			float v = std::atan(p0.y / p0.x) / 2 / MH::PI;
+
+			v0.Attr<Type::Texture2D>() = { u,v };
+
+		}
+	}
 
 public:
 	Dvtx::VertexBuffer vertices;

@@ -50,18 +50,12 @@ public:
 			}
 		};
 	}
-	static IndexedTriangleList MakeIndependentTextured()
+	static IndexedTriangleList MakeIndependentTextured(Dvtx::VertexLayout layout)
 	{
 		using namespace Dvtx;
 		using Type = Dvtx::VertexLayout::ElementType;
 
-		auto itl = MakeIndependent(std::move(VertexLayout{}
-			.Append(Type::Position3D)
-			.Append(Type::Normal)
-		//	.Append(Type::Tangent)
-		//	.Append(Type::Bitangent)
-			.Append(Type::Texture2D)
-		));
+		auto itl = MakeIndependent(std::move(layout));
 
 		itl.vertices[0].Attr<Type::Texture2D>() = { 0.0f,0.0f };
 		itl.vertices[1].Attr<Type::Texture2D>() = { 1.0f,0.0f };

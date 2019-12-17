@@ -25,7 +25,7 @@ App::App()
 {
 	TestDynamicConstant();
 	// init Light
-	m_Light = std::make_unique<Light>(wnd.Gfx(), 1, 1, 0);
+//	m_Light = std::make_unique<Light>(wnd.Gfx(), 0, 0, 0);
 
 	// Create the cpu object.
 	m_Cpu.Initialize();
@@ -44,8 +44,8 @@ App::App()
 	InitDebugWindow();
 
 	//m_Scenes.push_back(std::make_unique<ModelScene>(wnd.Gfx()));
-	m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
-	//m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
+	//m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
+	m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 
@@ -181,8 +181,8 @@ void App::update(float dt)
 	wnd.Gfx().SetCameraViewMatirx(GCamera3D->GetViewMatrix());
 
 	//update light
-	m_Light->Update(wnd.Gfx());
-	m_Light->Bind(wnd.Gfx());
+	//m_Light->Update(wnd.Gfx());
+	//m_Light->Bind(wnd.Gfx());
 	
 	// update scene
 	(*m_CurScene)->Update(dt);
@@ -196,7 +196,7 @@ void App::Draw()
 	// imgui windows
 	GCamera3D->SpawnControlWindow();
 	SpawnEngineStateWindow();
-	m_Light->SpawnLightManagerWindow(wnd.Gfx());
+	//m_Light->SpawnLightManagerWindow(wnd.Gfx());
 
 	if (enableRenderTarget)
 	{
@@ -274,7 +274,7 @@ void App::RenderToTexture()
 
 void App::RenderScene()
 {
-	m_Light->Draw(wnd.Gfx());
+	//m_Light->Draw(wnd.Gfx());
 	// draw scene
 	(*m_CurScene)->Draw();
 }

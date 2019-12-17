@@ -5,6 +5,61 @@
 class Sphere
 {
 public:
+
+	static IndexedTriangleList MakeTexturedSphere(Dvtx::VertexLayout layout,
+		int X_SEGMENTS = 64, int Y_SEGMENTS = 64)
+	{
+		using Type = Dvtx::VertexLayout::ElementType;
+		//without 0
+		Dvtx::VertexBuffer vb(std::move(layout));
+
+		for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
+		{
+			for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+			{
+				float xSegment = (float)x / (float)X_SEGMENTS;
+				float ySegment = (float)y / (float)Y_SEGMENTS;
+				float xPos = std::cos(xSegment * 2.0f * MH::PI) * std::sin(ySegment * MH::PI);
+				float yPos = std::cos(ySegment * MH::PI);
+				float zPos = std::sin(xSegment * 2.0f * MH::PI) * std::sin(ySegment * MH::PI);
+
+
+				vb.EmplaceBack(
+					DirectX::XMFLOAT3( xPos, yPos, zPos ),
+					DirectX::XMFLOAT3( xPos, yPos, zPos ), 
+					DirectX::XMFLOAT3( xPos, yPos, zPos ),
+					DirectX::XMFLOAT3( xPos, yPos, zPos ),
+					DirectX::XMFLOAT2( xSegment, ySegment ));
+
+			}
+		}
+		std::vector<unsigned short> indices;
+
+		bool oddRow = false;
+		for (int y = 0; y < Y_SEGMENTS; ++y)
+		{
+			if (!oddRow) // even rows: y == 0, y == 2; and so on
+			{
+				for (int x = 0; x <= X_SEGMENTS; ++x)
+				{
+					indices.push_back(y * (X_SEGMENTS + 1) + x);
+					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+				}
+			}
+			else
+			{
+				for (int x = X_SEGMENTS; x >= 0; --x)
+				{
+					indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+					indices.push_back(y * (X_SEGMENTS + 1) + x);
+				}
+			}
+			oddRow = !oddRow;
+		}
+		//indexCount = indices.size();
+		return { std::move(vb),std::move(indices) };
+	}
+
 	static IndexedTriangleList MakeTesselated(Dvtx::VertexLayout layout,
 		int latDiv, int longDiv)
 	{
@@ -33,7 +88,11 @@ public:
 					dx::XMMatrixRotationZ(longitudeAngle * iLong)
 				);
 				dx::XMStoreFloat3(&calculatedPos, v);
-				vb.EmplaceBack(calculatedPos);
+				vb.EmplaceBack(calculatedPos,
+					calculatedPos,
+					calculatedPos,
+					calculatedPos,
+					DirectX::XMFLOAT2(1.0f, 1.0f));
 			}
 		}
 
@@ -43,13 +102,23 @@ public:
 		{
 			dx::XMFLOAT3 northPos;
 			dx::XMStoreFloat3(&northPos, base);
-			vb.EmplaceBack(northPos);
+			//vb.EmplaceBack(northPos);
+			vb.EmplaceBack(northPos,
+				northPos,
+				northPos,
+				northPos,
+				DirectX::XMFLOAT2(1.0f, 1.0f));
 		}
 		const auto iSouthPole = (unsigned short)vb.Size();
 		{
 			dx::XMFLOAT3 southPos;
 			dx::XMStoreFloat3(&southPos, dx::XMVectorNegate(base));
-			vb.EmplaceBack(southPos);
+			//vb.EmplaceBack(southPos);
+			vb.EmplaceBack(southPos,
+				southPos,
+				southPos,
+				southPos,
+				DirectX::XMFLOAT2(1.0f, 1.0f));
 		}
 		//[capture](paramter) mutable throw() -> int 
 		//{  }

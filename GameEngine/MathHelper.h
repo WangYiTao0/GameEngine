@@ -4,7 +4,7 @@
 
 namespace MH
 {
-	constexpr float PI = 3.14159265f;
+	constexpr float PI = 3.14159265359f;
 	constexpr double PI_D = 3.1415926535897932;
 	constexpr float oneRad = 0.0174532925f;
 

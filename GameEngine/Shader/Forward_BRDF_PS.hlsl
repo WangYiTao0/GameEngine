@@ -1,134 +1,159 @@
+#include "ShaderOptions.hlsli"
+#include "CommonCbuf.hlsli"
 
-#define BLINN_PHONG
+#define PI 3.14159265359f
 
-#define LIGHT_COUNT 100  // don't forget to update CPU define too (SceneManager.cpp)
-#define SPOT_COUNT 10   // ^
-
-#include "Phong.hlsli"
-#include "LightingCommon.hlsli"
-
-struct PSIn
+cbuffer Pbrlight
 {
-    float4 position : SV_POSITION;
-    float3 worldPos : POSITION;
-    float3 normal : NORMAL;
-    float3 tangent : TANGENT;
-    float2 texCoord : TEXCOORD4;
-};
+    float4 p_Position[4];
+    float4 p_Color[4];
 
-cbuffer SceneConstants
-{
-    float padding0;
-    float3 cameraPos;
-	
-    float2 screenDimensions;
-    float2 spotShadowMapDimensions;
-
-	//float2 pointShadowMapDimensions;
-	//float2 pad;
-	
-    SceneLighting Lights;
-    float ambientFactor;
-};
-TextureCubeArray texPointShadowMaps;
-Texture2DArray texSpotShadowMaps;
-Texture2DArray texDirectionalShadowMaps;
-
-cbuffer cbSurfaceMaterial
-{
-    SurfaceMaterial surfaceMaterial;
 };
 
 
-Texture2D texDiffuseMap;
-Texture2D texNormalMap;
-Texture2D texAmbientOcclusion;
+struct PS_IN
+{
+    float3 worldPos : Position;
+    float3 worldNormal : Normal;
+    float3 worldTan : Tangent;
+    float3 worldBitan : Bitangent;
+    float2 texcoord : Texcoord;
+};
 
-SamplerState sShadowSampler;
-SamplerState sLinearSampler;
-SamplerState sNormalSampler;
+Texture2D albedoMap : register(t0);
+Texture2D normalMap : register(t1);
+Texture2D metallicMap : register(t2);
+Texture2D roughnessMap : register(t3);
+Texture2D aoMap : register(t4);
 
+SamplerState sampleWrap : register(s0);
 
-float4 main(PSIn In) : SV_TARGET
-{ // base indices for indexing shadow views
-    const int pointShadowsBaseIndex = 0; // omnidirectional cubemaps are sampled based on light dir, texture is its own array
-    const int spotShadowsBaseIndex = 0;
-    const int directionalShadowBaseIndex = spotShadowsBaseIndex + Lights.numSpotCasters; // currently unused
+cbuffer PbrLight : register (b5)
+{
+    float4 LightPosition[4];
+    float4 LightColor[4];
+};
 
-    ShadowTestPCFData pcfTest;
+// ----------------------------------------------------------------------------
+float DistributionGGX(float3 N, float3 H, float roughness)
+{
 
-	// lighting & surface parameters
-    const float3 Nw = normalize(In.normal);
-    const float3 T = normalize(In.tangent);
-    const float3 Vw = normalize(cameraPos - In.worldPos);
-    const float2 screenSpaceUV = In.position.xy / screenDimensions;
-    const float3 Pw = In.worldPos;
-    const float2 uv = In.texCoord * surfaceMaterial.uvScale;
+    float a = roughness * roughness;
+    float a2 = a * a;
+    float NdotH = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH * NdotH;
 
-    Phong_Surface s;
-    s.N = (HasNormalMap(surfaceMaterial.textureConfig)) * UnpackNormals(texNormalMap, sLinearSampler, uv, Nw, T) +
-		  (1.0f - HasNormalMap(surfaceMaterial.textureConfig)) * Nw;
+    float nom = a2;
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom = PI * denom * denom;
+
+    return nom / denom;
+}
+// ----------------------------------------------------------------------------
+float GeometrySchlickGGX(float NdotV, float roughness)
+{
+    float r = (roughness + 1.0);
+    float k = (r * r) / 8.0;
+
+    float nom = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+
+    return nom / denom;
+}
+// ----------------------------------------------------------------------------
+float GeometrySmith(float3 N, float3 V, float3 L, float roughness)
+{
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
+
+    return ggx1 * ggx2;
+}
+// ----------------------------------------------------------------------------
+float3 fresnelSchlick(float cosTheta, float3 F0)
+{
+    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+}
+// ----------------------------------------------------------------------------
+
+float4 main(PS_IN pIn) : SV_Target
+{
+    // normalize the mesh normal
+    pIn.worldNormal = normalize(pIn.worldNormal);
+    pIn.worldTan = normalize(pIn.worldTan);
+    pIn.worldBitan = normalize(pIn.worldBitan);
+    pIn.worldNormal = MapNormal(pIn.worldTan, pIn.worldBitan, pIn.worldNormal, pIn.texcoord, normalMap, sampleWrap);
+
+    float3 albedo = pow(albedoMap.Sample(sampleWrap, pIn.texcoord).rgb, float3(2.2, 2.2, 2.2));
+    float metallic = metallicMap.Sample(sampleWrap, pIn.texcoord).r;
+    float roughness = roughnessMap.Sample(sampleWrap, pIn.texcoord).r;
+    float ao = aoMap.Sample(sampleWrap, pIn.texcoord).r;
+
+    //float3 albedo = float3(0.5f, 0.0f, 0.0f);
+    //float metallic = metallicMap.Sample(sampleWrap, pIn.texcoord).r;
+    //float roughness = roughnessMap.Sample(sampleWrap, pIn.texcoord).r;
+    //float ao = 1.0;
+
+    float3 N = pIn.worldNormal;
+    float3 V = normalize(cameraPos - pIn.worldPos);
+
     
-    s.diffuseColor = surfaceMaterial.diffuse * (HasDiffuseMap(surfaceMaterial.textureConfig) * texDiffuseMap.Sample(sLinearSampler, uv).xyz +
-					(1.0f - HasDiffuseMap(surfaceMaterial.textureConfig)));
+    // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
+    // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)    
+    float3 F0 = float3(0.04, 0.04, 0.04);
+    F0 = lerp(F0, albedo, metallic);
 
-    s.specularColor = surfaceMaterial.specular;
-    s.shininess = surfaceMaterial.shininess;
-
-	// illumination
-    float3 Ia = s.diffuseColor * ambientFactor * texAmbientOcclusion.Sample(sNormalSampler, screenSpaceUV).xxx; // ambient
-    float3 IdIs = float3(0.0f, 0.0f, 0.0f); // diffuse & specular
-    s.N = normalize(s.N);
-
-	// POINT Lights w/o shadows
-    for (int i = 0; i < Lights.numPointLights; ++i)
+    // reflectance equation
+    float3 Lo = float3(0.0, 0.0, 0.0);
+    for (int i = 0; i < 4; ++i)
     {
-        float3 Lw = normalize(Lights.point_lights[i].position - Pw);
-        float NdotL = saturate(dot(s.N, Lw));
-        IdIs +=
-		Phong(s, Lw, Vw, Lights.point_lights[i].color)
-		* AttenuationPhong(Lights.point_lights[i].attenuation, length(Lights.point_lights[i].position - Pw))
-		* Lights.point_lights[i].brightness 
-		* NdotL
-		* POINTLIGHT_BRIGHTNESS_SCALAR_PHONG;
-    }
-	
-	// SPOT Lights w/o shadows;
-    pcfTest.depthBias = 0.0000005f;
-    pcfTest.lightSpacePos = 0.0f.xxxx;
-    for (int j = 0; j < Lights.numSpots; ++j)
-    {
-        float3 Lw = normalize(Lights.spots[j].position - Pw);
-        pcfTest.NdotL = saturate(dot(s.N, Lw));
-        IdIs +=
-		Phong(s, Lw, Vw, Lights.spots[j].color)
-		* SpotlightIntensity(Lights.spots[j], Pw)
-		* Lights.spots[j].brightness 
-		* pcfTest.NdotL
-		* SPOTLIGHT_BRIGHTNESS_SCALAR_PHONG;
-    }
+        // calculate per-light radiance
+        float3 L = normalize(LightPosition[i].xyz - pIn.worldPos);
+        float3 H = normalize(V + L);
+        float distance = length(LightPosition[i].xyz - pIn.worldPos);
+        float attenuation = 1.0 / (distance * distance);
+        float3 radiance = LightColor[i].xyz * attenuation;
 
-	// SPOT Lights w/ shadows
-    for (int k = 0; k < Lights.numSpotCasters; ++k)
-    {
-        const matrix matShadowView = Lights.shadowViews[spotShadowsBaseIndex + k];
-        pcfTest.lightSpacePos = mul(matShadowView, float4(Pw, 1));
-        float3 Lw = normalize(Lights.spot_casters[k].position - Pw);
-        pcfTest.NdotL = saturate(dot(s.N, Lw));;
-        pcfTest.depthBias = 0.0000005f;
-        IdIs +=
-		Phong(s, Lw, Vw, Lights.spot_casters[k].color)
-		* SpotlightIntensity(Lights.spot_casters[k], Pw)
-		* ShadowTestPCF(pcfTest, texSpotShadowMaps, sShadowSampler, spotShadowMapDimensions, k)
-		* Lights.spot_casters[k].brightness 
-		* pcfTest.NdotL
-		* SPOTLIGHT_BRIGHTNESS_SCALAR_PHONG;
-    }
+        // Cook-Torrance BRDF
+        float NDF = DistributionGGX(N, H, roughness);
+        float G = GeometrySmith(N, V, L, roughness);
+        float3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);
+           
+        float3 nominator = NDF * G * F;
+        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001; // 0.001 to prevent divide by zero.
+        float3 specular = nominator / denominator;
+        
+        // kS is equal to Fresnel
+        float3 kS = F;
+        // for energy conservation, the diffuse and specular light can't
+        // be above 1.0 (unless the surface emits light); to preserve this
+        // relationship the diffuse component (kD) should equal 1.0 - kS.
+        float3 kD = float3(1.0,1.0f,1.0f) - kS;
+        // multiply kD by the inverse metalness such that only non-metals 
+        // have diffuse lighting, or a linear blend if partly metal (pure metals
+        // have no diffuse light).
+        kD *= 1.0 - metallic;
 
-    float3 illumination = Ia + IdIs;
-	
-	// --- debug --- 
-	// illumination += ShadowTestDebug(In.worldPos, In.lightSpacePos, illumination, texShadowMap, sShadowSampler);
-	// --- debug --- 
-    return float4(illumination, 1);
+        // scale light by NdotL
+        float NdotL = max(dot(N, L), 0.0);
+
+        // add to outgoing radiance Lo
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL; // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
+    }
+    
+    // ambient lighting (note that the next IBL tutorial will replace 
+    // this ambient lighting with environment lighting).
+    float3 ambient = float3(0.03, 0.03, 0.03) * albedo * ao;
+    
+    float3 color = ambient + Lo;
+
+    // HDR tonemapping
+    color = color / (color + float3(1.0, 1.0, 1.0));
+    // gamma correct
+    color = pow(color, float3(1.0 / 2.2, 1.0 / 2.2, 1.0 / 2.2));
+
+    float4 FragColor = float4(color, 1.0);
+
+    return FragColor;
 }

@@ -4,6 +4,9 @@
 #include "Model.h"
 #include "SkyRender.h"
 #include "GridTerrain.h"
+#include "PBRBall.h"
+#include "PBRLight.h"
+
 
 class PBRScene :public Scene
 {
@@ -16,7 +19,10 @@ public:
 private:
 
 	Graphics& gfx;
-	Model pbrObject;	
-	//GridTerrain gridTerrain{ gfx,160,160,50,50,20 };
-	//std::unique_ptr<SkyRender> m_pSunset = nullptr;
+	PBRLight light;
+	std::vector<std::unique_ptr<PBRBall>> pbrBall;
+
+	int nrRows = 7;
+	int nrColumns = 7;
+	float spacing = 2.5;
 };

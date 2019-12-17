@@ -3,17 +3,42 @@
 PBRScene::PBRScene(Graphics& gfx)
 	:
 	gfx(gfx),
-	Scene("PBRScene"),
-	pbrObject(gfx, "Data\\Models\\PBR\\shaderBall.obj",0.02f)
+	light(gfx),
+	Scene("PBRScene")
 {
-	std::vector<std::string> files = {
-		"Data\\Images\\PBR\\cgbookcase\\black-herringbone-tiles-01\\Black_herringbone_tiles_01_2K_Base_Color.png",
-		"Data\\Images\\PBR\\cgbookcase\\black-herringbone-tiles-01\\Black_herringbone_tiles_01_2K_Height.png",
-		"Data\\Images\\PBR\\cgbookcase\\black-herringbone-tiles-01\\Black_herringbone_tiles_01_2K_Normal.png",
-		"Data\\Images\\PBR\\cgbookcase\\black-herringbone-tiles-01\\Black_herringbone_tiles_01_2K_Roughness.png"
-	};
-	pbrObject.AddPBRTexture(gfx, files);
-	pbrObject.AddShader(gfx, "Forward_BRDF_VS", "Forward_BRDF_PS");
+
+
+    for (int i = 0; i < nrRows * nrColumns; i++)
+    {
+        pbrBall.push_back(std::make_unique<PBRBall>(gfx, 1.0f));
+    
+    }
+    
+    int i = 0;
+    for (int row = 1; row < nrRows + 1; ++row)
+    {
+
+        for (int col = 1; col < nrColumns + 1; ++col)
+        {
+            pbrBall[i]->SetPos(
+                {
+                (float)(col - ((nrColumns + 1) / 2)) * spacing,
+                (float)(row - ((nrRows + 1) / 2)) * spacing,
+                0.0f
+                });
+            i++;
+        }
+    }
+
+    // render light source (simply re-render sphere at light positions)
+    // this looks a bit off as we use the same shader, but it'll make their positions obvious and 
+    // keeps the codeprint small.
+    for (unsigned int i = 0; i < 4; ++i)
+    {
+        
+   
+    }
+
 }
 
 PBRScene::~PBRScene()
@@ -22,11 +47,13 @@ PBRScene::~PBRScene()
 
 void PBRScene::Update(float dt)
 {
+    light.Bind(gfx);
 }
 
 void PBRScene::Draw()
 {
-	pbrObject.Draw(gfx);
-	//m_pSunset->DrawIndexed(gfx);
-	//gridTerrain.DrawIndexed(gfx);
+    for (auto& p : pbrBall)
+    {
+        p->DrawIndexed(gfx);
+    }
 }
