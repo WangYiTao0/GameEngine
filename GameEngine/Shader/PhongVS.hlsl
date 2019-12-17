@@ -1,5 +1,13 @@
 #include "CommonCbuf.hlsli"
 
+//VS stage
+cbuffer ShadowCB : register(b1)
+{
+    matrix s_View;
+    matrix s_Proj;
+    matrix s_Ortho;
+}
+
 struct VS_INPUT
 {
     float3 pos : Position;

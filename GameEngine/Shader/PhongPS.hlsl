@@ -28,7 +28,8 @@ light Pos
 //    float padding;
 //};
 
-cbuffer ObjectCBuf
+
+cbuffer ObjectCBuf : register(b2)
 {
     float specularIntensity;
     float specularPower;

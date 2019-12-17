@@ -15,6 +15,14 @@ cbuffer perModel
 #endif
 }
 
+//VS stage
+cbuffer ShadowCB : register(b1)
+{
+    matrix s_View;
+    matrix s_Proj;
+    matrix s_Ortho;
+}
+
 
 struct VS_IN
 {
