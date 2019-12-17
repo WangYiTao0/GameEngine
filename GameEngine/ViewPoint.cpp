@@ -43,7 +43,7 @@ void ViewPoint::GenerateViewMatrix()
 	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	//
-	m_View = XMMatrixLookToLH(EyePostion, LookAt, Up);
+	m_View = XMMatrixLookAtLH(EyePostion, XMVectorZero(), Up);
 
 }
 
@@ -54,7 +54,7 @@ void ViewPoint::GenerateProjMatrix()
 
 void ViewPoint::GenerateOrthoMatrix()
 {
-	m_Ortho = DirectX::XMMatrixOrthographicLH(100, 100, m_NearPlane, m_FarPlane);
+	m_Ortho = DirectX::XMMatrixOrthographicLH(m_ScreenWidth, m_ScreenHeight, m_NearPlane, 100);
 }
 
 DirectX::XMMATRIX ViewPoint::GetViewMatrix()

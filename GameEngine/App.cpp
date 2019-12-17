@@ -25,7 +25,7 @@ App::App()
 {
 	TestDynamicConstant();
 	// init Light
-	m_Light = std::make_unique<Light>(wnd.Gfx(), 1, 1, 0);
+	m_Light = std::make_unique<Light>(wnd.Gfx(), 1, 0, 0);
 
 	// Create the cpu object.
 	m_Cpu.Initialize();

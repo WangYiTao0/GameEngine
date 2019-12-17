@@ -58,7 +58,7 @@ void GeometryScene::Draw()
 	for (auto& b : cubes)
 	{
 		b->DrawIndexed(gfx);
-		b->DrawOutline(gfx);
+	//	b->DrawOutline(gfx);
 	}
 	//role->Draw(gfx);
 

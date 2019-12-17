@@ -11,8 +11,7 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	lightCB(gfx, 1u),
 	shadowVSCB(gfx,1u)//VB
 {	
-	using namespace std::string_literals;
-
+	//using namespace std::string_literals;
 	//lightCBLayout.Add<Dcb::Struct>("LightCB");
 	//lightCBLayout["LightCB"].Add<Dcb::Array>("LightCommon");
 	//lightCBLayout["LightCB"]["LightCommon"].Set<Dcb::Struct>(MaxLights);
@@ -26,7 +25,6 @@ Light::Light(Graphics& gfx, int numD, int numP, int numS)
 	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("cutOff");
 	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("outerCutOff");
 	//lightCBLayout["LightCB"]["LightCommon"].T().Add<Dcb::Float>("brightness");
-
 	//auto buf = Dcb::Buffer(std::move(lightCBLayout));
 
 	LightIndex = m_DirLightNum + m_PointLightNum + m_SpotLightNum;
@@ -77,7 +75,7 @@ void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
 	m_ViewPoint.SetPostion(lightData.L[lightID].position);
 	m_ViewPoint.SetLookAt(lightData.L[lightID].direction);
 	//m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
-	m_ViewPoint.SetScreen(200, 200);
+	m_ViewPoint.SetScreen(20, 20);
 	m_ViewPoint.SetProjectionParameters(GCamera3D->GetFov(), gfx.GetAspect(), GCamera3D->GetNearZ(), GCamera3D->GetFarZ());
 	m_ViewPoint.GenerateViewMatrix();
 	m_ViewPoint.GenerateProjMatrix();
@@ -172,7 +170,7 @@ void Light::SpawnLightControlWindow(int lightId) noexcept
 void Light::ResetDirectionLight(int lightID) noexcept
 {
 	//for shadow Calculate 
-	lightData.L[lightID].position = { 0.0f,9.0f,0.0f };
+	lightData.L[lightID].position = { -2.0f, 9.0f, -1.0f };
 
 	lightData.L[lightID].direction = { -0.2f, -1.0f, -0.3f };
 
