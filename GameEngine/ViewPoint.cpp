@@ -54,7 +54,7 @@ void ViewPoint::GenerateProjMatrix()
 
 void ViewPoint::GenerateOrthoMatrix()
 {
-	m_Ortho = DirectX::XMMatrixOrthographicLH(m_ScreenWidth, m_ScreenHeight, m_NearPlane, 100);
+	m_Ortho = DirectX::XMMatrixOrthographicLH(m_ScreenWidth, m_ScreenHeight, m_NearPlane, m_FarPlane);
 }
 
 DirectX::XMMATRIX ViewPoint::GetViewMatrix()

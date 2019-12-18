@@ -8,7 +8,8 @@ PBRScene::PBRScene(Graphics& gfx)
 {
 
     // init Light
-    m_Light = std::make_unique<Light>(gfx, "PBRScene", 1, 4, 4);
+    m_Light = std::make_unique<Light>(gfx, "PBRScene", 1, 4, 1);
+
 
     std::vector<std::string> pbrTexture[5];
 
@@ -46,7 +47,7 @@ PBRScene::PBRScene(Graphics& gfx)
     for (int i = 0; i < nrRows * nrColumns; i++)
     {
         shaderBall.push_back(std::make_unique<Model>(gfx,
-            "Data\\Models\\PBR\\shaderBall.obj", 1.0f / 80.0f,pbrTexture[1]));
+            "Data\\Models\\PBR\\shaderBall.obj", 1.0f / 80.0f,true,pbrTexture[i%5]));
     }
     
     int i = 0;
@@ -59,20 +60,22 @@ PBRScene::PBRScene(Graphics& gfx)
                 {
                     DirectX::XMMatrixTranslation(
                 (float)(col - ((nrColumns + 1) / 2)) * spacing,
-                (float)(row - ((nrRows + 1) / 2)) * spacing,
-                0.0f )
+                        0.0f,
+              //  (float)(row - ((nrRows + 1) / 2)) * spacing,
+                 (float)(row ) * spacing)
                 });
             i++;
         }
     }
 
-    //std::vector<std::string> filePath = {
-    //"Data\\Images\\skybox\\Yokohama3\\posx.jpg", "Data\\Images\\skybox\\Yokohama3\\negx.jpg",
-    //"Data\\Images\\skybox\\Yokohama3\\posy.jpg", "Data\\Images\\skybox\\Yokohama3\\negy.jpg",
-    //"Data\\Images\\skybox\\Yokohama3\\posz.jpg", "Data\\Images\\skybox\\Yokohama3\\negz.jpg" };
+    std::vector<std::string> filePath = {
+    "Data\\Images\\skybox\\Yokohama3\\posx.jpg", "Data\\Images\\skybox\\Yokohama3\\negx.jpg",
+    "Data\\Images\\skybox\\Yokohama3\\posy.jpg", "Data\\Images\\skybox\\Yokohama3\\negy.jpg",
+    "Data\\Images\\skybox\\Yokohama3\\posz.jpg", "Data\\Images\\skybox\\Yokohama3\\negz.jpg" };
 
+    skyHdr = std::make_unique<SkyRender>(gfx, filePath, 1000);
 
-    skyHdr = std::make_unique<SkyRender>(gfx, "Data\\Images\\hdr\\HdrCubeMap.hdr", 1000,true);
+    pbrGrid = std::make_unique<PBRBall>(gfx,1.0f);
 
 }
 
@@ -99,10 +102,7 @@ void PBRScene::Draw()
     {
        b->Draw(gfx);
     }
-    //for (auto& p : pbrBall)
-    //{
-    //    p->DrawIndexed(gfx);
-    //}
+    pbrGrid->DrawIndexed(gfx);
 
     skyHdr->DrawIndexed(gfx);
 }

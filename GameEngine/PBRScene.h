@@ -24,7 +24,7 @@ private:
 	PBRLight light;
 	//Light
 	std::unique_ptr<Light> m_Light;
-	//std::vector<std::unique_ptr<PBRBall>> pbrBall;
+	std::unique_ptr<PBRBall> pbrGrid;
 
 	std::unique_ptr<SkyRender> skyHdr;
 	std::vector<std::unique_ptr<Model>> shaderBall;

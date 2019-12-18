@@ -78,9 +78,10 @@ const Surface::Color* Surface::GetBufferPtrConst() const noexcept
 
 Surface Surface::FromFile( const std::string& name )
 {
+	using namespace std::string_literals;
 	HRESULT hr;
 	DirectX::ScratchImage scratch;
-	if (StrH::GetFileExtension(name) == "hdr")
+	if (StrH::GetFileExtension(name) == ".hdr"s)
 	{
 		 hr = DirectX::LoadFromHDRFile(StrH::ToWide(name).c_str(), nullptr, scratch);
 	}
@@ -115,6 +116,42 @@ Surface Surface::FromFile( const std::string& name )
 	}
 
 	return Surface( std::move( scratch ) );
+}
+
+Surface Surface::FromHDRFile(const std::string& name)
+{
+
+	HRESULT hr;
+	DirectX::ScratchImage scratch;
+
+	hr = DirectX::LoadFromHDRFile(StrH::ToWide(name).c_str(), nullptr, scratch);
+	
+
+	if (FAILED(hr))
+	{
+		throw Surface::Exception(__LINE__, __FILE__, name, "Failed to load image", hr);
+	}
+
+	if (scratch.GetImage(0, 0, 0)->format != format)
+	{
+		DirectX::ScratchImage converted;
+		hr = DirectX::Convert(
+			*scratch.GetImage(0, 0, 0),
+			format,
+			DirectX::TEX_FILTER_DEFAULT,
+			DirectX::TEX_THRESHOLD_DEFAULT,
+			converted
+		);
+
+		if (FAILED(hr))
+		{
+			throw Surface::Exception(__LINE__, __FILE__, name, "Failed to convert image", hr);
+		}
+
+		return Surface(std::move(converted));
+	}
+
+	return Surface(std::move(scratch));
 }
 
 void Surface::Save( const std::string& filename ) const

@@ -1,7 +1,7 @@
 #include "PBRBall.h"
 #include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
-#include "Sphere.h"
+#include "Grid.h"
 #include "Cube.h"
 
 PBRBall::PBRBall(Graphics& gfx, float radius)
@@ -19,11 +19,13 @@ PBRBall::PBRBall(Graphics& gfx, float radius)
 		.Append(Element::Bitangent)
 		.Append(Element::Texture2D);
 
-	auto model = Sphere::MakeSphereTexture(layout,48,92);
+	//auto model = Sphere::MakeSphereTexture(layout,48,92);
+
+	auto model = Grid::MakeGrid(layout, 250, 250,50,50,10);
 	//auto model = Cube::MakeIndependentTextured(layout);
-	model.Transform(dx::XMMatrixScaling(radius, radius, radius));
+	//model.Transform(dx::XMMatrixScaling(radius, radius, radius));
 	model.SetNormalsIndependentFlat();
-	model.ComputeSphereUV();
+	//model.ComputeSphereUV();
 	model.ComputeTangentBiTtngent();
 
 
@@ -31,11 +33,11 @@ PBRBall::PBRBall(Graphics& gfx, float radius)
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\rusted_iron\\albedo.png",0u));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\rusted_iron\\normal.png",1u));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\rusted_iron\\metallic.png",2u));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\rusted_iron\\roughness.png",3u));
-	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\rusted_iron\\ao.png",4u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\grass\\albedo.png",0u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\grass\\normal.png",1u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\grass\\metallic.png",2u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\grass\\roughness.png",3u));
+	AddBind(Texture::Resolve(gfx, "Data\\Images\\PBR\\grass\\ao.png",4u));
 
 	auto pvs = VertexShader::Resolve(gfx, "ForWard_BRDF_VS");
 	auto pvsbc = pvs->GetBytecode();

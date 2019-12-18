@@ -13,6 +13,7 @@
 #include "PBRScene.h"
 #include "TestDCB.h"
 #include "DepthStencil.h"
+#include <DirectXTK/ScreenGrab.h>
 
 
 namespace dx = DirectX;
@@ -24,7 +25,6 @@ App::App()
 	wnd(screenWidth, screenHeight, "Game Engine")
 {
 	//TestDynamicConstant();
-
 	// Create the cpu object.
 	m_Cpu.Initialize();
 
@@ -42,8 +42,8 @@ App::App()
 	InitDebugWindow();
 
 	//m_Scenes.push_back(std::make_unique<SponzaScene>(wnd.Gfx()));
-	//m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
-	m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
+	m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
+	//m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
 
@@ -123,6 +123,8 @@ void App::HandleInput(float dt)
 				wnd.mouse.DisableRaw();
 			}
 			break;
+		case VK_F2:
+
 		//case VK_F1:
 		//	showDemoWindow = true;
 		//	break;
@@ -196,7 +198,7 @@ void App::Draw()
 
 	if (enableRenderTarget)
 	{
-		//m_SmallScene->DrawIndexed(wnd.Gfx());
+		m_SmallScene->DrawIndexed(wnd.Gfx());
 		m_ProjDepthMap->DrawIndexed(wnd.Gfx());
 	}
 }
@@ -255,12 +257,13 @@ void App::RenderToTexture()
 	m_DepthRT->SetRenderTarget(wnd.Gfx());
 	//Render Depth Texture into mDepth .SRV
 	RenderDepthTexture();
+
 	
 	//SetRenderTarget();ClearDepth();
-	//m_SrceenRT->SetRenderTarget(wnd.Gfx());
+	m_SrceenRT->SetRenderTarget(wnd.Gfx());
 	//RenderScene Save  into mScreenRTT .SRV
-	//RenderScene();
-	//wnd.Gfx().SetBackBufferRenderTarget();
+	RenderScene();
+	wnd.Gfx().SetBackBufferRenderTarget();
 
 
 
@@ -284,18 +287,18 @@ void App::RenderDepthTexture()
 void App::InitDebugWindow()
 {
 	//Screen Scene Small
-	//m_SrceenRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
-	//m_SmallScene = std::make_unique<Tex2D>(wnd.Gfx(),
-	//	static_cast<float>(screenWidth), static_cast<float>(screenHeight),
-	//	static_cast<float>(screenWidth / 6),
-	//	static_cast<float>(screenHeight / 6), "VS_2D", "PS_2D", m_SrceenRT->GetShaderResourceView());
-	//m_SmallScene->SetPos({ 0.0f,screenHeight * 5.0f / 6.0f,0.0f });
+	m_SrceenRT = std::make_shared<Bind::RTT>(wnd.Gfx(), screenWidth, screenHeight);
+	m_SmallScene = std::make_unique<Tex2D>(wnd.Gfx(),
+		static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+		static_cast<float>(screenWidth / 6),
+		static_cast<float>(screenHeight / 6), "VS_2D", "PS_2D", m_SrceenRT->GetShaderResourceView());
+	m_SmallScene->SetPos({ 0.0f,screenHeight * 5.0f / 6.0f,0.0f });
 	//shadow Map
 	m_DepthRT = std::make_shared<Bind::DepthBufferRT>(wnd.Gfx(), shadowWidth, shadowHeight);
 	m_ProjDepthMap = std::make_unique<Tex2D>(wnd.Gfx(), static_cast<float>(screenWidth), static_cast<float>(screenHeight),
 		static_cast<float>(screenWidth / 6),
 		static_cast<float>(screenHeight / 6), "VS_2D", "DepthDraw_PS", m_DepthRT->GetShaderResourceView());
-	m_ProjDepthMap->SetPos({ 0,screenHeight * 5.0f / 6.0f,0.0f });
+	m_ProjDepthMap->SetPos({ screenWidth / 6.0f,screenHeight * 5.0f / 6.0f,0.0f });
 }
 
 

@@ -173,9 +173,10 @@ private:
 	std::unordered_map<int, NodeData> transforms;
 };
 
-Model::Model(Graphics& gfx, const std::string& pathString, float scale,std::vector<std::string> filePaths)
+Model::Model(Graphics& gfx, const std::string& pathString, float scale, bool pbrOn, std::vector<std::string> filePaths)
 	:
 	textures(filePaths),
+	pbrOn(pbrOn),
 	pWindow(std::make_unique<ModelWindow>())
 {
 	//create assimp import 
@@ -526,7 +527,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 
 		bindablePtrs.push_back(std::make_unique<Bind::CachingPixelConstantBufferEX>(gfx, buf, 2u));
 	}
-	else if (!hasDiffuseMap && !hasNormalMap && !hasSpecularMap)
+	else if (!hasDiffuseMap && !hasNormalMap && !hasSpecularMap&&pbrOn)
 	{
 		Dvtx::VertexBuffer vbuf(std::move(
 			VertexLayout{}
@@ -571,12 +572,14 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-		bindablePtrs.push_back(Texture::Resolve(gfx, textures[0], 0u));
-		bindablePtrs.push_back(Texture::Resolve(gfx, textures[1], 1u));
-		bindablePtrs.push_back(Texture::Resolve(gfx, textures[2], 2u));
-		bindablePtrs.push_back(Texture::Resolve(gfx, textures[3], 3u));
-		bindablePtrs.push_back(Texture::Resolve(gfx, textures[4], 4u));
 
+			bindablePtrs.push_back(Texture::Resolve(gfx, textures[0], 0u));
+			bindablePtrs.push_back(Texture::Resolve(gfx, textures[1], 1u));
+			bindablePtrs.push_back(Texture::Resolve(gfx, textures[2], 2u));
+			bindablePtrs.push_back(Texture::Resolve(gfx, textures[3], 3u));
+			bindablePtrs.push_back(Texture::Resolve(gfx, textures[4], 4u));
+
+		
 		//Dcb::RawLayout lay;
 		//lay.Add<Dcb::Float4>("materialColor");
 		//lay.Add<Dcb::Float4>("specularColor");
@@ -589,57 +592,57 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 
 		//bindablePtrs.push_back(std::make_unique<Bind::CachingPixelConstantBufferEX>(gfx, buf, 2u));
 	}
-	//else if (!hasDiffuseMap && !hasNormalMap && !hasSpecularMap)
-	//{
-	//Dvtx::VertexBuffer vbuf(std::move(
-	//	VertexLayout{}
-	//	.Append(VertexLayout::Position3D)
-	//	.Append(VertexLayout::Normal)
-	//));
+	else if (!hasDiffuseMap && !hasNormalMap && !hasSpecularMap&&!pbrOn)
+	{
+	Dvtx::VertexBuffer vbuf(std::move(
+		VertexLayout{}
+		.Append(VertexLayout::Position3D)
+		.Append(VertexLayout::Normal)
+	));
 
-	//for (unsigned int i = 0; i < mesh.mNumVertices; i++)
-	//{
-	//	vbuf.EmplaceBack(
-	//		dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
-	//		*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i])
-	//	);
-	//}
+	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+	{
+		vbuf.EmplaceBack(
+			dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i])
+		);
+	}
 
-	//std::vector<unsigned short> indices;
-	//indices.reserve(mesh.mNumFaces * 3);
-	//for (unsigned int i = 0; i < mesh.mNumFaces; i++)
-	//{
-	//	const auto& face = mesh.mFaces[i];
-	//	assert(face.mNumIndices == 3);
-	//	indices.push_back(face.mIndices[0]);
-	//	indices.push_back(face.mIndices[1]);
-	//	indices.push_back(face.mIndices[2]);
-	//}
+	std::vector<unsigned short> indices;
+	indices.reserve(mesh.mNumFaces * 3);
+	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	{
+		const auto& face = mesh.mFaces[i];
+		assert(face.mNumIndices == 3);
+		indices.push_back(face.mIndices[0]);
+		indices.push_back(face.mIndices[1]);
+		indices.push_back(face.mIndices[2]);
+	}
 
-	//bindablePtrs.push_back(VertexBuffer::Resolve(gfx, meshTag, vbuf));
+	bindablePtrs.push_back(VertexBuffer::Resolve(gfx, meshTag, vbuf));
 
-	//bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
+	bindablePtrs.push_back(IndexBuffer::Resolve(gfx, meshTag, indices));
 
-	//auto pvs = VertexShader::Resolve(gfx, "PhongVSNotex");
-	//auto pvsbc = pvs->GetBytecode();
-	//bindablePtrs.push_back(std::move(pvs));
+	auto pvs = VertexShader::Resolve(gfx, "PhongVSNotex");
+	auto pvsbc = pvs->GetBytecode();
+	bindablePtrs.push_back(std::move(pvs));
 
-	//bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSNotex"));
+	bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSNotex"));
 
-	//bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
+	bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-	//Dcb::RawLayout lay;
-	//lay.Add<Dcb::Float4>("materialColor");
-	//lay.Add<Dcb::Float4>("specularColor");
-	//lay.Add<Dcb::Float>("specularPower");
+	Dcb::RawLayout lay;
+	lay.Add<Dcb::Float4>("materialColor");
+	lay.Add<Dcb::Float4>("specularColor");
+	lay.Add<Dcb::Float>("specularPower");
 
-	//auto buf = Dcb::Buffer(std::move(lay));
-	//buf["specularPower"] = shininess;
-	//buf["specularColor"] = specularColor;
-	//buf["materialColor"] = diffuseColor;
+	auto buf = Dcb::Buffer(std::move(lay));
+	buf["specularPower"] = shininess;
+	buf["specularColor"] = specularColor;
+	buf["materialColor"] = diffuseColor;
 
-	//bindablePtrs.push_back(std::make_unique<Bind::CachingPixelConstantBufferEX>(gfx, buf, 2u));
-	//}
+	bindablePtrs.push_back(std::make_unique<Bind::CachingPixelConstantBufferEX>(gfx, buf, 2u));
+	}
 	else
 	{
 		throw std::runtime_error("terrible combination of textures in material smh");

@@ -14,7 +14,7 @@
 #endif
 
 #ifndef NUM_SPOT_LIGHTS
-#define NUM_SPOT_LIGHTS 4
+#define NUM_SPOT_LIGHTS 1
 #endif
 
 struct Light

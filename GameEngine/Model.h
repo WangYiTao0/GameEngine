@@ -9,7 +9,7 @@
 class Model
 {
 public:
-	Model(Graphics& gfx, const std::string& pathString, float scale = 1.0f, std::vector<std::string> filePaths = { " " });
+	Model(Graphics& gfx, const std::string& pathString, float scale, bool pbrOn, std::vector<std::string> filePaths = { " " });
 	void Draw(Graphics& gfx) const noxnd;
 	void ShowWindow(Graphics& gfx, const char* windowName = nullptr) noexcept;
 	void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
@@ -36,6 +36,7 @@ private:
 
 private:
 	//Link structor
+	bool pbrOn = false;
 	std::unique_ptr<Node> pRoot;
 	//load all mesh  store in 
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;

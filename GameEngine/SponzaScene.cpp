@@ -11,10 +11,10 @@ SponzaScene::SponzaScene(Graphics& gfx)
 	Scene("Model Scene")
 {
 	// init Light
-	m_Light = std::make_unique<Light>(gfx,"SponzaScene",1, 4, 4);
+	m_Light = std::make_unique<Light>(gfx,"SponzaScene",1, 4, 1);
 
 
-	sponza=std::make_unique<Model>( gfx, "Data\\Models\\sponza\\sponza.obj", 1.0f / 20.0f );
+	sponza=std::make_unique<Model>( gfx, "Data\\Models\\sponza\\sponza.obj", 1.0f / 20.0f,false );
 
 	//bluePlane.SetPos({0.0f,0.0f,5.0f});
 	//redPlane.SetPos({ 0.0f,0.0f,6.0f });

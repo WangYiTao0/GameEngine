@@ -177,7 +177,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;DirectXTK.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ObjectFileOutput>$(OutDir)%(Filename).cso</ObjectFileOutput>
@@ -308,6 +308,7 @@
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="RTT.h" />
+    <ClInclude Include="ScreenShoot.h" />
     <ClInclude Include="ShapesScene.h" />
     <ClInclude Include="SkyRender.h" />
     <ClInclude Include="Step.h" />

@@ -78,15 +78,15 @@ void Light::Reset() noexcept
 }
 void Light::Update(Graphics& gfx)
 {
-	GenerateShadowMatrix(gfx, 0);
+	GenerateShadowMatrix(gfx, 5);
 	shadowMatrix = GetShadowMatrix();
 }
 void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
 {
 	m_ViewPoint.SetPostion(lightData.L[lightID].position);
 	m_ViewPoint.SetLookAt(lightData.L[lightID].direction);
-	//m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
-	m_ViewPoint.SetScreen(20, 20);
+	m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
+	//m_ViewPoint.SetScreen(20, 20);
 	m_ViewPoint.SetProjectionParameters(GCamera3D->GetFov(), gfx.GetAspect(), GCamera3D->GetNearZ(), GCamera3D->GetFarZ());
 	m_ViewPoint.GenerateViewMatrix();
 	m_ViewPoint.GenerateProjMatrix();
@@ -287,14 +287,18 @@ bool Light::SpawnDirLightWindow(int lightId) noexcept
 			{
 				ResetDirectionLight(lightId);
 			}
-			if (ImGui::Button("Turn Off"))
-			{
-				TurnOffLight(lightId);
-			}
 			if (ImGui::Button("Turn On"))
 			{
 				TurnOnLight(lightId);
 			}
+			if (ImGui::Button("Turn Off"))
+			{
+				TurnOffLight(lightId);
+			}
+			//if (ImGui::Button("show Mesh/disable Mesh"))
+			//{
+			//	lightState.enableSphere[lightId] = !lightState.enableSphere[lightId];
+			//}
 			ImGui::End();
 		}
 	
@@ -331,14 +335,19 @@ bool Light::SpawnPointLightWindow(int lightId) noexcept
 		{
 			ResetPointLight(lightId);
 		}
-		if (ImGui::Button("Turn Off"))
-		{
-			TurnOffLight(lightId);
-		}
 		if (ImGui::Button("Turn On"))
 		{
 			TurnOnLight(lightId);
 		}
+		if (ImGui::Button("Turn Off"))
+		{
+			TurnOffLight(lightId);
+		}
+
+		//if (ImGui::Button("show Mesh/disable Mesh"))
+		//{
+		//	lightState.enableSphere[lightId] = !lightState.enableSphere[lightId];
+		//}
 	}
 	ImGui::End();
 	return open;
@@ -380,14 +389,18 @@ bool Light::SpawnSpotLightWindow(int lightId) noexcept
 		{
 			ResetSpotLight(lightId);
 		}
-		if (ImGui::Button("Turn Off"))
-		{
-			TurnOffLight(lightId);
-		}
 		if (ImGui::Button("Turn On"))
 		{
 			TurnOnLight(lightId);
 		}
+		if (ImGui::Button("Turn Off"))
+		{
+			TurnOffLight(lightId);
+		}
+		//if (ImGui::Button("show Mesh/disable Mesh"))
+		//{
+		//	lightState.enableSphere[lightId] = !lightState.enableSphere[lightId];
+		//}
 	}
 	ImGui::End();
 

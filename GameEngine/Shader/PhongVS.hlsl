@@ -33,7 +33,7 @@ VS_OUTPUT main(VS_INPUT input)
     matrix modelViewprojMatrix = mul(modelView , projMatrix);
 
     matrix lightView = mul(worldMatrix, s_View);
-    matrix lightSpaceMatrix = mul(lightView, s_Ortho);
+    matrix lightSpaceMatrix = mul(lightView, s_Proj);
 
     vso.worldPos = (float3) mul(float4(input.pos, 1.0f), worldMatrix);
     vso.LightSpacePos = mul(float4(input.pos, 1.0f), lightSpaceMatrix);

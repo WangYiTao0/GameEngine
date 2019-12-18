@@ -24,6 +24,7 @@ private:
 	{
 		LightCommon lastState[MaxLights];
 		bool isTurnOff[MaxLights] = { false };
+		bool enableSphere[MaxLights] = { true };
 	};
 
 	struct ShadowCB

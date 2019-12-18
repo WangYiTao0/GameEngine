@@ -49,7 +49,7 @@ VS_OUT main(VS_IN vIn) : SV_POSITION
     //matrix lightViewProj = mul(lightView, s_Ortho);
     vOut.position = mul(float4(vIn.position, 1.0f), worldMatrix);
     vOut.position = mul(vOut.position, s_View);
-    vOut.position = mul(vOut.position, s_Ortho);
+    vOut.position = mul(vOut.position, s_Proj);
 #endif
 
     return vOut;

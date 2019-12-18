@@ -133,6 +133,7 @@ public:
 	const Color* GetBufferPtr() const noexcept;
 	const Color* GetBufferPtrConst() const noexcept;
 	static Surface FromFile( const std::string& name );
+	static Surface FromHDRFile(const std::string& name);
 	void Save( const std::string& filename ) const;
 	bool AlphaLoaded() const noexcept;
 private:

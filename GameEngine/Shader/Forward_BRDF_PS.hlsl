@@ -1,4 +1,5 @@
 #include "ShaderOptions.hlsli"
+#include "LightingUtil.hlsli"
 #include "CommonCbuf.hlsli"
 
 #define PI 3.14159265359f
@@ -30,11 +31,13 @@ Texture2D aoMap : register(t4);
 
 SamplerState sampleWrap : register(s0);
 
-cbuffer PbrLight : register (b5)
-{
-    float4 LightPosition[4];
-    float4 LightColor[4];
-};
+//cbuffer PbrLight : register (b5)
+//{
+//    float4 LightPosition[4];
+//    float4 LightColor[4];
+//};
+
+
 
 // ----------------------------------------------------------------------------
 float DistributionGGX(float3 N, float3 H, float roughness)
@@ -113,11 +116,11 @@ float4 main(PS_IN pIn) : SV_Target
     for (int i = 0; i < 4; ++i)
     {
         // calculate per-light radiance
-        float3 L = normalize(LightPosition[i].xyz - pIn.worldPos);
+        float3 L = normalize(gLights[i+1].position.xyz - pIn.worldPos);
         float3 H = normalize(V + L);
-        float distance = length(LightPosition[i].xyz - pIn.worldPos);
+        float distance = length(gLights[i+1].position.xyz - pIn.worldPos);
         float attenuation = 1.0 / (distance * distance);
-        float3 radiance = LightColor[i].xyz * 300 * attenuation;
+        float3 radiance = gLights[i+1].Color.xyz * 300 * attenuation;
 
         // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);
