@@ -32,8 +32,8 @@ float4 main(PS_IN pIn) : SV_TARGET
 	// Get the depth value of the pixel by dividing the Z pixel depth by the homogeneous W coordinate.
     depthValue = depthTexture.Sample(sample0, pIn.depthTexcoord).r;
     float pro_depthValue = LinearizeDepth(depthValue) / far;
-    color = float4(pro_depthValue, pro_depthValue, pro_depthValue, 1.0); // perspective
-    //color = float4(depthValue, depthValue, depthValue, 1.0f);// orthographic
+   // color = float4(pro_depthValue, pro_depthValue, pro_depthValue, 1.0); // perspective
+    color = float4(depthValue, depthValue, depthValue, 1.0f);// orthographic
 
     return color;
 }

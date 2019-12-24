@@ -8,6 +8,7 @@ namespace Bind
 	public:
 		enum class Mode
 		{
+			DSSDefault,
 			DSSOff,
 			DSSLessEqual,
 			DSSWrite,

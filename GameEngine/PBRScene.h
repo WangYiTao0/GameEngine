@@ -5,7 +5,6 @@
 #include "SkyRender.h"
 #include "GridTerrain.h"
 #include "PBRBall.h"
-#include "PBRLight.h"
 #include "SkyRender.h"
 #include "Light.h"
 #include "Model.h"
@@ -21,7 +20,6 @@ public:
 private:
 
 	Graphics& gfx;
-	PBRLight light;
 	//Light
 	std::unique_ptr<Light> m_Light;
 	std::unique_ptr<PBRBall> pbrGrid;

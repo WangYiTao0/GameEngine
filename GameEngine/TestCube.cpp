@@ -75,7 +75,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	depth.push_back(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 	depth.push_back(std::make_shared<TransformCbuf>(gfx, *this));
-	//depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
+	depth.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSDefault));
 
 	depth.push_back(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
 }

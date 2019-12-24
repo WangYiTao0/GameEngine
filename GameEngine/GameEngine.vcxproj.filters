@@ -360,9 +360,6 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="PBRLight.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
     <ClCompile Include="PBRBall.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -697,9 +694,6 @@
     </ClInclude>
     <ClInclude Include="PBRBall.h">
       <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
-    <ClInclude Include="PBRLight.h">
-      <Filter>Header Files\Lights</Filter>
     </ClInclude>
     <ClInclude Include="SponzaScene.h">
       <Filter>Header Files\Scenes</Filter>

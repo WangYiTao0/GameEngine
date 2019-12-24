@@ -12,7 +12,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	m_Light = std::make_unique<Light>(gfx, "GeometryScene", 1, 4, 1);
 
 
-	std::uniform_real_distribution<float> rdist(-5.0f, 5.0f);
+	std::uniform_real_distribution<float> rdist(-25.0f, 25.0f);
 	std::uniform_real_distribution<float> rdistY(2.0f, 10.f);
 	std::uniform_real_distribution<float> rRot(-MH::PI,MH::PI);
 
@@ -27,9 +27,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 "Data\\Images\\skybox\\Yokohama3\\posy.jpg", "Data\\Images\\skybox\\Yokohama3\\negy.jpg",
 "Data\\Images\\skybox\\Yokohama3\\posz.jpg", "Data\\Images\\skybox\\Yokohama3\\negz.jpg" };
 
-
-
-	for (auto i = 0; i < 3; i++)
+	for (auto i = 0; i < 40; i++)
 	{
 		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));
 	}
@@ -37,7 +35,8 @@ GeometryScene::GeometryScene(Graphics& gfx)
 	for (auto& c : cubes)
 	{
 		c->SetRotation({ rRot(rng),rRot(rng),rRot(rng) });
-		c->SetPos({ rdist(rng),2,rdist(rng) });
+		c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
+		//c->SetPos({ 0,2,1 });
 	}
 	sky = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
 

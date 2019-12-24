@@ -3,7 +3,6 @@
 PBRScene::PBRScene(Graphics& gfx)
 	:
 	gfx(gfx),
-	light(gfx),
 	Scene("PBRScene")
 {
 
@@ -89,7 +88,6 @@ void PBRScene::Update(float dt)
     m_Light->Update(gfx);
     m_Light->Bind(gfx);
 
-    light.Bind(gfx);
 
     m_Light->SpawnLightManagerWindow(gfx);
 }

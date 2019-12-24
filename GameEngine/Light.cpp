@@ -85,8 +85,8 @@ void Light::GenerateShadowMatrix(Graphics& gfx, int lightID)
 {
 	m_ViewPoint.SetPostion(lightData.L[lightID].position);
 	m_ViewPoint.SetLookAt(lightData.L[lightID].direction);
-	m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
-	//m_ViewPoint.SetScreen(20, 20);
+	//m_ViewPoint.SetScreen(gfx.GetScreenWidth(), gfx.GetScreenHeight());
+	m_ViewPoint.SetScreen(120, 120);
 	m_ViewPoint.SetProjectionParameters(GCamera3D->GetFov(), gfx.GetAspect(), GCamera3D->GetNearZ(), GCamera3D->GetFarZ());
 	m_ViewPoint.GenerateViewMatrix();
 	m_ViewPoint.GenerateProjMatrix();

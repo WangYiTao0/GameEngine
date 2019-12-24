@@ -13,6 +13,8 @@ namespace Bind
 
 		switch (Dss)
 		{
+		case Mode::DSSDefault:
+			break;
 		case Mode::DSSWrite:
 			dsDesc.StencilEnable = TRUE;
 			dsDesc.StencilWriteMask = 0xFF;

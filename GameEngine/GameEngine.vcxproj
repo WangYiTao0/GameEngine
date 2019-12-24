@@ -204,7 +204,6 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PBRBall.cpp" />
-    <ClCompile Include="PBRLight.cpp" />
     <ClCompile Include="PBRScene.cpp" />
     <ClCompile Include="PlaneMirror.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -295,7 +294,6 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PBRBall.h" />
-    <ClInclude Include="PBRLight.h" />
     <ClInclude Include="PBRScene.h" />
     <ClInclude Include="PlaneMirror.h" />
     <ClInclude Include="Rasterizer.h" />
