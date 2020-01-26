@@ -343,4 +343,4 @@ healthchecksdb
 !GameEngine/Data/Models/*.obj
 !GameEngine/Data/Models/*/*.obj
 !GameEngine/Data/Models/*/*/*.obj
-packages/
+!packages/

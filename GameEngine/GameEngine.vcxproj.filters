@@ -744,7 +744,6 @@
     <None Include="Shader\LightingUtil.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PhongPSNormalMap.hlsl">
