@@ -343,3 +343,4 @@ healthchecksdb
 !Data/Models/*.obj
 !Data/Models/*/*.obj
 !Data/Models/*/*/*.obj
+packages/
