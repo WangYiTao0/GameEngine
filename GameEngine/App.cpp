@@ -42,7 +42,7 @@ App::App()
 	InitDebugWindow();
 
 	//m_Scenes.push_back(std::make_unique<SponzaScene>(wnd.Gfx()));
-	m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
+	m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx(),m_fc));
 	//m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<PhysicScene>(wnd.Gfx()));
@@ -90,6 +90,9 @@ void App::DoFrame()
 
 	// present
 	wnd.Gfx().EndFrame();
+
+	m_fc.Reset();
+
 }
 
 void App::HandleInput(float dt)

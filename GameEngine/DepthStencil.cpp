@@ -16,6 +16,8 @@ namespace Bind
 		case Mode::DSSDefault:
 			break;
 		case Mode::DSSWrite:
+			dsDesc.DepthEnable = FALSE;
+			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 			dsDesc.StencilEnable = TRUE;
 			dsDesc.StencilWriteMask = 0xFF;
 			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
@@ -23,6 +25,7 @@ namespace Bind
 			break;
 		case Mode::DSSMask:
 			dsDesc.DepthEnable = FALSE;
+			dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 			dsDesc.StencilEnable = TRUE;
 			dsDesc.StencilReadMask = 0xFF;
 			dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;

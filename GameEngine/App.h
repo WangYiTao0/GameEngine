@@ -13,6 +13,7 @@
 #include "Tex2D.h"
 #include "RTT.h"
 #include "DepthBufferRT.h"
+#include "FrameCommander.h"
 
 class App
 {
@@ -55,6 +56,8 @@ private:
 
 	//Camera3D cam;
 	Camera2D m_Camera2D;
+
+	FrameCommander m_fc;
 
 	CpuClass m_Cpu;
 

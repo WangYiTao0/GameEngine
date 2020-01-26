@@ -17,7 +17,7 @@
 class GeometryScene : public Scene
 {
 public:
-	GeometryScene(Graphics& gfx);
+	GeometryScene(Graphics& gfx, FrameCommander& fc);
 	~GeometryScene();
 
 	virtual void Update(float dt) override;
@@ -29,7 +29,7 @@ private:
 private:
 	Graphics& gfx;
 	std::unique_ptr<Light> m_Light;
-	FrameCommander fc;
+	FrameCommander& fc;
 
 	bool EnableFrustumCulling = true;
 	GridTerrain gridTerrain{ gfx,160,160,50,50,20 };

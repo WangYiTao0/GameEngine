@@ -1,9 +1,10 @@
 ﻿#include "GeometryScene.h"
 #include "DirectXMathHelper.h"
 #include "MathHelper.h"
-GeometryScene::GeometryScene(Graphics& gfx)
+GeometryScene::GeometryScene(Graphics& gfx, FrameCommander& fc)
 	:
 	gfx(gfx),
+	fc(fc),
 	rng(std::random_device{}()),
 	Scene("Geometry Scene")
 
@@ -27,7 +28,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 //"Data\\Images\\skybox\\Yokohama3\\posy.jpg", "Data\\Images\\skybox\\Yokohama3\\negy.jpg",
 //"Data\\Images\\skybox\\Yokohama3\\posz.jpg", "Data\\Images\\skybox\\Yokohama3\\negz.jpg" };
 
-	for (auto i = 0; i < 4; i++)
+	for (auto i = 0; i < 40; i++)
 	{
 		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));
 	}
@@ -44,7 +45,7 @@ GeometryScene::GeometryScene(Graphics& gfx)
 
 GeometryScene::~GeometryScene()
 {
-	fc.Reset();
+	
 }
 
 void GeometryScene::Update(float dt)
@@ -79,15 +80,16 @@ void GeometryScene::Draw()
 	//sky->Submit(fc);
 
 	fc.Execute(gfx);
+
 }
 
 void GeometryScene::DrawDepth()
 {
-	for (auto& b : cubes)
-	{
-		b->DrawDepth(gfx);
-	}
-	gridTerrain.DrawDepth(gfx);
+	//for (auto& b : cubes)
+	//{
+	//	b->DrawDepth(gfx);
+	//}
+	//gridTerrain.DrawDepth(gfx);
 }
 
 void GeometryScene::SpownFrustumControl()

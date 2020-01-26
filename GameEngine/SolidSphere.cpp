@@ -32,7 +32,7 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
 			float padding;
 		} colorConst;
-		only.AddBindable(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst, 1u));
+		only.AddBindable(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst, 3u));
 
 		only.AddBindable(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 

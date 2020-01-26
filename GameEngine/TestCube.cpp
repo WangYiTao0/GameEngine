@@ -117,8 +117,6 @@ TestCube::TestCube(Graphics& gfx, float size)
 					const auto scale = dx::XMMatrixScaling(1.04f, 1.04f, 1.04f);
 					auto xf = GetTransforms(gfx);
 					xf.world = xf.world * scale;
-					xf.view = xf.view * scale;
-					xf.proj = xf.proj * scale;
 					UpdateBindImpl(gfx, xf);
 				}
 			};
