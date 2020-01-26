@@ -61,6 +61,9 @@ float4 main(PS_pIn pIn) : SV_Target
     // Vector from point being lit to eye. 
     float3 toEyeW = normalize(cameraPos - pIn.worldPos);
 
+            //matcap
+    float2 uv = Matcap(cameraPos, pIn.worldNormal).xy;
+    
     float shadowFactor[MaxLights];
     for (int i = 0; i < MaxLights; i++)
     {
@@ -68,7 +71,7 @@ float4 main(PS_pIn pIn) : SV_Target
     }
     //shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
 
-    float3 texDiff = diffTex.Sample(sampleWarp, pIn.texcoord).rgb;
+    float3 texDiff = diffTex.Sample(sampleWarp, uv).rgb;
 
     Material mat = { texDiff, specularIntensity.rrr, specularPower };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,

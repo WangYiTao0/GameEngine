@@ -21,6 +21,9 @@ private:
 	std::unique_ptr<Light> m_Light;
 
 	std::unique_ptr<Model> sponza;
+	std::unique_ptr<Model> shaderball1;
+	std::unique_ptr<Model> shaderball2;
+	std::unique_ptr<Model> shaderball3;
 	std::unique_ptr<SkyRender> m_pSunset = nullptr;
 
 	//TestPlane bluePlane{ gfx,6.0f,{ 0.3f,0.3f,1.0f,0.0f } };
