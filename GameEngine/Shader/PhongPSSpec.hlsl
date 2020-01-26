@@ -46,7 +46,10 @@ float4 main(PS_pIn pIn) : SV_Target
         shadowFactor[i] = 1.0f;
     }
 
-    float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
+        //matcap
+    float2 uv = Matcap(cameraPos, pIn.worldNormal).xy;
+    
+    float3 texDiff = diffTex.Sample(sample0, uv).rgb;
       // specular parameters
     float specularPowerLoaded = specularPower;
     const float4 specularSample = specTex.Sample(sample0, pIn.texcoord);

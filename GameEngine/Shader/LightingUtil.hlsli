@@ -154,6 +154,20 @@ float3 lightPos, float3 worldPos, float3 worldNormal)
     return 0.0f;
 }
 
+//matCap
+float2 Matcap(float3 eye, float3 normal)
+{
+    float3 reflected = reflect(eye, normal);
+    float m = 2.8284271247461903 * sqrt(reflected.z + 1.0);
+    return reflected.xy / m + 0.5;
+}
+
+float Cel_Level(float factor)
+{
+    float levels = 3;
+    float level = floor(factor * levels);
+    return level / levels;
+}
 
 //---------------------------------------------------------------------------------------
 // Evaluates the lighting equation for directional lights.
@@ -170,10 +184,15 @@ float shadowFactor)
     // Scale light down by Lambert's cosine law.
     //diffuse shadding
     float diff = max(dot(normal, lightDir), 0.0f);
+    
+    diff = Cel_Level(diff);
 
     //specular shading
     float3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(toEye, reflectDir), 0.0f), mat.specularPower);
+    
+    spec = Cel_Level(spec);
+    
     //combine results
     float3 ambient = L.ambient * mat.materialColor;
     float3 diffuse = L.brightness * L.Color * diff * mat.materialColor;
@@ -198,10 +217,13 @@ float3 toEye, float shadowFactor)
     float diff = max(dot(worldNormal, lightDir), 0.0);
     // specular shading
     
+    diff = Cel_Level(diff);
+    
     float spec = 0.0;
     //blinn
     float3 halfwayDir = normalize(lightDir + toEye);
     spec = pow(max(dot(worldNormal, halfwayDir), 0.0f), mat.specularPower);
+    spec = Cel_Level(spec);
     //phongshader
     //float3 reflectDir = reflect(-lightDir, worldNormal);
     //v = i - 2 * n * dot(i n) 
@@ -233,9 +255,12 @@ float3 toEye, float shadowFactor)
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
 
+    diff = Cel_Level(diff);
+    
     //blinn phong
     float3 halfwayDir = normalize(lightDir + toEye);
     float spec = pow(max(dot(normal, halfwayDir), 0.0), mat.specularPower);
+    spec = Cel_Level(spec);
     //phong shader
     //float3 reflectDir = reflect(-lightDir, normal);
     //float spec = pow(max(dot(toEye, reflectDir), 0.0), mat.shininess);

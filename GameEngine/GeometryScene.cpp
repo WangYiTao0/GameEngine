@@ -70,7 +70,7 @@ void GeometryScene::Draw()
 		b->DrawOutline(gfx);
 	}
 
-	sky->DrawIndexed(gfx);
+	//sky->DrawIndexed(gfx);
 }
 
 void GeometryScene::DrawDepth()

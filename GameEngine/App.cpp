@@ -41,7 +41,7 @@ App::App()
 
 	InitDebugWindow();
 
-	//m_Scenes.push_back(std::make_unique<SponzaScene>(wnd.Gfx()));
+	m_Scenes.push_back(std::make_unique<SponzaScene>(wnd.Gfx()));
 	m_Scenes.push_back(std::make_unique<GeometryScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<PBRScene>(wnd.Gfx()));
 	//m_Scenes.push_back(std::make_unique<ShapesScene>(wnd.Gfx()));

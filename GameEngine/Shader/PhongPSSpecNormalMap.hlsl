@@ -81,12 +81,15 @@ float4 main(PS_pIn pIn) : SV_Target
 
    // shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
 
+    //matcap
+    float2 uv = Matcap(cameraPos, pIn.worldNormal).xy;
 
     float3 specularReflectionColor;
     float specularPower = specularPowerConst;
     if (specularMapEnabled)
     {
-        const float4 specularSample = specTex.Sample(sampleAn, pIn.texcoord);
+        //const float4 specularSample = specTex.Sample(sampleAn, pIn.texcoord);
+        const float4 specularSample = specTex.Sample(sampleAn, uv);
         specularReflectionColor = specularSample.rgb * specularMapWeight;
         if (hasGloss)
         {
@@ -99,7 +102,8 @@ float4 main(PS_pIn pIn) : SV_Target
     }
 
     //float3 texDiff = diffTex.Sample(sample0, pIn.texcoord).rgb;
-    float3 texSpec = specTex.Sample(sampleAn, pIn.texcoord).rgb;
+   //float3 texSpec = specTex.Sample(sampleAn, pIn.texcoord).rgb;
+    float3 texSpec = specTex.Sample(sampleAn, uv).rgb;
 
     Material mat = { texDiff.rgb, specularReflectionColor, specularPower };
     float4 finalColor = ComputeLighting(gLights, mat, pIn.worldPos,
