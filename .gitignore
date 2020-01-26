@@ -340,7 +340,7 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-!Data/Models/*.obj
-!Data/Models/*/*.obj
-!Data/Models/*/*/*.obj
+!GameEngine/Data/Models/*.obj
+!GameEngine/Data/Models/*/*.obj
+!GameEngine/Data/Models/*/*/*.obj
 packages/
