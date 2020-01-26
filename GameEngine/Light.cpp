@@ -111,10 +111,10 @@ void Light::Bind(Graphics& gfx) const noexcept
 	lightCB.Update(gfx, lightData);
 	lightCB.Bind(gfx);
 
-	shadowVSCB.Update(gfx, shadowMatrix);
-	shadowVSCB.Bind(gfx);
+	//shadowVSCB.Update(gfx, shadowMatrix);
+	//shadowVSCB.Bind(gfx);
 }
-void Light::Draw(Graphics& gfx) const noxnd
+void Light::Submit(FrameCommander& frame) const noxnd
 {
 
 	for (int i = 0; i < LightIndex; i++)
@@ -122,7 +122,7 @@ void Light::Draw(Graphics& gfx) const noxnd
 		mesh[i]->SetPos(lightData.L[i].position);
 		if (!lightState.isTurnOff[i])
 		{
-			mesh[i]->DrawIndexed(gfx);
+			mesh[i]->Submit(frame);
 		}
 	}
 }

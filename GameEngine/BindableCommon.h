@@ -16,3 +16,4 @@
 #include "Rasterizer.h"
 #include "DepthStencil.h"
 #include "RTT.h"
+#include "NullPixelShader.h"

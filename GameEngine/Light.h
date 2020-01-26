@@ -43,7 +43,7 @@ public:
 	
 	void Reset() noexcept;
 	void Update(Graphics& gfx);
-	void Draw(Graphics& gfx) const noxnd;
+	void Submit(class FrameCommander& frame) const noxnd;
 	void Bind(Graphics& gfx) const noexcept;
 
 	void GenerateShadowMatrix(Graphics& gfx, int lightID);

@@ -13,7 +13,6 @@ public:
 	void SpawnControlWindow(Graphics& gfx, const char* name) noexcept;
 	DirectX::BoundingBox GetLocalBoundingBox() noexcept;
 
-	void DrawOutline(Graphics& gfx) noxnd;
 	void DrawDepth(Graphics& gfx)noexcept;
 private:
 	void CreateBoundingBox();
@@ -23,6 +22,4 @@ private:
 	std::vector<std::shared_ptr<Bind::Bindable>> outlineEffect;
 	Material pmc;
 	DirectX::BoundingBox boundingBox;
-	bool outlining = false;
-
 };

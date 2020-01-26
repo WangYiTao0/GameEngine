@@ -11,6 +11,7 @@ namespace Bind
 		VertexBuffer(Graphics& gfx, const Dvtx::VertexBuffer& vbuf);
 		VertexBuffer(Graphics& gfx, const std::string& tag, const Dvtx::VertexBuffer& vbuf, int usage );
 		void Bind(Graphics& gfx)noexcept override;
+		const Dvtx::VertexLayout& GetLayout() const noexcept;
 
 		template<typename T>
 		void UpdateDynamicVertexBuffer(Graphics& gfx, T& vs)
@@ -46,5 +47,6 @@ namespace Bind
 		UINT stride;
 		int usage;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
+		Dvtx::VertexLayout layout;
 	};
 }

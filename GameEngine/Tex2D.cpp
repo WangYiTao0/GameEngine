@@ -8,35 +8,35 @@ IndexedTriangleList Tex2D::tex2D ;
 
 Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, float texWidth, float texHeight, std::string filePath)
 {
-	using namespace Bind;
-	
-    tex2D = Plane::Make2DTextured();
+	//using namespace Bind;
+	//
+ //   tex2D = Plane::Make2DTextured();
 
-	const auto geometryTag = "$plane." + std::to_string(texWidth);
+	//const auto geometryTag = "$plane." + std::to_string(texWidth);
 
-	AddBind(VertexBuffer::Resolve(gfx, geometryTag, tex2D.vertices));
-	AddBind(IndexBuffer::Resolve(gfx, geometryTag, tex2D.indices));
-	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
-	AddBind(Texture::Resolve(gfx, filePath));
+	//AddBind(VertexBuffer::Resolve(gfx, geometryTag, tex2D.vertices));
+	//AddBind(IndexBuffer::Resolve(gfx, geometryTag, tex2D.indices));
+	//AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
+	//AddBind(Texture::Resolve(gfx, filePath));
 
-	auto pvs = VertexShader::Resolve(gfx, "VS_2D");
-	auto pvsbc = pvs->GetBytecode();
-	AddBind(std::move(pvs));
+	//auto pvs = VertexShader::Resolve(gfx, "VS_2D");
+	//auto pvsbc = pvs->GetBytecode();
+	//AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, "PS_2D"));
+	//AddBind(PixelShader::Resolve(gfx, "PS_2D"));
 
-	AddBind(InputLayout::Resolve(gfx, tex2D.vertices.GetLayout(), pvsbc));
-	AddBind(std::make_shared<TransformCbuf>(gfx, *this, 0u));
+	//AddBind(InputLayout::Resolve(gfx, tex2D.vertices.GetLayout(), pvsbc));
+	//AddBind(std::make_shared<TransformCbuf>(gfx, *this, 0u));
 
-	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	AddBind(std::make_shared<Blender>(gfx, false, 1.0f));
+	//AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	//AddBind(std::make_shared<Blender>(gfx, false, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSDepthDisable));
+	//AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSDepthDisable));
 
 
-	SetPos({ 0.0f, 0.0f, 0.0f });
-	SetRotation({ 0.0f, 0.0f, 0.0f});
-	SetScale({ texWidth, texHeight, 1.0f });
+	//SetPos({ 0.0f, 0.0f, 0.0f });
+	//SetRotation({ 0.0f, 0.0f, 0.0f});
+	//SetScale({ texWidth, texHeight, 1.0f });
 }
 
 Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight, 
@@ -44,29 +44,29 @@ Tex2D::Tex2D(Graphics& gfx, float screenWidth, float screenHeight,
 {
 	using namespace Bind;
 
-	auto tex2D = Plane::Make2DTextured();
+	//auto tex2D = Plane::Make2DTextured();
 
-	const auto geometryTag = "$planeDynamic." + std::to_string(texWidth);
+	//const auto geometryTag = "$planeDynamic." + std::to_string(texWidth);
 
-	AddBind(VertexBuffer::Resolve(gfx, geometryTag, tex2D.vertices,D3D11_USAGE::D3D11_USAGE_DYNAMIC));
-	AddBind(IndexBuffer::Resolve(gfx, geometryTag, tex2D.indices));
-	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
+	//AddBind(VertexBuffer::Resolve(gfx, geometryTag, tex2D.vertices,D3D11_USAGE::D3D11_USAGE_DYNAMIC));
+	//AddBind(IndexBuffer::Resolve(gfx, geometryTag, tex2D.indices));
+	//AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
+	////AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
+	////AddBind(Texture::Resolve(gfx, "null", 0u, pSv));
 	//AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
-	//AddBind(Texture::Resolve(gfx, "null", 0u, pSv));
-	AddBind(std::make_shared<Texture>(gfx, "null", 0u, pSv));
-	auto pvs = VertexShader::Resolve(gfx, VS_Name);
-	auto pvsbc = pvs->GetBytecode();
-	AddBind(std::move(pvs));
+	//auto pvs = VertexShader::Resolve(gfx, VS_Name);
+	//auto pvsbc = pvs->GetBytecode();
+	//AddBind(std::move(pvs));
 
-	AddBind(PixelShader::Resolve(gfx, PS_Name));
+	//AddBind(PixelShader::Resolve(gfx, PS_Name));
 
-	AddBind(InputLayout::Resolve(gfx, tex2D.vertices.GetLayout(), pvsbc));
-	AddBind(std::make_shared<TransformCbuf>(gfx, *this, 0u));
+	//AddBind(InputLayout::Resolve(gfx, tex2D.vertices.GetLayout(), pvsbc));
+	//AddBind(std::make_shared<TransformCbuf>(gfx, *this, 0u));
 
-	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	AddBind(std::make_shared<Blender>(gfx, false, 1.0f));
+	//AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	//AddBind(std::make_shared<Blender>(gfx, false, 1.0f));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSDepthDisable));
+	//AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSDepthDisable));
 
 
 	SetPos({ 0.0f, 0.0f, 0.0f });

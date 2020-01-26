@@ -26,7 +26,7 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const no
 		pc->Draw(gfx, built);
 	}
 }
-//recursively remder the nodes
+//recursively render the nodes
 void Node::ShowTree(Node*& pSelectedNode) const noexcept
 {
 	// if there is no selected node, set selectedId to an impossible value
@@ -57,19 +57,21 @@ void Node::ShowTree(Node*& pSelectedNode) const noexcept
 
 const Dcb::Buffer* Node::GetMaterialConstants() const noxnd
 {
-	if (meshPtrs.size() == 0)
-	{
-		return nullptr;
-	}
-	auto pBindable = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
-	return &pBindable->GetBuffer();
+	//if (meshPtrs.size() == 0)
+	//{
+	//	return nullptr;
+	//}
+	//auto pBindable = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
+	//return &pBindable->GetBuffer();
+
+	return nullptr;
 }
 
 void Node::SetMaterialConstants(const Dcb::Buffer& buf_in) noxnd
 {
-	auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
-	assert(pcb != nullptr);
-	pcb->SetBuffer(buf_in);
+	//auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
+	//assert(pcb != nullptr);
+	//pcb->SetBuffer(buf_in);
 }
 
 void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept

@@ -18,7 +18,8 @@ namespace Bind
 		:
 		stride((UINT)vbuf.GetLayout().Size()),
 		tag(tag),
-		usage(usage)
+		usage(usage),
+		layout(vbuf.GetLayout())
 	{
 		INFOMAN(gfx);
 

@@ -49,12 +49,12 @@ void SponzaScene::Update(float dt)
 
 void SponzaScene::Draw() 
 {
-	m_Light->Draw(gfx);
+	//m_Light->Draw(gfx);
 
-	sponza->Draw(gfx);
+	//sponza->Draw(gfx);
 
 
-	m_pSunset->DrawIndexed(gfx);
+	//m_pSunset->DrawIndexed(gfx);
 	//redPlane.DrawIndexed(gfx);
 	//bluePlane.DrawIndexed(gfx);
 }

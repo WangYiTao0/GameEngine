@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.props" Condition="Exists('..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -194,7 +195,6 @@
     <ClCompile Include="DepthBufferRT.cpp" />
     <ClCompile Include="DynamicConstant.cpp" />
     <ClCompile Include="ECS\EcsSystem.cpp" />
-    <ClCompile Include="FrameCommander.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Job.cpp" />
     <ClCompile Include="LayoutCodex.cpp" />
@@ -202,6 +202,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelException.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NullPixelShader.cpp" />
     <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PBRBall.cpp" />
     <ClCompile Include="PBRScene.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelException.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="NullPixelShader.h" />
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PBRBall.h" />
     <ClInclude Include="PBRScene.h" />
@@ -387,6 +389,7 @@
     <None Include="DXGetErrorDescription.inl" />
     <None Include="DXGetErrorString.inl" />
     <None Include="DXTrace.inl" />
+    <None Include="packages.config" />
     <None Include="Shader\BRDF.hlsli" />
     <None Include="Shader\CommonCbuf.hlsli" />
     <None Include="Shader\LightingCommon.hlsli" />
@@ -643,5 +646,13 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.targets" Condition="Exists('..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.props'))" />
+    <Error Condition="!Exists('..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.F.ToolRepo.vcpkg.1.0.0\build\native\vcpkg.F.ToolRepo.vcpkg.targets'))" />
+  </Target>
 </Project>

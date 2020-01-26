@@ -94,13 +94,13 @@ void PBRScene::Update(float dt)
 
 void PBRScene::Draw()
 {
-    m_Light->Draw(gfx);
+    //m_Light->Draw(gfx);
 
-    for (auto& b : shaderBall)
-    {
-       b->Draw(gfx);
-    }
-    pbrGrid->DrawIndexed(gfx);
+    //for (auto& b : shaderBall)
+    //{
+    //   b->Draw(gfx);
+    //}
+    //pbrGrid->Submit(gfx);
 
-    skyHdr->DrawIndexed(gfx);
+    //skyHdr->DrawIndexed(gfx);
 }

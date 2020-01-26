@@ -13,34 +13,62 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 	auto model = Sphere::Make();
 	model.Transform(dx::XMMatrixScaling(radius, radius, radius));
 	const auto geometryTag = "$sphere." + std::to_string(radius);
-	AddBind(VertexBuffer::Resolve(gfx,geometryTag,model.vertices));
-	AddBind(IndexBuffer::Resolve(gfx,geometryTag,model.indices));
+	pVertices = VertexBuffer::Resolve(gfx, geometryTag, model.vertices);
+	pIndices = IndexBuffer::Resolve(gfx, geometryTag, model.indices);
+	pTopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	auto pvs = VertexShader::Resolve(gfx, "SolidVS");
-	//auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
-	auto pvsbc = pvs->GetBytecode();
-	AddBind(std::move(pvs));
-
-	AddBind(PixelShader::Resolve(gfx, "SolidPS"));
-
-	struct PSColorConstant
 	{
-		dx::XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f };
-	} colorConst;
+		Technique solid;
+		Step only(0);
 
-	AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst,3u));
+		auto pvs = VertexShader::Resolve(gfx, "SolidVS");
+		auto pvsbc = pvs->GetBytecode();
+		only.AddBindable(std::move(pvs));
 
-	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+		only.AddBindable(PixelShader::Resolve(gfx, "SolidPS"));
 
-	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+		struct PSColorConstant
+		{
+			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
+			float padding;
+		} colorConst;
+		only.AddBindable(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst, 1u));
 
-	AddBind(std::make_shared<TransformCbuf>(gfx, *this));
+		only.AddBindable(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
-	AddBind(Blender::Resolve(gfx, false));
+		only.AddBindable(std::make_shared<TransformCbuf>(gfx));
 
-	AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
-	//AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
-	AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSWrite));
+		only.AddBindable(Blender::Resolve(gfx, false));
+
+		only.AddBindable(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
+
+		solid.AddStep(std::move(only));
+		AddTechnique(std::move(solid));
+	}
+
+	//auto pvs = VertexShader::Resolve(gfx, "SolidVS");
+	////auto pvsbc = static_cast<VertexShader&>(*pvs).GetBytecode();
+	//auto pvsbc = pvs->GetBytecode();
+	//AddBind(std::move(pvs));
+
+	//AddBind(PixelShader::Resolve(gfx, "SolidPS"));
+
+	//struct PSColorConstant
+	//{
+	//	dx::XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f };
+	//} colorConst;
+
+	//AddBind(PixelConstantBuffer<PSColorConstant>::Resolve(gfx, colorConst,3u));
+
+	//AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+
+	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
+
+	//AddBind(Blender::Resolve(gfx, false));
+
+	//AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
+	////AddBind(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
+	//AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSWrite));
 }
 
 DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept

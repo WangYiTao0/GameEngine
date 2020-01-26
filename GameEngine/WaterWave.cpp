@@ -17,7 +17,7 @@ WaterWave::WaterWave(Graphics& gfx)
 	Dvtx::VertexBuffer vb(std::move(layout), mWaves.VertexCount());
 	
 
-	AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
+	//AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
 }
 
 void WaterWave::Update(float dt)
