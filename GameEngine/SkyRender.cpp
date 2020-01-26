@@ -6,37 +6,44 @@
 
 SkyRender::SkyRender(Graphics& gfx, std::vector<std::string>& filePaths, float skySphereRadius)
 {
-	//using namespace Bind;
-	//
-	//auto model = Sphere::Make();
-	//model.Transform(DirectX::XMMatrixScaling(skySphereRadius, skySphereRadius, skySphereRadius));
-	//const auto geometryTag = "&skySphere." + std::to_string(skySphereRadius);
+	using namespace Bind;
+	
+	auto model = Sphere::Make();
+	model.Transform(DirectX::XMMatrixScaling(skySphereRadius, skySphereRadius, skySphereRadius));
+	const auto geometryTag = "&skySphere." + std::to_string(skySphereRadius);
 
-	//AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
+	pVertices = VertexBuffer::Resolve(gfx, geometryTag, model.vertices);
+	pIndices = IndexBuffer::Resolve(gfx, geometryTag, model.indices);
+	pTopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	//AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
-	//AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
+	{
+		Technique Sky;
+		{
+			Step only(3);
 
-	//AddBind(std::make_shared<Texture>(gfx, filePaths, 4u));
+			only.AddBindable(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSLinearWrap));
 
-	//auto pvs = VertexShader::Resolve(gfx, "Sky_VS");
-	//
-	//auto pvsbc = pvs->GetBytecode();
-	//AddBind(std::move(pvs));
+			only.AddBindable(std::make_shared<Texture>(gfx, filePaths, 4u));
 
-	//AddBind(PixelShader::Resolve(gfx, "Sky_PS"));
+			auto pvs = VertexShader::Resolve(gfx, "Sky_VS");
 
-	//AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+			auto pvsbc = pvs->GetBytecode();
+			only.AddBindable(std::move(pvs));
 
-	//AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+			only.AddBindable(PixelShader::Resolve(gfx, "Sky_PS"));
 
-	//AddBind(std::make_shared<TransformCbuf>(gfx, *this));
+			only.AddBindable(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
-	//AddBind(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSNoCull));
+			only.AddBindable(std::make_shared<TransformCbuf>(gfx));
 
-	//AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSLessEqual));
+			only.AddBindable(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSNoCull));
 
-	//AddBind(Blender::Resolve(gfx, false));
+			only.AddBindable(Blender::Resolve(gfx, false));
+			
+			Sky.AddStep(std::move(only));
+		}
+		AddTechnique(std::move(Sky));
+	}
 }
 
 DirectX::XMMATRIX SkyRender::GetTransformXM() const noexcept

@@ -42,6 +42,7 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 
 		only.AddBindable(Rasterizer::Resolve(gfx, Rasterizer::Mode::RSCullBack));
 
+
 		solid.AddStep(std::move(only));
 		AddTechnique(std::move(solid));
 	}

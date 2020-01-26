@@ -29,6 +29,7 @@ light Pos
 //};
 
 
+
 cbuffer ObjectCBuf : register(b2)
 {
     float specularIntensity;
@@ -65,7 +66,7 @@ float4 main(PS_pIn pIn) : SV_Target
     for (int i = 0; i < MaxLights; i++)
     {
         shadowFactor[i] = 1.0f;
-    }
+	}
     //shadowFactor[0] = 1.0f - ShadowCalculation(pIn.lightSpacePos, shadowTex, sampleClamp, gLights[0].position, pIn.worldPos, pIn.worldNormal);
 
     float3 texDiff = diffTex.Sample(sampleWarp, pIn.texcoord).rgb;

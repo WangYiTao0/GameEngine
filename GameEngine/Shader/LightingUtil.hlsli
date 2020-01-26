@@ -17,6 +17,7 @@
 #define NUM_SPOT_LIGHTS 1
 #endif
 
+
 struct Light
 {
     float3 position; //spot point
@@ -170,10 +171,22 @@ float shadowFactor)
     // Scale light down by Lambert's cosine law.
     //diffuse shadding
     float diff = max(dot(normal, lightDir), 0.0f);
-
+    
+    //cell shader  diffuse//////////////////////////////////
+	const float levels = 3;
+	float level = floor(diff * levels);
+	diff = level / levels;
+    ////////////////////////////////////////////////////////
+    
     //specular shading
     float3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(toEye, reflectDir), 0.0f), mat.specularPower);
+    
+    //cell shader spec///////////////////////////////////////
+	level = floor(spec * levels);
+	spec = level / levels;
+    /////////////////////////////////////////////////////////
+    
     //combine results
     float3 ambient = L.ambient * mat.materialColor;
     float3 diffuse = L.brightness * L.Color * diff * mat.materialColor;
@@ -198,10 +211,22 @@ float3 toEye, float shadowFactor)
     float diff = max(dot(worldNormal, lightDir), 0.0);
     // specular shading
     
+    //cell shader  diffuse//////////////////////////////////
+	const float levels = 3;
+	float level = floor(diff * levels);
+	diff = level / levels;
+    ////////////////////////////////////////////////////////
+    
     float spec = 0.0;
     //blinn
     float3 halfwayDir = normalize(lightDir + toEye);
     spec = pow(max(dot(worldNormal, halfwayDir), 0.0f), mat.specularPower);
+    
+    //cell shader spec///////////////////////////////////////
+	level = floor(spec * levels);
+	spec = level / levels;
+    /////////////////////////////////////////////////////////
+    
     //phongshader
     //float3 reflectDir = reflect(-lightDir, worldNormal);
     //v = i - 2 * n * dot(i n) 
@@ -232,10 +257,21 @@ float3 toEye, float shadowFactor)
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
+    //cell shader  diffuse//////////////////////////////////
+	const float levels = 3;
+	float level = floor(diff * levels);
+	diff = level / levels;
+    ////////////////////////////////////////////////////////
 
     //blinn phong
     float3 halfwayDir = normalize(lightDir + toEye);
     float spec = pow(max(dot(normal, halfwayDir), 0.0), mat.specularPower);
+    
+    //cell shader spec///////////////////////////////////////
+	level = floor(spec * levels);
+	spec = level / levels;
+    /////////////////////////////////////////////////////////
+    
     //phong shader
     //float3 reflectDir = reflect(-lightDir, normal);
     //float spec = pow(max(dot(toEye, reflectDir), 0.0), mat.shininess);

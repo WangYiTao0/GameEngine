@@ -18,10 +18,10 @@ GeometryScene::GeometryScene(Graphics& gfx, FrameCommander& fc)
 	std::uniform_real_distribution<float> rRot(-MH::PI,MH::PI);
 
 	//role->AddShader(gfx, "PhongVSTBN", "PhongPSSpecNormalMap");
-	//std::vector<std::string> filePath = {
-	//	"Data\\Images\\skybox\\sunset\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset\\sunset_negX.bmp",
-	//	"Data\\Images\\skybox\\sunset\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset\\sunset_negY.bmp",
-	//	"Data\\Images\\skybox\\sunset\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset\\sunset_negZ.bmp" };
+	std::vector<std::string> filePath = {
+		"Data\\Images\\skybox\\sunset\\sunset_posX.bmp", "Data\\Images\\skybox\\sunset\\sunset_negX.bmp",
+		"Data\\Images\\skybox\\sunset\\sunset_posY.bmp", "Data\\Images\\skybox\\sunset\\sunset_negY.bmp",
+		"Data\\Images\\skybox\\sunset\\sunset_posZ.bmp", "Data\\Images\\skybox\\sunset\\sunset_negZ.bmp" };
 
 //	std::vector<std::string> filePath = {
 //"Data\\Images\\skybox\\Yokohama3\\posx.jpg", "Data\\Images\\skybox\\Yokohama3\\negx.jpg",
@@ -39,7 +39,7 @@ GeometryScene::GeometryScene(Graphics& gfx, FrameCommander& fc)
 		c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
 		//c->SetPos({ 0,2,1 });
 	}
-//	sky = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
+	sky = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
 
 }
 
@@ -67,9 +67,9 @@ void GeometryScene::Update(float dt)
 
 void GeometryScene::Draw()
 {	
-
+	
 	m_Light->Submit(fc);
-	//gridTerrain.Submit(fc);
+	gridTerrain.Submit(fc);
 
 	for (auto& b : cubes)
 	{

@@ -656,7 +656,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx,
 
 	bindablePtrs.push_back(Blender::Resolve(gfx, false));
 
-	bindablePtrs.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSOff));
+	bindablePtrs.push_back(std::make_shared<DepthStencil>(gfx, DepthStencil::Mode::DSSDefault));
 
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }
