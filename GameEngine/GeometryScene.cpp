@@ -28,17 +28,9 @@ GeometryScene::GeometryScene(Graphics& gfx, FrameCommander& fc)
 //"Data\\Images\\skybox\\Yokohama3\\posy.jpg", "Data\\Images\\skybox\\Yokohama3\\negy.jpg",
 //"Data\\Images\\skybox\\Yokohama3\\posz.jpg", "Data\\Images\\skybox\\Yokohama3\\negz.jpg" };
 
-	for (auto i = 0; i < 40; i++)
-	{
-		cubes.push_back(std::make_unique<TestCube>(gfx, 2.0f));
-	}
+	cube.SetPos({ 4.0f,0.0f,0.0f });
+	cube2.SetPos({ 0.0f,4.0f,0.0f });
 
-	for (auto& c : cubes)
-	{
-		c->SetRotation({ rRot(rng),rRot(rng),rRot(rng) });
-		c->SetPos({ rdist(rng),rdistY(rng),rdist(rng) });
-		//c->SetPos({ 0,2,1 });
-	}
 	sky = std::make_unique<SkyRender>(gfx,filePath,1000.0f);
 
 }
@@ -58,10 +50,10 @@ void GeometryScene::Update(float dt)
 
 	gridTerrain.SpawnControlWindow(gfx);
 
-	for (auto& c : cubes)
-	{
-		c->SpawnControlWindow(gfx, "cube");
-	}
+	cube.SpawnControlWindow(gfx, "Cube 1");
+	cube2.SpawnControlWindow(gfx, "Cube 2");
+
+
 	m_Light->SpawnLightManagerWindow(gfx);
 }
 
@@ -71,11 +63,8 @@ void GeometryScene::Draw()
 	m_Light->Submit(fc);
 	gridTerrain.Submit(fc);
 
-	for (auto& b : cubes)
-	{
-		b->Submit(fc);
-		b->Submit(fc);
-	}
+	cube.Submit(fc);
+	cube2.Submit(fc);
 
 	//sky->Submit(fc);
 

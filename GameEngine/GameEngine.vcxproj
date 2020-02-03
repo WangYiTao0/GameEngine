@@ -297,6 +297,7 @@
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PBRBall.h" />
     <ClInclude Include="PBRScene.h" />
+    <ClInclude Include="PerfLog.h" />
     <ClInclude Include="PlaneMirror.h" />
     <ClInclude Include="Rasterizer.h" />
     <ClInclude Include="BoundingSphere.h" />
@@ -314,6 +315,7 @@
     <ClInclude Include="Step.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Technique.h" />
+    <ClInclude Include="TechniqueProbe.h" />
     <ClInclude Include="TestDCB.h" />
     <ClInclude Include="Tex2D.h" />
     <ClInclude Include="TexturePreprocessor.h" />

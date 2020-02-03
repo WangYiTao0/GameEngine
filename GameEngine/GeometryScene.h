@@ -34,7 +34,9 @@ private:
 	bool EnableFrustumCulling = true;
 	GridTerrain gridTerrain{ gfx,160,160,50,50,20 };
 
-	std::vector<std::unique_ptr<TestCube>> cubes;
+	TestCube cube{ gfx,4.0f };
+	TestCube cube2{ gfx,4.0f };
+
 	std::mt19937 rng;
 	std::unique_ptr<SkyRender> sky = nullptr;
 

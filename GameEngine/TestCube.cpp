@@ -4,7 +4,10 @@
 #include "TransformPixelCbuf.h"
 #include "imgui/imgui.h"
 #include "StringHelper.h"
-#include "App.h"
+#include "DynamicConstant.h"
+#include "TechniqueProbe.h"
+#include "ConstantBuffersEx.h"
+
 
 TestCube::TestCube(Graphics& gfx, float size)
 {
@@ -31,7 +34,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	pTopology = Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	{
-		Technique standard;
+		Technique shade("Shade");
 		{
 			Step only(0);
 
@@ -47,15 +50,23 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 			only.AddBindable(PixelShader::Resolve(gfx, "PhongPS"));
 
-			only.AddBindable(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
+			Dcb::RawLayout lay;
+			lay.Add<Dcb::Float>("specularIntensity");
+			lay.Add<Dcb::Float>("specularPower");
+			auto buf = Dcb::Buffer(std::move(lay));
+			buf["specularIntensity"] = 0.1f;
+			buf["specularPower"] = 20.0f;
+			only.AddBindable(std::make_shared<Bind::CachingPixelConstantBufferEX>(gfx, buf, 2u));
+
+			//only.AddBindable(PixelConstantBuffer<Material>::Resolve(gfx, pmc, 2u));
 
 			only.AddBindable(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
 			only.AddBindable(std::make_shared<TransformVertexAndPixelCbuf>(gfx, *this, 0u, 0u));
 
-			standard.AddStep(std::move(only));
+			shade.AddStep(std::move(only));
 		}
-		AddTechnique(std::move(standard));
+		AddTechnique(std::move(shade));
 
 	}
 	//AddBind(Sampler::Resolve(gfx, 0u, Sampler::SamplerState::SSAnistropicWrap));
@@ -77,7 +88,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	//AddBind(DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSWrite));
 
 	{
-		Technique outline;
+		Technique outline("Outline");
 		{
 			Step mask(1);
 
@@ -104,6 +115,13 @@ TestCube::TestCube(Graphics& gfx, float size)
 			// this can be pass-constant
 			draw.AddBindable(PixelShader::Resolve(gfx, "SolidPS"));
 
+			Dcb::RawLayout lay;
+			lay.Add<Dcb::Float4>("color");
+			auto buf = Dcb::Buffer(std::move(lay));
+			buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+			draw.AddBindable(std::make_shared<Bind::CachingPixelConstantBufferEX>(gfx, buf, 3u));
+
+
 			// TODO: better sub-layout generation tech for future consideration maybe
 			draw.AddBindable(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
@@ -111,14 +129,34 @@ TestCube::TestCube(Graphics& gfx, float size)
 			class TransformCbufScaling : public TransformCbuf
 			{
 			public:
-				using TransformCbuf::TransformCbuf;
+				TransformCbufScaling(Graphics& gfx, float scale = 1.04)
+					:
+					TransformCbuf(gfx),
+					buf(MakeLayout())
+				{
+					buf["scale"] = scale;
+				}
+				void Accept(TechniqueProbe& probe) override
+				{
+					probe.VisitBuffer(buf);
+				}
 				void Bind(Graphics& gfx) noexcept override
 				{
-					const auto scale = dx::XMMatrixScaling(1.04f, 1.04f, 1.04f);
+					const float scale = buf["scale"];
+					const auto scaleMatrix = dx::XMMatrixScaling(scale, scale, scale);
 					auto xf = GetTransforms(gfx);
-					xf.world = xf.world * scale;
+					xf.world = xf.world * scaleMatrix;
 					UpdateBindImpl(gfx, xf);
 				}
+			private:
+				static Dcb::RawLayout MakeLayout()
+				{
+					Dcb::RawLayout layout;
+					layout.Add<Dcb::Float>("scale");
+					return layout;
+				}
+			private:
+				Dcb::Buffer buf;
 			};
 			draw.AddBindable(std::make_shared<TransformCbufScaling>(gfx));
 
@@ -193,19 +231,50 @@ void TestCube::SpawnControlWindow(Graphics& gfx, const char* name) noexcept
 		ImGui::SliderAngle("Pitch", &rollPitchYaw.y, -180.0f, 180.0f);
 		ImGui::SliderAngle("Yaw", &rollPitchYaw.z, -180.0f, 180.0f);
 
-		ImGui::Text("Material");
-		bool changed0 = ImGui::SliderFloat("SpecularIntensity.", &pmc.specularIntensity, 0.0f, 3.0f);
-		bool changed1 = ImGui::SliderFloat("SpecularPower.", &pmc.specularPower, 0.0f, 100.0f);
-		//if (changed0 || changed1)
-		//{
-		//	QueryBindable<Bind::PixelConstantBuffer<Material>>()->Update(gfx, pmc);
-		//}
+		class Probe : public TechniqueProbe
+		{
+		public:
+			void OnSetTechnique() override
+			{
+				using namespace std::string_literals;
+				ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, pTech->GetName().c_str());
+				bool active = pTech->IsActive();
+				ImGui::Checkbox(("Tech Active##"s + std::to_string(techIdx)).c_str(), &active);
+				pTech->SetActiveState(active);
+			}
+			bool OnVisitBuffer(Dcb::Buffer& buf) override
+			{
+				namespace dx = DirectX;
+				float dirty = false;
+				const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
+				auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string(bufIdx)]
+				(const char* label) mutable
+				{
+					tagScratch = label + tagString;
+					return tagScratch.c_str();
+				};
 
-		//ImGui::Text("Shading");
-		//auto pBlender = QueryBindable<Bind::Blender>();
-		//float factor = pBlender->GetFactor();
-		//ImGui::SliderFloat("Translucency", &factor, 0.0f, 1.0f);
-		//pBlender->SetFactor(factor);
+				if (auto v = buf["scale"]; v.Exists())
+				{
+					dcheck(ImGui::SliderFloat(tag("Scale"), &v, 1.0f, 2.0f, "%.3f", 3.5f));
+				}
+				if (auto v = buf["color"]; v.Exists())
+				{
+					dcheck(ImGui::ColorPicker4(tag("Color"), reinterpret_cast<float*>(&static_cast<dx::XMFLOAT4&>(v))));
+				}
+				if (auto v = buf["specularIntensity"]; v.Exists())
+				{
+					dcheck(ImGui::SliderFloat(tag("Spec. Intens."), &v, 0.0f, 1.0f));
+				}
+				if (auto v = buf["specularPower"]; v.Exists())
+				{
+					dcheck(ImGui::SliderFloat(tag("Glossiness"), &v, 1.0f, 100.0f, "%.1f", 1.5f));
+				}
+				return dirty;
+			}
+		} probe;
+
+		Accept(probe);
 	}
 	ImGui::End();
 }

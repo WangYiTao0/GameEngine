@@ -5,6 +5,7 @@
 #include "Graphics.h"
 #include "Job.h"
 #include "Pass.h"
+#include "PerfLog.h"
 
 class FrameCommander
 {
@@ -29,13 +30,10 @@ public:
 		DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSWrite)->Bind(gfx);
 		NullPixelShader::Resolve(gfx)->Bind(gfx);
 		passes[1].Execute(gfx);
+
+
 		// outline drawing pass
 		DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSMask)->Bind(gfx);
-		struct SolidColorBuffer
-		{
-			DirectX::XMFLOAT4 color = { 0.0f,0.0f,0.0f,1.0f };
-		} scb;
-		PixelConstantBuffer<SolidColorBuffer>::Resolve(gfx, scb, 3u)->Bind(gfx);
 		passes[2].Execute(gfx);
 
 		DepthStencil::Resolve(gfx, DepthStencil::Mode::DSSLessEqual)->Bind(gfx);

@@ -14,6 +14,7 @@
 #include "RTT.h"
 #include "DepthBufferRT.h"
 #include "FrameCommander.h"
+#include "PerfLog.h"
 
 class App
 {
